@@ -14,30 +14,31 @@ datasource db {
 }
 
 enum Role {
-  MUSICIAN
+  USER
   ADMIN
 }
 
 model User {
   id        String   @id @default(uuid())
-  name      String
+  name      String   @db.VarChar(255)
   email     String   @unique
-  phone     String?
+  phone     String?  @db.VarChar(60)
   password  String
   createdAt DateTime @default(now())
-  role      Role     @default(MUSICIAN)
+  role      Role     @default(USER)
   Post      Post[]
 }
 
 model Post {
   id         String   @id @default(uuid())
   createdAt  DateTime @default(now())
-  department String
-  city       String
+  country    String   @db.VarChar(60)
+  department String   @db.VarChar(60)
+  city       String   @db.VarChar(60)
   title      String
   content    String
-  author     User     @relation(fields: [authorId], references: [id])
-  authorId   String
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    String
 
-  @@unique([authorId, title])
+  @@unique([user_id, title])
 }
