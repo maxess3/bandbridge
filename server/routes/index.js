@@ -8,7 +8,7 @@ const router = Router();
 
 router.use("/api/auth", AuthRoutes);
 
-router.use("/api/user", UserRoutes);
+router.use("/api/user", authenticateToken, UserRoutes);
 
 router.use("/api/post", authenticateToken, PostRoutes);
 

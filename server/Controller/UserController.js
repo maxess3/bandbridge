@@ -1,6 +1,19 @@
 import prisma from "../db/db.config.js";
 
 export const deleteUser = async (req, res) => {
+  const currentUser = await prisma.user.findUnique({
+    where: {
+      id: req.user.userId,
+    },
+    select: {
+      role: true,
+    },
+  });
+
+  if (!currentUser || currentUser.role !== "ADMIN") {
+    return res.status(403).json({ message: "Forbidden access" });
+  }
+
   const userId = req.params.id;
   await prisma.user.delete({
     where: {

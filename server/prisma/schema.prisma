@@ -37,7 +37,7 @@ model Post {
   city       String   @db.VarChar(60)
   title      String
   content    String
-  user       User     @relation(fields: [user_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id    String
 
   @@unique([user_id, title])
