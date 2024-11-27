@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import AuthRoutes from "./AuthRoutes";
 import UserRoutes from "./UserRoutes";
 import PostRoutes from "./PostRoutes";
