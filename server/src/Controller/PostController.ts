@@ -1,6 +1,7 @@
-import prisma from "../db/db.config.js";
+import prisma from "../db/db.config";
+import { Request, Response } from "express";
 
-export const createPost = async (req, res) => {
+export const createPost = async (req: Request, res: Response) => {
   const { user_id, country, department, city, title, content } = req.body;
 
   const newPost = await prisma.post.create({

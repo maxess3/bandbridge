@@ -24,6 +24,7 @@ model User {
   email     String   @unique
   phone     String?  @db.VarChar(60)
   password  String
+  isOnline  Boolean  @default(false)
   createdAt DateTime @default(now())
   role      Role     @default(USER)
   Post      Post[]

@@ -1,8 +1,9 @@
-import prisma from "../db/db.config.js";
+import prisma from "../db/db.config";
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Request, Response } from "express";
 
-export const signup = async (req, res) => {
+export const signup = async (req: Request, res: Response) => {
   const { name, email, password, phone } = req.body;
 
   const findUser = await prisma.user.findFirst({
@@ -29,7 +30,7 @@ export const signup = async (req, res) => {
   return res.status(200).json({ data: newUser, msg: "User created." });
 };
 
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await prisma.user.findFirst({
@@ -38,8 +39,14 @@ export const login = async (req, res) => {
     },
   });
 
+  const secret = process.env.ACCESS_TOKEN_SECRET;
+
   if (!user) {
     return res.status(400).json({ msg: "User does not exists." });
+  }
+
+  if (!secret) {
+    throw new Error("ACCESS_TOKEN_SECRET is not defined");
   }
 
   if (!compareSync(password, user.password)) {
@@ -50,7 +57,7 @@ export const login = async (req, res) => {
     {
       userId: user.id,
     },
-    process.env.ACCESS_TOKEN_SECRET,
+    secret,
     {
       expiresIn: "1h",
     }
