@@ -39,23 +39,8 @@ export const login = async (req: Request, res: Response) => {
     },
   });
 
-  const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
-  const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
-
   if (!user) {
     return res.status(400).json({ msg: "User does not exists." });
-  }
-
-  if (!ACCESS_TOKEN_SECRET) {
-    return res.status(500).json({
-      msg: "Server configuration error: Missing authentication secrets",
-    });
-  }
-
-  if (!REFRESH_TOKEN_SECRET) {
-    return res.status(500).json({
-      msg: "Server configuration error: Missing authentication secrets",
-    });
   }
 
   if (!compareSync(password, user.password)) {
@@ -66,7 +51,7 @@ export const login = async (req: Request, res: Response) => {
     {
       userId: user.id,
     },
-    ACCESS_TOKEN_SECRET,
+    process.env.ACCESS_TOKEN_SECRET,
     {
       expiresIn: "15m",
     }
@@ -76,7 +61,7 @@ export const login = async (req: Request, res: Response) => {
     {
       userId: user.id,
     },
-    REFRESH_TOKEN_SECRET
+    process.env.REFRESH_TOKEN_SECRET
   );
 
   return res
