@@ -39,14 +39,23 @@ export const login = async (req: Request, res: Response) => {
     },
   });
 
-  const secret = process.env.ACCESS_TOKEN_SECRET;
+  const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
+  const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET;
 
   if (!user) {
     return res.status(400).json({ msg: "User does not exists." });
   }
 
-  if (!secret) {
-    throw new Error("ACCESS_TOKEN_SECRET is not defined");
+  if (!ACCESS_TOKEN_SECRET) {
+    return res.status(500).json({
+      msg: "Server configuration error: Missing authentication secrets",
+    });
+  }
+
+  if (!REFRESH_TOKEN_SECRET) {
+    return res.status(500).json({
+      msg: "Server configuration error: Missing authentication secrets",
+    });
   }
 
   if (!compareSync(password, user.password)) {
@@ -57,11 +66,20 @@ export const login = async (req: Request, res: Response) => {
     {
       userId: user.id,
     },
-    secret,
+    ACCESS_TOKEN_SECRET,
     {
-      expiresIn: "1h",
+      expiresIn: "15m",
     }
   );
 
-  return res.status(200).json({ accessToken: accessToken });
+  const refreshToken = jwt.sign(
+    {
+      userId: user.id,
+    },
+    REFRESH_TOKEN_SECRET
+  );
+
+  return res
+    .status(200)
+    .json({ accessToken: accessToken, refreshToken: refreshToken });
 };
