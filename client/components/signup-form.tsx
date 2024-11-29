@@ -16,13 +16,27 @@ export function SignupForm() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">S'inscrire</CardTitle>
+        <CardTitle className="text-2xl font-host-grotesk font-bold">
+          S'inscrire
+        </CardTitle>
         <CardDescription>
           Entrez un email et un mot de passe pour vous inscrire.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
+          <div className="grid gap-2">
+            <div className="flex gap-2">
+              <div className="w-1/2">
+                <Label htmlFor="lastname">Nom</Label>
+                <Input id="lastname" type="text" placeholder="Doe" required />
+              </div>
+              <div className="w-1/2">
+                <Label htmlFor="firstname">Prénom</Label>
+                <Input id="firstname" type="text" placeholder="John" required />
+              </div>
+            </div>
+          </div>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input

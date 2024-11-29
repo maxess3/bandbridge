@@ -11,6 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        "host-grotesk": "var(--font-host-grotesk)",
+        "geist-mono": "var(--font-geist-mono)",
         "geist-sans": "var(--font-geist-sans)",
       },
       colors: {

@@ -16,7 +16,9 @@ export function LoginForm() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl">Se connecter</CardTitle>
+        <CardTitle className="text-2xl font-host-grotesk font-bold">
+          Se connecter
+        </CardTitle>
         <CardDescription>
           Entrez votre email et votre mot de passe pour vous connecter.
         </CardDescription>
@@ -34,7 +36,7 @@ export function LoginForm() {
           </div>
           <div className="grid gap-2">
             <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Mot de passe</Label>
               <Link href="#" className="ml-auto inline-block text-sm underline">
                 Mot de passe oublié?
               </Link>
