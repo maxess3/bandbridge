@@ -24,7 +24,6 @@ model User {
   email     String   @unique
   phone     String?  @db.VarChar(60)
   password  String
-  refreshTokens RefreshToken[]
   isOnline  Boolean  @default(false)
   createdAt DateTime @default(now())
   role      Role     @default(USER)
@@ -43,15 +42,4 @@ model Post {
   user_id    String
 
   @@unique([user_id, title])
-}
-
-model RefreshToken {
-  id String @id @default(cuid())
-  token String @unique
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-  createdAt DateTime @default(now())
-  expiresAt DateTime
-  revoked Boolean @default(false)
-  ipAdress String?
 }

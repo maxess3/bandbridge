@@ -22,7 +22,7 @@ export const deleteUser = async (req: Request, res: Response) => {
   });
 
   if (!currentUser || currentUser.role !== "ADMIN") {
-    return res.status(403).json({ message: "Forbidden access" });
+    return res.sendStatus(403);
   }
 
   const userId = req.params.id;
@@ -32,12 +32,12 @@ export const deleteUser = async (req: Request, res: Response) => {
     },
   });
 
-  return res.json({ status: 200, msg: "User deleted successfully" });
+  return res.status(200).json({ message: "User deleted successfully" });
 };
 
 export const fetchUsers = async (req: Request, res: Response) => {
   const users = await prisma.user.findMany();
-  return res.json({ status: 200, data: users });
+  return res.status(200).json({ data: users });
 };
 
 export const showUser = async (req: Request, res: Response) => {

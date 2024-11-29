@@ -3,16 +3,16 @@ import { deleteUser, fetchUsers, showUser } from "../Controller/UserController";
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
-  await fetchUsers(req, res);
+router.get("/", (req: Request, res: Response) => {
+  fetchUsers(req, res);
 });
 
-router.get("/:id", async (req: Request, res: Response) => {
-  await showUser(req, res);
+router.get("/:id", (req: Request, res: Response) => {
+  showUser(req, res);
 });
 
-router.delete("/:id", async (req: Request, res: Response) => {
-  await deleteUser(req, res);
+router.delete("/:id", (req: Request, res: Response) => {
+  deleteUser(req, res);
 });
 
 export default router;

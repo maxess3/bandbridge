@@ -2,6 +2,7 @@ import prisma from "../db/db.config";
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
+import { generateAccessToken } from "../utils/utils";
 
 export const signup = async (req: Request, res: Response) => {
   const { name, email, password, phone } = req.body;
@@ -27,7 +28,7 @@ export const signup = async (req: Request, res: Response) => {
     },
   });
 
-  return res.status(200).json({ data: newUser, msg: "User created." });
+  return res.status(200).json({ data: newUser, message: "User created." });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -40,31 +41,46 @@ export const login = async (req: Request, res: Response) => {
   });
 
   if (!user) {
-    return res.status(400).json({ msg: "User does not exists." });
+    return res.status(400).json({ message: "User does not exists." });
   }
 
   if (!compareSync(password, user.password)) {
-    return res.status(400).json({ msg: "Incorrect password." });
+    return res.status(400).json({ message: "Incorrect password." });
   }
 
-  const accessToken = jwt.sign(
-    {
-      userId: user.id,
-    },
-    process.env.ACCESS_TOKEN_SECRET,
-    {
-      expiresIn: "15m",
-    }
-  );
+  const accessToken = generateAccessToken(user);
 
   const refreshToken = jwt.sign(
-    {
-      userId: user.id,
-    },
-    process.env.REFRESH_TOKEN_SECRET
+    { userId: user.id },
+    process.env.REFRESH_TOKEN_SECRET,
+    { expiresIn: "7d" }
   );
 
-  return res
-    .status(200)
-    .json({ accessToken: accessToken, refreshToken: refreshToken });
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: false,
+    path: "/",
+    // 7 days
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
+  return res.status(200).json({ accessToken });
+};
+
+export const refresh = (req: Request, res: Response) => {
+  const { refreshToken } = req.cookies;
+
+  if (!refreshToken) {
+    return res.sendStatus(403);
+  }
+
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    (err: Error | null, user: any) => {
+      if (err) return res.sendStatus(403);
+      const accessToken = generateAccessToken(user);
+      return res.status(200).json({ accessToken: accessToken });
+    }
+  );
 };

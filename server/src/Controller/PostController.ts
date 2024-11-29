@@ -15,5 +15,5 @@ export const createPost = async (req: Request, res: Response) => {
     },
   });
 
-  return res.json({ status: 200, data: newPost, msg: "Post created." });
+  return res.status(200).json({ data: newPost, message: "Post created." });
 };

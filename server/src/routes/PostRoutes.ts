@@ -3,8 +3,8 @@ import { createPost } from "../Controller/PostController";
 
 const router = Router();
 
-router.post("/", async (req: Request, res: Response) => {
-  await createPost(req, res);
+router.post("/", (req: Request, res: Response) => {
+  createPost(req, res);
 });
 
 export default router;
