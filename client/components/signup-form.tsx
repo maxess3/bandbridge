@@ -26,18 +26,6 @@ export function SignupForm() {
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <div className="flex gap-2">
-              <div className="w-1/2">
-                <Label htmlFor="lastname">Nom</Label>
-                <Input id="lastname" type="text" placeholder="Doe" required />
-              </div>
-              <div className="w-1/2">
-                <Label htmlFor="firstname">Prénom</Label>
-                <Input id="firstname" type="text" placeholder="John" required />
-              </div>
-            </div>
-          </div>
-          <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
