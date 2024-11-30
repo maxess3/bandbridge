@@ -8,12 +8,12 @@ export function Navbar() {
   return (
     <nav className="font-geist-sans flex items-center justify-center w-full py-4 border-b px-10">
       <div className="container flex justify-center items-center">
-        <div className="w-2/12 flex items-center">
+        <div className="w-3/12 flex items-center">
           <Link href={"/"} className="font-host-grotesk font-bold text-2xl">
             BandBridge
           </Link>
         </div>
-        <div className="w-8/12">
+        <div className="w-6/12">
           <ul className="flex justify-center items-center gap-10 font-normal">
             <Link href={"/contact"} className="inline-flex items-center">
               <PiUsersFour className="text-2xl mr-2" />
@@ -33,12 +33,18 @@ export function Navbar() {
             </Link>
           </ul>
         </div>
-        <div className="w-2/12 text-right">
+        <div className="w-3/12 flex justify-end gap-x-2">
           <Link
-            className="bg-[black] text-white text-sm px-4 py-2 h-9 rounded-lg inline-flex font-medium hover:bg-primary/90"
+            className="border justify-center border-black text-black text-sm px-4 py-2 h-9 rounded-lg inline-flex items-center font-medium hover:bg-primary/90"
             href={"/login"}
           >
             Se connecter
+          </Link>
+          <Link
+            className="bg-[black] text-white text-sm px-4 py-2 h-9 rounded-lg inline-flex items-center font-medium hover:bg-primary/90"
+            href={"/login"}
+          >
+            S'inscrire
           </Link>
         </div>
       </div>
