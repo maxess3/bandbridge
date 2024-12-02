@@ -14,7 +14,7 @@ export function Navbar() {
           </Link>
         </div>
         <div className="w-6/12">
-          <ul className="flex justify-center items-center gap-10 font-normal">
+          <ul className="flex justify-center items-center gap-9 font-normal">
             <Link href={"/contact"} className="inline-flex items-center">
               <PiUsersFour className="text-2xl mr-2" />
               Groupes
@@ -35,14 +35,14 @@ export function Navbar() {
         </div>
         <div className="w-3/12 flex justify-end gap-x-2">
           <Link
-            className="border justify-center border-black text-black text-sm px-4 py-2 h-9 rounded-lg inline-flex items-center font-medium hover:bg-primary/90"
+            className="border justify-center border-black text-black text-sm px-4 py-2 h-9 rounded-lg inline-flex items-center font-medium hover:bg-primary/5"
             href={"/login"}
           >
             Se connecter
           </Link>
           <Link
             className="bg-[black] text-white text-sm px-4 py-2 h-9 rounded-lg inline-flex items-center font-medium hover:bg-primary/90"
-            href={"/login"}
+            href={"/signup"}
           >
             S'inscrire
           </Link>

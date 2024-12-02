@@ -25,12 +25,17 @@ export function SignupForm() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
+          <Button variant="outline" className="w-full">
+            <FcGoogle style={{ width: "1.4em", height: "1.4em" }} />
+            S'inscrire avec Google
+          </Button>
+          <span className="my-2 border-b relative before:content-['ou'] before:absolute before:-translate-x-1/2 before:-translate-y-1/2 before:left-1/2 before:bg-white before:px-3 before:opacity-90"></span>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
-              placeholder="m@example.com"
+              placeholder="m@exemple.com"
               required
             />
           </div>
@@ -45,10 +50,6 @@ export function SignupForm() {
           </div>
           <Button type="submit" className="w-full">
             S'inscrire
-          </Button>
-          <Button variant="outline" className="w-full">
-            <FcGoogle style={{ width: "1.4em", height: "1.4em" }} />
-            S'inscrire avec Google
           </Button>
         </div>
         <div className="mt-4 text-center text-sm">
