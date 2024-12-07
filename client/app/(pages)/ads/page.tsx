@@ -1,9 +1,9 @@
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+// import {
+//   createColumnHelper,
+//   flexRender,
+//   getCoreRowModel,
+//   useReactTable,
+// } from "@tanstack/react-table";
 
 type Ads = {
   bandName: string | null;

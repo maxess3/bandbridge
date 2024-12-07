@@ -35,7 +35,7 @@ function Navbar() {
             </Link>
           </ul>
         </div>
-        <div className="w-3/12 flex justify-end gap-x-6">
+        <div className="w-3/12 flex justify-end gap-x-4">
           <div>
             <ThemeSwitch />
           </div>

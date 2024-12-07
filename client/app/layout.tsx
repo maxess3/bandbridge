@@ -12,6 +12,8 @@ const hostGrotesk = Host_Grotesk({
   weight: ["300", "400", "500", "600", "700", "800"],
   subsets: ["latin"],
   variable: "--font-host-grotesk",
+  display: "swap",
+  adjustFontFallback: false,
 });
 
 const geistSans = localFont({
