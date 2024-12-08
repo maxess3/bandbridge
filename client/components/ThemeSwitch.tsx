@@ -19,7 +19,7 @@ function ThemeSwitch() {
   if (resolvedTheme === "dark") {
     return (
       <button
-        className="flex items-center h-full"
+        className="flex items-center h-full opacity-90"
         onClick={() => setTheme("light")}
       >
         <FaMoon className="text-xl" />
@@ -30,7 +30,7 @@ function ThemeSwitch() {
   if (resolvedTheme === "light") {
     return (
       <button
-        className="flex items-center h-full"
+        className="flex items-center h-full opacity-90"
         onClick={() => setTheme("dark")}
       >
         <IoMdSunny className="text-xl" />
