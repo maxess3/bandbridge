@@ -63,7 +63,10 @@ export default function BandTable() {
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <th key={header.id} className="px-3">
+              <th
+                key={header.id}
+                className="[&:not(:first-child):not(:last-child)]:px-3"
+              >
                 {flexRender(
                   header.column.columnDef.header,
                   header.getContext()
@@ -77,7 +80,10 @@ export default function BandTable() {
         {table.getRowModel().rows.map((row) => (
           <tr key={row.id} className="border border-accent">
             {row.getVisibleCells().map((cell) => (
-              <td key={cell.id} className="px-3">
+              <td
+                key={cell.id}
+                className="[&:not(:first-child):not(:last-child)]:px-3"
+              >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             ))}
