@@ -16,9 +16,7 @@ function SignupForm() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl font-host-grotesk font-bold">
-          S'inscrire
-        </CardTitle>
+        <CardTitle className="text-2xl font-bold">S'inscrire</CardTitle>
         <CardDescription>
           Entrez un email et un mot de passe pour vous inscrire.
         </CardDescription>
@@ -48,7 +46,7 @@ function SignupForm() {
             </div>
             <Input id="password" type="password" required />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full text-white">
             S'inscrire
           </Button>
         </div>

@@ -1,0 +1,42 @@
+export const DATA = [
+    {
+        bandName: "Band A",
+        genres: ["Rock", "Pop"],
+        bandSize: ["Pianiste", "Chanteur"],
+        neededMusicians: ["Batteur", "Bassiste"],
+        avgAge: 25,
+        location: "Ile-de-France (Paris)",
+    },
+    {
+        bandName: "Band B",
+        genres: ["Rock", "Pop"],
+        bandSize: ["Pianiste", "Chanteur"],
+        neededMusicians: ["Batteur", "Bassiste"],
+        avgAge: 25,
+        location: "Ile-de-France (Paris)",
+    },
+    {
+        bandName: "Band C",
+        genres: ["Rock", "Pop"],
+        bandSize: ["Pianiste", "Chanteur"],
+        neededMusicians: ["Batteur", "Bassiste"],
+        avgAge: 25,
+        location: "Ile-de-France (Paris)",
+    },
+    {
+        bandName: "Band D",
+        genres: ["Rock", "Pop"],
+        bandSize: ["Pianiste", "Chanteur"],
+        neededMusicians: ["Batteur", "Bassiste"],
+        avgAge: 25,
+        location: "Ile-de-France (Paris)",
+    },
+    {
+        bandName: "Band E",
+        genres: ["Rock", "Pop"],
+        bandSize: ["Pianiste", "Chanteur"],
+        neededMusicians: ["Batteur", "Bassiste"],
+        avgAge: 25,
+        location: "Ile-de-France (Paris)",
+    },
+]

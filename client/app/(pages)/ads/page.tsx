@@ -1,24 +1,16 @@
-// import {
-//   createColumnHelper,
-//   flexRender,
-//   getCoreRowModel,
-//   useReactTable,
-// } from "@tanstack/react-table";
-
-type Ads = {
-  bandName: string | null;
-  genres: string[];
-  bandSize: number;
-  vacantPlaces: number;
-  currentMusicians: string[];
-  neededMusicians: string[];
-  avgAge: number;
-  country: string;
-  department: string;
-  city: string;
-  firstName: string;
-};
+import BandTable from "@/components/BandTable";
 
 export default function Ads() {
-  return <div className="bg-[red] h-20">coucou</div>;
+  return (
+    <div className="flex flex-col justify-center">
+      <div className="my-8">
+        <h1 className="text-2xl font-semibold">
+          Rejoindre un groupe de musique
+        </h1>
+        <p className="mt-1">Visualiser l'ensemble des groupes de musique.</p>
+      </div>
+
+      <BandTable />
+    </div>
+  );
 }

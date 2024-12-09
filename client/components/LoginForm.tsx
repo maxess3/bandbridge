@@ -16,9 +16,7 @@ function LoginForm() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl font-host-grotesk font-bold">
-          Se connecter
-        </CardTitle>
+        <CardTitle className="text-2xl font-bold">Se connecter</CardTitle>
         <CardDescription>
           Entrez votre email et votre mot de passe pour vous connecter.
         </CardDescription>
@@ -48,7 +46,7 @@ function LoginForm() {
             </div>
             <Input id="password" type="password" required />
           </div>
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full text-white">
             Se connecter
           </Button>
         </div>
