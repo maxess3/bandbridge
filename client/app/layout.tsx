@@ -6,6 +6,7 @@ import { DM_Sans } from "next/font/google";
 import "./globals.css";
 
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const DM = DM_Sans({
   weight: ["400", "500", "600", "700"],
@@ -31,6 +32,7 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           <main className="container mx-auto">{children}</main>
+          <Footer />
         </Providers>
       </body>
     </html>

@@ -17,11 +17,11 @@ function Navbar() {
               height={32}
             />
             <Link href={"/"} className="font-host-grotesk text-xl">
-              <span className="font-bold">band</span>bridge
+              <span className="font-semibold">band</span>bridge
             </Link>
           </div>
           <div className="w-4/12">
-            <ul className="flex justify-center items-center gap-x-10 font-normal">
+            <ul className="flex justify-center items-center gap-x-12 font-normal">
               <Link
                 href={"/contact"}
                 className="inline-flex items-center opacity-90"
