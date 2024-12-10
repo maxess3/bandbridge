@@ -4,6 +4,8 @@ import { DATA } from "../app/data";
 
 import { useState } from "react";
 
+import { IoMdMusicalNotes } from "react-icons/io";
+
 import {
   createColumnHelper,
   flexRender,
@@ -12,6 +14,7 @@ import {
 } from "@tanstack/react-table";
 
 type Ads = {
+  bandImage: string;
   bandName: string | null;
   genres: string[];
   bandSize: string[];
@@ -23,6 +26,14 @@ type Ads = {
 const columnHelper = createColumnHelper<Ads>();
 
 const columns = [
+  columnHelper.accessor("bandImage", {
+    header: () => "",
+    cell: (info) => (
+      <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+        <IoMdMusicalNotes className="text-md" />
+      </div>
+    ),
+  }),
   columnHelper.accessor("bandName", {
     header: () => "Nom",
     cell: (info) => info.getValue(),
@@ -61,11 +72,11 @@ export default function BandTable() {
     <table className="w-full text-left">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
+          <tr key={headerGroup.id} className="bg-secondary">
             {headerGroup.headers.map((header) => (
               <th
                 key={header.id}
-                className="[&:not(:first-child):not(:last-child)]:px-3"
+                className="[&:not(:first-child):not(:last-child)]:px-3 [&:first-child]:rounded-tl-md [&:last-child]:rounded-tr-md py-1 px-4 border-2 border-transparent"
               >
                 {flexRender(
                   header.column.columnDef.header,
@@ -82,7 +93,7 @@ export default function BandTable() {
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className="[&:not(:first-child):not(:last-child)]:px-3"
+                className="[&:not(:first-child):not(:last-child)]:px-3 py-2 px-4"
               >
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>

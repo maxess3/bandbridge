@@ -28,10 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={`${DM.className} antialiased`}>
+      <body
+        className={`${DM.className} antialiased min-h-screen flex flex-col`}
+      >
         <Providers>
           <Navbar />
-          <main className="container mx-auto">{children}</main>
+          <main className="container mx-auto flex-grow">{children}</main>
           <Footer />
         </Providers>
       </body>

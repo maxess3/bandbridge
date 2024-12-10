@@ -7,8 +7,8 @@ import { FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 function Footer() {
   return (
-    <footer>
-      <div className="flex justify-center">
+    <footer className="mt-12">
+      <div className="flex justify-center px-10">
         <div className="container">
           <div className="flex justify-between w-full border-b pb-10">
             <div>
@@ -21,17 +21,17 @@ function Footer() {
                 />
                 <h2 className="text-2xl">
                   <span className="font-semibold">
-                    Ne faites pas que de la musique.
+                    De la chambre à la scène.
                   </span>
                 </h2>
                 <p className="text-lg">
-                  <span className="font-semibold">band</span>bridge, 2024.
+                  <span className="font-semibold">band</span>bridge, 2025.
                 </p>
               </div>
             </div>
             <div className="flex gap-x-12">
               <div className="space-y-4">
-                <h2 className="text-sm">Entreprise</h2>
+                <h2 className="text-sm opacity-80">Entreprise</h2>
                 <ul className="space-y-2">
                   <li>
                     <Link href={"/signin"}>Blog</Link>
@@ -45,7 +45,7 @@ function Footer() {
                 </ul>
               </div>
               <div className="space-y-4">
-                <h2 className="text-sm">Liens rapide</h2>
+                <h2 className="text-sm opacity-90">Liens rapide</h2>
                 <ul className="space-y-2">
                   <li>
                     <Link href={"/signin"}>Article 1</Link>
@@ -59,7 +59,7 @@ function Footer() {
                 </ul>
               </div>
               <div className="space-y-4">
-                <h2 className="text-sm">Légal</h2>
+                <h2 className="text-sm opacity-90">Légal</h2>
                 <ul className="space-y-2">
                   <li>
                     <Link href={"/signin"}>Politique de confidentialité</Link>
@@ -67,13 +67,16 @@ function Footer() {
                   <li>
                     <Link href={"/signin"}>Mentions légales</Link>
                   </li>
+                  <li>
+                    <Link href={"/signin"}>Contact</Link>
+                  </li>
                 </ul>
               </div>
             </div>
           </div>
           <div className="py-4 flex justify-between items-center">
             <div>
-              © 2024 <span className="font-semibold">band</span>bridge. Tous
+              © 2025 <span className="font-semibold">band</span>bridge. Tous
               droits réservés.{" "}
             </div>
             <div className="flex space-x-3">
