@@ -19,6 +19,7 @@ type Ads = {
   genres: string[];
   bandSize: string[];
   neededMusicians: string[];
+  bandLevel: string;
   avgAge: number;
   location: string;
 };
@@ -50,8 +51,12 @@ const columns = [
     header: () => "Recherche",
     cell: (info) => info.getValue().join(", "),
   }),
+  columnHelper.accessor("bandLevel", {
+    header: () => "Niveau",
+    cell: (info) => info.getValue(),
+  }),
   columnHelper.accessor("avgAge", {
-    header: () => "Age moyen",
+    header: () => "Âge moyen",
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor("location", {
@@ -76,7 +81,7 @@ export default function BandTable() {
             {headerGroup.headers.map((header) => (
               <th
                 key={header.id}
-                className="[&:not(:first-child):not(:last-child)]:px-3 [&:first-child]:rounded-tl-md [&:last-child]:rounded-tr-md py-1 px-4 border-2 border-transparent"
+                className="font-normal [&:not(:first-child):not(:last-child)]:px-3 [&:first-child]:rounded-tl-md [&:last-child]:rounded-tr-md py-1 px-4 border-2 border-transparent"
               >
                 {flexRender(
                   header.column.columnDef.header,
@@ -89,7 +94,7 @@ export default function BandTable() {
       </thead>
       <tbody>
         {table.getRowModel().rows.map((row) => (
-          <tr key={row.id} className="border border-accent">
+          <tr key={row.id} className="border-b border-accent">
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
