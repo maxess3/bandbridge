@@ -33,7 +33,9 @@ export default function RootLayout({
       >
         <Providers>
           <Navbar />
-          <main className="container mx-auto flex-grow">{children}</main>
+          <div className="px-10">
+            <main className="container mx-auto flex-grow">{children}</main>
+          </div>
           <Footer />
         </Providers>
       </body>

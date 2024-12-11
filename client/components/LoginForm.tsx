@@ -27,7 +27,7 @@ function LoginForm() {
             <FcGoogle style={{ width: "1.4em", height: "1.4em" }} />
             Se connecter avec Google
           </Button>
-          <span className="my-2 border-b relative before:content-['ou'] before:absolute before:-translate-x-1/2 before:-translate-y-1/2 before:left-1/2 before:bg-background before:px-3 before:opacity-90"></span>
+          <span className="my-2 border-b relative before:content-['ou'] before:absolute before:-translate-x-1/2 before:-translate-y-1/2 before:left-1/2 before:bg-card before:px-3 before:opacity-90"></span>
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input

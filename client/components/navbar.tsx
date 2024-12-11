@@ -1,3 +1,7 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 import Link from "next/link";
 
 import Image from "next/image";
@@ -5,6 +9,8 @@ import Image from "next/image";
 import ThemeSwitch from "@/components/ThemeSwitch";
 
 function Navbar() {
+  const currentPath = usePathname();
+
   return (
     <div>
       <nav className="font-host-grotesk flex items-center justify-center w-full py-3 border-b px-10">
@@ -23,26 +29,42 @@ function Navbar() {
           <div>
             <ul className="flex justify-center items-center gap-x-12 font-normal">
               <Link
-                href={"/contact"}
-                className="inline-flex items-center opacity-90"
+                href={"/band"}
+                className={`inline-flex items-center opacity-90 ${
+                  currentPath === "/band"
+                    ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
+                    : "font-normal"
+                }`}
               >
                 Groupes
               </Link>
               <Link
                 href={"/ads"}
-                className="inline-flex items-center opacity-90"
+                className={`inline-flex items-center opacity-90 ${
+                  currentPath === "/ads"
+                    ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
+                    : "font-normal"
+                }`}
               >
                 Annonces
               </Link>
               <Link
-                href={"/contact"}
-                className="inline-flex items-center opacity-90"
+                href={"/musician"}
+                className={`inline-flex items-center opacity-90 ${
+                  currentPath === "/musician"
+                    ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
+                    : "font-normal"
+                }`}
               >
                 Musiciens
               </Link>
               <Link
                 href={"/forum"}
-                className="inline-flex items-center opacity-90"
+                className={`inline-flex items-center opacity-90 ${
+                  currentPath === "/forum"
+                    ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
+                    : "font-normal"
+                }`}
               >
                 Forum
               </Link>
@@ -57,7 +79,7 @@ function Navbar() {
                 Se connecter
               </Link>
               <Link
-                className="hover:bg-primary/90 bg-primary text-white text-sm px-4 py-2 h-9 rounded-md inline-flex items-center font-medium"
+                className="hover:bg-primary/90 bg-primary text-white text-sm px-4 py-2 h-9 rounded-md inline-flex items-center font-semibold"
                 href={"/signup"}
               >
                 S'inscrire
