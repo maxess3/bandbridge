@@ -22,7 +22,7 @@ function ThemeSwitch() {
         className="flex items-center h-full opacity-90"
         onClick={() => setTheme("light")}
       >
-        <FaMoon className="text-xl" />
+        <FaMoon className="text-lg" />
       </button>
     );
   }
@@ -33,7 +33,7 @@ function ThemeSwitch() {
         className="flex items-center h-full opacity-90"
         onClick={() => setTheme("dark")}
       >
-        <IoMdSunny className="text-xl" />
+        <IoMdSunny className="text-lg" />
       </button>
     );
   }
