@@ -124,14 +124,17 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
 
   if (tableLayoutMode === "grid") {
     return (
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3 grid-cols-2 gap-4">
         {table.getRowModel().rows.map((row) => (
           <div
             key={row.id}
-            className="bg-secondary/25 rounded-lg p-4 space-x-4 flex flex-col"
+            className="bg-secondary/25 rounded-lg p-4 flex flex-col gap-y-2"
           >
             {row.getVisibleCells().map((cell) => (
               <div key={cell.id}>
+                {/* <div className="text-sm text-gray-500">
+                  {flexRender(cell.column.columnDef.header, cell.getContext())}
+                </div> */}
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </div>
             ))}
