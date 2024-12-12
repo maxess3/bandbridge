@@ -93,8 +93,13 @@ export default function BandTable() {
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id} className="border-b border-accent">
+        {table.getRowModel().rows.map((row, index) => (
+          <tr
+            key={row.id}
+            className={`border-b border-accent ${
+              index % 2 === 0 ? "bg-background" : "bg-secondary/25"
+            }`}
+          >
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}

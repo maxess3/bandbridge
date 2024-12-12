@@ -31,7 +31,6 @@ function LoginForm() {
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
-              className="!text-base"
               id="email"
               type="email"
               placeholder="m@exemple.com"

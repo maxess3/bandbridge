@@ -5,6 +5,8 @@ import Link from "next/link";
 import { FaFacebookF } from "react-icons/fa";
 import { FaInstagram, FaXTwitter } from "react-icons/fa6";
 
+import { Button } from "@/components/ui/button";
+
 function Footer() {
   return (
     <footer className="mt-12">
@@ -31,6 +33,40 @@ function Footer() {
             </div>
             <div className="flex gap-x-12">
               <div className="space-y-4">
+                <h2 className="text-sm opacity-90">Rejoindre un groupe</h2>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href={"/signin"}>Groupes sur Paris</Link>
+                  </li>
+                  <li>
+                    <Link href={"/signin"}>Groupes sur Lyon</Link>
+                  </li>
+                  <li>
+                    <Link href={"/signin"}>Groupes sur Marseille</Link>
+                  </li>
+                  <li>
+                    <Link href={"/signin"}>Groupes sur Toulouse</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-4">
+                <h2 className="text-sm opacity-90">Touver un musicien</h2>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href={"/signin"}>Musiciens sur Paris</Link>
+                  </li>
+                  <li>
+                    <Link href={"/signin"}>Musiciens sur Lyon</Link>
+                  </li>
+                  <li>
+                    <Link href={"/signin"}>Musiciens sur Marseille</Link>
+                  </li>
+                  <li>
+                    <Link href={"/signin"}>Musiciens sur Toulouse</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-4">
                 <h2 className="text-sm opacity-80">Entreprise</h2>
                 <ul className="space-y-2">
                   <li>
@@ -41,20 +77,6 @@ function Footer() {
                   </li>
                   <li>
                     <Link href={"/signin"}>Tarif</Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="space-y-4">
-                <h2 className="text-sm opacity-90">Liens rapide</h2>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href={"/signin"}>Article 1</Link>
-                  </li>
-                  <li>
-                    <Link href={"/signin"}>Article 2</Link>
-                  </li>
-                  <li>
-                    <Link href={"/signin"}>Article 3</Link>
                   </li>
                 </ul>
               </div>
@@ -77,27 +99,30 @@ function Footer() {
           <div className="py-4 flex justify-between items-center">
             <div>
               © 2025 <span className="font-semibold">band</span>bridge. Tous
-              droits réservés.{" "}
+              droits réservés.
             </div>
-            <div className="flex space-x-3">
-              <Link
-                href={""}
-                className="rounded-full w-9 h-9 flex justify-center items-center"
-              >
-                <FaXTwitter className="text-xl" />
-              </Link>
-              <Link
-                href={""}
-                className="rounded-full w-9 h-9 flex justify-center items-center"
-              >
-                <FaInstagram className="text-xl" />
-              </Link>
-              <Link
-                href={""}
-                className="rounded-full w-9 h-9 flex justify-center items-center"
-              >
-                <FaFacebookF className="text-xl" />
-              </Link>
+            <div className="flex space-x-6">
+              <Button variant="outline">Signaler un bug</Button>
+              <div className="flex space-x-3">
+                <Link
+                  href={""}
+                  className="rounded-full w-9 h-9 flex justify-center items-center"
+                >
+                  <FaXTwitter className="text-xl" />
+                </Link>
+                <Link
+                  href={""}
+                  className="rounded-full w-9 h-9 flex justify-center items-center"
+                >
+                  <FaInstagram className="text-xl" />
+                </Link>
+                <Link
+                  href={""}
+                  className="rounded-full w-9 h-9 flex justify-center items-center"
+                >
+                  <FaFacebookF className="text-xl" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
