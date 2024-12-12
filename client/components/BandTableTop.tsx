@@ -6,7 +6,15 @@ import LayoutView from "@/components/LayoutView";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-function BandTableTop() {
+interface BandTableTopProps {
+  tableLayoutMode: "grid" | "list";
+  setTableLayoutMode: React.Dispatch<React.SetStateAction<"grid" | "list">>;
+}
+
+function BandTableTop({
+  tableLayoutMode,
+  setTableLayoutMode,
+}: BandTableTopProps) {
   return (
     <div className="flex items-center justify-between space-x-2">
       <div className="flex space-x-2">
@@ -47,7 +55,10 @@ function BandTableTop() {
           </span>
         </Button>
       </div>
-      <LayoutView />
+      <LayoutView
+        tableLayoutMode={tableLayoutMode}
+        setTableLayoutMode={setTableLayoutMode}
+      />
     </div>
   );
 }

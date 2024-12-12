@@ -6,18 +6,23 @@ import BandTableFooter from "@/components/BandTableFooter";
 
 import { useState } from "react";
 
-function bandTableContainer() {
-  const [tableLayoutMode, setTableLayoutMode] = useState("list");
+function BandTableContainer() {
+  const [tableLayoutMode, setTableLayoutMode] = useState<"grid" | "list">(
+    "list"
+  );
 
   return (
     <div className="space-y-6 mt-6">
       <div className="space-y-3">
-        <BandTableTop setTableLayoutMode={setTableLayoutMode} />
-        <BandTable />
+        <BandTableTop
+          tableLayoutMode={tableLayoutMode}
+          setTableLayoutMode={setTableLayoutMode}
+        />
+        <BandTable tableLayoutMode={tableLayoutMode} />
       </div>
       <BandTableFooter />
     </div>
   );
 }
 
-export default bandTableContainer;
+export default BandTableContainer;

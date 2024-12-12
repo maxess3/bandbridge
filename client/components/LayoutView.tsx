@@ -3,21 +3,35 @@ import { IoList } from "react-icons/io5";
 
 import { Button } from "@/components/ui/button";
 
-function LayoutView() {
+interface BandTableTopProps {
+  tableLayoutMode: "grid" | "list";
+  setTableLayoutMode: React.Dispatch<React.SetStateAction<"grid" | "list">>;
+}
+
+function LayoutView({
+  tableLayoutMode,
+  setTableLayoutMode,
+}: BandTableTopProps) {
   return (
     <div className="flex">
-      <div className="flex border rounded-md relative before:absolute before:-translate-x-1/2 before:left-1/2 before:h-full before:w-0.5 before:bg-accent">
+      <div className="flex rounded-md relative before:absolute before:-translate-x-1/2 before:left-1/2 before:h-full before:w-0.5 before:bg-accent">
         <Button
+          onClick={() => setTableLayoutMode("grid")}
           variant="ghost"
           size="sm"
-          className="rounded-r-none w-full hover:bg-secondary/20"
+          className={`rounded-r-none border w-full hover:bg-secondary/20 ${
+            tableLayoutMode === "grid" ? "bg-secondary hover:bg-secondary" : ""
+          }`}
         >
           <IoMdGrid className="opacity-80" />
         </Button>
         <Button
+          onClick={() => setTableLayoutMode("list")}
           size="sm"
           variant="ghost"
-          className="rounded-l-none bg-secondary"
+          className={`rounded-l-none border w-full hover:bg-secondary/20 ${
+            tableLayoutMode === "list" ? "bg-secondary hover:bg-secondary" : ""
+          }`}
         >
           <IoList />
         </Button>

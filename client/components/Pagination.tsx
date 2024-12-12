@@ -11,9 +11,9 @@ function Pagination() {
         </p>
       </div>
       <div className="flex space-x-1">
-        {/* <Button className="bg-outline border shadow-sm text-foreground hover:bg-accent">
+        <Button className="hidden bg-outline border shadow-sm text-foreground hover:bg-accent">
           <IoChevronBackOutline />
-        </Button> */}
+        </Button>
         <Button className="bg-outline border text-foreground shadow-sm hover:bg-secondary/20">
           1
         </Button>
