@@ -141,7 +141,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band A",
+        bandName: "Band O",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -151,7 +151,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band B",
+        bandName: "Band P",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -161,7 +161,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band C",
+        bandName: "Band Q",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -171,7 +171,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band D",
+        bandName: "Band R",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -181,7 +181,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band E",
+        bandName: "Band S",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -191,7 +191,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band F",
+        bandName: "Band T",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -201,7 +201,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band G",
+        bandName: "Band U",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -211,7 +211,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band H",
+        bandName: "Band V",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -221,7 +221,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band I",
+        bandName: "Band W",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -231,7 +231,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band J",
+        bandName: "Band X",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -241,7 +241,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band K",
+        bandName: "Band Y",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -251,7 +251,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band L",
+        bandName: "Band Z",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -261,7 +261,7 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band M",
+        bandName: "Band 1",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],
@@ -271,7 +271,27 @@ export const DATA = [
     },
     {
         bandImage: "image",
-        bandName: "Band N",
+        bandName: "Band 2",
+        genres: ["Rock", "Pop"],
+        bandSize: ["Pianiste", "Chanteur"],
+        neededMusicians: ["Batteur", "Bassiste"],
+        bandLevel: "Amateur",
+        avgAge: 25,
+        location: "Ile-de-France (Paris)",
+    },
+    {
+        bandImage: "image",
+        bandName: "Band 3",
+        genres: ["Rock", "Pop"],
+        bandSize: ["Pianiste", "Chanteur"],
+        neededMusicians: ["Batteur", "Bassiste"],
+        bandLevel: "Amateur",
+        avgAge: 25,
+        location: "Ile-de-France (Paris)",
+    },
+    {
+        bandImage: "image",
+        bandName: "Band 4",
         genres: ["Rock", "Pop"],
         bandSize: ["Pianiste", "Chanteur"],
         neededMusicians: ["Batteur", "Bassiste"],

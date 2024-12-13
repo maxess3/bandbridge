@@ -5,6 +5,7 @@ import { DATA } from "../app/data";
 import { useState } from "react";
 
 import { IoMdMusicalNotes } from "react-icons/io";
+import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 
 import {
   createColumnHelper,
@@ -28,50 +29,76 @@ type Ads = {
   location: string;
 };
 
-const columnHelper = createColumnHelper<Ads>();
+const createColumns = (tableLayoutMode: BandTableProps["tableLayoutMode"]) => {
+  const columnHelper = createColumnHelper<Ads>();
 
-const columns = [
-  columnHelper.accessor("bandImage", {
-    header: () => "",
-    cell: () => (
-      <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-        <IoMdMusicalNotes className="text-md" />
-      </div>
-    ),
-  }),
-  columnHelper.accessor("bandName", {
-    header: () => "Nom",
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("genres", {
-    header: () => "Genres",
-    cell: (info) => info.getValue().join(", "),
-  }),
-  columnHelper.accessor("bandSize", {
-    header: () => "Membres",
-    cell: (info) => info.getValue().join(", "),
-  }),
-  columnHelper.accessor("neededMusicians", {
-    header: () => "Recherche",
-    cell: (info) => info.getValue().join(", "),
-  }),
-  columnHelper.accessor("bandLevel", {
-    header: () => "Niveau",
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("avgAge", {
-    header: () => "Âge moyen",
-    cell: (info) => info.getValue(),
-  }),
-  columnHelper.accessor("location", {
-    header: () => "Localisation",
-    cell: (info) => info.getValue(),
-  }),
-];
+  return [
+    columnHelper.accessor("bandImage", {
+      header: () => "",
+      cell: () => (
+        <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+          <IoMdMusicalNotes className="text-md" />
+        </div>
+      ),
+    }),
+    columnHelper.accessor("bandName", {
+      header: () => "Nom",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("genres", {
+      header: () => "Genres",
+      cell: (info) => info.getValue().join(", "),
+    }),
+    columnHelper.accessor("bandSize", {
+      header: () => "Membres",
+      cell: (info) => info.getValue().join(", "),
+    }),
+    columnHelper.accessor("neededMusicians", {
+      header: () => "Recherche",
+      cell: (info) => info.getValue().join(", "),
+    }),
+    columnHelper.accessor("bandLevel", {
+      header: () =>
+        tableLayoutMode === "grid" ? (
+          "Niveau"
+        ) : (
+          <div className="flex items-center gap-x-2">
+            Niveau
+            <span className="flex flex-col -space-y-1">
+              <IoChevronUp className="text-xs" />
+              <IoChevronDown className="text-xs opacity-60" />
+            </span>
+          </div>
+        ),
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("avgAge", {
+      header: () =>
+        tableLayoutMode === "grid" ? (
+          "Âge moyen"
+        ) : (
+          <div className="flex items-center gap-x-2">
+            Âge moyen{" "}
+            <span className="flex flex-col -space-y-1">
+              <IoChevronUp className="text-xs" />
+              <IoChevronDown className="text-xs opacity-60" />
+            </span>
+          </div>
+        ),
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("location", {
+      header: () => "Localisation",
+      cell: (info) => info.getValue(),
+    }),
+  ];
+};
 
 export default function BandTable({ tableLayoutMode }: BandTableProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState(DATA);
+
+  const columns = createColumns(tableLayoutMode);
 
   const table = useReactTable({
     data,
@@ -132,9 +159,13 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
           >
             {row.getVisibleCells().map((cell) => (
               <div key={cell.id}>
-                {/* <div className="text-sm text-gray-500">
-                  {flexRender(cell.column.columnDef.header, cell.getContext())}
-                </div> */}
+                <div className="text-sm opacity-60">
+                  {/* eslint-disable @typescript-eslint/no-explicit-any */}
+                  {flexRender(
+                    cell.column.columnDef.header,
+                    cell.getContext() as any
+                  )}
+                </div>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </div>
             ))}

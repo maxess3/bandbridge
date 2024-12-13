@@ -29,16 +29,6 @@ function Navbar() {
           <div>
             <ul className="flex justify-center items-center gap-x-12 font-normal">
               <Link
-                href={"/band"}
-                className={`inline-flex items-center opacity-90 ${
-                  currentPath === "/band"
-                    ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
-                    : "font-normal"
-                }`}
-              >
-                Groupes
-              </Link>
-              <Link
                 href={"/ads"}
                 className={`inline-flex items-center opacity-90 ${
                   currentPath === "/ads"
@@ -46,17 +36,17 @@ function Navbar() {
                     : "font-normal"
                 }`}
               >
-                Annonces
+                Groupes
               </Link>
               <Link
-                href={"/musician"}
+                href={"/artist"}
                 className={`inline-flex items-center opacity-90 ${
-                  currentPath === "/musician"
+                  currentPath === "/artist"
                     ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
                     : "font-normal"
                 }`}
               >
-                Musiciens
+                Artistes
               </Link>
               <Link
                 href={"/forum"}
@@ -66,7 +56,7 @@ function Navbar() {
                     : "font-normal"
                 }`}
               >
-                Forum
+                Creator Site
               </Link>
             </ul>
           </div>
