@@ -18,19 +18,19 @@ function BandTableTop({
   return (
     <div className="flex items-center justify-between space-x-2">
       <div className="flex space-x-2">
-        <div className="relative w-[260px]">
+        <div className="relative w-[250px]">
           <span className="absolute -translate-y-1/2 top-1/2 left-[10px]">
             <HiOutlineLocationMarker className="text-lg" />
           </span>
           <Input
             className="px-9 placeholder:font-normal font-semibold"
-            placeholder="Choisir une localisation"
+            placeholder="Choisir une localisation..."
           />
           <span className="absolute -translate-y-1/2 top-1/2 right-[10px]">
             <IoChevronDown className="text-md" />
           </span>
         </div>
-        <div className="relative w-[225px]">
+        <div className="relative w-[250px]">
           <span className="absolute -translate-y-1/2 top-1/2 left-[10px]">
             <RiUserSearchLine className="text-lg" />
           </span>

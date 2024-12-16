@@ -34,7 +34,7 @@ export default function RootLayout({
         className={`${DM.className} antialiased min-h-screen flex flex-col`}
       >
         <Providers>
-          <NextTopLoader showSpinner={false} height={3} />
+          <NextTopLoader color="#0a81ff" showSpinner={false} height={3} />
           <Navbar />
           <div className="px-10">
             <main className="container mx-auto flex-grow">{children}</main>

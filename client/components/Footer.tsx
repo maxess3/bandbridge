@@ -2,8 +2,7 @@ import Image from "next/image";
 
 import Link from "next/link";
 
-import { FaFacebookF } from "react-icons/fa";
-import { FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 import { Button } from "@/components/ui/button";
 
@@ -120,7 +119,7 @@ function Footer() {
                   href={""}
                   className="rounded-full w-9 h-9 flex justify-center items-center"
                 >
-                  <FaFacebookF className="text-xl" />
+                  <FaFacebookF className="text-lg" />
                 </Link>
               </div>
             </div>

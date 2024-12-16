@@ -64,6 +64,7 @@ function LoginForm() {
               id="email"
               type="email"
               placeholder="m@exemple.com"
+              autoComplete="email"
               required
               {...register("email")}
             />
