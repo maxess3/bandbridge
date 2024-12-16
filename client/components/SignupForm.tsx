@@ -68,7 +68,7 @@ function SignupForm() {
             <Input
               className={`${errors.email && "border-[#ff4444]"}`}
               id="email"
-              type="text"
+              type="email"
               placeholder="m@exemple.com"
               required
               {...register("email")}
