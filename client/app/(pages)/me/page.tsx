@@ -4,11 +4,11 @@ import { AiFillSafetyCertificate } from "react-icons/ai";
 
 import { Button } from "@/components/ui/button";
 
-export default function Profile() {
+export default function Me() {
   return (
     <div>
       <div className="bg-slate-700 w-full h-48 relative">
-        <div className="flex absolute -bottom-10 left-[165px] space-x-6 text-md">
+        <div className="flex absolute -bottom-10 left-[165px] space-x-5 text-md">
           <div className="flex gap-x-1 items-center opacity-80">
             <HiOutlineLocationMarker className="text-lg" /> Toulouse
           </div>
