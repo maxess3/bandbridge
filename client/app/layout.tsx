@@ -1,12 +1,11 @@
 import { Providers } from "./providers";
 import type { Metadata } from "next";
-
 import NextTopLoader from "nextjs-toploader";
-
 import { DM_Sans } from "next/font/google";
 
 import "./globals.css";
 
+import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -33,14 +32,16 @@ export default function RootLayout({
       <body
         className={`${DM.className} antialiased min-h-screen flex flex-col`}
       >
-        <Providers>
-          <NextTopLoader color="#0a81ff" showSpinner={false} height={3} />
-          <Navbar />
-          <div className="px-10">
-            <main className="container mx-auto flex-grow">{children}</main>
-          </div>
-          <Footer />
-        </Providers>
+        <ReactQueryClientProvider>
+          <Providers>
+            <NextTopLoader color="#0a81ff" showSpinner={false} height={3} />
+            <Navbar />
+            <div className="px-10">
+              <main className="container mx-auto flex-grow">{children}</main>
+            </div>
+            <Footer />
+          </Providers>
+        </ReactQueryClientProvider>
       </body>
     </html>
   );

@@ -18,23 +18,32 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-const formSchema = z.object({
-  email: z.string().email("Adresse email invalide"),
-  password: z.string().min(1, "Mot de passe requis"),
-});
+import { formLoginSchema } from "@/lib/schema";
 
-type FormData = z.infer<typeof formSchema>;
+type Inputs = z.infer<typeof formLoginSchema>;
 
 function LoginForm() {
   const {
     register,
     handleSubmit,
+    trigger,
     formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  } = useForm<Inputs>({
+    resolver: zodResolver(formLoginSchema),
   });
 
-  const onSubmit = (data: FormData) => {
+  type FieldName = keyof Inputs;
+
+  const validateLogin = async () => {
+    const fields = ["email", "password"];
+    const output = await trigger(fields as FieldName[]);
+
+    if (!output) return;
+
+    await handleSubmit(handleFormCompletion)();
+  };
+
+  const handleFormCompletion = (data: Inputs) => {
     console.log("Formulaire soumis avec succès", data);
   };
 
@@ -47,7 +56,10 @@ function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="grid gap-4"
+          onSubmit={handleSubmit(handleFormCompletion)}
+        >
           <Button
             variant="outline"
             className="w-full"
@@ -64,8 +76,6 @@ function LoginForm() {
               id="email"
               type="email"
               placeholder="m@exemple.com"
-              autoComplete="email"
-              required
               {...register("email")}
             />
             {errors.email && (
@@ -86,7 +96,6 @@ function LoginForm() {
               }`}
               id="password"
               type="password"
-              required
               {...register("password")}
             />
             {errors.password && (
@@ -95,7 +104,11 @@ function LoginForm() {
               </p>
             )}
           </div>
-          <Button type="submit" className="w-full text-white font-semibold">
+          <Button
+            onClick={validateLogin}
+            type="submit"
+            className="w-full text-white font-semibold"
+          >
             Se connecter
           </Button>
         </form>

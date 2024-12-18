@@ -1,0 +1,31 @@
+import z from "zod";
+
+export const formSignUpSchema = z.object({
+  email: z.string().email("Adresse email invalide"),
+  password: z
+    .string()
+    .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+    .regex(
+      /[\W_]/,
+      "Le mot de passe doit contenir au moins un caractère spécial"
+    ),
+  firstName: z
+    .string()
+    .min(1, "Le prénom est requis")
+    .regex(
+      /^[a-zA-Z]+$/,
+      "Le prénom ne doit contenir que des lettres sans espace"
+    ),
+  lastName: z
+    .string()
+    .min(1, "Le nom est requis")
+    .regex(
+      /^[a-zA-Z]+$/,
+      "Le nom ne doit contenir que des lettres sans espace"
+    ),
+});
+
+export const formLoginSchema = z.object({
+  email: z.string().email("Adresse email invalide"),
+  password: z.string().min(1, "Mot de passe requis"),
+});
