@@ -8,7 +8,8 @@ export const formSignUpSchema = z.object({
     .regex(
       /[\W_]/,
       "Le mot de passe doit contenir au moins un caractère spécial"
-    ),
+    )
+    .regex(/^[^\s]*$/, "Le mot de passe ne doit pas contenir d'espace"),
   firstName: z
     .string()
     .min(1, "Le prénom est requis")
@@ -27,5 +28,8 @@ export const formSignUpSchema = z.object({
 
 export const formLoginSchema = z.object({
   email: z.string().email("Adresse email invalide"),
-  password: z.string().min(1, "Mot de passe requis"),
+  password: z
+    .string()
+    .min(1, "Mot de passe requis")
+    .regex(/^[^\s]*$/, "Le mot de passe ne doit pas contenir d'espace"),
 });

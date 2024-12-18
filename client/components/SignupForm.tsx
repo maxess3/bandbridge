@@ -49,7 +49,6 @@ function SignupForm() {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     trigger,
     formState: { errors },
