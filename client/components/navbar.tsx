@@ -41,7 +41,7 @@ function Navbar() {
                 Groupes
               </Link>
               <Link
-                href={"/artist"}
+                href={"/"}
                 className={`inline-flex items-center opacity-90 ${
                   currentPath === "/artist"
                     ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
@@ -51,7 +51,7 @@ function Navbar() {
                 Artistes
               </Link>
               <Link
-                href={"/forum"}
+                href={"/"}
                 className={`inline-flex items-center opacity-90 ${
                   currentPath === "/forum"
                     ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"

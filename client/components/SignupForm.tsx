@@ -34,7 +34,7 @@ const steps = [
   },
   {
     fields: ["firstName", "lastName"],
-    title: "Finaliser l'inscription",
+    title: "S'inscrire",
     description: "Entrez votre nom et prénom pour finaliser votre inscription.",
   },
   {

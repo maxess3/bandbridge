@@ -35,16 +35,16 @@ function Footer() {
                 <h2 className="text-sm opacity-90">Rejoindre un groupe</h2>
                 <ul className="space-y-2">
                   <li>
-                    <Link href={"/signin"}>Groupes sur Paris</Link>
+                    <Link href={"/"}>Groupes sur Paris</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Groupes sur Lyon</Link>
+                    <Link href={"/"}>Groupes sur Lyon</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Groupes sur Marseille</Link>
+                    <Link href={"/"}>Groupes sur Marseille</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Groupes sur Toulouse</Link>
+                    <Link href={"/"}>Groupes sur Toulouse</Link>
                   </li>
                 </ul>
               </div>
@@ -52,16 +52,16 @@ function Footer() {
                 <h2 className="text-sm opacity-90">Touver un musicien</h2>
                 <ul className="space-y-2">
                   <li>
-                    <Link href={"/signin"}>Musiciens sur Paris</Link>
+                    <Link href={"/"}>Musiciens sur Paris</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Musiciens sur Lyon</Link>
+                    <Link href={"/"}>Musiciens sur Lyon</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Musiciens sur Marseille</Link>
+                    <Link href={"/"}>Musiciens sur Marseille</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Musiciens sur Toulouse</Link>
+                    <Link href={"/"}>Musiciens sur Toulouse</Link>
                   </li>
                 </ul>
               </div>
@@ -69,13 +69,13 @@ function Footer() {
                 <h2 className="text-sm opacity-80">Entreprise</h2>
                 <ul className="space-y-2">
                   <li>
-                    <Link href={"/signin"}>Blog</Link>
+                    <Link href={"/"}>Blog</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Carrière</Link>
+                    <Link href={"/"}>Carrière</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Tarif</Link>
+                    <Link href={"/"}>Tarif</Link>
                   </li>
                 </ul>
               </div>
@@ -83,13 +83,13 @@ function Footer() {
                 <h2 className="text-sm opacity-90">Légal</h2>
                 <ul className="space-y-2">
                   <li>
-                    <Link href={"/signin"}>Politique de confidentialité</Link>
+                    <Link href={"/"}>Politique de confidentialité</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Mentions légales</Link>
+                    <Link href={"/"}>Mentions légales</Link>
                   </li>
                   <li>
-                    <Link href={"/signin"}>Contact</Link>
+                    <Link href={"/"}>Contact</Link>
                   </li>
                 </ul>
               </div>
