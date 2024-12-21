@@ -53,18 +53,17 @@ export const login = async (req: Request, res: Response) => {
   const refreshToken = jwt.sign(
     { userId: user.id },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" }
+    { expiresIn: "15s" }
   );
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: false,
-    path: "/",
+    secure: true,
     // 7 days
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
-  return res.status(200).json({ accessToken });
+  return res.status(200).json({ token: accessToken });
 };
 
 export const refresh = (req: Request, res: Response) => {
@@ -80,7 +79,12 @@ export const refresh = (req: Request, res: Response) => {
     (err: Error | null, user: any) => {
       if (err) return res.sendStatus(403);
       const accessToken = generateAccessToken(user);
-      return res.status(200).json({ accessToken: accessToken });
+      return res.status(200).json({ token: accessToken });
     }
   );
+};
+
+export const logout = (req: Request, res: Response) => {
+  res.clearCookie("refreshToken");
+  return res.sendStatus(200);
 };
