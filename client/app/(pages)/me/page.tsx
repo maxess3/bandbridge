@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 import { HiOutlineLocationMarker } from "react-icons/hi";

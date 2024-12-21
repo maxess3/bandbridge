@@ -1,6 +1,10 @@
 "use client";
 
+import apiClient from "@/lib/apiClient";
+
 import Link from "next/link";
+
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +27,8 @@ import { formLoginSchema } from "@/lib/schema";
 type Inputs = z.infer<typeof formLoginSchema>;
 
 function LoginForm() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -43,8 +49,16 @@ function LoginForm() {
     await handleSubmit(handleFormCompletion)();
   };
 
-  const handleFormCompletion = (data: Inputs) => {
+  const handleFormCompletion = async (data: Inputs) => {
     console.log("Formulaire soumis avec succès", data);
+    try {
+      await apiClient.post("/auth/login", data).then((res) => {
+        localStorage.setItem("token", res.data.token);
+      });
+      router.push("/me");
+    } catch (err) {
+      console.error("Login failed", err);
+    }
   };
 
   return (
