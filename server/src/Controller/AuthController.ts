@@ -48,12 +48,13 @@ export const login = async (req: Request, res: Response) => {
     return res.status(400).json({ message: "Incorrect password." });
   }
 
-  const accessToken = generateAccessToken(user);
+  const userId = user.id;
+  const accessToken = generateAccessToken(userId);
 
   const refreshToken = jwt.sign(
     { userId: user.id },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "15s" }
+    { expiresIn: "7d" }
   );
 
   res.cookie("refreshToken", refreshToken, {
@@ -78,7 +79,8 @@ export const refresh = (req: Request, res: Response) => {
     process.env.REFRESH_TOKEN_SECRET,
     (err: Error | null, user: any) => {
       if (err) return res.sendStatus(403);
-      const accessToken = generateAccessToken(user);
+      const userId = user.userId;
+      const accessToken = generateAccessToken(userId);
       return res.status(200).json({ token: accessToken });
     }
   );

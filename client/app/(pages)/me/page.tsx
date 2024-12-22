@@ -9,6 +9,8 @@ import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 import { Button } from "@/components/ui/button";
 
+import apiClient from "@/lib/apiClient";
+
 export default function Me() {
   return (
     <div>
@@ -57,7 +59,14 @@ export default function Me() {
           </div>
         </div>
         <div className="mt-12">
-          <Button variant={"outline"}>Se déconnecter</Button>
+          <Button
+            onClick={() =>
+              apiClient.get("/user/me/").then((res) => console.log(res.data))
+            }
+            variant={"outline"}
+          >
+            Se déconnecter
+          </Button>
         </div>
       </div>
     </div>
