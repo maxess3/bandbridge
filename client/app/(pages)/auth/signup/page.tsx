@@ -1,6 +1,8 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/lib/apiClient";
+import { AxiosError } from "axios";
 
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -25,8 +27,6 @@ import { Label } from "@/components/ui/label";
 
 import { FcGoogle } from "react-icons/fc";
 
-import { AxiosError } from "axios";
-
 type Inputs = z.infer<typeof formSignUpSchema>;
 
 const MAX_STEPS = 2;
@@ -50,12 +50,33 @@ const steps = [
 ];
 
 export default function Signup() {
+	const router = useRouter();
+	const mutation = useMutation({
+		mutationFn: async (data: Inputs) => {
+			return await apiClient.post("/auth/signup", data);
+		},
+		onError: (err: unknown) => {
+			setHasError((prevError) => ({
+				...prevError,
+				status: true,
+				message:
+					err instanceof AxiosError
+						? err.response?.data.message
+						: "Erreur interne",
+			}));
+		},
+		onSuccess: () => {
+			reset();
+		},
+	});
+
 	const [hasError, setHasError] = useState({
 		status: false,
 		message: "",
 	});
-	const router = useRouter();
+
 	const [currentStep, setCurrentStep] = useState(0);
+
 	const {
 		register,
 		handleSubmit,
@@ -90,19 +111,7 @@ export default function Signup() {
 
 	const handleFormCompletion: SubmitHandler<Inputs> = async (data) => {
 		console.log(data);
-		try {
-			await apiClient.post("/auth/signup", data);
-		} catch (err) {
-			setHasError((prevError) => ({
-				...prevError,
-				status: true,
-				message:
-					err instanceof AxiosError
-						? err.response?.data.message
-						: "Erreur interne",
-			}));
-		}
-		reset();
+		mutation.mutate(data);
 	};
 
 	return (

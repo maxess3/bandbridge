@@ -1,12 +1,19 @@
 "use client";
-
+import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/lib/apiClient";
+import { AxiosError } from "axios";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { formLoginSchema } from "@/lib/schema";
+
+type Inputs = z.infer<typeof formLoginSchema>;
 
 import Link from "next/link";
-
 import { useRouter } from "next/navigation";
+
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -22,22 +29,30 @@ import { Label } from "@/components/ui/label";
 import { FcGoogle } from "react-icons/fc";
 import { MdError } from "react-icons/md";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-
-import { formLoginSchema } from "@/lib/schema";
-
-import { AxiosError } from "axios";
-
-type Inputs = z.infer<typeof formLoginSchema>;
-
 export default function Login() {
+	const router = useRouter();
+	const mutation = useMutation({
+		mutationFn: async (data: Inputs) => {
+			const res = await apiClient.post("/auth/login", data);
+			localStorage.setItem("token", res.data.token);
+			router.push("/me");
+		},
+		onError: (err: unknown) => {
+			setHasError((prevError) => ({
+				...prevError,
+				status: true,
+				message:
+					err instanceof AxiosError
+						? err.response?.data.message
+						: "Erreur interne",
+			}));
+		},
+	});
+
 	const [hasError, setHasError] = useState({
 		status: false,
 		message: "",
 	});
-	const router = useRouter();
 
 	const {
 		register,
@@ -63,22 +78,7 @@ export default function Login() {
 
 	const handleFormCompletion = async (data: Inputs) => {
 		console.log("Formulaire soumis avec succès", data);
-
-		try {
-			await apiClient.post("/auth/login", data).then((res) => {
-				localStorage.setItem("token", res.data.token);
-			});
-			router.push("/me");
-		} catch (err) {
-			setHasError((prevError) => ({
-				...prevError,
-				status: true,
-				message:
-					err instanceof AxiosError
-						? err.response?.data.message
-						: "Erreur interne",
-			}));
-		}
+		mutation.mutate(data);
 	};
 
 	return (

@@ -37,3 +37,14 @@ export const formLoginSchema = z.object({
 export const formForgotPwdSchema = z.object({
 	email: z.string().email("Adresse email invalide"),
 });
+
+export const formResetPwdSchema = z.object({
+	password: z
+		.string()
+		.min(8, "Le mot de passe doit contenir au moins 8 caractères")
+		.regex(
+			/[\W_]/,
+			"Le mot de passe doit contenir au moins un caractère spécial"
+		)
+		.regex(/^[^\s]*$/, "Le mot de passe ne doit pas contenir d'espace"),
+});
