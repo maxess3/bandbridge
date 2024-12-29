@@ -8,11 +8,12 @@ import {
 	formSignUpSchema,
 	formLoginSchema,
 	formForgotPwdSchema,
+	formResetPwdSchema,
 } from "../lib/schema";
 import { ZodError } from "zod";
 
 export const signup = async (req: Request, res: Response) => {
-	// Validate signup inputs with zod
+	// Validate schema with zod
 	try {
 		const validatedData = formSignUpSchema.parse(req.body);
 	} catch (error) {
@@ -50,7 +51,7 @@ export const signup = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-	// Validate login inputs with zod
+	// Validate schema with zod
 	try {
 		const validatedData = formLoginSchema.parse(req.body);
 	} catch (error) {
@@ -121,7 +122,7 @@ export const logout = (req: Request, res: Response) => {
 };
 
 export const forgotPassword = async (req: Request, res: Response) => {
-	// Validate email input with zod
+	// Validate schema with zod
 	try {
 		const validatedData = formForgotPwdSchema.parse(req.body);
 	} catch (error) {
@@ -140,10 +141,11 @@ export const forgotPassword = async (req: Request, res: Response) => {
 		},
 	});
 
+	// Send no errors (for security), but don't send email.
 	if (!user) {
 		return res
-			.status(400)
-			.json({ message: "Aucun compte associé à cette adresse email." });
+			.status(200)
+			.json({ message: "Email de réinitialisation envoyé." });
 	}
 
 	const forgotToken = jwt.sign(
@@ -154,14 +156,16 @@ export const forgotPassword = async (req: Request, res: Response) => {
 		}
 	);
 
-	const link = `http://localhost:3000/auth/reset?token=${forgotToken}`;
+	const link = `${process.env.CLIENT_URL}/auth/reset/${user.id}/${forgotToken}`;
 
 	// Nodemailer config
 	const transporter = nodemailer.createTransport({
-		service: "gmail",
+		host: "smtp.hostinger.com",
+		port: 465,
+		secure: true,
 		auth: {
 			user: process.env.EMAIL_USER,
-			pass: process.env.EMAIL_PASS,
+			pass: process.env.EMAIL_PWD,
 		},
 	});
 
@@ -169,7 +173,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 		from: process.env.EMAIL_USER,
 		to: email,
 		subject: "Réinitialisation du mot de passe",
-		text: `Cliquez sur ce lien pour réinitialiser votre mot de passe: ${link}`,
+		text: `Bonjour, \n\nCliquez sur le lien ci-dessous pour réinitialiser votre mot de passe: \n${link}. \n\nLe lien est valable pendant 15 minutes. \n\nSi vous n'êtes pas à l'origine de cette demande, merci de l'ignorer.`,
 	};
 
 	transporter.sendMail(mailOptions, (error, info) => {
@@ -184,4 +188,44 @@ export const forgotPassword = async (req: Request, res: Response) => {
 	});
 };
 
-export const resetPassword = (req: Request, res: Response) => {};
+export const resetPassword = async (req: Request, res: Response) => {
+	const { id, token, password } = req.body;
+
+	// Validate schema with zod
+	try {
+		const validatedData = formResetPwdSchema.parse(req.body);
+	} catch (error) {
+		if (error instanceof ZodError) {
+			return res.status(400).json({ errors: error.errors });
+		} else {
+			return res.status(500).json({ message: "Erreur interne du serveur" });
+		}
+	}
+
+	jwt.verify(
+		token,
+		process.env.FORGOTPWD_TOKEN_SECRET,
+		async (err: Error | null) => {
+			// Invalid token
+			if (err) return res.sendStatus(403);
+
+			const user = await prisma.user.findFirst({
+				where: {
+					id,
+				},
+			});
+
+			if (!user) return res.sendStatus(403);
+
+			// Update the password
+			await prisma.user.update({
+				where: { id },
+				data: { password: hashSync(password, 10) },
+			});
+
+			return res
+				.status(200)
+				.json({ message: "Mot de passe réinitialisé avec succès." });
+		}
+	);
+};

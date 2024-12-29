@@ -26,7 +26,7 @@ router.get("/logout", (req: Request, res: Response) => {
 	logout(req, res);
 });
 
-router.get("/forgot-password", (req: Request, res: Response) => {
+router.post("/forgot-password", (req: Request, res: Response) => {
 	forgotPassword(req, res);
 });
 
