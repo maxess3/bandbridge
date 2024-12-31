@@ -42,9 +42,7 @@ export default function Login() {
 				...prevError,
 				status: true,
 				message:
-					err instanceof AxiosError
-						? err.response?.data.message
-						: "Erreur interne",
+					err instanceof AxiosError ? err.response?.data?.message : "Erreur",
 			}));
 		},
 	});
@@ -77,7 +75,6 @@ export default function Login() {
 	};
 
 	const handleFormCompletion = async (data: Inputs) => {
-		console.log("Formulaire soumis avec succès", data);
 		mutation.mutate(data);
 	};
 
@@ -101,7 +98,7 @@ export default function Login() {
 							<Label htmlFor="email">Email</Label>
 							<Input
 								className={`${
-									(errors.email || hasError.status) && "border-[#ff4444]"
+									(errors.email || mutation.isError) && "border-[#ff4444]"
 								}`}
 								id="email"
 								type="email"
@@ -131,7 +128,7 @@ export default function Login() {
 							</div>
 							<Input
 								className={`${
-									(errors.password || hasError.status) &&
+									(errors.password || mutation.isError) &&
 									"border-[#ff4444] focus-visible:ring-transparent"
 								}`}
 								id="password"
@@ -150,7 +147,7 @@ export default function Login() {
 									{errors.password.message}
 								</p>
 							)}
-							{hasError.status && (
+							{hasError.status && hasError.message !== undefined && (
 								<div className="flex items-center gap-x-1.5 text-[#ff4444]">
 									<MdError className="text-[#ff4444]" />
 									<span className="text-sm">{hasError.message}</span>

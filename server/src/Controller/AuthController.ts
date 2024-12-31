@@ -35,7 +35,7 @@ export const signup = async (req: Request, res: Response) => {
 	if (findUser) {
 		return res
 			.status(400)
-			.json({ message: "L'adresse email renseignée est déjà utilisée" });
+			.json({ message: "L'adresse email est déjà utilisée" });
 	}
 
 	const newUser = await prisma.user.create({
@@ -90,6 +90,7 @@ export const login = async (req: Request, res: Response) => {
 	res.cookie("refreshToken", refreshToken, {
 		httpOnly: true,
 		secure: true,
+		sameSite: "strict",
 		// 7 days
 		maxAge: 7 * 24 * 60 * 60 * 1000,
 	});

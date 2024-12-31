@@ -60,9 +60,7 @@ export default function Signup() {
 				...prevError,
 				status: true,
 				message:
-					err instanceof AxiosError
-						? err.response?.data.message
-						: "Erreur interne",
+					err instanceof AxiosError ? err.response?.data?.message : "Erreur",
 			}));
 		},
 		onSuccess: () => {
