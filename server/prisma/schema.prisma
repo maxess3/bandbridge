@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,32 +7,33 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  USER
-  ADMIN
-}
-
 model User {
-  id        String   @id @default(uuid())
-  firstName String   @db.VarChar(60)
-  lastName  String   @db.VarChar(60)
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  role      Role     @default(USER)
-  Post      Post[]
+  id                String    @id @default(uuid())
+  email             String    @unique
+  password          String
+  createdAt         DateTime  @default(now())
+  role              Role      @default(USER)
+  firstName         String    @db.VarChar(60)
+  lastName          String    @db.VarChar(60)
+  passwordChangedAt DateTime?
+  Post              Post[]
 }
 
 model Post {
   id         String   @id @default(uuid())
   createdAt  DateTime @default(now())
-  country    String   @db.VarChar(60)
   department String   @db.VarChar(60)
   city       String   @db.VarChar(60)
   title      String
   content    String
-  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  country    String   @db.VarChar(60)
   user_id    String
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, title])
+}
+
+enum Role {
+  USER
+  ADMIN
 }
