@@ -2,7 +2,9 @@ import prisma from "../db/db.config";
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { generateAccessToken, formatName } from "../utils/utils";
+import { OAuth2Client } from "google-auth-library";
+import { formatName } from "../utils/utils";
+import { generateAccessToken, generateRefreshToken } from "../utils/token";
 import nodemailer from "nodemailer";
 import {
   formSignUpSchema,
@@ -11,6 +13,13 @@ import {
   formResetPwdSchema,
 } from "../lib/schema";
 import { ZodError } from "zod";
+
+// Google auth client
+const client = new OAuth2Client(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.REDIRECT_URI
+);
 
 export const signup = async (req: Request, res: Response) => {
   // Validate user inputs with zod
@@ -24,7 +33,7 @@ export const signup = async (req: Request, res: Response) => {
     }
   }
 
-  const { email, password, firstName, lastName } = req.body;
+  const { email, password, firstName } = req.body;
 
   const findUser = await prisma.user.findFirst({
     where: {
@@ -39,14 +48,13 @@ export const signup = async (req: Request, res: Response) => {
   }
 
   const formatFirstName = formatName(firstName);
-  const formatLastName = formatName(lastName);
 
   const newUser = await prisma.user.create({
     data: {
       email,
       password: hashSync(password, 10),
       firstName: formatFirstName,
-      lastName: formatLastName,
+      provider: "MANUAL",
     },
   });
 
@@ -83,22 +91,56 @@ export const login = async (req: Request, res: Response) => {
 
   const userId = user.id;
   const accessToken = generateAccessToken(userId);
-
-  const refreshToken = jwt.sign(
-    { userId: user.id },
-    process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" }
-  );
+  const refreshToken = generateRefreshToken(userId);
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    secure: true,
+    // USE SECURE: TRUE IN PROD
+    secure: false,
     sameSite: "strict",
     // 7 days
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
   return res.status(200).json({ token: accessToken });
+};
+
+export const google = async (req: Request, res: Response) => {
+  try {
+    const { code } = req.query;
+    if (typeof code === "string") {
+      const { tokens } = await client.getToken(code);
+      const { id_token } = tokens;
+
+      // Check token and extract user data
+      const ticket = await client.verifyIdToken({
+        idToken: id_token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+
+      const payload = ticket.getPayload();
+      const { sub: googleId, email, given_name } = payload;
+
+      const formatFirstName = formatName(given_name);
+
+      let findUser = await prisma.user.findFirst({ where: { email } });
+
+      if (!findUser) {
+        const newUser = await prisma.user.create({
+          data: {
+            email,
+            firstName: formatFirstName,
+            provider: "GOOGLE",
+          },
+        });
+      }
+    }
+
+    return res.redirect(process.env.CLIENT_URL);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 export const refresh = (req: Request, res: Response) => {
@@ -142,6 +184,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
   const user = await prisma.user.findFirst({
     where: {
       email,
+      provider: "MANUAL",
     },
   });
 
@@ -156,7 +199,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     { id: user.id },
     process.env.FORGOTPWD_TOKEN_SECRET,
     {
-      expiresIn: "10m",
+      expiresIn: "15m",
     }
   );
 
@@ -177,7 +220,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Réinitialisation du mot de passe",
-    text: `Bonjour, \n\nCliquez sur le lien ci-dessous pour réinitialiser votre mot de passe: \n${link}. \n\nLe lien est valable pendant 10 minutes. \n\nSi vous n'êtes pas à l'origine de cette demande, merci de l'ignorer.`,
+    text: `Bonjour, \n\nCliquez sur le lien ci-dessous pour réinitialiser votre mot de passe: \n${link}. \n\nLe lien est valable pendant 15 minutes. \n\nSi vous n'êtes pas à l'origine de cette demande, merci de l'ignorer.`,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -226,7 +269,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         where: { id },
         data: {
           password: hashSync(password, 10),
-          passwordChangedAt: new Date(),
+          password_changed_at: new Date(),
         },
       });
 
@@ -257,12 +300,12 @@ export const validateResetToken = async (req: Request, res: Response) => {
       }
 
       // Check if password has changed after token creation
-      if (user.passwordChangedAt) {
+      if (user.password_changed_at) {
         const passwordChangedTimestamp = Math.floor(
-          user.passwordChangedAt.getTime() / 1000
+          user.password_changed_at.getTime() / 1000
         );
         if (decoded.iat < passwordChangedTimestamp) {
-          console.log("probleme");
+          console.log("Token invalid due to password change");
           throw new Error("Token invalid due to password change");
         }
       }

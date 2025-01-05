@@ -8,20 +8,21 @@ datasource db {
 }
 
 model User {
-  id                String    @id @default(uuid())
-  email             String    @unique
-  password          String
-  createdAt         DateTime  @default(now())
-  role              Role      @default(USER)
-  firstName         String    @db.VarChar(60)
-  lastName          String    @db.VarChar(60)
-  passwordChangedAt DateTime?
-  Post              Post[]
+  id                  String    @id @default(uuid())
+  email               String    @unique
+  provider            Provider  @default(MANUAL)
+  password            String?
+  created_at          DateTime  @default(now())
+  role                Role      @default(USER)
+  username            String?   @unique
+  firstName           String    @db.VarChar(60)
+  password_changed_at DateTime?
+  Post                Post[]
 }
 
 model Post {
   id         String   @id @default(uuid())
-  createdAt  DateTime @default(now())
+  created_at DateTime @default(now())
   department String   @db.VarChar(60)
   city       String   @db.VarChar(60)
   title      String
@@ -36,4 +37,9 @@ model Post {
 enum Role {
   USER
   ADMIN
+}
+
+enum Provider {
+  MANUAL
+  GOOGLE
 }

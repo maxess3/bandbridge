@@ -4,6 +4,7 @@ import { Router, Request, Response } from "express";
 import {
   signup,
   login,
+  google,
   refresh,
   logout,
   forgotPassword,
@@ -35,6 +36,10 @@ router.post("/signup", (req: Request, res: Response) => {
 
 router.post("/login", LoginLimiter, (req: Request, res: Response) => {
   login(req, res);
+});
+
+router.get("/google/callback", (req: Request, res: Response) => {
+  google(req, res);
 });
 
 router.get("/refresh", (req: Request, res: Response) => {

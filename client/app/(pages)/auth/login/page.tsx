@@ -1,6 +1,7 @@
 "use client";
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/lib/apiClient";
+import { GOOGLE_CLIENT_ID, REDIRECT_URI } from "@/lib/constants";
 import { AxiosError } from "axios";
 
 import { useForm } from "react-hook-form";
@@ -31,11 +32,19 @@ import { MdError } from "react-icons/md";
 
 export default function Login() {
   const router = useRouter();
+
+  if (!router) {
+    return null;
+  }
+
   const mutation = useMutation({
     mutationFn: async (data: Inputs) => {
       const res = await apiClient.post("/auth/login", data);
       localStorage.setItem("token", res.data.token);
       router.push("/me");
+    },
+    onSuccess: () => {
+      console.log("success");
     },
     onError: (err: unknown) => {
       setHasError((prevError) => ({
@@ -65,6 +74,11 @@ export default function Login() {
     mutation.mutate(data);
   };
 
+  const handleGoogleLogin = () => {
+    const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=profile email`;
+    window.location.href = authUrl;
+  };
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
@@ -75,7 +89,12 @@ export default function Login() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <Button size="lg" variant="outline" className="w-full font-semibold">
+          <Button
+            onClick={handleGoogleLogin}
+            size="lg"
+            variant="outline"
+            className="w-full font-semibold"
+          >
             <FcGoogle style={{ width: "1.4em", height: "1.4em" }} />
             Se connecter avec Google
           </Button>

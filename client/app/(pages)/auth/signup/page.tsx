@@ -38,7 +38,7 @@ const steps = [
       "Entrez votre email et votre mot de passe pour vous connecter.",
   },
   {
-    fields: ["firstName", "lastName"],
+    fields: ["firstName"],
     title: "S'inscrire",
     description: "Entrez votre nom et prénom pour finaliser votre inscription.",
   },
@@ -185,21 +185,6 @@ export default function Signup() {
                   {errors.firstName && (
                     <p className="text-[#ff4444] text-sm">
                       {errors.firstName.message}
-                    </p>
-                  )}
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="lastName">Nom</Label>
-                  <Input
-                    className={`${errors.lastName && "border-[#ff4444]"}`}
-                    id="lastName"
-                    type="text"
-                    placeholder="Lennon"
-                    {...register("lastName")}
-                  />
-                  {errors.lastName && (
-                    <p className="text-[#ff4444] text-sm">
-                      {errors.lastName.message}
                     </p>
                   )}
                 </div>

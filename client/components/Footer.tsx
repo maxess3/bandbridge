@@ -16,7 +16,7 @@ function Footer() {
               <div className="flex flex-col gap-y-4">
                 <Image
                   src="/bandbridge.png"
-                  alt="bandbridge logo"
+                  alt="bandzik logo"
                   width={32}
                   height={32}
                 />
@@ -26,7 +26,7 @@ function Footer() {
                   </span>
                 </h2>
                 <p className="text-lg">
-                  <span className="font-semibold">band</span>bridge, 2025.
+                  <span className="font-semibold">bandzik</span>, 2025.
                 </p>
               </div>
             </div>
@@ -97,8 +97,8 @@ function Footer() {
           </div>
           <div className="py-4 flex justify-between items-center">
             <div>
-              © 2025 <span className="font-semibold">band</span>bridge. Tous
-              droits réservés.
+              © 2025 <span className="font-semibold">bandzik</span>. Tous droits
+              réservés.
             </div>
             <div className="flex space-x-6">
               <Button variant="outline">Signaler un bug</Button>

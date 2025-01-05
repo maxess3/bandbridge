@@ -17,13 +17,6 @@ export const formSignUpSchema = z.object({
       /^[a-zA-Z]+$/,
       "Le prénom ne doit contenir que des lettres sans espace"
     ),
-  lastName: z
-    .string()
-    .min(1, "Le nom est requis")
-    .regex(
-      /^[a-zA-Z]+$/,
-      "Le nom ne doit contenir que des lettres sans espace"
-    ),
 });
 
 export const formLoginSchema = z.object({
