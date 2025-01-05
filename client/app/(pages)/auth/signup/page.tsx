@@ -40,7 +40,7 @@ const steps = [
   {
     fields: ["firstName"],
     title: "S'inscrire",
-    description: "Entrez votre nom et prénom pour finaliser votre inscription.",
+    description: "Entrez votre prénom pour finaliser votre inscription.",
   },
   {
     fields: [],
