@@ -33,10 +33,6 @@ import { MdError } from "react-icons/md";
 export default function Login() {
   const router = useRouter();
 
-  if (!router) {
-    return null;
-  }
-
   const mutation = useMutation({
     mutationFn: async (data: Inputs) => {
       const res = await apiClient.post("/auth/login", data);
