@@ -2,8 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
 const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(" ")[1];
-
+  const token = req.cookies.token;
   try {
     if (!token) {
       // No token provided, return 401 Unauthorized

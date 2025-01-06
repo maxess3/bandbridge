@@ -93,10 +93,19 @@ export const login = async (req: Request, res: Response) => {
   const accessToken = generateAccessToken(userId);
   const refreshToken = generateRefreshToken(userId);
 
+  res.cookie("token", accessToken, {
+    httpOnly: true,
+    // USE SECURE: TRUE IN PROD
+    secure: process.env.ENV_MODE === "DEV" ? false : true,
+    sameSite: "strict",
+    // 10s
+    maxAge: 10 * 1000,
+  });
+
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     // USE SECURE: TRUE IN PROD
-    secure: false,
+    secure: process.env.ENV_MODE === "DEV" ? false : true,
     sameSite: "strict",
     // 7 days
     maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -163,6 +172,7 @@ export const refresh = (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
+  res.clearCookie("token");
   res.clearCookie("refreshToken");
   return res.sendStatus(200);
 };
