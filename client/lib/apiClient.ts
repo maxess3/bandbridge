@@ -17,7 +17,7 @@ const handleLogout = async () => {
   } catch (logoutError) {
     console.error("Logout failed:", logoutError);
   } finally {
-    window.location.href = "/login";
+    window.location.href = "/auth/login";
   }
 };
 

@@ -35,8 +35,7 @@ export default function Login() {
 
   const mutation = useMutation({
     mutationFn: async (data: Inputs) => {
-      const res = await apiClient.post("/auth/login", data);
-      localStorage.setItem("token", res.data.token);
+      await apiClient.post("/auth/login", data);
       router.push("/me");
     },
     onSuccess: () => {

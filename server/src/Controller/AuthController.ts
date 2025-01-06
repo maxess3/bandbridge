@@ -95,23 +95,19 @@ export const login = async (req: Request, res: Response) => {
 
   res.cookie("token", accessToken, {
     httpOnly: true,
-    // USE SECURE: TRUE IN PROD
     secure: process.env.ENV_MODE === "DEV" ? false : true,
-    sameSite: "strict",
-    // 10s
-    maxAge: 10 * 1000,
+    sameSite: "lax",
+    maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 year
   });
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    // USE SECURE: TRUE IN PROD
     secure: process.env.ENV_MODE === "DEV" ? false : true,
-    sameSite: "strict",
-    // 7 days
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    sameSite: "lax",
+    maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 year
   });
 
-  return res.status(200).json({ token: accessToken });
+  return res.sendStatus(200);
 };
 
 export const google = async (req: Request, res: Response) => {
@@ -166,7 +162,13 @@ export const refresh = (req: Request, res: Response) => {
       if (err) return res.sendStatus(403);
       const userId = user.userId;
       const accessToken = generateAccessToken(userId);
-      return res.status(200).json({ token: accessToken });
+      res.cookie("token", accessToken, {
+        httpOnly: true,
+        secure: process.env.ENV_MODE === "DEV" ? false : true,
+        sameSite: "lax",
+        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 year
+      });
+      return res.sendStatus(200);
     }
   );
 };

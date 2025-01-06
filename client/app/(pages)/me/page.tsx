@@ -39,7 +39,12 @@ export default function Me() {
         </div>
       </div>
       <div className="flex justify-end pr-6 mt-2">
-        <button className="rounded-full w-12 h-12 hover:bg-slate-800 flex items-center justify-center cursor-pointer">
+        <button
+          onClick={() =>
+            apiClient.get("/user/").then((res) => console.log(res))
+          }
+          className="rounded-full w-12 h-12 hover:bg-slate-800 flex items-center justify-center cursor-pointer"
+        >
           <SlPencil className="text-xl" />
         </button>
       </div>

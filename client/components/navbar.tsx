@@ -28,7 +28,7 @@ function Navbar() {
               href={"/"}
               className="font-host-grotesk text-2xl font-semibold"
             >
-              bandzik
+              nom du logo
             </Link>
           </div>
           <div>
