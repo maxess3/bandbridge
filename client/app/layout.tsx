@@ -1,4 +1,5 @@
 import { Providers } from "./providers";
+import { AuthProvider } from "@/context/AuthContext";
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import { DM_Sans } from "next/font/google";
@@ -34,15 +35,17 @@ export default function RootLayout({
         className={`${DM.className} antialiased min-h-screen flex flex-col`}
       >
         <ReactQueryClientProvider>
-          <Providers>
-            <Toaster position="top-right" />
-            <NextTopLoader color="#0a81ff" showSpinner={false} height={3} />
-            <Navbar />
-            <div className="px-10">
-              <main className="container mx-auto flex-grow">{children}</main>
-            </div>
-            <Footer />
-          </Providers>
+          <AuthProvider>
+            <Providers>
+              <Toaster position="top-right" />
+              <NextTopLoader color="#0a81ff" showSpinner={false} height={3} />
+              <Navbar />
+              <div className="px-10">
+                <main className="container mx-auto flex-grow">{children}</main>
+              </div>
+              <Footer />
+            </Providers>
+          </AuthProvider>
         </ReactQueryClientProvider>
       </body>
     </html>

@@ -140,7 +140,7 @@ export const google = async (req: Request, res: Response) => {
   }
 };
 
-export const verify = (req: Request, res: Response) => {
+export const status = (req: Request, res: Response) => {
   try {
     const token = req.cookies.token;
 
@@ -150,7 +150,7 @@ export const verify = (req: Request, res: Response) => {
 
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    return res.status(200).json({ user: decoded });
+    return res.status(200).json({ isAuthenticated: true, user: decoded });
   } catch (error) {
     return res.status(403).json({ message: "Invalid or expired token" });
   }

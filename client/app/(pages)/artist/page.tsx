@@ -1,14 +1,21 @@
+"use client";
+
+import { useAuth } from "@/context/AuthContext";
+
 import { FiPlusCircle } from "react-icons/fi";
 
 import { Button } from "@/components/ui/button";
 import BandTableContainer from "@/components/BandTableContainer";
 
-export default function Ads() {
+export default function Artist() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <div className="flex flex-col justify-center mt-16 pb-14">
       <div className="flex justify-between items-center">
         <div className="space-y-2">
           <h2 className="text-3xl font-semibold">
+            {isAuthenticated ? "connecté" : "non connecté"}
             De nouveaux groupes vous attendent à Paris.
           </h2>
           <p className="opacity-90">

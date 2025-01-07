@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 
-import { useRouter } from "next/navigation";
-
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { PiIdentificationCardLight } from "react-icons/pi";
 import { SlPencil } from "react-icons/sl";
@@ -14,8 +12,6 @@ import { Button } from "@/components/ui/button";
 import apiClient from "@/lib/apiClient";
 
 export default function Me() {
-  const router = useRouter();
-
   return (
     <div>
       <div className="bg-slate-700 w-full h-48 relative">
@@ -71,8 +67,7 @@ export default function Me() {
           <Button
             onClick={() =>
               apiClient.get("/auth/logout").then(() => {
-                localStorage.removeItem("token");
-                router.push("/");
+                window.location.reload();
               })
             }
             variant={"outline"}

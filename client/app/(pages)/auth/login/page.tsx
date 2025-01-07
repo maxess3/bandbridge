@@ -1,4 +1,5 @@
 "use client";
+
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/lib/apiClient";
 import { GOOGLE_CLIENT_ID, REDIRECT_URI } from "@/lib/constants";
@@ -12,7 +13,6 @@ import { formLoginSchema } from "@/lib/schema";
 type Inputs = z.infer<typeof formLoginSchema>;
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
@@ -31,12 +31,10 @@ import { FcGoogle } from "react-icons/fc";
 import { MdError } from "react-icons/md";
 
 export default function Login() {
-  const router = useRouter();
-
   const mutation = useMutation({
     mutationFn: async (data: Inputs) => {
       await apiClient.post("/auth/login", data);
-      router.push("/me");
+      window.location.href = "/me";
     },
     onSuccess: () => {
       console.log("success");

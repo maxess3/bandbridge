@@ -5,7 +5,7 @@ import {
   signup,
   login,
   google,
-  verify,
+  status,
   refresh,
   logout,
   forgotPassword,
@@ -43,8 +43,8 @@ router.get("/google/callback", (req: Request, res: Response) => {
   google(req, res);
 });
 
-router.get("/verify", (req: Request, res: Response) => {
-  verify(req, res);
+router.get("/status", (req: Request, res: Response) => {
+  status(req, res);
 });
 
 router.get("/refresh", (req: Request, res: Response) => {
