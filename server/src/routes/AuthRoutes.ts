@@ -5,6 +5,7 @@ import {
   signup,
   login,
   google,
+  verify,
   refresh,
   logout,
   forgotPassword,
@@ -40,6 +41,10 @@ router.post("/login", LoginLimiter, (req: Request, res: Response) => {
 
 router.get("/google/callback", (req: Request, res: Response) => {
   google(req, res);
+});
+
+router.get("/verify", (req: Request, res: Response) => {
+  verify(req, res);
 });
 
 router.get("/refresh", (req: Request, res: Response) => {

@@ -39,7 +39,7 @@ export default async function Reset({
   const isValid = await validateToken();
 
   if (!isValid) {
-    redirect("/auth/login");
+    redirect("/");
   }
 
   return <ResetPasswordForm userId={id} token={token} />;

@@ -4,7 +4,11 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
 import { formatName } from "../utils/utils";
-import { generateAccessToken, generateRefreshToken } from "../utils/token";
+import {
+  generateAccessToken,
+  sendAuthCookies,
+  clearAuthCookies,
+} from "../utils/token";
 import nodemailer from "nodemailer";
 import {
   formSignUpSchema,
@@ -13,13 +17,6 @@ import {
   formResetPwdSchema,
 } from "../lib/schema";
 import { ZodError } from "zod";
-
-// Google auth client
-const client = new OAuth2Client(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.REDIRECT_URI
-);
 
 export const signup = async (req: Request, res: Response) => {
   // Validate user inputs with zod
@@ -90,28 +87,19 @@ export const login = async (req: Request, res: Response) => {
   }
 
   const userId = user.id;
-  const accessToken = generateAccessToken(userId);
-  const refreshToken = generateRefreshToken(userId);
-
-  res.cookie("token", accessToken, {
-    httpOnly: true,
-    secure: process.env.ENV_MODE === "DEV" ? false : true,
-    sameSite: "lax",
-    maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 year
-  });
-
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: process.env.ENV_MODE === "DEV" ? false : true,
-    sameSite: "lax",
-    maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 year
-  });
+  sendAuthCookies(res, userId);
 
   return res.sendStatus(200);
 };
 
 export const google = async (req: Request, res: Response) => {
   try {
+    // Google auth client
+    const client = new OAuth2Client(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
+      process.env.REDIRECT_URI
+    );
     const { code } = req.query;
     if (typeof code === "string") {
       const { tokens } = await client.getToken(code);
@@ -138,7 +126,11 @@ export const google = async (req: Request, res: Response) => {
             provider: "GOOGLE",
           },
         });
+        findUser = newUser;
       }
+
+      const userId = findUser.id;
+      sendAuthCookies(res, userId);
     }
 
     return res.redirect(process.env.CLIENT_URL);
@@ -148,11 +140,27 @@ export const google = async (req: Request, res: Response) => {
   }
 };
 
+export const verify = (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    return res.status(200).json({ user: decoded });
+  } catch (error) {
+    return res.status(403).json({ message: "Invalid or expired token" });
+  }
+};
+
 export const refresh = (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
 
   if (!refreshToken) {
-    return res.sendStatus(403);
+    return res.status(401).json({ message: "No refresh token" });
   }
 
   jwt.verify(
@@ -174,8 +182,7 @@ export const refresh = (req: Request, res: Response) => {
 };
 
 export const logout = (req: Request, res: Response) => {
-  res.clearCookie("token");
-  res.clearCookie("refreshToken");
+  clearAuthCookies(res);
   return res.sendStatus(200);
 };
 

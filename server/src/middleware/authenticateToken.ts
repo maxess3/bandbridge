@@ -5,16 +5,14 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies.token;
   try {
     if (!token) {
-      // No token provided, return 401 Unauthorized
-      res.sendStatus(401);
+      res.sendStatus(401); // No token provided
     } else {
       const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
       (req as any).user = decodedToken;
       next();
     }
   } catch (error) {
-    // Token provided but invalid or expired, return 403 Forbidden
-    res.sendStatus(403);
+    res.sendStatus(403); // Token provided but invalid or expired
   }
 };
 
