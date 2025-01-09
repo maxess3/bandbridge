@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import Logo from "@/public/bandbridge.png";
 import Link from "next/link";
 
 import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
@@ -14,19 +14,14 @@ function Footer() {
           <div className="flex justify-between w-full border-b pb-10">
             <div>
               <div className="flex flex-col gap-y-4">
-                <Image
-                  src="/bandbridge.png"
-                  alt="bandzik logo"
-                  width={32}
-                  height={32}
-                />
+                <Image src={Logo} alt="bandzik logo" width={32} height={32} />
                 <h2 className="text-2xl">
                   <span className="font-semibold">
                     De la chambre à la scène.
                   </span>
                 </h2>
                 <p className="text-lg">
-                  <span className="font-semibold">bandzik</span>, 2025.
+                  <span className="font-semibold">Bandwiiz</span>, 2025.
                 </p>
               </div>
             </div>
@@ -97,8 +92,8 @@ function Footer() {
           </div>
           <div className="py-4 flex justify-between items-center">
             <div>
-              © 2025 <span className="font-semibold">bandzik</span>. Tous droits
-              réservés.
+              © 2025 <span className="font-semibold">Bandwiiz</span>. Tous
+              droits réservés.
             </div>
             <div className="flex space-x-6">
               <Button variant="outline">Signaler un bug</Button>

@@ -20,7 +20,7 @@ const DM = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Bandzik",
+  title: "Bandwiiz",
   description: "Connnecting talent, creating bands",
 };
 

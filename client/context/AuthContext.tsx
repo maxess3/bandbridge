@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { User } from "@/types/auth";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import apiClient from "@/lib/apiClient";
 import { BASE_URL } from "@/lib/constants";
 
 interface AuthContextType {
@@ -30,9 +30,7 @@ export const AuthProvider = ({
   const [user, setUser] = useState<User | null>(null);
 
   const fetchAuth = async () => {
-    const response = await axios.get(`${BASE_URL}/auth/status`, {
-      withCredentials: true,
-    });
+    const response = await apiClient.get(`${BASE_URL}/auth/status`);
     return response.data;
   };
 

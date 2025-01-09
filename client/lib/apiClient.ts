@@ -16,8 +16,6 @@ const handleLogout = async () => {
     await axios.get(`${BASE_URL}/auth/logout`, { withCredentials: true });
   } catch (logoutError) {
     console.error("Logout failed:", logoutError);
-  } finally {
-    window.location.href = "/auth/login";
   }
 };
 
@@ -26,13 +24,6 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-
-    // Handle 401 Unauthorized: No token or invalid token
-    if (error.response?.status === 401) {
-      // Call logout endpoint to clear refresh token
-      await handleLogout();
-      return Promise.reject(error);
-    }
 
     // Handle 403 Forbidden: Token expired
     if (error.response?.status === 403 && !originalRequest._retry) {

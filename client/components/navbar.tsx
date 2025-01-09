@@ -1,40 +1,27 @@
 "use client";
 
-import { useAuth } from "@/context/AuthContext";
-
 import { usePathname } from "next/navigation";
 
 import Link from "next/link";
-
 import Image from "next/image";
+import Logo from "@/public/bandbridge.png";
 
-import { Button } from "./ui/button";
-
-import ThemeSwitch from "@/components/ThemeSwitch";
+import NavbarAuthActions from "@/components/NavbarAuthActions";
 
 function Navbar() {
   const currentPath = usePathname();
-
-  const { isAuthenticated, isLoading } = useAuth();
-
-  if (isLoading) return <div>loading...</div>;
 
   return (
     <div>
       <nav className="font-host-grotesk flex items-center justify-center w-full py-3 border-b px-10 h-[62px]">
         <div className="container flex justify-between items-center">
           <div className="xl:w-[280px] lg:w-auto flex items-center gap-x-2.5">
-            <Image
-              src="/bandbridge.png"
-              alt="bandbridge logo"
-              width={32}
-              height={32}
-            />
+            <Image src={Logo} alt="bandbridge logo" width={32} height={32} />
             <Link
               href={"/"}
               className="font-host-grotesk text-2xl font-semibold"
             >
-              nom du logo
+              Bandwiiz
             </Link>
           </div>
           <div>
@@ -71,33 +58,7 @@ function Navbar() {
               </Link>
             </ul>
           </div>
-          <div className="xl:w-[280px] lg:w-auto flex justify-end gap-x-6">
-            <div className="flex gap-x-2 justify-center items-center">
-              {isAuthenticated ? (
-                <div className="items-center text-sm relative">
-                  <Button className="rounded-full w-8 h-8 bg-slate-500 opacity-70 p-0 border-2 border-slate-400"></Button>
-                </div>
-              ) : (
-                <>
-                  <Link
-                    className="hover:bg-accent border justify-center text-sm px-4 py-2 h-9 rounded-md inline-flex items-center font-medium"
-                    href={"/auth/login"}
-                  >
-                    Se connecter
-                  </Link>
-                  <Link
-                    className="hover:bg-primary/90 bg-primary text-white text-sm px-4 py-2 h-9 rounded-md inline-flex items-center font-semibold"
-                    href={"/auth/signup"}
-                  >
-                    S'inscrire
-                  </Link>
-                </>
-              )}
-            </div>
-            <div>
-              <ThemeSwitch />
-            </div>
-          </div>
+          <NavbarAuthActions />
         </div>
       </nav>
     </div>
