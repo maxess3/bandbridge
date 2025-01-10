@@ -1,8 +1,8 @@
 import { Providers } from "./providers";
-import { AuthProvider } from "@/context/AuthContext";
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import { DM_Sans } from "next/font/google";
+import { isAuthenticated } from "@/lib/auth";
 
 import "./globals.css";
 
@@ -24,28 +24,28 @@ export const metadata: Metadata = {
   description: "Connnecting talent, creating bands",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isAuth = await isAuthenticated();
+
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
         className={`${DM.className} antialiased min-h-screen flex flex-col`}
       >
         <ReactQueryClientProvider>
-          <AuthProvider>
-            <Providers>
-              <Toaster position="top-right" />
-              <NextTopLoader color="#0a81ff" showSpinner={false} height={3} />
-              <Navbar />
-              <div className="px-10">
-                <main className="container mx-auto flex-grow">{children}</main>
-              </div>
-              <Footer />
-            </Providers>
-          </AuthProvider>
+          <Providers>
+            <Toaster position="top-right" />
+            <NextTopLoader color="#0a81ff" showSpinner={false} height={3} />
+            <Navbar isAuthenticated={isAuth} />
+            <div className="px-10">
+              <main className="container mx-auto flex-grow">{children}</main>
+            </div>
+            <Footer />
+          </Providers>
         </ReactQueryClientProvider>
       </body>
     </html>

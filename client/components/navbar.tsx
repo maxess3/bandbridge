@@ -6,9 +6,14 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/bandbridge.png";
 
-import NavbarAuthActions from "@/components/NavbarAuthActions";
+import ThemeSwitch from "@/components/ThemeSwitch";
+import { Button } from "./ui/button";
 
-function Navbar() {
+interface NavbarProps {
+  isAuthenticated: boolean;
+}
+
+function Navbar({ isAuthenticated }: NavbarProps) {
   const currentPath = usePathname();
 
   return (
@@ -20,12 +25,23 @@ function Navbar() {
             <Link
               href={"/"}
               className="font-host-grotesk text-2xl font-semibold"
-            >
-              Bandwiiz
-            </Link>
+            ></Link>
           </div>
           <div>
             <ul className="flex justify-center items-center gap-x-12 font-normal">
+              {isAuthenticated && (
+                <Link
+                  href={"/"}
+                  className={`inline-flex items-center opacity-90 ${
+                    currentPath === "/ads"
+                      ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
+                      : "font-normal"
+                  }`}
+                >
+                  Dashboard
+                </Link>
+              )}
+
               <Link
                 href={"/ads"}
                 className={`inline-flex items-center opacity-90 ${
@@ -47,6 +63,16 @@ function Navbar() {
                 Artistes
               </Link>
               <Link
+                href={"/"}
+                className={`inline-flex items-center opacity-90 ${
+                  currentPath === "/artist"
+                    ? "font-semibold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
+                    : "font-normal"
+                }`}
+              >
+                Salles
+              </Link>
+              <Link
                 href={"/me"}
                 className={`inline-flex items-center opacity-90 ${
                   currentPath === "/forum"
@@ -58,7 +84,33 @@ function Navbar() {
               </Link>
             </ul>
           </div>
-          <NavbarAuthActions />
+          <div className="xl:w-[280px] lg:w-auto flex justify-end gap-x-6">
+            <div className="flex gap-x-2 justify-center items-center">
+              {isAuthenticated ? (
+                <div className="items-center text-sm relative">
+                  <Button className="rounded-full w-8 h-8 bg-slate-500 opacity-70 p-0 border-2 border-slate-400"></Button>
+                </div>
+              ) : (
+                <>
+                  <Link
+                    className="hover:bg-accent border justify-center text-sm px-4 py-2 h-9 rounded-md inline-flex items-center font-medium"
+                    href={"/auth/login"}
+                  >
+                    Se connecter
+                  </Link>
+                  <Link
+                    className="hover:bg-primary/90 bg-primary text-white text-sm px-4 py-2 h-9 rounded-md inline-flex items-center font-semibold"
+                    href={"/auth/signup"}
+                  >
+                    S'inscrire
+                  </Link>
+                </>
+              )}
+            </div>
+            <div>
+              <ThemeSwitch />
+            </div>
+          </div>
         </div>
       </nav>
     </div>

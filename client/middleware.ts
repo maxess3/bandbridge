@@ -16,14 +16,6 @@ export async function middleware(request: NextRequest) {
   const refreshToken = request.cookies.get("refreshToken");
   let response;
 
-  // USER NOT AUTHENTICATED (Token missing)
-  // Protected pages
-  if (!token?.value || !refreshToken?.value) {
-    if (path === "/me") {
-      return NextResponse.redirect(new URL("/auth/login", request.url));
-    }
-  }
-
   if (isTokenExpired(token?.value)) {
     try {
       response = await fetch(`${BASE_URL}/auth/refresh`, {
@@ -39,9 +31,10 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
   } else {
-    // Si le token n'est pas proche de l'expiration, passez à la requête suivante
     return NextResponse.next();
   }
+
+  console.log(response.ok);
 
   // USER NOT AUTHENTICATED
   // Protected pages

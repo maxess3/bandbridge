@@ -159,6 +159,8 @@ export const status = (req: Request, res: Response) => {
 export const refresh = (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
 
+  console.log("bip");
+
   if (!refreshToken) {
     return res.status(401).json({ message: "No refresh token" });
   }
