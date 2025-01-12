@@ -4,15 +4,10 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
 import { formatName } from "../utils/utils";
-import {
-  generateAccessToken,
-  sendAuthCookies,
-  clearAuthCookies,
-} from "../utils/token";
+import { generateAccessToken, createAuthTokens } from "../utils/token";
 import nodemailer from "nodemailer";
 import {
   formSignUpSchema,
-  formLoginSchema,
   formForgotPwdSchema,
   formResetPwdSchema,
 } from "../lib/schema";
@@ -59,17 +54,6 @@ export const signup = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  // Validate user inputs with zod
-  try {
-    const validatedData = formLoginSchema.parse(req.body);
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return res.status(400).json({ errors: error.errors });
-    } else {
-      return res.status(500).json({ message: "Erreur interne du serveur" });
-    }
-  }
-
   const { email, password } = req.body;
 
   const user = await prisma.user.findFirst({
@@ -87,79 +71,66 @@ export const login = async (req: Request, res: Response) => {
   }
 
   const userId = user.id;
-  sendAuthCookies(res, userId);
+  const userEmail = user.email;
+  const userFirstName = user.firstName;
 
-  return res.sendStatus(200);
+  const { backendTokens } = createAuthTokens(userId);
+
+  const currentUser = {
+    id: userId,
+    email: userEmail,
+    firstName: userFirstName,
+  };
+
+  return res.status(200).json({
+    user: currentUser,
+    backendTokens,
+  });
 };
 
 export const google = async (req: Request, res: Response) => {
   try {
-    // Google auth client
-    const client = new OAuth2Client(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      process.env.REDIRECT_URI
-    );
-    const { code } = req.query;
-    if (typeof code === "string") {
-      const { tokens } = await client.getToken(code);
-      const { id_token } = tokens;
+    const { email, name } = req.body;
 
-      // Check token and extract user data
-      const ticket = await client.verifyIdToken({
-        idToken: id_token,
-        audience: process.env.GOOGLE_CLIENT_ID,
+    console.log("nip");
+
+    let findUser = await prisma.user.findFirst({ where: { email } });
+
+    if (!findUser) {
+      const newUser = await prisma.user.create({
+        data: {
+          email,
+          firstName: name,
+          provider: "GOOGLE",
+        },
       });
-
-      const payload = ticket.getPayload();
-      const { sub: googleId, email, given_name } = payload;
-
-      const formatFirstName = formatName(given_name);
-
-      let findUser = await prisma.user.findFirst({ where: { email } });
-
-      if (!findUser) {
-        const newUser = await prisma.user.create({
-          data: {
-            email,
-            firstName: formatFirstName,
-            provider: "GOOGLE",
-          },
-        });
-        findUser = newUser;
-      }
-
-      const userId = findUser.id;
-      sendAuthCookies(res, userId);
+      findUser = newUser;
     }
 
-    return res.redirect(process.env.CLIENT_URL);
+    const userId = findUser.id;
+    const userEmail = findUser.email;
+    const userFirstName = findUser.firstName;
+
+    const { backendTokens } = createAuthTokens(userId);
+
+    const currentUser = {
+      id: userId,
+      email: userEmail,
+      firstName: userFirstName,
+    };
+
+    return res.status(200).json({
+      user: currentUser,
+      backendTokens,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-export const status = (req: Request, res: Response) => {
-  try {
-    const token = req.cookies.token;
-
-    if (!token) {
-      return res.status(401).json({ message: "No token provided" });
-    }
-
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
-    return res.status(200).json({ isAuthenticated: true, user: decoded });
-  } catch (error) {
-    return res.status(403).json({ message: "Invalid or expired token" });
-  }
-};
-
-export const refresh = (req: Request, res: Response) => {
+export const refreshToken = (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
-
-  console.log("bip");
 
   if (!refreshToken) {
     return res.status(401).json({ message: "No refresh token" });
@@ -172,20 +143,9 @@ export const refresh = (req: Request, res: Response) => {
       if (err) return res.sendStatus(403);
       const userId = user.userId;
       const accessToken = generateAccessToken(userId);
-      res.cookie("token", accessToken, {
-        httpOnly: true,
-        secure: process.env.ENV_MODE === "DEV" ? false : true,
-        sameSite: "lax",
-        maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 year
-      });
-      return res.sendStatus(200);
+      return res.status(200).json({ accessToken });
     }
   );
-};
-
-export const logout = (req: Request, res: Response) => {
-  clearAuthCookies(res);
-  return res.sendStatus(200);
 };
 
 export const forgotPassword = async (req: Request, res: Response) => {

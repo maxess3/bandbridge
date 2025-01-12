@@ -5,9 +5,7 @@ import {
   signup,
   login,
   google,
-  status,
-  refresh,
-  logout,
+  refreshToken,
   forgotPassword,
   resetPassword,
   validateResetToken,
@@ -39,20 +37,12 @@ router.post("/login", LoginLimiter, (req: Request, res: Response) => {
   login(req, res);
 });
 
-router.get("/google/callback", (req: Request, res: Response) => {
+router.post("/google-login", (req: Request, res: Response) => {
   google(req, res);
 });
 
-router.get("/status", (req: Request, res: Response) => {
-  status(req, res);
-});
-
 router.get("/refresh", (req: Request, res: Response) => {
-  refresh(req, res);
-});
-
-router.get("/logout", (req: Request, res: Response) => {
-  logout(req, res);
+  refreshToken(req, res);
 });
 
 router.post(

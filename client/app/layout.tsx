@@ -1,12 +1,12 @@
-import { Providers } from "./providers";
 import type { Metadata } from "next";
-import NextTopLoader from "nextjs-toploader";
 import { DM_Sans } from "next/font/google";
-import { isAuthenticated } from "@/lib/auth";
 
 import "./globals.css";
 
+import { Providers } from "./providers";
+import AuthSessionProviders from "@/components/AuthSessionProviders";
 import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";
+import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -29,24 +29,24 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isAuth = await isAuthenticated();
-
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
         className={`${DM.className} antialiased min-h-screen flex flex-col`}
       >
-        <ReactQueryClientProvider>
-          <Providers>
-            <Toaster position="top-right" />
-            <NextTopLoader color="#0a81ff" showSpinner={false} height={3} />
-            <Navbar isAuthenticated={isAuth} />
-            <div className="px-10">
-              <main className="container mx-auto flex-grow">{children}</main>
-            </div>
-            <Footer />
-          </Providers>
-        </ReactQueryClientProvider>
+        <AuthSessionProviders>
+          <ReactQueryClientProvider>
+            <Providers>
+              <Toaster position="top-right" />
+              <NextTopLoader color="#0a81ff" showSpinner={false} height={3} />
+              <Navbar />
+              <div className="px-10">
+                <main className="container mx-auto flex-grow">{children}</main>
+              </div>
+              <Footer />
+            </Providers>
+          </ReactQueryClientProvider>
+        </AuthSessionProviders>
       </body>
     </html>
   );

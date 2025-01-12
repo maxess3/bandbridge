@@ -1,9 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/apiClient";
-import { GOOGLE_CLIENT_ID, REDIRECT_URI } from "@/lib/constants";
-import { AxiosError } from "axios";
+import { signIn } from "next-auth/react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,29 +23,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { GoogleButton } from "@/components/GoogleButton";
 
-import { FcGoogle } from "react-icons/fc";
 import { MdError } from "react-icons/md";
 
 export default function Login() {
-  const mutation = useMutation({
-    mutationFn: async (data: Inputs) => {
-      await apiClient.post("/auth/login", data);
-      window.location.href = "/me";
-    },
-    onSuccess: () => {
-      console.log("success");
-    },
-    onError: (err: unknown) => {
-      setHasError((prevError) => ({
-        ...prevError,
-        status: true,
-        message:
-          err instanceof AxiosError ? err.response?.data?.message : "Erreur",
-      }));
-    },
-  });
-
   const [hasError, setHasError] = useState({
     status: false,
     message: "",
@@ -64,12 +43,13 @@ export default function Login() {
   });
 
   const handleFormCompletion = async (data: Inputs) => {
-    mutation.mutate(data);
-  };
-
-  const handleGoogleLogin = () => {
-    const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=profile email`;
-    window.location.href = authUrl;
+    console.log(data);
+    await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: true,
+      callbackUrl: `http://localhost:3000`,
+    });
   };
 
   return (
@@ -82,15 +62,7 @@ export default function Login() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <Button
-            onClick={handleGoogleLogin}
-            size="lg"
-            variant="outline"
-            className="w-full font-semibold"
-          >
-            <FcGoogle style={{ width: "1.4em", height: "1.4em" }} />
-            Se connecter avec Google
-          </Button>
+          <GoogleButton />
           <span className="my-2 border-b relative before:content-['ou'] before:absolute before:-translate-x-1/2 before:-translate-y-1/2 before:left-1/2 before:bg-card before:px-3 before:opacity-90"></span>
           <form
             className="space-y-4"
@@ -99,9 +71,7 @@ export default function Login() {
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
-                className={`${
-                  (errors.email || mutation.isError) && "border-[#ff4444]"
-                }`}
+                className={`${errors.email && "border-[#ff4444]"}`}
                 id="email"
                 type="email"
                 placeholder="m@exemple.com"
@@ -130,7 +100,7 @@ export default function Login() {
               </div>
               <Input
                 className={`${
-                  (errors.password || mutation.isError) &&
+                  errors.password &&
                   "border-[#ff4444] focus-visible:ring-transparent"
                 }`}
                 id="password"

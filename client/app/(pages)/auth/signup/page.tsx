@@ -25,7 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { FcGoogle } from "react-icons/fc";
+import { GoogleButton } from "@/components/GoogleButton";
 
 type Inputs = z.infer<typeof formSignUpSchema>;
 
@@ -126,16 +126,7 @@ export default function Signup() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {currentStep === 0 && (
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full font-semibold"
-            >
-              <FcGoogle style={{ width: "1.4em", height: "1.4em" }} />
-              Se connecter avec Google
-            </Button>
-          )}
+          {currentStep === 0 && <GoogleButton />}
           <form onSubmit={handleStepCompletion}>
             {currentStep === 0 && (
               <div className="grid gap-4">

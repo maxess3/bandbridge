@@ -1,20 +1,19 @@
 import jwt from "jsonwebtoken";
-import { Response } from "express";
+
+const EXPIRE_TIME = 20 * 1000;
 
 export const generateAccessToken = (userId: string) => {
   return jwt.sign({ userId: userId }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "10s",
+    expiresIn: "20s",
   });
 };
 
-const createAuthTokens = (
-  userId: string
-): { accessToken: string; refreshToken: string } => {
+export const createAuthTokens = (userId: string) => {
   const accessToken = jwt.sign(
     { userId: userId },
     process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: "10s",
+      expiresIn: "20s",
     }
   );
 
@@ -22,27 +21,15 @@ const createAuthTokens = (
     { userId: userId },
     process.env.REFRESH_TOKEN_SECRET,
     {
-      expiresIn: "30s",
+      expiresIn: "7d",
     }
   );
 
-  return { accessToken, refreshToken };
-};
+  const backendTokens = {
+    accessToken,
+    refreshToken,
+    expiresIn: new Date().setTime(new Date().getTime() + EXPIRE_TIME),
+  };
 
-const cookieOpts = {
-  httpOnly: true,
-  secure: process.env.ENV_MODE === "PROD",
-  sameSite: "lax",
-  maxAge: 1000 * 60 * 60 * 24 * 365 * 10,
-} as const;
-
-export const sendAuthCookies = (res: Response, userId: string) => {
-  const { accessToken, refreshToken } = createAuthTokens(userId);
-  res.cookie("token", accessToken, cookieOpts);
-  res.cookie("refreshToken", refreshToken, cookieOpts);
-};
-
-export const clearAuthCookies = (res: Response) => {
-  res.clearCookie("token");
-  res.clearCookie("refreshToken");
+  return { backendTokens };
 };
