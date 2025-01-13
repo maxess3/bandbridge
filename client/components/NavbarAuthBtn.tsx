@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
+import { DropdownProfile } from "@/components/DropdownProfile";
 import { Button } from "./ui/button";
 
 export const NavbarAuthBtn = async () => {
@@ -12,14 +13,14 @@ export const NavbarAuthBtn = async () => {
 
   if (session?.user)
     return (
-      <div className="items-center text-sm relative">
-        <Button className="rounded-full w-8 h-8 bg-slate-500 opacity-70 p-0 border-2 border-slate-400"></Button>
-        <Link
+      <div className="flex items-center text-sm relative">
+        <DropdownProfile />
+        {/* <Link
           className="hover:bg-primary/90 bg-primary text-white text-sm px-4 py-2 h-9 rounded-md inline-flex items-center font-semibold"
           href={"/api/auth/signout"}
         >
           Se déconnecter
-        </Link>
+        </Link> */}
       </div>
     );
 

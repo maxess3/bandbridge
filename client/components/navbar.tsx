@@ -11,11 +11,10 @@ async function Navbar() {
       <nav className="font-host-grotesk flex items-center justify-center w-full py-3 border-b px-10 h-[62px]">
         <div className="container flex justify-between items-center">
           <div className="xl:w-[280px] lg:w-auto flex items-center gap-x-2.5">
-            <Image src={Logo} alt="bandbridge logo" width={32} height={32} />
-            <Link
-              href={"/"}
-              className="font-host-grotesk text-2xl font-semibold"
-            ></Link>
+            <Image src={Logo} alt="bandbridge logo" width={36} height={36} />
+            <Link href={"/"} className="font-host-grotesk text-2xl font-bold">
+              Goband
+            </Link>
           </div>
           <div>
             <ul className="flex justify-center items-center gap-x-12 font-normal">

@@ -14,7 +14,7 @@ function Footer() {
           <div className="flex justify-between w-full border-b pb-10">
             <div>
               <div className="flex flex-col gap-y-4">
-                <Image src={Logo} alt="bandzik logo" width={32} height={32} />
+                <Image src={Logo} alt="bandzik logo" width={36} height={36} />
                 <h2 className="text-2xl">
                   <span className="font-semibold">
                     De la chambre à la scène.
