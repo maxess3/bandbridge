@@ -7,7 +7,11 @@ import { FcGoogle } from "react-icons/fc";
 export const GoogleButton = () => {
   return (
     <Button
-      onClick={() => signIn("google")}
+      onClick={() =>
+        signIn("google", {
+          callbackUrl: "/",
+        })
+      }
       size="lg"
       variant="outline"
       className="w-full font-semibold"

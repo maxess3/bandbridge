@@ -41,7 +41,7 @@ router.post("/google-login", (req: Request, res: Response) => {
   google(req, res);
 });
 
-router.get("/refresh", (req: Request, res: Response) => {
+router.post("/refresh", (req: Request, res: Response) => {
   refreshToken(req, res);
 });
 

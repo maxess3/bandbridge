@@ -2,9 +2,8 @@ import prisma from "../db/db.config";
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { OAuth2Client } from "google-auth-library";
 import { formatName } from "../utils/utils";
-import { generateAccessToken, createAuthTokens } from "../utils/token";
+import { createAuthTokens } from "../utils/token";
 import nodemailer from "nodemailer";
 import {
   formSignUpSchema,
@@ -59,6 +58,7 @@ export const login = async (req: Request, res: Response) => {
   const user = await prisma.user.findFirst({
     where: {
       email,
+      provider: "MANUAL",
     },
   });
 
@@ -91,8 +91,6 @@ export const login = async (req: Request, res: Response) => {
 export const google = async (req: Request, res: Response) => {
   try {
     const { email, name } = req.body;
-
-    console.log("nip");
 
     let findUser = await prisma.user.findFirst({ where: { email } });
 
@@ -130,22 +128,25 @@ export const google = async (req: Request, res: Response) => {
 };
 
 export const refreshToken = (req: Request, res: Response) => {
-  const { refreshToken } = req.cookies;
+  const authHeader = req.headers["authorization"];
+  const refreshToken = authHeader && authHeader.split(" ")[1];
 
   if (!refreshToken) {
-    return res.status(401).json({ message: "No refresh token" });
+    return res.sendStatus(401);
   }
 
-  jwt.verify(
+  const decodedToken = jwt.verify(
     refreshToken,
-    process.env.REFRESH_TOKEN_SECRET,
+    process.env.REFRESH_TOKEN_SECRET as string,
     (err: Error | null, user: any) => {
       if (err) return res.sendStatus(403);
       const userId = user.userId;
-      const accessToken = generateAccessToken(userId);
-      return res.status(200).json({ accessToken });
+      const { backendTokens } = createAuthTokens(userId);
+      return res.status(200).json({ backendTokens });
     }
   );
+
+  (req as any).user = decodedToken;
 };
 
 export const forgotPassword = async (req: Request, res: Response) => {
