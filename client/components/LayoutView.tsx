@@ -14,7 +14,7 @@ function LayoutView({
 }: BandTableTopProps) {
   return (
     <div className="flex">
-      <div className="flex rounded-md relative before:absolute before:-translate-x-1/2 before:left-1/2 before:h-full before:w-0.5 before:bg-accent">
+      <div className="flex rounded-md relative before:absolute before:-translate-x-1/2 before:left-1/2 before:h-full before:w-0.5 before:bg-secondary">
         <Button
           onClick={() => setTableLayoutMode("grid")}
           variant="ghost"

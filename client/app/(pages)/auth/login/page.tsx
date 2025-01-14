@@ -126,11 +126,7 @@ export default function Login() {
                 </div>
               )}
             </div>
-            <Button
-              size="lg"
-              type="submit"
-              className="w-full text-white font-semibold"
-            >
+            <Button size="lg" type="submit" className="w-full font-semibold">
               Se connecter
             </Button>
           </form>
@@ -141,7 +137,7 @@ export default function Login() {
             S'inscrire
           </Link>
         </div>
-        <div className="mt-6 bg-[#141623] text-sm py-4 px-1 rounded-sm text-center">
+        <div className="mt-6 bg-secondary text-sm py-4 px-1 rounded-sm text-center">
           En continuant, vous acceptez les
           <Link href="" className="font-semibold hover:underline">
             {" "}

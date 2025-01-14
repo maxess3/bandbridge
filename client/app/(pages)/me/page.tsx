@@ -10,7 +10,7 @@ import apiClient from "@/lib/apiClient";
 
 export default function Me() {
   return (
-    <div>
+    <div className="mb-80">
       <div className="bg-slate-700 w-full h-48 relative">
         <span className="w-40 h-40 flex rounded-full absolute -bottom-16 left-6 border-slate-500 border-2 overflow-hidden">
           <Image

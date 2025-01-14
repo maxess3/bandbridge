@@ -45,7 +45,7 @@ export const DropdownProfile = () => {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="rounded-full w-9 h-9"></Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 mt-[8px] rounded-lg">
+      <DropdownMenuContent className="w-56 mt-[7px] rounded-lg">
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => router.push("/me")}>
             <FaRegUser

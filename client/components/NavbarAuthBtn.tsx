@@ -12,7 +12,7 @@ export const NavbarAuthBtn = async () => {
   if (session?.user)
     return (
       <div className="flex items-center text-sm relative gap-x-4">
-        <Button variant="outline" className="text-white font-semibold">
+        <Button variant="default" className="text-white font-semibold">
           Publier une annonce
         </Button>
         <DropdownProfile />

@@ -11,7 +11,7 @@ function Footer() {
     <footer className="mt-12">
       <div className="flex justify-center px-10">
         <div className="container">
-          <div className="flex justify-between w-full border-b pb-10">
+          <div className="flex justify-between w-full border-b border-secondary pb-10">
             <div>
               <div className="flex flex-col gap-y-4">
                 <Image src={Logo} alt="bandzik logo" width={36} height={36} />
@@ -96,7 +96,9 @@ function Footer() {
               droits réservés.
             </div>
             <div className="flex space-x-6">
-              <Button variant="outline">Signaler un bug</Button>
+              <Button variant="outline" className="hover:bg-secondary/30">
+                Signaler un bug
+              </Button>
               <div className="flex space-x-3">
                 <Link
                   href={""}
