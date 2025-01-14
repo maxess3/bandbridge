@@ -4,23 +4,18 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
 import { DropdownProfile } from "@/components/DropdownProfile";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 
 export const NavbarAuthBtn = async () => {
   const session = await getServerSession(authOptions);
 
-  console.log(session?.backendTokens);
-
   if (session?.user)
     return (
-      <div className="flex items-center text-sm relative">
+      <div className="flex items-center text-sm relative gap-x-4">
+        <Button variant="outline" className="text-white font-semibold">
+          Publier une annonce
+        </Button>
         <DropdownProfile />
-        {/* <Link
-          className="hover:bg-primary/90 bg-primary text-white text-sm px-4 py-2 h-9 rounded-md inline-flex items-center font-semibold"
-          href={"/api/auth/signout"}
-        >
-          Se déconnecter
-        </Link> */}
       </div>
     );
 

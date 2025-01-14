@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/bandbridge.png";
 
-import ThemeSwitch from "@/components/ThemeSwitch";
 import { NavbarAuthBtn } from "@/components/NavbarAuthBtn";
+import { MenuLinks } from "@/components/MenuLinks";
 
 async function Navbar() {
   return (
@@ -12,38 +12,14 @@ async function Navbar() {
         <div className="container flex justify-between items-center">
           <div className="xl:w-[280px] lg:w-auto flex items-center gap-x-2.5">
             <Image src={Logo} alt="bandbridge logo" width={36} height={36} />
-            <Link href={"/"} className="font-host-grotesk text-2xl font-bold">
-              Goband
+            <Link href={"/"} className="font-host-grotesk text-2xl font-black">
+              Bandshake
             </Link>
           </div>
-          <div>
-            <ul className="flex justify-center items-center gap-x-12 font-normal">
-              <Link
-                href={"/ads"}
-                className={`inline-flex items-center opacity-90`}
-              >
-                Groupes
-              </Link>
-              <Link
-                href={"/"}
-                className={`inline-flex items-center opacity-90`}
-              >
-                Artistes
-              </Link>
-              <Link
-                href={"/me"}
-                className={`inline-flex items-center opacity-90`}
-              >
-                Creator Site
-              </Link>
-            </ul>
-          </div>
+          <MenuLinks />
           <div className="xl:w-[280px] lg:w-auto flex justify-end gap-x-6">
             <div className="flex gap-x-2 justify-center items-center">
               <NavbarAuthBtn />
-            </div>
-            <div>
-              <ThemeSwitch />
             </div>
           </div>
         </div>

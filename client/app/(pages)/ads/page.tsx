@@ -5,7 +5,7 @@ import BandTableContainer from "@/components/BandTableContainer";
 
 export default function Ads() {
   return (
-    <div className="flex flex-col justify-center mt-16 pb-14">
+    <div className="flex flex-col justify-center mt-14 pb-14">
       <div className="flex justify-between items-center">
         <div className="space-y-2">
           <h2 className="text-3xl font-semibold">

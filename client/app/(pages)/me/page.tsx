@@ -5,9 +5,6 @@ import Image from "next/image";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { PiIdentificationCardLight } from "react-icons/pi";
 import { SlPencil } from "react-icons/sl";
-import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
-
-import { Button } from "@/components/ui/button";
 
 import apiClient from "@/lib/apiClient";
 
@@ -52,28 +49,6 @@ export default function Me() {
           <p className="w-7/12 flex opacity-90">
             Guitariste, compositeur, arrangeur, professeur de musique.
           </p>
-        </div>
-        <div className="font-medium space-y-3 mt-8">
-          <div className="text-xl">Mes réseaux</div>
-          <div className="flex opacity-80">
-            <div className="flex gap-x-5">
-              <FaXTwitter className="text-xl" />
-              <FaInstagram className="text-xl" />
-              <FaFacebookF className="text-lg" />
-            </div>
-          </div>
-        </div>
-        <div className="mt-12">
-          <Button
-            onClick={() =>
-              apiClient.get("/auth/logout").then(() => {
-                window.location.reload();
-              })
-            }
-            variant={"outline"}
-          >
-            Se déconnecter
-          </Button>
         </div>
       </div>
     </div>

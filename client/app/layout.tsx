@@ -12,7 +12,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 const DM = DM_Sans({
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800", "900", "1000"],
   subsets: ["latin"],
   variable: "--font-dm-sans",
   display: "swap",
@@ -20,7 +20,7 @@ const DM = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Bandwiiz",
+  title: "Zikfast",
   description: "Connnecting talent, creating bands",
 };
 
