@@ -11,8 +11,11 @@ async function Navbar() {
       <nav className="font-host-grotesk flex items-center justify-center w-full py-3 border-b border-secondary px-10 h-[60px]">
         <div className="container flex justify-between items-center">
           <div className="xl:w-[280px] lg:w-auto flex items-center gap-x-2.5">
-            <Image src={Logo} alt="bandbridge logo" width={36} height={36} />
-            <Link href={"/"} className="font-host-grotesk text-2xl font-black">
+            <Image src={Logo} alt="banshake logo" width={36} height={36} />
+            <Link
+              href={"/"}
+              className="font-host-grotesk text-2xl font-extrabold font-exo"
+            >
               Bandshake
             </Link>
           </div>

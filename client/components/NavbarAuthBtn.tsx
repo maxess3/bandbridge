@@ -5,6 +5,7 @@ import { authOptions } from "@/lib/authOptions";
 
 import { DropdownProfile } from "@/components/DropdownProfile";
 import { Button } from "@/components/ui/button";
+import { FiPlusCircle } from "react-icons/fi";
 
 export const NavbarAuthBtn = async () => {
   const session = await getServerSession(authOptions);
@@ -12,8 +13,9 @@ export const NavbarAuthBtn = async () => {
   if (session?.user)
     return (
       <div className="flex items-center text-sm relative gap-x-4">
-        <Button variant="default" className="text-white font-semibold">
-          Publier une annonce
+        <Button className="text-white font-semibold">
+          <FiPlusCircle style={{ width: "18px" }} />
+          Déposer une annonce
         </Button>
         <DropdownProfile />
       </div>

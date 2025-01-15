@@ -55,7 +55,9 @@ export default function Login() {
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Se connecter</CardTitle>
+        <CardTitle className="text-2xl font-bold font-exo">
+          Se connecter
+        </CardTitle>
         <CardDescription>
           Entrez votre email et votre mot de passe pour vous connecter.
         </CardDescription>

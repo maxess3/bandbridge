@@ -3,6 +3,8 @@
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
+import Image from "next/image";
+import Logo from "@/public/bandbridge.png";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
@@ -43,9 +45,15 @@ export const DropdownProfile = () => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="rounded-full w-9 h-9"></Button>
+        <Image
+          src={Logo}
+          width={36}
+          height={36}
+          alt="User profile"
+          className="cursor-pointer filter grayscale"
+        />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 mt-[7px] rounded-lg">
+      <DropdownMenuContent className="w-56 mt-[8px] rounded-lg border-none">
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => router.push("/me")}>
             <FaRegUser

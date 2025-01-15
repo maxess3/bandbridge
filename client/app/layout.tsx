@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Schibsted_Grotesk, Exo_2, Inter } from "next/font/google";
 
 import "./globals.css";
 
@@ -11,10 +11,18 @@ import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const DM = DM_Sans({
-  weight: ["400", "500", "600", "700", "800", "900", "1000"],
+const EXO = Exo_2({
+  weight: ["400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
-  variable: "--font-dm-sans",
+  variable: "--font-exo",
+  display: "swap",
+  adjustFontFallback: false,
+});
+
+const montserrat = Schibsted_Grotesk({
+  weight: ["400", "500", "700", "800"],
+  subsets: ["latin"],
+  variable: "--font-montserrat",
   display: "swap",
   adjustFontFallback: false,
 });
@@ -32,7 +40,7 @@ export default async function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${DM.className} antialiased min-h-screen flex flex-col`}
+        className={`${EXO.variable} ${montserrat.className} antialiased min-h-screen flex flex-col`}
       >
         <AuthSessionProviders>
           <ReactQueryClientProvider>

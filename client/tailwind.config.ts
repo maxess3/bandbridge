@@ -11,7 +11,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        "dm-sans": "var(--font-dm-sans)",
+        montserrat: "var(--font-montserrat)",
+        exo: "var(--font-exo)",
       },
       colors: {
         background: "hsl(var(--background))",

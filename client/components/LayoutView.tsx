@@ -19,7 +19,7 @@ function LayoutView({
           onClick={() => setTableLayoutMode("grid")}
           variant="ghost"
           size="sm"
-          className={`rounded-r-none border w-full hover:bg-secondary/20 ${
+          className={`rounded-r-none border w-full hover:bg-secondary/30 ${
             tableLayoutMode === "grid" ? "bg-secondary hover:bg-secondary" : ""
           }`}
         >
@@ -29,7 +29,7 @@ function LayoutView({
           onClick={() => setTableLayoutMode("list")}
           size="sm"
           variant="ghost"
-          className={`rounded-l-none border w-full hover:bg-secondary/20 ${
+          className={`rounded-l-none border w-full hover:bg-secondary/30 ${
             tableLayoutMode === "list" ? "bg-secondary hover:bg-secondary" : ""
           }`}
         >

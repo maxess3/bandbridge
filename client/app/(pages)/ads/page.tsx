@@ -8,7 +8,10 @@ export default function Ads() {
     <div className="flex flex-col justify-center mt-14 pb-14">
       <div className="flex justify-between items-center">
         <div className="space-y-2">
-          <h2 className="text-3xl font-semibold">
+          <span className="text-md font-semibold font-exo text-primary">
+            Rejoindre un groupe
+          </span>
+          <h2 className="text-3xl font-semibold font-exo">
             De nouveaux groupes vous attendent à Paris.
           </h2>
           <p className="opacity-90">
@@ -19,10 +22,10 @@ export default function Ads() {
           <Button
             variant={"outline"}
             size="lg"
-            className="text-sm font-semibold hover:bg-secondary/20"
+            className="text-sm font-semibold hover:bg-secondary/30"
           >
             <FiPlusCircle style={{ width: "18px" }} />
-            Publier une annonce
+            Déposer une annonce
           </Button>
         </div>
       </div>

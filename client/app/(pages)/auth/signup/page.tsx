@@ -116,7 +116,7 @@ export default function Signup() {
     <div>
       <Card className="mx-auto max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold">
+          <CardTitle className="text-2xl font-bold font-exo">
             {hasError.status ? "Erreur" : steps[currentStep].title}
           </CardTitle>
           <CardDescription>

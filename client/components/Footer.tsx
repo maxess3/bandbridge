@@ -16,12 +16,13 @@ function Footer() {
               <div className="flex flex-col gap-y-4">
                 <Image src={Logo} alt="bandzik logo" width={36} height={36} />
                 <h2 className="text-2xl">
-                  <span className="font-semibold">
+                  <span className="font-semibold font-exo">
                     Faite des rencontres et secouez la scène.
                   </span>
                 </h2>
                 <p className="text-lg">
-                  <span className="font-extrabold">Bandshake</span>, 2025.
+                  <span className="font-extrabold font-exo">Bandshake</span>,
+                  2025.
                 </p>
               </div>
             </div>
@@ -92,8 +93,9 @@ function Footer() {
           </div>
           <div className="py-4 flex justify-between items-center">
             <div>
-              © 2025 <span className="font-extrabold">Bandshake</span>. Tous
-              droits réservés.
+              © 2025{" "}
+              <span className="font-extrabold font-exo">🇫🇷 Bandshake</span>.
+              Tous droits réservés.
             </div>
             <div className="flex space-x-6">
               <Button variant="outline" className="hover:bg-secondary/30">

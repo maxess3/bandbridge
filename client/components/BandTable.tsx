@@ -111,7 +111,10 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
       <table className="w-full text-left">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className="bg-secondary/25">
+            <tr
+              key={headerGroup.id}
+              className="dark:bg-secondary bg-secondary/50"
+            >
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
@@ -131,7 +134,9 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
             <tr
               key={row.id}
               className={`border-b border-secondary ${
-                index % 2 === 0 ? "bg-background" : "bg-secondary/25"
+                index % 2 === 0
+                  ? "bg-background"
+                  : "dark:bg-secondary/40 bg-secondary/20"
               }`}
             >
               {row.getVisibleCells().map((cell) => (
@@ -155,7 +160,7 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
         {table.getRowModel().rows.map((row) => (
           <div
             key={row.id}
-            className="bg-secondary/25 rounded-lg p-4 flex flex-col gap-y-2"
+            className="dark:bg-secondary/40 bg-secondary/20 rounded-lg p-4 flex flex-col gap-y-2"
           >
             {row.getVisibleCells().map((cell) => (
               <div key={cell.id}>
