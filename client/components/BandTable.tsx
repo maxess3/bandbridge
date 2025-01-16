@@ -108,7 +108,7 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
 
   if (tableLayoutMode === "list") {
     return (
-      <table className="w-full text-left">
+      <table className="w-full text-left border border-secondary">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr
@@ -130,15 +130,8 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row, index) => (
-            <tr
-              key={row.id}
-              className={`border-b border-secondary ${
-                index % 2 === 0
-                  ? "bg-background"
-                  : "dark:bg-secondary/40 bg-secondary/20"
-              }`}
-            >
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id} className="border-b border-secondary">
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}

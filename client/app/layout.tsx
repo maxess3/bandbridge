@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
-import { Schibsted_Grotesk, Exo_2, Inter } from "next/font/google";
+import {
+  Schibsted_Grotesk,
+  Exo_2,
+  Inter,
+  Andika,
+  Hind_Guntur,
+  Maven_Pro,
+} from "next/font/google";
 
 import "./globals.css";
 
@@ -11,7 +18,7 @@ import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const EXO = Exo_2({
+const MavenPro = Maven_Pro({
   weight: ["400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
   variable: "--font-exo",
@@ -19,16 +26,8 @@ const EXO = Exo_2({
   adjustFontFallback: false,
 });
 
-const montserrat = Schibsted_Grotesk({
-  weight: ["400", "500", "700", "800"],
-  subsets: ["latin"],
-  variable: "--font-montserrat",
-  display: "swap",
-  adjustFontFallback: false,
-});
-
 export const metadata: Metadata = {
-  title: "Zikfast",
+  title: "Bandshake",
   description: "Connnecting talent, creating bands",
 };
 
@@ -40,7 +39,7 @@ export default async function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${EXO.variable} ${montserrat.className} antialiased min-h-screen flex flex-col`}
+        className={`${MavenPro.className} antialiased min-h-screen flex flex-col`}
       >
         <AuthSessionProviders>
           <ReactQueryClientProvider>
