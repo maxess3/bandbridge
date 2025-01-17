@@ -14,7 +14,7 @@ async function Navbar() {
             <Image src={Logo} alt="banshake logo" width={36} height={36} />
             <Link
               href={"/"}
-              className="font-host-grotesk text-2xl font-extrabold font-exo"
+              className="font-host-grotesk text-2xl font-extrabold font-maven"
             >
               Bandshake
             </Link>

@@ -14,13 +14,13 @@ function LayoutView({
 }: BandTableTopProps) {
   return (
     <div className="flex">
-      <div className="flex rounded-md relative before:absolute before:-translate-x-1/2 before:left-1/2 before:h-full before:w-0.5 before:bg-secondary">
+      <div className="border flex rounded-md overflow-hidden">
         <Button
           onClick={() => setTableLayoutMode("grid")}
           variant="ghost"
           size="sm"
-          className={`rounded-r-none border w-full hover:bg-secondary/30 ${
-            tableLayoutMode === "grid" ? "bg-secondary hover:bg-secondary" : ""
+          className={`rounded-none w-full ${
+            tableLayoutMode === "grid" ? "bg-accent" : ""
           }`}
         >
           <IoMdGrid className="opacity-80" />
@@ -29,8 +29,8 @@ function LayoutView({
           onClick={() => setTableLayoutMode("list")}
           size="sm"
           variant="ghost"
-          className={`rounded-l-none border w-full hover:bg-secondary/30 ${
-            tableLayoutMode === "list" ? "bg-secondary hover:bg-secondary" : ""
+          className={`rounded-none w-full ${
+            tableLayoutMode === "list" ? "bg-accent" : ""
           }`}
         >
           <IoList />

@@ -53,7 +53,7 @@ export const DropdownProfile = () => {
           className="cursor-pointer filter grayscale"
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 mt-[8px] rounded-lg border-none">
+      <DropdownMenuContent className="w-56 mt-[8px] rounded-t-none border-none rounded-b-md">
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => router.push("/me")}>
             <FaRegUser
@@ -85,7 +85,10 @@ export const DropdownProfile = () => {
             />
             Signaler un bug
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => signOut()}>
+          <DropdownMenuItem
+            className="dark:text-red-600 text-red-700"
+            onClick={() => signOut()}
+          >
             <LuLogOut
               style={{ width: "1.4em", height: "1.4em" }}
               className="mr-1.5"

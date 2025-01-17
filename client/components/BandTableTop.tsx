@@ -23,7 +23,7 @@ function BandTableTop({
             <HiOutlineLocationMarker className="text-lg" />
           </span>
           <Input
-            className="px-9 placeholder:font-normal font-semibold h-9"
+            className="px-9 placeholder:font-normal font-semibold"
             placeholder="Choisir une localisation..."
           />
           <span className="absolute -translate-y-1/2 top-1/2 right-[10px]">
@@ -35,7 +35,7 @@ function BandTableTop({
             <RiUserSearchLine className="text-lg" />
           </span>
           <Input
-            className="px-9 placeholder:font-normal font-semibold h-9"
+            className="px-9 placeholder:font-normal font-semibold"
             placeholder="À la recherche de..."
           />
           <span className="absolute -translate-y-1/2 top-1/2 right-[10px]">

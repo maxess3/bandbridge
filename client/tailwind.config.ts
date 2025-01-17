@@ -11,8 +11,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        montserrat: "var(--font-montserrat)",
-        exo: "var(--font-exo)",
+        maven: "var(--font-maven)",
       },
       colors: {
         background: "hsl(var(--background))",
