@@ -9,7 +9,7 @@ export const MenuLinks = () => {
 
   return (
     <div>
-      <ul className="flex justify-center items-center gap-x-10 font-normal font-montserrat">
+      <ul className="flex justify-center items-center gap-x-10 font-normal">
         <Link
           href={"/"}
           className={`inline-flex items-center ${
@@ -18,7 +18,7 @@ export const MenuLinks = () => {
               : "font-medium opacity-85"
           }`}
         >
-          ACCUEIL
+          Accueil
         </Link>
         <Link
           href={"/ads"}
@@ -28,7 +28,7 @@ export const MenuLinks = () => {
               : "font-medium opacity-85"
           }`}
         >
-          ANNONCES
+          Annonces
         </Link>
       </ul>
     </div>

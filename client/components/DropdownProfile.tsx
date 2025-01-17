@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
 import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,

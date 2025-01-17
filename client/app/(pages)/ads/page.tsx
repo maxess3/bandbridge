@@ -11,7 +11,7 @@ export default function Ads() {
           <span className="text-sm font-bold bg-secondary px-4 py-1 rounded-full drop-shadow-sm inline-flex">
             🔥 +300 annonces publiées
           </span>
-          <h2 className="text-3xl font-bold font-maven">
+          <h2 className="text-3xl font-semibold font-maven">
             De nouveaux groupes vous attendent à Paris.
           </h2>
           <p className="opacity-90">

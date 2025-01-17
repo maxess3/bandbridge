@@ -23,7 +23,7 @@ function BandTableTop({
             <HiOutlineLocationMarker className="text-lg" />
           </span>
           <Input
-            className="px-9 placeholder:font-normal font-semibold"
+            className="px-9 placeholder:font-normal font-semibold border-input"
             placeholder="Choisir une localisation..."
           />
           <span className="absolute -translate-y-1/2 top-1/2 right-[10px]">
@@ -42,21 +42,13 @@ function BandTableTop({
             <IoChevronDown className="text-md" />
           </span>
         </div>
-        <Button
-          size="default"
-          className="relative pr-14 pl-3"
-          variant="outline"
-        >
+        <Button className="relative pr-14 pl-3" variant="outline">
           Niveau
           <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
             <IoChevronDown className="text-md" />
           </span>
         </Button>
-        <Button
-          size="default"
-          className="relative pr-14 pl-3"
-          variant="outline"
-        >
+        <Button className="relative pr-14 pl-3" variant="outline">
           Âge
           <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
             <IoChevronDown className="text-md" />

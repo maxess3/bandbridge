@@ -223,7 +223,7 @@ export default function Signup() {
                 </Button>
               )}
               {currentStep < 2 && (
-                <div className="mt-2 bg-[#141623] text-sm py-4 px-1 rounded-sm text-center">
+                <div className="mt-2 bg-secondary text-sm py-4 px-1 rounded-sm text-center">
                   En continuant, vous acceptez les
                   <Link href="" className="font-semibold hover:underline">
                     {" "}
