@@ -1,14 +1,14 @@
 import { FiPlusCircle } from "react-icons/fi";
 
 import { Button } from "@/components/ui/button";
-import BandTableContainer from "@/components/BandTableContainer";
+import BandTableContainer from "@/components/table/BandTableContainer";
 
 export default function Ads() {
   return (
     <div className="flex flex-col justify-center mt-14 pb-14">
       <div className="flex justify-between items-center">
         <div className="space-y-2">
-          <span className="text-sm font-bold bg-secondary px-4 py-1 rounded-full drop-shadow-sm inline-flex">
+          <span className="text-sm font-bold bg-secondary px-4 py-1 rounded-full inline-flex">
             🔥 +300 annonces publiées
           </span>
           <h2 className="text-3xl font-semibold font-maven">

@@ -8,8 +8,8 @@ import AuthSessionProviders from "@/components/AuthSessionProviders";
 import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Navbar from "@/components/general/header/Navbar";
+import Footer from "@/components/general/footer/Footer";
 
 const MavenPro = Maven_Pro({
   weight: ["400", "500", "600", "700", "800", "900"],

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
-import { DropdownProfile } from "@/components/DropdownProfile";
+import { DropdownProfile } from "@/components/general/header/DropdownProfile";
 import { Button } from "@/components/ui/button";
 import { FiPlusCircle } from "react-icons/fi";
 

@@ -2,9 +2,11 @@ import Image from "next/image";
 import Logo from "@/public/bandbridge.png";
 import Link from "next/link";
 
-import { FaFacebookF, FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { FaInstagram, FaXTwitter } from "react-icons/fa6";
+import { FiFacebook } from "react-icons/fi";
 
 import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 function Footer() {
   return (
@@ -99,24 +101,36 @@ function Footer() {
             </div>
             <div className="flex space-x-6 items-center">
               <Button variant="outline">Signaler un bug</Button>
-              <div className="flex space-x-3">
+              <div className="flex space-x-2 justify-center items-center">
                 <Link
                   href={""}
-                  className="rounded-full w-9 h-9 flex justify-center items-center"
+                  className={
+                    buttonVariants({ variant: "ghost" }) +
+                    " w-10 h-10 !rounded-full"
+                  }
                 >
-                  <FaXTwitter className="text-xl" />
+                  <FaXTwitter style={{ width: "1.4em", height: "1.4em" }} />
                 </Link>
                 <Link
                   href={""}
-                  className="rounded-full w-9 h-9 flex justify-center items-center"
+                  className={
+                    buttonVariants({ variant: "ghost" }) +
+                    " w-10 h-10 !rounded-full"
+                  }
                 >
-                  <FaInstagram className="text-xl" />
+                  <FaInstagram style={{ width: "1.45em", height: "1.45em" }} />
                 </Link>
                 <Link
                   href={""}
-                  className="rounded-full w-9 h-9 flex justify-center items-center"
+                  className={
+                    buttonVariants({ variant: "ghost" }) +
+                    " w-10 h-10 !rounded-full"
+                  }
                 >
-                  <FaFacebookF className="text-lg" />
+                  <FiFacebook
+                    style={{ width: "1.5em", height: "1.5em" }}
+                    className="relative right-[2px]"
+                  />
                 </Link>
               </div>
             </div>

@@ -1,8 +1,8 @@
 "use client";
 
-import BandTableTop from "@/components/BandTableTop";
-import BandTable from "@/components/BandTable";
-import BandTableFooter from "@/components/BandTableFooter";
+import BandTableTop from "@/components/table/BandTableTop";
+import BandTable from "@/components/table/BandTable";
+import BandTableFooter from "@/components/table/BandTableFooter";
 
 import { useState } from "react";
 

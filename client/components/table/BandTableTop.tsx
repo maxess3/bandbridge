@@ -2,7 +2,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import { RiUserSearchLine } from "react-icons/ri";
 import { IoChevronDown } from "react-icons/io5";
 
-import LayoutView from "@/components/LayoutView";
+import LayoutView from "@/components/table/LayoutView";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -23,7 +23,7 @@ function BandTableTop({
             <HiOutlineLocationMarker className="text-lg" />
           </span>
           <Input
-            className="px-9 placeholder:font-normal font-semibold border-input"
+            className="px-9 placeholder:font-normal font-semibold"
             placeholder="Choisir une localisation..."
           />
           <span className="absolute -translate-y-1/2 top-1/2 right-[10px]">

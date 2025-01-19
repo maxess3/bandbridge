@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/bandbridge.png";
 
-import { NavbarAuthBtn } from "@/components/NavbarAuthBtn";
-import { MenuLinks } from "@/components/MenuLinks";
+import { NavbarAuthBtn } from "@/components/general/header/NavbarAuthBtn";
+import { MenuLinks } from "@/components/general/header/MenuLinks";
 
 async function Navbar() {
   return (
