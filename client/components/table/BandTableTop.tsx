@@ -18,7 +18,7 @@ function BandTableTop({
   return (
     <div className="flex items-center justify-between space-x-2">
       <div className="flex space-x-2">
-        <div className="relative w-[250px]">
+        <div className="relative w-[265px]">
           <span className="absolute -translate-y-1/2 top-1/2 left-[10px]">
             <HiOutlineLocationMarker className="text-lg" />
           </span>
@@ -30,18 +30,24 @@ function BandTableTop({
             <IoChevronDown className="text-md" />
           </span>
         </div>
-        <div className="relative w-[250px]">
-          <span className="absolute -translate-y-1/2 top-1/2 left-[10px]">
-            <RiUserSearchLine className="text-lg" />
-          </span>
-          <Input
-            className="px-9 placeholder:font-normal font-semibold"
-            placeholder="À la recherche de..."
-          />
-          <span className="absolute -translate-y-1/2 top-1/2 right-[10px]">
+        <Button className="relative pr-14 pl-3" variant="outline">
+          Style
+          <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
             <IoChevronDown className="text-md" />
           </span>
-        </div>
+        </Button>
+        <Button className="relative pr-14 pl-3" variant="outline">
+          Taille du groupe
+          <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
+            <IoChevronDown className="text-md" />
+          </span>
+        </Button>
+        <Button className="relative pr-14 pl-3" variant="outline">
+          Instrument
+          <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
+            <IoChevronDown className="text-md" />
+          </span>
+        </Button>
         <Button className="relative pr-14 pl-3" variant="outline">
           Niveau
           <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
@@ -49,7 +55,7 @@ function BandTableTop({
           </span>
         </Button>
         <Button className="relative pr-14 pl-3" variant="outline">
-          Âge
+          Âge moyen
           <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
             <IoChevronDown className="text-md" />
           </span>

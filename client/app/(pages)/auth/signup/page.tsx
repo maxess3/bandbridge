@@ -186,7 +186,7 @@ export default function Signup() {
                 <Button
                   size="lg"
                   type="submit"
-                  className="w-full text-white font-semibold mt-4"
+                  className="w-full text-white font-medium mt-4"
                 >
                   Accepter et s'inscrire
                 </Button>

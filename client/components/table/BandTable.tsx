@@ -22,7 +22,7 @@ type Ads = {
   bandImage: string;
   bandName: string | null;
   genres: string[];
-  bandSize: string[];
+  bandSize: number;
   neededMusicians: string[];
   bandLevel: string;
   avgAge: number;
@@ -46,12 +46,12 @@ const createColumns = (tableLayoutMode: BandTableProps["tableLayoutMode"]) => {
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("genres", {
-      header: () => "Genres",
+      header: () => "Style",
       cell: (info) => info.getValue().join(", "),
     }),
     columnHelper.accessor("bandSize", {
-      header: () => "Membres",
-      cell: (info) => info.getValue().join(", "),
+      header: () => "Taille du groupe",
+      cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("neededMusicians", {
       header: () => "Recherche",

@@ -18,7 +18,7 @@ export const MenuLinks = () => {
               : "font-medium opacity-85"
           }`}
         >
-          Accueil
+          Annonces musiciens
         </Link>
         <Link
           href={"/ads"}
@@ -28,7 +28,7 @@ export const MenuLinks = () => {
               : "font-medium opacity-85"
           }`}
         >
-          Annonces
+          Annonces de groupes
         </Link>
       </ul>
     </div>

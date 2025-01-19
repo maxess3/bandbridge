@@ -19,7 +19,7 @@ function Footer() {
                 <Image src={Logo} alt="bandzik logo" width={36} height={36} />
                 <h2 className="text-2xl">
                   <span className="font-semibold font-maven">
-                    Faite des rencontres et secouez la scène.
+                    Faites des rencontres et vivez la scène.
                   </span>
                 </h2>
                 <p className="text-lg">

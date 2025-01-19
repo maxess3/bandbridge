@@ -18,8 +18,8 @@ export default function Ads() {
             De nombreux groupes sont à la recherche de la nouvelle pépite.
           </p>
         </div>
-        <div className="space-x-2">
-          <Button variant={"outline"} className="font-semibold">
+        <div>
+          <Button variant={"outline"}>
             <FiPlusCircle />
             Créer une annonce
           </Button>
