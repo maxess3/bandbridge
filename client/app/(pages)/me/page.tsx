@@ -2,53 +2,100 @@
 
 import Image from "next/image";
 
-import { HiOutlineLocationMarker } from "react-icons/hi";
-import { PiIdentificationCardLight } from "react-icons/pi";
-import { SlPencil } from "react-icons/sl";
+import { SlLocationPin } from "react-icons/sl";
+import { RiUserHeartLine } from "react-icons/ri";
 
-import apiClient from "@/lib/apiClient";
+import { Button } from "@/components/ui/button";
 
 export default function Me() {
   return (
-    <div className="mb-80">
-      <div className="bg-slate-700 w-full h-48 relative">
-        <span className="w-40 h-40 flex rounded-full absolute -bottom-16 left-6 border-slate-500 border-2 overflow-hidden">
-          <Image
-            width={300}
-            height={300}
-            src="/profile.jpeg"
-            alt="Photo de profil"
-            className="object-cover h-full"
-          />
-        </span>
-        <div className="flex absolute -bottom-10 left-[195px] space-x-4 text-md">
-          <div className="flex gap-x-1 items-center opacity-80">
-            <HiOutlineLocationMarker className="text-lg" /> Toulouse
+    <div className="mb-40 space-y-8">
+      <div className="flex justify-between items-center p-8 bg-accent-foreground/5">
+        <div className="flex items-center space-x-4">
+          <div>
+            <span className="w-36 h-36 flex rounded-full overflow-hidden relative border-2 border-secondary">
+              <Image
+                width={300}
+                height={300}
+                src="/profile.jpeg"
+                alt="Photo de profil"
+                className="object-cover h-full shadow-xl"
+              />
+            </span>
           </div>
-          <div className="flex gap-x-1.5 items-center opacity-80">
-            <PiIdentificationCardLight className="text-xl" /> Inscrit depuis 1
-            an
+          <div className="flex flex-col gap-1.5">
+            <span className="opacity-80 inline-flex items-center">
+              <SlLocationPin
+                style={{ width: "1em", height: "1em" }}
+                className="mr-1"
+              />{" "}
+              Castanet-Tolosan (31)
+            </span>
+            <span className="flex items-center text-2xl font-bold font-maven">
+              Maxime
+            </span>
+            <div className="flex space-x-2 mt-2">
+              <span className="bg-accent px-2.5 py-0.5 rounded-sm">
+                Pianiste
+              </span>
+              <span className="bg-accent px-2.5 py-0.5 rounded-sm">
+                Guitariste
+              </span>
+              <span className="bg-accent px-2.5 py-0.5 rounded-sm">
+                Chanteur
+              </span>
+              <span className="bg-accent px-2.5 py-0.5 rounded-sm">+8</span>
+            </div>
+          </div>
+        </div>
+        <div className="space-x-2">
+          <Button variant={"outline"}>Modifier mon profil</Button>
+          {/* <Button className="bg-[#141b27]" variant={"outline"}>
+            Contacter Maxime
+          </Button>
+          <Button className="bg-[#141b27]" variant={"outline"}>
+            Partager le profil
+          </Button> */}
+        </div>
+      </div>
+      <div className="flex gap-8">
+        <div className="w-1/2 space-y-2">
+          <h3 className="text-lg font-semibold">À propos</h3>
+          <p className="opacity-90">
+            Musicien passionné, je suis à la recherche d'un groupe de musique
+            pour faire quelques jam occasionnellement. Je joue du jazz, rock et
+            un peu d'indé !
+          </p>
+        </div>
+        <div className="w-1/2 space-y-2">
+          <h3 className="text-lg font-semibold">Style musical</h3>
+          <div className="flex space-x-2">
+            <span className="bg-secondary px-2.5 py-0.5 rounded-sm">Rock</span>
+            <span className="bg-secondary px-2.5 py-0.5 rounded-sm">Indé</span>
           </div>
         </div>
       </div>
-      <div className="flex justify-end pr-6 mt-2">
-        <button
-          onClick={() =>
-            apiClient.get("/user/").then((res) => console.log(res))
-          }
-          className="rounded-full w-12 h-12 hover:bg-slate-800 flex items-center justify-center cursor-pointer"
-        >
-          <SlPencil className="text-xl" />
-        </button>
-      </div>
-      <div>
-        <div>
-          <div className="flex items-center mt-7 text-2xl font-bold">
-            Maxime Schellenberger
+      <div className="flex gap-8">
+        <div className="w-1/2 space-y-2">
+          <h3 className="text-lg font-semibold">Matériel</h3>
+          <div className="flex flex-col opacity-90">
+            <span>Fender blues deluxe</span>
+            <span>fender stratocaster</span>
+            <span>Fender blues deluxe</span>
+            <span>fender stratocaster</span>
           </div>
-          <p className="w-7/12 flex opacity-90">
-            Guitariste, compositeur, arrangeur, professeur de musique.
-          </p>
+        </div>
+        <div className="w-1/2 space-y-2">
+          <h3 className="text-lg font-semibold inline-flex items-center">
+            <RiUserHeartLine
+              style={{ width: "20px", height: "20px" }}
+              className="mr-2"
+            />{" "}
+            Artistes favoris
+          </h3>
+          <div className="flex space-x-2 opacity-90">
+            FKJ, Jimi Hendrix, Red Hot Chili Peppers
+          </div>
         </div>
       </div>
     </div>

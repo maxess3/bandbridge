@@ -10,17 +10,29 @@ function Pagination() {
           <span className="font-medium">3000</span> annonces.
         </p>
       </div>
-      <div className="flex space-x-1">
+      <div className="flex space-x-2">
         <Button className="hidden bg-accent border text-foreground">
-          <IoChevronBackOutline />
+          Précédent <IoChevronBackOutline />
         </Button>
-        <Button variant="outline">1</Button>
-        <Button variant="ghost">2</Button>
-        <Button variant="ghost">3</Button>
-        <Button variant="ghost">4</Button>
-        <Button variant="ghost">5</Button>
-        <Button variant="ghost">...</Button>
-        <Button variant="ghost" className="font-semibold">
+        <Button className="font-semibold" variant="outline">
+          1
+        </Button>
+        <Button className="font-semibold" variant="ghost">
+          2
+        </Button>
+        <Button className="font-semibold" variant="ghost">
+          3
+        </Button>
+        <Button className="font-semibold" variant="ghost">
+          4
+        </Button>
+        <Button className="font-semibold" variant="ghost">
+          5
+        </Button>
+        <Button className="font-semibold" variant="ghost">
+          ...
+        </Button>
+        <Button className="font-semibold" variant="ghost">
           Suivant <IoChevronForwardOutline />
         </Button>
       </div>
