@@ -48,8 +48,8 @@ export default async function RootLayout({
               <Toaster position="top-right" />
               <NextTopLoader color="#0c52df" showSpinner={false} height={3} />
               <Navbar />
-              <div className="px-10">
-                <main className="container mx-auto flex-grow">{children}</main>
+              <div className="px-8">
+                <main className="max-w-7xl mx-auto flex-grow">{children}</main>
               </div>
               <Footer />
             </Providers>

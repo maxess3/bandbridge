@@ -11,8 +11,8 @@ import { buttonVariants } from "@/components/ui/button";
 function Footer() {
   return (
     <footer className="mt-12">
-      <div className="flex justify-center px-10">
-        <div className="container">
+      <div className="flex justify-center">
+        <div className="w-full max-w-7xl">
           <div className="flex justify-between w-full border-b border-secondary pb-10">
             <div>
               <div className="flex flex-col gap-y-4">
@@ -137,7 +137,7 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="w-full py-0.5 bg-primary"></div>
+      <div className="w-full py-0.5 bg-gradient-to-r from-[#f97316] via-[#e11d48] to-[#3e45cb]"></div>
     </footer>
   );
 }

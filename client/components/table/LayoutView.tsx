@@ -20,7 +20,7 @@ function LayoutView({
           variant="ghost"
           size="sm"
           className={`rounded-none w-full ${
-            tableLayoutMode === "grid" ? "bg-accent" : ""
+            tableLayoutMode === "grid" ? "bg-secondary" : ""
           }`}
         >
           <IoMdGrid className="opacity-80" />
@@ -30,7 +30,7 @@ function LayoutView({
           size="sm"
           variant="ghost"
           className={`rounded-none w-full ${
-            tableLayoutMode === "list" ? "bg-accent" : ""
+            tableLayoutMode === "list" ? "bg-secondary" : ""
           }`}
         >
           <IoList />

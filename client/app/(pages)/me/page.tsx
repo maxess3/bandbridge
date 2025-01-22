@@ -4,6 +4,9 @@ import Image from "next/image";
 
 import { SlLocationPin } from "react-icons/sl";
 import { RiUserHeartLine } from "react-icons/ri";
+import { IoMusicalNotesOutline } from "react-icons/io5";
+import { AiOutlineUser } from "react-icons/ai";
+import { BsSuitcase } from "react-icons/bs";
 
 import { Button } from "@/components/ui/button";
 
@@ -60,7 +63,13 @@ export default function Me() {
       </div>
       <div className="flex gap-8">
         <div className="w-1/2 space-y-2">
-          <h3 className="text-lg font-semibold">À propos</h3>
+          <h3 className="text-lg font-semibold inline-flex items-center">
+            <AiOutlineUser
+              style={{ width: "21px", height: "21px" }}
+              className="mr-1.5 relative bottom-0.5"
+            />
+            À propos
+          </h3>
           <p className="opacity-90">
             Musicien passionné, je suis à la recherche d'un groupe de musique
             pour faire quelques jam occasionnellement. Je joue du jazz, rock et
@@ -68,7 +77,13 @@ export default function Me() {
           </p>
         </div>
         <div className="w-1/2 space-y-2">
-          <h3 className="text-lg font-semibold">Style musical</h3>
+          <h3 className="text-lg font-semibold inline-flex items-center">
+            <IoMusicalNotesOutline
+              style={{ width: "20px", height: "20px" }}
+              className="mr-2"
+            />
+            Style musical
+          </h3>
           <div className="flex space-x-2">
             <span className="bg-secondary px-2.5 py-0.5 rounded-sm">Rock</span>
             <span className="bg-secondary px-2.5 py-0.5 rounded-sm">Indé</span>
@@ -77,7 +92,13 @@ export default function Me() {
       </div>
       <div className="flex gap-8">
         <div className="w-1/2 space-y-2">
-          <h3 className="text-lg font-semibold">Matériel</h3>
+          <h3 className="text-lg font-semibold inline-flex items-center">
+            <BsSuitcase
+              style={{ width: "20px", height: "20px" }}
+              className="mr-1.5"
+            />
+            Matériel
+          </h3>
           <div className="flex flex-col opacity-90">
             <span>Fender blues deluxe</span>
             <span>fender stratocaster</span>
@@ -90,7 +111,7 @@ export default function Me() {
             <RiUserHeartLine
               style={{ width: "20px", height: "20px" }}
               className="mr-2"
-            />{" "}
+            />
             Artistes favoris
           </h3>
           <div className="flex space-x-2 opacity-90">

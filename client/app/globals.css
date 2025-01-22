@@ -10,17 +10,17 @@ body {
   :root {
     --background: 218 32% 99%;
     --foreground: 218 5% 10%;
-    --card: 218 32% 90%;
+    --card: 220 100% 95%;
     --card-foreground: 218 5% 15%;
     --popover: 218 32% 99%;
     --popover-foreground: 218 99% 10%;
     --primary: 218 90% 46%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 218 30% 85%;
+    --secondary: 218 0% 80%;
     --secondary-foreground: 0 0% 0%;
     --muted: 181 30% 85%;
     --muted-foreground: 218 5% 10%;
-    --accent: 220 21% 93%;
+    --accent: 220 0% 92%;
     --accent-foreground: 220 5% 15%;
     --destructive: 0 50% 31%;
     --destructive-foreground: 218 5% 90%;
@@ -60,4 +60,23 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  .dark .custom-gradient-border {
+    background: linear-gradient(#0e121b 0 0) padding-box,
+      linear-gradient(grey 0 0) border-box;
+  }
+
+  .dark .custom-gradient-border:focus {
+    background: linear-gradient(white 0 0) padding-box,
+      linear-gradient(to right, #f00, #00f) border-box;
+  }
 }
+
+/* .custom-gradient-border {
+  background: linear-gradient(#0e121b 0 0) padding-box,
+    linear-gradient(grey 0 0) border-box;
+}
+
+.custom-gradient-border:focus {
+  background: linear-gradient(white 0 0) padding-box,
+    linear-gradient(to right, #f00, #00f) border-box;
+} */
