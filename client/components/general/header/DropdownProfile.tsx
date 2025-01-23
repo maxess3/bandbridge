@@ -52,12 +52,12 @@ export const DropdownProfile = () => {
           className="cursor-pointer filter grayscale"
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 mt-[8px] rounded-t-none border-none rounded-b-md">
+      <DropdownMenuContent className="w-56 mt-[7px] border-secondary">
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => router.push("/me")}>
             <FaRegUser
               style={{ width: "1.4em", height: "1.4em" }}
-              className="mr-1"
+              className="mr-0.5"
             />
             <div className="flex flex-col">
               <span className="text-md">Mon profil</span>
@@ -66,32 +66,24 @@ export const DropdownProfile = () => {
               </span>
             </div>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator className="bg-secondary" />
           <DropdownMenuItem
             className="flex justify-between"
             onClick={(e) => handleClick(e)}
           >
-            <div className="flex gap-x-3.5">
-              <FiMoon style={{ width: "1.4em", height: "1.4em" }} />
+            <div className="flex gap-x-2.5 items-center">
+              <FiMoon style={{ width: "1.25em", height: "1.25em" }} />
               Mode sombre
             </div>
             <Switch checked={isChecked} />
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push("/me")}>
-            <RiBugLine
-              style={{ width: "1.6em", height: "1.6em" }}
-              className="mr-0.5"
-            />
+            <RiBugLine style={{ width: "1.4em", height: "1.4em" }} />
             Signaler un bug
           </DropdownMenuItem>
-          <DropdownMenuItem
-            className="dark:text-red-600 text-red-700"
-            onClick={() => signOut()}
-          >
-            <LuLogOut
-              style={{ width: "1.4em", height: "1.4em" }}
-              className="mr-1.5"
-            />
+          <DropdownMenuSeparator className="bg-secondary" />
+          <DropdownMenuItem onClick={() => signOut()}>
+            <LuLogOut style={{ width: "1.25em", height: "1.25em" }} />
             Se déconnecter
           </DropdownMenuItem>
         </DropdownMenuGroup>

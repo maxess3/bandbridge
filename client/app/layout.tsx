@@ -47,11 +47,11 @@ export default async function RootLayout({
             <Providers>
               <Toaster position="top-right" />
               <NextTopLoader color="#0c52df" showSpinner={false} height={3} />
-              <Navbar />
               <div className="px-8">
+                <Navbar />
                 <main className="max-w-7xl mx-auto flex-grow">{children}</main>
+                <Footer />
               </div>
-              <Footer />
             </Providers>
           </ReactQueryClientProvider>
         </AuthSessionProviders>

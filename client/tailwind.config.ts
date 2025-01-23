@@ -10,6 +10,16 @@ export default {
   ],
   theme: {
     extend: {
+      keyframes: {
+        buttonpop: {
+          "0%": { transform: "scale(0.9)" },
+          "40%": { transform: "scale(1.02)" },
+          "100%": { transform: "scale(1)" },
+        },
+      },
+      animation: {
+        buttonpop: "buttonpop 0.25s ease-out",
+      },
       fontFamily: {
         maven: "var(--font-maven)",
       },
@@ -35,6 +45,7 @@ export default {
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
+          background: "hsl(var(--muted-background))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",

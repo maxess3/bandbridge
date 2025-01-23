@@ -7,7 +7,7 @@ import { MenuLinks } from "@/components/general/header/MenuLinks";
 
 async function Navbar() {
   return (
-    <nav className="font-host-grotesk flex items-center justify-center w-full py-3 border-b border-secondary h-[60px] max-w-7xl mx-auto px-8">
+    <nav className="font-host-grotesk flex items-center justify-center w-full py-3 border-b border-secondary h-[60px] max-w-7xl mx-auto">
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center gap-x-2.5">
           <Image src={Logo} alt="banshake logo" width={36} height={36} />

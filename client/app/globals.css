@@ -9,6 +9,7 @@ body {
 @layer base {
   :root {
     --background: 218 32% 99%;
+    --muted-background: 218 10% 95%;
     --foreground: 218 5% 10%;
     --card: 220 100% 95%;
     --card-foreground: 218 5% 15%;
@@ -19,7 +20,7 @@ body {
     --secondary: 218 0% 80%;
     --secondary-foreground: 0 0% 0%;
     --muted: 181 30% 85%;
-    --muted-foreground: 218 5% 10%;
+    --muted-foreground: 218 10% 95%;
     --accent: 220 0% 92%;
     --accent-foreground: 220 5% 15%;
     --destructive: 0 50% 31%;
@@ -31,17 +32,18 @@ body {
   }
   .dark {
     --background: 218 32% 8%;
+    --muted-background: 218 35% 11%;
     --foreground: 218 5% 90%;
     --card: 218 32% 10%;
     --card-foreground: 218 5% 90%;
-    --popover: 218 32% 5%;
+    --popover: 218 32% 6%;
     --popover-foreground: 218 5% 90%;
     --primary: 218 90% 46%;
     --primary-foreground: 0 0% 100%;
     --secondary: 218 30% 20%;
     --secondary-foreground: 0 0% 100%;
     --muted: 181 30% 25%;
-    --muted-foreground: 218 5% 60%;
+    --muted-foreground: 218 35% 11%;
     --accent: 218 35% 15%;
     --accent-foreground: 218 5% 90%;
     --destructive: 0 50% 31%;
@@ -60,23 +62,20 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  .custom-gradient-border {
+    background: linear-gradient(#fcfcfd 0 0) padding-box,
+      linear-gradient(#7d8594 0 0) border-box !important;
+  }
+  .custom-gradient-border:focus {
+    background: linear-gradient(#fcfcfd 0 0) padding-box,
+      linear-gradient(to right, #f97316, #e11d48, #3e45cb) border-box !important;
+  }
   .dark .custom-gradient-border {
     background: linear-gradient(#0e121b 0 0) padding-box,
-      linear-gradient(grey 0 0) border-box;
+      linear-gradient(#374967 0 0) border-box !important;
   }
-
   .dark .custom-gradient-border:focus {
-    background: linear-gradient(white 0 0) padding-box,
-      linear-gradient(to right, #f00, #00f) border-box;
+    background: linear-gradient(#0e121b 0 0) padding-box,
+      linear-gradient(to right, #f97316, #e11d48, #3e45cb) border-box !important;
   }
 }
-
-/* .custom-gradient-border {
-  background: linear-gradient(#0e121b 0 0) padding-box,
-    linear-gradient(grey 0 0) border-box;
-}
-
-.custom-gradient-border:focus {
-  background: linear-gradient(white 0 0) padding-box,
-    linear-gradient(to right, #f00, #00f) border-box;
-} */
