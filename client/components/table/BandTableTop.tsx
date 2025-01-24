@@ -1,3 +1,7 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { IoChevronDown } from "react-icons/io5";
 
@@ -14,6 +18,21 @@ function BandTableTop({
   tableLayoutMode,
   setTableLayoutMode,
 }: BandTableTopProps) {
+  const [inputVal, setInputVal] = useState("");
+  const [gradientInput, setGradientInput] = useState(false);
+
+  useEffect(() => {
+    if (inputVal.length > 0) {
+      setGradientInput(true);
+    } else {
+      setGradientInput(false);
+    }
+  }, [inputVal, gradientInput]);
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputVal(e.target.value);
+  };
+
   return (
     <div className="flex items-center justify-between space-x-2">
       <div className="flex space-x-2">
@@ -22,7 +41,13 @@ function BandTableTop({
             <HiOutlineLocationMarker className="text-lg" />
           </span>
           <Input
-            className="custom-gradient-border focus:border-2 focus:px-[35px] focus-visible:ring-0 font-medium placeholder:font-normal px-9 flex h-10 w-full rounded-md border border-transparent py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            value={inputVal}
+            onChange={handleChangeInput}
+            className={`${
+              gradientInput
+                ? "custom-gradient-border border-transparent !border-2"
+                : "custom-gradient-border-focus focus:border-2 focus:px-[35px]"
+            } focus:border-transparent focus-visible:ring-0 font-medium placeholder:font-normal px-9 flex h-10 w-full rounded-md border py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50`}
             placeholder="Choisir une localisation..."
           />
           <span className="absolute -translate-y-1/2 top-1/2 right-[10px] z-50">

@@ -14,7 +14,7 @@ export const MenuLinks = () => {
           href={"/"}
           className={`inline-flex items-center ${
             currentPath === "/"
-              ? "font-bold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
+              ? "font-bold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-border"
               : "font-medium opacity-85"
           }`}
         >
@@ -24,7 +24,7 @@ export const MenuLinks = () => {
           href={"/ads"}
           className={`inline-flex items-center ${
             currentPath === "/ads"
-              ? "font-bold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-primary"
+              ? "font-bold opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-10 before:bg-border"
               : "font-medium opacity-85"
           }`}
         >

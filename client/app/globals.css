@@ -11,17 +11,17 @@ body {
     --background: 218 32% 99%;
     --muted-background: 218 30% 97%;
     --foreground: 218 5% 10%;
-    --card: 220 100% 95%;
+    --card: 218 32% 97%;
     --card-foreground: 218 5% 15%;
     --popover: 218 32% 99%;
     --popover-foreground: 218 99% 10%;
-    --primary: 218 90% 46%;
+    --primary: 218 80% 46%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 218 30% 91%;
+    --secondary: 218 30% 89%;
     --secondary-foreground: 0 0% 0%;
     --muted: 181 30% 85%;
-    --muted-foreground: 218 10% 95%;
-    --accent: 218 30% 92%;
+    --muted-foreground: 218 5% 10%;
+    --accent: 218 30% 93%;
     --accent-foreground: 220 5% 15%;
     --destructive: 0 50% 31%;
     --destructive-foreground: 218 5% 90%;
@@ -43,7 +43,7 @@ body {
     --secondary: 218 30% 20%;
     --secondary-foreground: 0 0% 100%;
     --muted: 181 30% 25%;
-    --muted-foreground: 218 35% 11%;
+    --muted-foreground: 218 5% 60%;
     --accent: 218 35% 15%;
     --accent-foreground: 218 5% 90%;
     --destructive: 0 50% 31%;
@@ -62,19 +62,27 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-  .custom-gradient-border {
-    background: linear-gradient(#fcfcfd 0 0) padding-box,
-      linear-gradient(#7d8594 0 0) border-box !important;
+
+  .custom-bg-gradient {
+    @apply bg-gradient-to-r from-[#f97316] via-[#e11d48] to-[#3e45cb];
   }
-  .custom-gradient-border:focus {
+
+  .custom-gradient-border {
     background: linear-gradient(#fcfcfd 0 0) padding-box,
       linear-gradient(to right, #f97316, #e11d48, #3e45cb) border-box !important;
   }
+
+  .custom-gradient-border-focus:focus {
+    background: linear-gradient(#fcfcfd 0 0) padding-box,
+      linear-gradient(to right, #f97316, #e11d48, #3e45cb) border-box !important;
+  }
+
   .dark .custom-gradient-border {
     background: linear-gradient(#0e121b 0 0) padding-box,
-      linear-gradient(#374967 0 0) border-box !important;
+      linear-gradient(to right, #f97316, #e11d48, #3e45cb) border-box !important;
   }
-  .dark .custom-gradient-border:focus {
+
+  .dark .custom-gradient-border-focus:focus {
     background: linear-gradient(#0e121b 0 0) padding-box,
       linear-gradient(to right, #f97316, #e11d48, #3e45cb) border-box !important;
   }

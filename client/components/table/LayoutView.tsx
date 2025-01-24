@@ -14,7 +14,7 @@ function LayoutView({
 }: BandTableTopProps) {
   return (
     <div className="flex">
-      <div className="border border-[#7d8594] dark:border-input flex rounded-md overflow-hidden">
+      <div className="border border-input flex rounded-md overflow-hidden">
         <Button
           onClick={() => setTableLayoutMode("grid")}
           variant="ghost"

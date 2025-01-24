@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 
-import { SlLocationPin } from "react-icons/sl";
 import { RiUserHeartLine } from "react-icons/ri";
 import { IoMusicalNotesOutline } from "react-icons/io5";
 import { AiOutlineUser } from "react-icons/ai";

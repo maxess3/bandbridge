@@ -23,7 +23,7 @@ function Footer() {
                   </span>
                 </h2>
                 <p className="text-lg">
-                  <span className="font-semibold">readyband</span>, 2025.
+                  <span className="font-bold">directband</span>, 2025.
                 </p>
               </div>
             </div>
@@ -94,7 +94,7 @@ function Footer() {
           </div>
           <div className="py-4 flex justify-between items-center">
             <div>
-              © 2025 <span className="font-extrabold">🇫🇷 readyband</span>. Tous
+              © 2025 <span className="font-extrabold">🇫🇷 directband</span>. Tous
               droits réservés.
             </div>
             <div className="flex space-x-6 items-center">
@@ -135,7 +135,6 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="w-full py-0.5 bg-gradient-to-r from-[#f97316] via-[#e11d48] to-[#3e45cb]"></div>
     </footer>
   );
 }

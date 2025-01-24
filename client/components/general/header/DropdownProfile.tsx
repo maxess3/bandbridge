@@ -16,12 +16,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 
 import { FiMoon } from "react-icons/fi";
 import { LuLogOut } from "react-icons/lu";
 import { LuSettings } from "react-icons/lu";
-import { FaRegUser } from "react-icons/fa6";
 import { RiBugLine } from "react-icons/ri";
 
 export const DropdownProfile = () => {

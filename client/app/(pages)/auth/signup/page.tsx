@@ -134,7 +134,9 @@ export default function Signup() {
                 <div className="grid gap-2">
                   <Label htmlFor="email">Email</Label>
                   <Input
-                    className={`${errors.email && "border-[#ff4444]"}`}
+                    className={`${
+                      errors.email && "border-[#ff4444]"
+                    } bg-transparent`}
                     id="email"
                     type="email"
                     placeholder="m@exemple.com"
@@ -149,7 +151,9 @@ export default function Signup() {
                 <div className="grid gap-2">
                   <Label htmlFor="password">Mot de passe</Label>
                   <Input
-                    className={`${errors.password && "border-[#ff4444]"}`}
+                    className={`${
+                      errors.password && "border-[#ff4444]"
+                    } bg-transparent`}
                     id="password"
                     type="password"
                     {...register("password")}
@@ -167,7 +171,9 @@ export default function Signup() {
                 <div className="grid gap-2">
                   <Label htmlFor="firstName">Prénom</Label>
                   <Input
-                    className={`${errors.firstName && "border-[#ff4444]"}`}
+                    className={`${
+                      errors.firstName && "border-[#ff4444]"
+                    } bg-transparent`}
                     id="firstName"
                     type="text"
                     placeholder="John"
@@ -186,7 +192,7 @@ export default function Signup() {
                 <Button
                   size="lg"
                   type="submit"
-                  className="w-full text-white font-medium mt-4"
+                  className="w-full text-white font-semibold mt-4"
                 >
                   Accepter et s'inscrire
                 </Button>
@@ -223,7 +229,7 @@ export default function Signup() {
                 </Button>
               )}
               {currentStep < 2 && (
-                <div className="mt-2 bg-secondary text-sm py-4 px-1 rounded-sm text-center">
+                <div className="mt-2 bg-secondary text-sm py-4 px-2 rounded-sm text-center">
                   En continuant, vous acceptez les
                   <Link href="" className="font-semibold hover:underline">
                     {" "}

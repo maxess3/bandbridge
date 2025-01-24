@@ -15,7 +15,7 @@ async function Navbar() {
             href={"/"}
             className="font-host-grotesk text-2xl font-bold bg-gradient-to-l"
           >
-            readyband
+            directband
           </Link>
         </div>
         <MenuLinks />

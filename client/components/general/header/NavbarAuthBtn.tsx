@@ -13,7 +13,7 @@ export const NavbarAuthBtn = async () => {
   if (session?.user)
     return (
       <div className="flex items-center text-sm relative gap-x-4">
-        <Button className="text-white font-semibold bg-gradient-to-r from-[#f97316] via-[#e11d48] to-[#3e45cb]">
+        <Button variant="primary" className="text-white font-semibold">
           <FiPlusCircle />
           Créer une annonce
         </Button>
@@ -30,7 +30,7 @@ export const NavbarAuthBtn = async () => {
         Se connecter
       </Link>
       <Link
-        className="hover:bg-primary/90 bg-primary text-white px-4 py-2 h-9 rounded-md inline-flex items-center font-medium"
+        className="hover:bg-primary/90 bg-primary text-white px-4 py-2 h-9 rounded-md inline-flex items-center font-semibold"
         href={"/auth/signup"}
       >
         S'inscrire
