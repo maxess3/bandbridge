@@ -19,7 +19,10 @@ export function DialogPopup() {
           Éditer mon profil
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        className="sm:max-w-[600px]"
+      >
         <DialogHeader>
           <DialogTitle>Profil</DialogTitle>
           <DialogDescription>
@@ -29,18 +32,13 @@ export function DialogPopup() {
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Name
+              Prénom
             </Label>
-            <Input
-              id="name"
-              value="Pedro Duarte"
-              className="col-span-3"
-              readOnly
-            />
+            <Input id="name" value="" className="col-span-3" readOnly />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="username" className="text-right">
-              Username
+              Nom d'utilisateur
             </Label>
             <Input
               id="username"

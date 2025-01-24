@@ -7,16 +7,17 @@ import { RiUserHeartLine } from "react-icons/ri";
 import { IoMusicalNotesOutline } from "react-icons/io5";
 import { AiOutlineUser } from "react-icons/ai";
 import { BsSuitcase } from "react-icons/bs";
+import { MdVerified } from "react-icons/md";
 
 import { DialogPopup } from "@/components/DialogPopup";
 
 export default function Me() {
   return (
     <div className="mb-40 space-y-2">
-      <div className="flex justify-between items-center p-8 bg-muted-background rounded-b-xl">
-        <div className="flex items-center space-x-4">
+      <div className="flex justify-between items-center px-8 py-4 bg-muted-background rounded-b-xl">
+        <div className="flex items-center space-x-3.5">
           <div>
-            <span className="w-36 h-36 flex rounded-full overflow-hidden relative border-2 border-secondary">
+            <span className="w-32 h-32 flex rounded-full overflow-hidden relative border-2 border-secondary">
               <Image
                 width={300}
                 height={300}
@@ -26,27 +27,23 @@ export default function Me() {
               />
             </span>
           </div>
-          <div className="flex flex-col gap-1.5">
-            <span className="opacity-80 inline-flex items-center">
-              <SlLocationPin
-                style={{ width: "1em", height: "1em" }}
-                className="mr-1"
-              />
-              Castanet-Tolosan (31)
-            </span>
-            <span className="flex items-center text-2xl font-bold">Maxime</span>
-            <div className="flex space-x-2 mt-2 text-sm font-bold">
-              <span className="bg-secondary px-2.5 py-1 rounded-sm">
-                Pianiste
+          <div className="flex flex-col">
+            {/* <div className="flex space-x-2 text-sm font-bold mt-2">
+              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">
+                Rock
               </span>
-              <span className="bg-secondary px-2.5 py-1 rounded-sm">
+              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">
                 Guitariste
               </span>
-              <span className="bg-secondary px-2.5 py-1 rounded-sm">
+              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">
                 Chanteur
               </span>
-              <span className="bg-secondary px-2.5 py-1 rounded-sm">+8</span>
-            </div>
+              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">+8</span>
+            </div> */}
+            <span className="flex items-center text-2xl font-bold">
+              Bastien
+              <MdVerified className="ml-1.5 text-[#2563eb]" />
+            </span>
           </div>
         </div>
         <div className="space-x-2">

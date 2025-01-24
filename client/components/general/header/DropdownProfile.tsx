@@ -3,11 +3,10 @@
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
-import Image from "next/image";
-import Logo from "@/public/bandbridge.png";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import {
   DropdownMenu,
@@ -17,9 +16,11 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 import { FiMoon } from "react-icons/fi";
 import { LuLogOut } from "react-icons/lu";
+import { LuSettings } from "react-icons/lu";
 import { FaRegUser } from "react-icons/fa6";
 import { RiBugLine } from "react-icons/ri";
 
@@ -44,26 +45,21 @@ export const DropdownProfile = () => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Image
-          src={Logo}
-          width={36}
-          height={36}
-          alt="User profile"
-          className="cursor-pointer filter grayscale"
-        />
+        <Avatar className="w-9 h-9 cursor-pointer">
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 mt-[7px] border-secondary">
+      <DropdownMenuContent className="w-60 mt-[7px] border-secondary">
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => router.push("/me")}>
-            <FaRegUser
-              style={{ width: "1.4em", height: "1.4em" }}
-              className="mr-0.5"
-            />
-            <div className="flex flex-col">
-              <span className="text-md">Mon profil</span>
-              <span className="text-xs opacity-80">
-                {session?.user.firstName}
-              </span>
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col ml-0.5">
+              <span className="text-md">{session?.user.firstName}</span>
+              <span className="text-xs opacity-80">{session?.user.email}</span>
             </div>
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-secondary" />
@@ -80,6 +76,10 @@ export const DropdownProfile = () => {
           <DropdownMenuItem onClick={() => router.push("/me")}>
             <RiBugLine style={{ width: "1.4em", height: "1.4em" }} />
             Signaler un bug
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push("/me")}>
+            <LuSettings style={{ width: "1.35em", height: "1.35em" }} />
+            Paramètres
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-secondary" />
           <DropdownMenuItem onClick={() => signOut()}>

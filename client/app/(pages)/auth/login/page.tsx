@@ -73,7 +73,9 @@ export default function Login() {
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
-                className={`${errors.email && "border-[#ff4444]"}`}
+                className={`${
+                  errors.email && "border-[#ff4444]"
+                } bg-transparent`}
                 id="email"
                 type="email"
                 placeholder="m@exemple.com"
@@ -104,7 +106,7 @@ export default function Login() {
                 className={`${
                   errors.password &&
                   "border-[#ff4444] focus-visible:ring-transparent"
-                }`}
+                } bg-transparent`}
                 id="password"
                 type="password"
                 onKeyDown={() =>

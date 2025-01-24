@@ -111,10 +111,7 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
       <table className="w-full text-left border border-secondary">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr
-              key={headerGroup.id}
-              className="dark:bg-secondary bg-secondary/50"
-            >
+            <tr key={headerGroup.id} className="bg-secondary">
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}

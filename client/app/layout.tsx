@@ -28,8 +28,8 @@ const DM = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Bandshake",
-  description: "Connnecting talent, creating bands",
+  title: "readyband",
+  description: "Faites des rencontres et vivez la scène.",
 };
 
 export default async function RootLayout({
