@@ -4,8 +4,11 @@ import { DATA } from "../../app/data";
 
 import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
+
 import { IoMdMusicalNotes } from "react-icons/io";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
+import { FaRegBookmark } from "react-icons/fa";
 
 import {
   createColumnHelper,
@@ -164,6 +167,14 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </div>
             ))}
+            <div className="flex gap-x-2 mt-4">
+              <Button className="w-full font-semibold text-sm uppercase">
+                Voir l'annonce
+              </Button>
+              <Button className="w-14 bg-transparent" variant="outline">
+                <FaRegBookmark />
+              </Button>
+            </div>
           </div>
         ))}
       </div>

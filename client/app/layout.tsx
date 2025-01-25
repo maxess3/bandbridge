@@ -46,13 +46,7 @@ export default async function RootLayout({
           <ReactQueryClientProvider>
             <Providers>
               <Toaster position="top-right" />
-              <NextTopLoader
-                template='<div class="bar !bg-gradient-to-r !from-[#f97316] !via-[#e11d48] !to-[#3e45cb];" role="bar"><div class="peg !bg-gradient-to-r !from-[#f97316] !via-[#e11d48] !to-[#3e45cb];"></div></div> 
-  <div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
-                color="transparent"
-                showSpinner={false}
-                height={3}
-              />
+              <NextTopLoader color="red" showSpinner={false} height={3} />
               <div className="px-8">
                 <Navbar />
                 <main className="max-w-7xl mx-auto flex-grow">{children}</main>

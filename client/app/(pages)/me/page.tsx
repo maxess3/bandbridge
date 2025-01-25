@@ -12,7 +12,7 @@ import { DialogPopup } from "@/components/DialogPopup";
 
 export default function Me() {
   return (
-    <div className="mb-40 space-y-2">
+    <div className="mb-32 space-y-2">
       <div className="flex justify-between items-center px-8 py-4 bg-muted-background rounded-b-xl">
         <div className="flex items-center space-x-3.5">
           <div>
@@ -26,95 +26,96 @@ export default function Me() {
               />
             </span>
           </div>
-          <div className="flex flex-col">
-            {/* <div className="flex space-x-2 text-sm font-bold mt-2">
-              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">
-                Rock
-              </span>
-              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">
-                Guitariste
-              </span>
-              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">
-                Chanteur
-              </span>
-              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">+8</span>
-            </div> */}
+          <div className="flex flex-col space-y-0.5">
             <span className="flex items-center text-2xl font-bold">
-              Bastien
+              Maxime
               <MdVerified className="ml-1.5 text-[#2563eb]" />
+            </span>
+            <span className="opacity-90">
+              Guitariste recherche un groupe de musique
             </span>
           </div>
         </div>
         <div className="space-x-2">
           <DialogPopup />
-          {/* <Button className="bg-[#141b27]" variant={"outline"}>
-            Contacter Maxime
-          </Button>
-          <Button className="bg-[#141b27]" variant={"outline"}>
-            Partager le profil
-          </Button> */}
         </div>
       </div>
-      <div className="bg-muted-background flex flex-col p-8 rounded-xl gap-y-12">
-        <div className="flex gap-8">
-          <div className="w-1/2 space-y-2">
-            <h3 className="text-lg font-semibold inline-flex items-center">
-              <AiOutlineUser
-                style={{ width: "21px", height: "21px" }}
-                className="mr-1.5 relative bottom-0.5"
-              />
-              À propos
-            </h3>
-            <p className="opacity-90">
-              Musicien passionné, je suis à la recherche d'un groupe de musique
-              pour faire quelques jam occasionnellement. Je joue du jazz, rock
-              et un peu d'indé !
-            </p>
+      <div className="bg-muted-background flex flex-col p-8 rounded-xl">
+        <div className="grid grid-cols-2 gap-x-8">
+          <div className="space-y-2">
+            <div className="text-2xl">
+              <h2 className="font-semibold">Infos</h2>
+            </div>
+            <div>
+              <p className="opacity-90">
+                Musicien passionné, je suis à la recherche d'un groupe de
+                musique pour faire quelques jam occasionnellement. Je joue du
+                jazz, rock et un peu d'indé ! Musicien passionné, je suis à la
+                recherche d'un groupe de musique pour faire quelques jam
+                occasionnellement. Je joue du jazz, rock et un peu d'indé !
+              </p>
+            </div>
           </div>
-          <div className="w-1/2 space-y-2">
-            <h3 className="text-lg font-semibold inline-flex items-center">
-              <IoMusicalNotesOutline
-                style={{ width: "20px", height: "20px" }}
-                className="mr-2"
-              />
-              Style musical
-            </h3>
-            <div className="flex space-x-2 text-sm font-bold">
-              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">
+          <div className="space-y-2">
+            <div className="text-2xl">
+              <h2 className="font-semibold">Style</h2>
+            </div>
+            <div className="flex flex-wrap">
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
                 Rock
               </span>
-              <span className="bg-secondary px-2.5 py-0.5 rounded-sm">
-                Indé
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Jazz
+              </span>
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Electro
+              </span>
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Metal
+              </span>
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Hip-Hop
               </span>
             </div>
           </div>
         </div>
-        <div className="flex gap-8">
-          <div className="w-1/2 space-y-2">
-            <h3 className="text-lg font-semibold inline-flex items-center">
-              <BsSuitcase
-                style={{ width: "20px", height: "20px" }}
-                className="mr-1.5"
-              />
-              Matériel
-            </h3>
-            <div className="flex flex-col opacity-90">
-              <span>Fender blues deluxe</span>
-              <span>fender stratocaster</span>
-              <span>Fender blues deluxe</span>
-              <span>fender stratocaster</span>
+      </div>
+      <div className="bg-muted-background flex flex-col p-8 rounded-xl">
+        <div className="grid grid-cols-2 gap-x-8">
+          <div className="space-y-2">
+            <div className="text-2xl">
+              <h2 className="font-semibold">Expérience</h2>
+            </div>
+            <div>
+              <p className="opacity-90">
+                Musicien passionné, je suis à la recherche d'un groupe de
+                musique pour faire quelques jam occasionnellement. Je joue du
+                jazz, rock et un peu d'indé ! Musicien passionné, je suis à la
+                recherche d'un groupe de musique pour faire quelques jam
+                occasionnellement. Je joue du jazz, rock et un peu d'indé !
+              </p>
             </div>
           </div>
-          <div className="w-1/2 space-y-2">
-            <h3 className="text-lg font-semibold inline-flex items-center">
-              <RiUserHeartLine
-                style={{ width: "20px", height: "20px" }}
-                className="mr-2"
-              />
-              Artistes favoris
-            </h3>
-            <div className="flex space-x-2 opacity-90">
-              FKJ, Jimi Hendrix, Red Hot Chili Peppers
+          <div className="space-y-2">
+            <div className="text-2xl">
+              <h2 className="font-semibold">Style</h2>
+            </div>
+            <div className="flex flex-wrap">
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Rock
+              </span>
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Jazz
+              </span>
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Electro
+              </span>
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Metal
+              </span>
+              <span className="text-sm bg-secondary px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Hip-Hop
+              </span>
             </div>
           </div>
         </div>

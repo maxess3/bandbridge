@@ -21,35 +21,70 @@ export function DialogPopup() {
       </DialogTrigger>
       <DialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className="sm:max-w-[600px]"
+        className="sm:max-w-4xl"
       >
         <DialogHeader>
-          <DialogTitle>Profil</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
+          <DialogTitle>
+            <div>
+              <h2 className="text-xl">Modifier le profil</h2>
+            </div>
+          </DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Prénom
-            </Label>
-            <Input id="name" value="" className="col-span-3" readOnly />
+        <div className="space-y-4 max-h-[600px] h-auto overflow-y-scroll p-6">
+          <h4 className="font-semibold text-2xl">Informations de base</h4>
+          <div className="space-y-1.5">
+            <Label htmlFor="name">Prénom</Label>
+            <Input id="name" className="col-span-3" />
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="space-y-1.5">
             <Label htmlFor="username" className="text-right">
               Nom d'utilisateur
             </Label>
-            <Input
-              id="username"
-              value="@peduarte"
-              className="col-span-3"
-              readOnly
-            />
+            <Input id="username" className="col-span-3" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="name">Prénom</Label>
+            <Input id="name" className="col-span-3" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="username" className="text-right">
+              Nom d'utilisateur
+            </Label>
+            <Input id="username" className="col-span-3" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="name">Prénom</Label>
+            <Input id="name" className="col-span-3" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="username" className="text-right">
+              Nom d'utilisateur
+            </Label>
+            <Input id="username" className="col-span-3" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="name">Prénom</Label>
+            <Input id="name" className="col-span-3" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="username" className="text-right">
+              Nom d'utilisateur
+            </Label>
+            <Input id="username" className="col-span-3" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="name">Prénom</Label>
+            <Input id="name" className="col-span-3" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="username" className="text-right">
+              Nom d'utilisateur
+            </Label>
+            <Input id="username" className="col-span-3" />
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="submit">Enregister</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
