@@ -153,7 +153,7 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
         {table.getRowModel().rows.map((row) => (
           <div
             key={row.id}
-            className="dark:bg-secondary/40 bg-secondary/20 rounded-lg p-4 flex flex-col gap-y-2"
+            className="bg-muted-background rounded-lg p-4 flex flex-col gap-y-2"
           >
             {row.getVisibleCells().map((cell) => (
               <div key={cell.id}>

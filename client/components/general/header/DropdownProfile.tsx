@@ -48,10 +48,12 @@ export const DropdownProfile = () => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Avatar className="w-9 h-9 cursor-pointer">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
+        <Button className="w-auto h-auto flex p-0 rounded-full">
+          <Avatar className="w-9 h-9 cursor-pointer">
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-60 mt-[7px] border-secondary">
         <DropdownMenuGroup>

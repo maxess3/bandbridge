@@ -9,15 +9,15 @@ body {
 @layer base {
   :root {
     --background: 218 30% 99%;
-    --muted-background: 200 30% 97%;
-    --foreground: 200 100% 10%;
+    --muted-background: 200 30% 96%;
+    --foreground: 218 100% 10%;
     --card: 200 30% 97%;
     --card-foreground: 218 5% 15%;
     --popover: 200 30% 99%;
     --popover-foreground: 218 99% 10%;
-    --primary: 218 50% 46%;
+    --primary: 218 35% 45%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 200 30% 89%;
+    --secondary: 200 30% 87%;
     --secondary-foreground: 0 0% 0%;
     --muted: 200 30% 85%;
     --muted-foreground: 218 5% 10%;
@@ -38,7 +38,7 @@ body {
     --card-foreground: 218 5% 90%;
     --popover: 218 32% 6%;
     --popover-foreground: 218 5% 90%;
-    --primary: 218 59% 46%;
+    --primary: 218 45% 35%;
     --primary-foreground: 0 0% 100%;
     --secondary: 218 30% 20%;
     --secondary-foreground: 0 0% 100%;
