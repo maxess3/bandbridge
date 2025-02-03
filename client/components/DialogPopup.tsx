@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -15,8 +14,8 @@ export function DialogPopup() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-transparent">
-          Éditer mon profil
+        <Button variant="outline" className="bg-transparent w-full">
+          Modifier le profil
         </Button>
       </DialogTrigger>
       <DialogContent

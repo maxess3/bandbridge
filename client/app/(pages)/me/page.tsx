@@ -2,18 +2,102 @@
 
 import Image from "next/image";
 
-import { RiUserHeartLine } from "react-icons/ri";
-import { IoMusicalNotesOutline } from "react-icons/io5";
-import { AiOutlineUser } from "react-icons/ai";
-import { BsSuitcase } from "react-icons/bs";
 import { MdVerified } from "react-icons/md";
 
 import { DialogPopup } from "@/components/DialogPopup";
 
 export default function Me() {
   return (
-    <div className="mb-32 space-y-2">
-      <div className="flex justify-between items-center px-8 py-4 bg-muted-background rounded-b-xl">
+    <div className="space-y-3 mb-[400px]">
+      <div className="grid grid-cols-12 gap-3 h-full">
+        <div className="col-span-3 flex flex-col items-center relative">
+          <div className="w-full p-6 sticky top-0 bg-muted-background rounded-lg">
+            <div className="flex flex-col items-center space-x-3.5">
+              <div>
+                <span className="w-32 h-32 flex rounded-full overflow-hidden relative border-2 border-secondary">
+                  <Image
+                    width={300}
+                    height={300}
+                    src="/profile.jpeg"
+                    alt="Photo de profil"
+                    className="object-cover h-full shadow-xl"
+                  />
+                </span>
+              </div>
+              <div className="flex flex-col space-y-0.5 mt-1.5">
+                <span className="flex items-center text-2xl font-semibold">
+                  Maxime
+                  <MdVerified className="ml-1.5 text-[#2563eb]" />
+                </span>
+              </div>
+            </div>
+            <div className="mt-4">
+              <DialogPopup />
+            </div>
+          </div>
+        </div>
+        <div className="col-span-9 bg-muted-background p-6 space-y-8 rounded-lg">
+          <div className="space-y-3">
+            <div className="text-2xl">
+              <h2 className="font-semibold">Recherche</h2>
+            </div>
+            <div className="flex flex-wrap">
+              <ul>
+                <li>Chanteur</li>
+              </ul>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <div className="text-2xl">
+              <h2 className="font-semibold">Instruments</h2>
+            </div>
+            <div className="flex flex-wrap">
+              <span className="text-sm border px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Guitare
+              </span>
+              <span className="text-sm border px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Piano
+              </span>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <div className="text-2xl">
+              <h2 className="font-semibold">Expérience</h2>
+            </div>
+            <div className="flex flex-wrap">
+              <span className="text-sm border px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Guitare
+              </span>
+              <span className="text-sm border px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Piano
+              </span>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <div className="text-2xl">
+              <h2 className="font-semibold">Styles</h2>
+            </div>
+            <div className="flex flex-wrap">
+              <span className="text-sm border px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Rock
+              </span>
+              <span className="text-sm border px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Jazz
+              </span>
+              <span className="text-sm border px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Electro
+              </span>
+              <span className="text-sm border px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Metal
+              </span>
+              <span className="text-sm border px-3 py-0.5 font-semibold rounded-full mr-2 mb-2">
+                Hip-Hop
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <div className="flex justify-between items-center px-8 py-4 bg-muted-background rounded-b-xl">
         <div className="flex items-center space-x-3.5">
           <div>
             <span className="w-32 h-32 flex rounded-full overflow-hidden relative border-2 border-secondary">
@@ -119,7 +203,7 @@ export default function Me() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
