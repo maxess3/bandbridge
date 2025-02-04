@@ -29,57 +29,34 @@ export function DialogPopup() {
             </div>
           </DialogTitle>
         </DialogHeader>
-        <div className="space-y-4 max-h-[600px] h-auto overflow-y-scroll p-6">
-          <h4 className="font-semibold text-2xl">Informations de base</h4>
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Prénom</Label>
-            <Input id="name" className="col-span-3" />
+        <div className="max-h-[600px] h-auto overflow-y-scroll p-6 space-y-10">
+          <div className="space-y-3">
+            <h4 className="font-semibold text-2xl">Informations de base</h4>
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Prénom</Label>
+              <Input id="name" className="col-span-3" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="username" className="text-right">
+                Âge
+              </Label>
+              <Input type="number" id="username" className="col-span-3" />
+            </div>
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="username" className="text-right">
-              Nom d'utilisateur
-            </Label>
-            <Input id="username" className="col-span-3" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Prénom</Label>
-            <Input id="name" className="col-span-3" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="username" className="text-right">
-              Nom d'utilisateur
-            </Label>
-            <Input id="username" className="col-span-3" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Prénom</Label>
-            <Input id="name" className="col-span-3" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="username" className="text-right">
-              Nom d'utilisateur
-            </Label>
-            <Input id="username" className="col-span-3" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Prénom</Label>
-            <Input id="name" className="col-span-3" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="username" className="text-right">
-              Nom d'utilisateur
-            </Label>
-            <Input id="username" className="col-span-3" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Prénom</Label>
-            <Input id="name" className="col-span-3" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="username" className="text-right">
-              Nom d'utilisateur
-            </Label>
-            <Input id="username" className="col-span-3" />
+          <div className="space-y-3">
+            <h4 className="font-semibold text-2xl">Liens</h4>
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Youtube</Label>
+              <Input id="name" className="col-span-3" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Instagram</Label>
+              <Input id="name" className="col-span-3" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="name">SoundCloud</Label>
+              <Input id="name" className="col-span-3" />
+            </div>
           </div>
         </div>
         <DialogFooter>
