@@ -32,7 +32,7 @@ body {
   }
   .dark {
     --background: 218 32% 8%;
-    --muted-background: 218 35% 11%;
+    --muted-background: 218 35% 12%;
     --foreground: 218 10% 80%;
     --card: 218 32% 10%;
     --card-foreground: 218 5% 90%;
@@ -44,7 +44,7 @@ body {
     --secondary-foreground: 0 0% 100%;
     --muted: 181 30% 25%;
     --muted-foreground: 218 5% 70%;
-    --accent: 218 35% 15%;
+    --accent: 214 56% 13%;
     --accent-foreground: 218 5% 90%;
     --destructive: 0 50% 31%;
     --destructive-foreground: 218 5% 90%;
