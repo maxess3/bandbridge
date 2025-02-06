@@ -44,10 +44,8 @@ function BandTableTop({
             value={inputVal}
             onChange={handleChangeInput}
             className={`${
-              gradientInput
-                ? "custom-gradient-border border-transparent !border-2"
-                : "custom-gradient-border-focus focus:border-2 focus:px-[35px]"
-            } focus:border-transparent focus-visible:ring-0 font-medium  placeholder:font-normal px-9 flex h-10 w-full rounded-md border py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed`}
+              gradientInput ? "border-foreground !border-2" : "border"
+            } focus-visible:ring-0 font-medium placeholder:font-normal px-9 flex h-10 w-full rounded-md border py-1 text-base shadow-sm transition-colors`}
             placeholder="Choisir une localisation..."
           />
           <span className="absolute -translate-y-1/2 top-1/2 right-[10px] z-50">

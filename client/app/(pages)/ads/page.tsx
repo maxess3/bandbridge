@@ -8,7 +8,7 @@ export default function Ads() {
     <div className="flex flex-col justify-center py-10">
       <div className="flex justify-between items-center">
         <div className="space-y-2.5">
-          <span className="text-sm font-semibold bg-accent px-4 py-1 rounded-full inline-flex">
+          <span className="text-sm font-semibold bg-muted-background px-4 py-1 rounded-full inline-flex">
             🔥 +300 annonces publiées
           </span>
           <div className="space-y-1.5">

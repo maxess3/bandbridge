@@ -153,7 +153,7 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
         {table.getRowModel().rows.map((row) => (
           <div
             key={row.id}
-            className="bg-muted-background rounded-lg p-4 flex flex-col gap-y-2"
+            className="border rounded-lg p-4 flex flex-col gap-y-2"
           >
             {row.getVisibleCells().map((cell) => (
               <div key={cell.id}>
@@ -168,10 +168,13 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
               </div>
             ))}
             <div className="flex gap-x-2 mt-4">
-              <Button className="w-full font-semibold text-sm uppercase">
+              <Button className="w-full bg-secondary font-medium text-base text-foreground">
                 Voir l'annonce
               </Button>
-              <Button className="w-14 bg-transparent" variant="outline">
+              <Button
+                className="w-14 bg-secondary border-none"
+                variant="outline"
+              >
                 <FaRegBookmark />
               </Button>
             </div>

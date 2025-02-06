@@ -23,6 +23,7 @@ export default function Me() {
   return (
     <div className="py-10 flex flex-col">
       <div className="flex gap-x-8">
+        <div></div>
         <div>
           <div className="w-52 h-52 flex rounded-full overflow-hidden border border-secondary shadow-lg">
             <Image
@@ -34,20 +35,33 @@ export default function Me() {
             />
           </div>
         </div>
-        <div className="flex flex-col">
-          <span className="text-2xl font-semibold inline-flex items-center">
-            Maxime <GoVerified className="ml-1.5" />
-          </span>
-          <span className="text-lg relative -top-1">@maxess</span>
-          <div className="inline-flex items-center py-4 gap-x-2 font-semibold">
-            <span className="inline-flex w-full items-center gap-x-2.5">
-              <span className="bg-accent rounded-full w-10 h-10 inline-flex justify-center items-center">
+        <div className="flex flex-col w-full">
+          <div className="flex justify-between">
+            <div className="flex flex-col">
+              <span className="text-2xl font-semibold inline-flex items-center">
+                Maxime <GoVerified className="ml-1.5" />
+              </span>
+              <span className="text-lg relative -top-1">@maxess</span>
+            </div>
+            <div>
+              <DialogPopup />
+            </div>
+          </div>
+
+          <div className="inline-flex items-center py-4 gap-x-2">
+            <div className="flex w-full items-center gap-x-2.5">
+              <span className="bg-muted-background rounded-full w-10 h-10 inline-flex justify-center items-center">
                 <CgSearch size="1.4em" />
               </span>
-              Recherche un groupe
-            </span>
+              <div className="flex flex-col">
+                <span className="font-semibold">Recherche un groupe</span>
+                <span className="text-sm opacity-90">
+                  Guitariste, Bassiste, Batteur
+                </span>
+              </div>
+            </div>
           </div>
-          <div className="mt-2 flex gap-x-16">
+          <div className="mt-2 flex gap-x-16 opacity-90">
             <div className="space-y-1.5">
               <span className="text-sm">À propos :</span>
               <ul className="text-base space-y-1 flex flex-col">

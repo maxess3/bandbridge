@@ -60,7 +60,9 @@ export function DialogPopup() {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Enregister</Button>
+          <Button type="submit" variant="primary">
+            Enregister
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
