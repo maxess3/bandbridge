@@ -190,9 +190,10 @@ export default function Signup() {
             <div className="grid gap-4">
               {currentStep < MAX_STEPS && (
                 <Button
+                  variant="primary"
                   size="lg"
                   type="submit"
-                  className="w-full text-white font-semibold mt-4"
+                  className="w-full font-semibold mt-4"
                 >
                   Accepter et s'inscrire
                 </Button>
@@ -208,6 +209,7 @@ export default function Signup() {
               )}
               {currentStep === 2 && (
                 <Button
+                  variant="primary"
                   size="lg"
                   type="button"
                   onClick={() => {
@@ -221,7 +223,7 @@ export default function Signup() {
                       router.push("/auth/login");
                     }
                   }}
-                  className="w-full text-white font-semibold"
+                  className="w-full font-semibold"
                 >
                   {hasError.status
                     ? "Revenir au formulaire d'inscription"

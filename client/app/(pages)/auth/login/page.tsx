@@ -130,7 +130,12 @@ export default function Login() {
                 </div>
               )}
             </div>
-            <Button size="lg" type="submit" className="w-full font-semibold">
+            <Button
+              variant="primary"
+              size="lg"
+              type="submit"
+              className="w-full font-semibold"
+            >
               Se connecter
             </Button>
           </form>
