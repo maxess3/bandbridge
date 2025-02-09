@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,8 +13,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Combobox } from "@/components/Combobox";
+import { MultiSelect } from "@/components/MultiSelect";
 
 export function DialogPopup() {
+  const [selectedProfiles, setSelectedProfiles] = useState<string[]>([
+    "guitarist",
+  ]);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -18,10 +27,7 @@ export function DialogPopup() {
           Modifier le profil
         </Button>
       </DialogTrigger>
-      <DialogContent
-        onOpenAutoFocus={(e) => e.preventDefault()}
-        className="sm:max-w-4xl"
-      >
+      <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>
             <div>
@@ -33,14 +39,75 @@ export function DialogPopup() {
           <div className="space-y-3">
             <h4 className="font-semibold text-2xl">Informations de base</h4>
             <div className="space-y-1.5">
-              <Label htmlFor="name">Prénom</Label>
-              <Input id="name" className="col-span-3" />
+              <Label htmlFor="name" className="opacity-80">
+                Prénom
+              </Label>
+              <Input id="name" />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="username" className="text-right">
-                Âge
+              <Label htmlFor="username" className="opacity-80">
+                Nom d'utilisateur
               </Label>
-              <Input type="number" id="username" className="col-span-3" />
+              <Input type="text" id="username" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="email" className="opacity-80">
+                Email
+              </Label>
+              <Input type="email" id="email" className="opacity-80" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="birthdate" className="opacity-80">
+                Date de naissance
+              </Label>
+              <Input type="date" id="birthdate" className="opacity-80" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="city" className="opacity-80">
+                Ville
+              </Label>
+              <Combobox />
+            </div>
+          </div>
+          <div className="space-y-3">
+            <h4 className="font-semibold text-2xl">Recherche</h4>
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Type de recherche</Label>
+              <Combobox />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Profils recherchés</Label>
+              <MultiSelect
+                onValueChange={setSelectedProfiles}
+                defaultValue={selectedProfiles}
+                placeholder="Selectionner les profiles"
+                options={[{ value: "guitarist", label: "Guitariste" }]}
+              />
+            </div>
+          </div>
+          <div className="space-y-3">
+            <h4 className="font-semibold text-2xl">Profil</h4>
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Type de profil</Label>
+              <Combobox />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Instruments pratiqués</Label>
+              <MultiSelect
+                onValueChange={setSelectedProfiles}
+                defaultValue={selectedProfiles}
+                placeholder="Selectionner les profiles"
+                options={[{ value: "guitarist", label: "Guitariste" }]}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Styles favoris</Label>
+              <MultiSelect
+                onValueChange={setSelectedProfiles}
+                defaultValue={selectedProfiles}
+                placeholder="Selectionner les profiles"
+                options={[{ value: "guitarist", label: "Guitariste" }]}
+              />
             </div>
           </div>
           <div className="space-y-3">

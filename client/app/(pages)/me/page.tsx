@@ -17,7 +17,6 @@ import { RiUserSearchLine } from "react-icons/ri";
 import { CiMusicNote1 } from "react-icons/ci";
 import { TbCrown } from "react-icons/tb";
 import { CgSearch } from "react-icons/cg";
-import { FaRegHandPaper } from "react-icons/fa";
 
 export default function Me() {
   return (
@@ -48,11 +47,10 @@ export default function Me() {
                   <DialogPopup />
                 </div>
               </div>
-
               <div className="inline-flex items-center py-4 gap-x-2">
                 <div className="flex w-full items-center gap-x-2.5">
                   <span className="bg-muted-background rounded-full w-10 h-10 inline-flex justify-center items-center">
-                    <CgSearch size="1.4em" />
+                    <CgSearch className="text-primary" size="1.4em" />
                   </span>
                   <div className="flex flex-col">
                     <span className="font-semibold">Recherche un groupe</span>
@@ -176,7 +174,7 @@ export default function Me() {
             </div>
           </div>
         </div>
-        <div className="w-3/12 bg-muted p-6 rounded-lg space-y-6">
+        <div className="w-3/12 bg-muted p-4 rounded-lg space-y-6">
           <div className="flex flex-col">
             <span className="font-semibold text-lg">Maxime</span>
             <span className="text-sm opacity-80">@maxess</span>
@@ -206,7 +204,7 @@ export default function Me() {
               <span className="text-sm">Groupe</span>
               <ul className="space-y-2">
                 <li className="flex items-center space-x-2">
-                  <span className="w-9 h-9 bg-primary rounded-sm"></span>
+                  <span className="w-9 h-9 bg-muted-background rounded-sm"></span>
                   <span>Les incorruptibles</span>
                 </li>
               </ul>

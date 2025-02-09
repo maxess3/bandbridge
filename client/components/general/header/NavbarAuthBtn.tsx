@@ -30,7 +30,7 @@ export const NavbarAuthBtn = async () => {
         Se connecter
       </Link>
       <Link
-        className="hover:bg-primary/90 bg-primary text-black px-4 py-2 h-9 rounded-md inline-flex items-center font-semibold"
+        className="hover:bg-primary/90 bg-primary text-white dark:text-black px-4 py-2 h-9 rounded-md inline-flex items-center font-semibold"
         href={"/auth/signup"}
       >
         S'inscrire
