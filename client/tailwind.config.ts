@@ -10,19 +10,6 @@ export default {
   ],
   theme: {
     extend: {
-      keyframes: {
-        buttonpop: {
-          "0%": { transform: "scale(0.9)" },
-          "40%": { transform: "scale(1.02)" },
-          "100%": { transform: "scale(1)" },
-        },
-      },
-      animation: {
-        buttonpop: "buttonpop 0.25s ease-out",
-      },
-      fontFamily: {
-        maven: "var(--font-maven)",
-      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -36,11 +23,16 @@ export default {
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
+          hover: "hsl(var(--primary-hover))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        tertiary: {
+          DEFAULT: "hsl(var(--tertiary))",
+          hover: "hsl(var(--tertiary-hover))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",

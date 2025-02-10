@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,24 +16,56 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Combobox } from "@/components/Combobox";
-import { MultiSelect } from "@/components/MultiSelect";
 
-export function DialogPopup() {
-  const [selectedProfiles, setSelectedProfiles] = useState<string[]>([
-    "guitarist",
-  ]);
+const dialogPopupVariants = cva("w-full text-foreground", {
+  variants: {
+    variant: {
+      default: "border bg-background hover:bg-accent",
+      secondary:
+        "bg-tertiary hover:bg-tertiary-hover hover:underline w-auto text-sm h-8 px-4 rounded-full",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
+
+interface DialogPopupProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof dialogPopupVariants> {
+  title?: string;
+}
+
+export const DialogPopup = React.forwardRef<
+  HTMLButtonElement,
+  DialogPopupProps
+>(({ variant, title, ...props }, ref) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-transparent w-full">
-          Modifier le profil
+        <Button
+          ref={ref}
+          {...props}
+          className={cn("w-full", dialogPopupVariants({ variant }))}
+        >
+          {title}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+          const contentDiv = document.getElementById("content-div");
+          if (contentDiv) {
+            contentDiv.focus();
+          }
+        }}
+        id="content-div"
+        className="sm:max-w-3xl"
+      >
         <DialogHeader>
           <DialogTitle>
             <div>
-              <h2 className="text-xl">Modifier le profil</h2>
+              <span className="text-xl">{title}</span>
             </div>
           </DialogTitle>
         </DialogHeader>
@@ -49,12 +83,6 @@ export function DialogPopup() {
                 Nom d'utilisateur
               </Label>
               <Input type="text" id="username" />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="email" className="opacity-80">
-                Email
-              </Label>
-              <Input type="email" id="email" className="opacity-80" />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="birthdate" className="opacity-80">
@@ -77,12 +105,6 @@ export function DialogPopup() {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="name">Profils recherchés</Label>
-              <MultiSelect
-                onValueChange={setSelectedProfiles}
-                defaultValue={selectedProfiles}
-                placeholder="Selectionner les profiles"
-                options={[{ value: "guitarist", label: "Guitariste" }]}
-              />
             </div>
           </div>
           <div className="space-y-3">
@@ -93,21 +115,9 @@ export function DialogPopup() {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="name">Instruments pratiqués</Label>
-              <MultiSelect
-                onValueChange={setSelectedProfiles}
-                defaultValue={selectedProfiles}
-                placeholder="Selectionner les profiles"
-                options={[{ value: "guitarist", label: "Guitariste" }]}
-              />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="name">Styles favoris</Label>
-              <MultiSelect
-                onValueChange={setSelectedProfiles}
-                defaultValue={selectedProfiles}
-                placeholder="Selectionner les profiles"
-                options={[{ value: "guitarist", label: "Guitariste" }]}
-              />
             </div>
           </div>
           <div className="space-y-3">
@@ -134,4 +144,6 @@ export function DialogPopup() {
       </DialogContent>
     </Dialog>
   );
-}
+});
+
+DialogPopup.displayName = "DialogPopup";

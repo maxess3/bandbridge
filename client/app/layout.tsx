@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Maven_Pro, DM_Sans } from "next/font/google";
+import { DM_Sans } from "next/font/google";
 
 import "./globals.css";
 
@@ -11,20 +11,10 @@ import { Toaster } from "sonner";
 import Navbar from "@/components/general/header/Navbar";
 import Footer from "@/components/general/footer/Footer";
 
-const MavenPro = Maven_Pro({
-  weight: ["400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"],
-  variable: "--font-maven",
-  display: "swap",
-  adjustFontFallback: false,
-});
-
 const DM = DM_Sans({
   weight: ["400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
   variable: "--font-dm",
-  display: "swap",
-  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -40,7 +30,7 @@ export default async function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${MavenPro.variable} ${DM.className} antialiased min-h-screen flex flex-col`}
+        className={`${DM.className} antialiased min-h-screen flex flex-col`}
       >
         <AuthSessionProviders>
           <ReactQueryClientProvider>
