@@ -179,7 +179,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   const forgotToken = jwt.sign(
     { id: user.id },
-    process.env.FORGOTPWD_TOKEN_SECRET,
+    process.env.FORGOT_TOKEN_SECRET,
     {
       expiresIn: "15m",
     }
@@ -233,7 +233,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 
   jwt.verify(
     token,
-    process.env.FORGOTPWD_TOKEN_SECRET,
+    process.env.FORGOT_TOKEN_SECRET,
     async (err: Error | null) => {
       // Invalid token
       if (err) return res.sendStatus(403);
@@ -270,7 +270,7 @@ export const validateResetToken = async (req: Request, res: Response) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.FORGOTPWD_TOKEN_SECRET);
+    const decoded = jwt.verify(token, process.env.FORGOT_TOKEN_SECRET);
     if (typeof decoded === "object" && decoded !== null && "id" in decoded) {
       const userId = decoded.id;
       const user = await prisma.user.findUnique({
