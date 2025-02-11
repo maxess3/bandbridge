@@ -61,8 +61,8 @@ export function Combobox() {
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
-        <Command className="w-full">
+      <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+        <Command>
           <CommandInput placeholder="Sélectionner une ville" />
           <CommandList>
             <CommandEmpty>No framework found.</CommandEmpty>

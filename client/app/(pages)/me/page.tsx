@@ -13,6 +13,7 @@ import { RiUserSearchLine } from "react-icons/ri";
 import { CiMusicNote1 } from "react-icons/ci";
 import { TbCrown } from "react-icons/tb";
 import { CgSearch } from "react-icons/cg";
+import { SlPencil } from "react-icons/sl";
 
 import { DialogPopup } from "@/components/DialogPopup";
 
@@ -42,7 +43,10 @@ export default function Me() {
                   <span className="text-lg relative -top-1">@maxess</span>
                 </div>
                 <div>
-                  <DialogPopup title="Modifier le profil" />
+                  <DialogPopup
+                    icon={<SlPencil />}
+                    title="Modifier mon profil"
+                  />
                 </div>
               </div>
               <div className="inline-flex items-center py-4 gap-x-2">

@@ -87,9 +87,9 @@ export default function Forgot() {
                   </p>
                 )}
                 <Button
-                  size="lg"
+                  variant="primary"
                   type="submit"
-                  className="w-full text-white font-semibold mt-2"
+                  className="mt-2 font-semibold"
                   disabled={mutation.isPending ? true : false}
                 >
                   Envoyer

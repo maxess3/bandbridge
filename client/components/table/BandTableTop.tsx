@@ -6,6 +6,7 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import { IoChevronDown } from "react-icons/io5";
 
 import LayoutView from "@/components/table/LayoutView";
+import { Combobox } from "@/components/Combobox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 

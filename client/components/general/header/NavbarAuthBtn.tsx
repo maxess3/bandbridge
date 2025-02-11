@@ -13,8 +13,7 @@ export const NavbarAuthBtn = async () => {
   if (session?.user)
     return (
       <div className="flex items-center text-sm relative gap-x-4">
-        <Button variant="primary">
-          <FiPlusCircle />
+        <Button variant="primary" icon={<FiPlusCircle />}>
           Créer une annonce
         </Button>
         <DropdownProfile />

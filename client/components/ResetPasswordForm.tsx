@@ -121,7 +121,7 @@ export default function ResetPasswordForm({
                 </p>
               )}
             </div>
-            <Button size="lg" className="w-full text-white font-semibold">
+            <Button variant="primary" className="w-full font-semibold">
               Mettre à jour le mot de passe
             </Button>
             <div className="text-center">
@@ -134,9 +134,9 @@ export default function ResetPasswordForm({
         {currentStep === 1 && (
           <div>
             <Button
+              variant="primary"
               onClick={() => router.push("/auth/login")}
-              size="lg"
-              className="w-full text-white font-semibold"
+              className="w-full font-semibold"
             >
               Se connecter
             </Button>

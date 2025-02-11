@@ -13,7 +13,9 @@ export default async function Reset({
   const id = slug[0];
   const token = slug[1];
 
-  if (!id || !token) redirect("/");
+  if (!id || !token) {
+    redirect("/");
+  }
 
   const validateToken = async () => {
     try {

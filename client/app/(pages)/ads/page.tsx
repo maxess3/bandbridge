@@ -1,4 +1,4 @@
-import { FiPlusCircle } from "react-icons/fi";
+import { FaRegBookmark } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
 import BandTableContainer from "@/components/table/BandTableContainer";
@@ -21,9 +21,8 @@ export default function Ads() {
           </div>
         </div>
         <div>
-          <Button variant={"outline"}>
-            <FiPlusCircle />
-            Créer une annonce
+          <Button variant={"outline"} icon={<FaRegBookmark />}>
+            Sauvegarder la recherche
           </Button>
         </div>
       </div>
