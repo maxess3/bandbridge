@@ -6,7 +6,6 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import { IoChevronDown } from "react-icons/io5";
 
 import LayoutView from "@/components/table/LayoutView";
-import { Combobox } from "@/components/Combobox";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -36,8 +35,8 @@ function BandTableTop({
 
   return (
     <div className="flex items-center justify-between space-x-2">
-      <div className="flex space-x-2">
-        <div className="relative w-[265px]">
+      <div className="flex flex-wrap space-y-2">
+        <div className="relative w-[265px] mr-2 mt-2">
           <span className="absolute -translate-y-1/2 top-1/2 left-[10px] z-50">
             <HiOutlineLocationMarker className="text-lg" />
           </span>
@@ -53,31 +52,31 @@ function BandTableTop({
             <IoChevronDown className="text-md" />
           </span>
         </div>
-        <Button className="relative pr-14 pl-3" variant="outline">
+        <Button className="relative pr-14 pl-3 mr-2" variant="outline">
           Style
           <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
             <IoChevronDown className="text-md" />
           </span>
         </Button>
-        <Button className="relative pr-14 pl-3" variant="outline">
+        <Button className="relative pr-14 pl-3 mr-2" variant="outline">
           Taille du groupe
           <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
             <IoChevronDown className="text-md" />
           </span>
         </Button>
-        <Button className="relative pr-14 pl-3" variant="outline">
+        <Button className="relative pr-14 pl-3 mr-2" variant="outline">
           Instrument
           <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
             <IoChevronDown className="text-md" />
           </span>
         </Button>
-        <Button className="relative pr-14 pl-3" variant="outline">
+        <Button className="relative pr-14 pl-3 mr-2" variant="outline">
           Niveau
           <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
             <IoChevronDown className="text-md" />
           </span>
         </Button>
-        <Button className="relative pr-14 pl-3" variant="outline">
+        <Button className="relative pr-14 pl-3 mr-2" variant="outline">
           Âge moyen
           <span className="absolute -translate-y-1/2 top-1/2 right-[8px]">
             <IoChevronDown className="text-md" />
