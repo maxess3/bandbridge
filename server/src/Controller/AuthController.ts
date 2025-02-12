@@ -40,16 +40,29 @@ export const signup = async (req: Request, res: Response) => {
 
   const formatFirstName = formatName(firstName);
 
-  const newUser = await prisma.user.create({
-    data: {
-      email,
-      password: hashSync(password, 10),
-      firstName: formatFirstName,
-      provider: "MANUAL",
-    },
-  });
+  try {
+    await prisma.$transaction(async (prisma) => {
+      // INSERT User
+      const user = await prisma.user.create({
+        data: {
+          email,
+          password: hashSync(password, 10),
+          provider: "MANUAL",
+        },
+      });
+      // INSERT Profile
+      const profile = await prisma.profile.create({
+        data: {
+          firstName: formatFirstName,
+          userId: user.id,
+        },
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Signup failed." });
+  }
 
-  return res.status(200).json({ data: newUser, message: "User created." });
+  return res.status(200).json({ message: "User created." });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -59,6 +72,9 @@ export const login = async (req: Request, res: Response) => {
     where: {
       email,
       provider: "MANUAL",
+    },
+    include: {
+      Profile: true,
     },
   });
 
@@ -72,7 +88,7 @@ export const login = async (req: Request, res: Response) => {
 
   const userId = user.id;
   const userEmail = user.email;
-  const userFirstName = user.firstName;
+  const userFirstName = user.Profile?.firstName;
 
   const { backendTokens } = createAuthTokens(userId);
 
@@ -92,22 +108,40 @@ export const google = async (req: Request, res: Response) => {
   try {
     const { email, name } = req.body;
 
-    let findUser = await prisma.user.findFirst({ where: { email } });
-
-    if (!findUser) {
-      const newUser = await prisma.user.create({
-        data: {
-          email,
-          firstName: name,
-          provider: "GOOGLE",
-        },
+    const result = await prisma.$transaction(async (prisma) => {
+      let findUser = await prisma.user.findFirst({
+        where: { email },
+        include: { Profile: true },
       });
-      findUser = newUser;
-    }
 
-    const userId = findUser.id;
-    const userEmail = findUser.email;
-    const userFirstName = findUser.firstName;
+      if (!findUser) {
+        const newUser = await prisma.user.create({
+          data: {
+            email,
+            provider: "GOOGLE",
+          },
+        });
+
+        const profile = await prisma.profile.create({
+          data: {
+            firstName: name,
+            userId: newUser.id,
+          },
+        });
+
+        findUser = await prisma.user.findFirst({
+          where: { email },
+          include: { Profile: true },
+        });
+      }
+
+      console.log(findUser);
+      return findUser;
+    });
+
+    const userId = result.id;
+    const userEmail = result.email;
+    const userFirstName = result.Profile?.firstName;
 
     const { backendTokens } = createAuthTokens(userId);
 

@@ -47,8 +47,12 @@ export const showUserProfile = async (req: Request, res: Response) => {
       id: String(userId),
     },
     select: {
-      firstName: true,
       email: true,
+      Profile: {
+        select: {
+          firstName: true,
+        },
+      },
     },
   });
 

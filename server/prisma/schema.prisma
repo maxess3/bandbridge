@@ -7,17 +7,83 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Provider {
+  MANUAL
+  GOOGLE
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum ProfileRole {
+  MUSICIAN
+  PROFESSIONAL
+  TALENT_SCOUT
+}
+
+enum MusicGenre {
+  ROCK
+  JAZZ
+  ELECTRO
+}
+
+enum Platform {
+  YOUTUBE
+  INSTAGRAM
+  SOUNDCLOUD
+}
+
 model User {
   id                  String    @id @default(uuid())
   email               String    @unique
   provider            Provider  @default(MANUAL)
   password            String?
   created_at          DateTime  @default(now())
-  role                Role      @default(USER)
-  username            String?   @unique
-  firstName           String    @db.VarChar(60)
+  role                UserRole  @default(USER)
+  // username         String?   @unique
+  // firstName   String        @db.VarChar(60)
   password_changed_at DateTime?
+  Profile             Profile?  @relation
   Post                Post[]
+}
+
+model Profile {
+    id           String        @id @default(uuid())
+    username     String?       @unique
+    firstName    String        @db.VarChar(60)
+    birthDate    DateTime?
+    role         ProfileRole   @default(MUSICIAN)
+    instruments  Instrument[]
+    genre        MusicGenre?
+    socialLinks  SocialLink[]
+    band         Band[]
+    lastActiveAt DateTime?
+    userId       String        @unique
+    user         User          @relation(fields: [userId], references: [id])
+}
+
+model Instrument {
+    id          String   @id @default(uuid())
+    name        String
+    yearStarted Int
+    profileId   String
+    profile     Profile  @relation(fields: [profileId], references: [id])
+}
+
+model SocialLink {
+    id        String   @id @default(uuid())
+    platform  Platform?
+    url       String   
+    profileId String   
+    profile   Profile  @relation(fields: [profileId], references: [id])
+}
+
+model Band {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  members   Profile[]
 }
 
 model Post {
@@ -32,14 +98,4 @@ model Post {
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, title])
-}
-
-enum Role {
-  USER
-  ADMIN
-}
-
-enum Provider {
-  MANUAL
-  GOOGLE
 }
