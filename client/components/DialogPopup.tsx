@@ -53,64 +53,66 @@ export const DialogPopup = React.forwardRef<
           {title}
         </Button>
       </DialogTrigger>
-      <div className="h-full">
-        <DialogContent
-          onOpenAutoFocus={(e) => {
-            e.preventDefault();
-            const contentDiv = document.getElementById("content-div");
-            if (contentDiv) {
-              contentDiv.focus();
-            }
-          }}
-          id="content-div"
-          className="sm:max-w-3xl h-[3/4]"
-        >
-          <DialogHeader>
-            <DialogTitle>
-              <div>
-                <span className="text-xl">{title}</span>
-              </div>
-            </DialogTitle>
-          </DialogHeader>
-          <div className="overflow-y-auto px-6 py-6 space-y-6">
+      <DialogContent
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+          const contentDiv = document.getElementById("content-div");
+          if (contentDiv) {
+            contentDiv.focus();
+          }
+        }}
+        id="content-div"
+        className="sm:max-h-[85%] md:max-w-3xl sm:max-w-2xl max-w-full max-h-full p-0"
+      >
+        <DialogHeader>
+          <DialogTitle>
+            <div>
+              <span className="text-xl">{title}</span>
+            </div>
+          </DialogTitle>
+        </DialogHeader>
+        <div className="overflow-y-auto px-6 pt-3 pb-6 space-y-6">
+          <div className="space-y-1">
+            <h4 className="font-semibold text-2xl">Informations de base</h4>
             <div className="space-y-3">
-              <h4 className="font-semibold text-2xl">Informations de base</h4>
               <div className="space-y-1.5">
                 <Label htmlFor="birthdate" className="opacity-80">
-                  Date de naissance
+                  Recherche
                 </Label>
-                <Input type="date" id="birthdate" className="opacity-80" />
+                <Combobox />
               </div>
               <div className="space-y-1.5">
                 <Label htmlFor="city" className="opacity-80">
-                  Ville
-                </Label>
-                <Combobox />
-              </div>
-            </div>
-            <div className="space-y-3">
-              <h4 className="font-semibold text-2xl">Recherche</h4>
-              <div className="space-y-1.5">
-                <Label htmlFor="name" className="opacity-80">
-                  Type de recherche
-                </Label>
-                <Combobox />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="name" className="opacity-80">
-                  Profils recherchés
+                  Recherche 2
                 </Label>
                 <Combobox />
               </div>
             </div>
           </div>
-          <DialogFooter>
-            <Button type="submit" variant="primary">
-              Enregister
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </div>
+          <div className="space-y-1">
+            <h4 className="font-semibold text-2xl">Recherche</h4>
+            <div className="space-y-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="birthdate" className="opacity-80">
+                  Recherche
+                </Label>
+                <Combobox />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="city" className="opacity-80">
+                  Recherche 2
+                </Label>
+                <Combobox />
+              </div>
+            </div>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button type="submit" variant="primary">
+            Enregister
+          </Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 });
