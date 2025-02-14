@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
@@ -13,9 +14,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Combobox } from "@/components/Combobox";
+import { MultiSelect } from "@/components/MultiSelect";
+
+import { Option } from "multi-select";
 
 const dialogPopupVariants = cva("w-full text-foreground", {
   variants: {
@@ -41,6 +44,18 @@ export const DialogPopup = React.forwardRef<
   HTMLButtonElement,
   DialogPopupProps
 >(({ variant, title, icon, ...props }, ref) => {
+  const options = [
+    { value: "guitar", label: "Guitare" },
+    { value: "piano", label: "Piano" },
+    { value: "Basse", label: "Basse" },
+    { value: "Violon", label: "Violon" },
+  ];
+
+  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
+  const handleChange = (newValue: unknown) => {
+    setSelectedOptions([...(newValue as Option[])]);
+  };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -77,15 +92,19 @@ export const DialogPopup = React.forwardRef<
             <div className="space-y-3">
               <div className="space-y-1.5">
                 <Label htmlFor="birthdate" className="opacity-80">
-                  Recherche
+                  Ville
                 </Label>
                 <Combobox />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="city" className="opacity-80">
-                  Recherche 2
-                </Label>
-                <Combobox />
+                <MultiSelect
+                  placeholder="Sélectionner vos instruments"
+                  label="Instruments pratiqués"
+                  id="main_instrument"
+                  options={options}
+                  selectedOptions={selectedOptions}
+                  onChange={handleChange}
+                />
               </div>
             </div>
           </div>
