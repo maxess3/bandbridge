@@ -43,8 +43,6 @@ model User {
   created_at          DateTime  @default(now())
   role                UserRole  @default(USER)
   verified            Boolean   @default(false)
-  // username         String?   @unique
-  // firstName   String        @db.VarChar(60)
   password_changed_at DateTime?
   Profile             Profile?  @relation
   Post                Post[]
@@ -55,6 +53,9 @@ model Profile {
     username     String?       @unique
     firstName    String        @db.VarChar(60)
     birthDate    DateTime?
+    country      String?
+    city         String?
+    zipCode      Int?
     role         ProfileRole   @default(MUSICIAN)
     instruments  Instrument[]
     genre        MusicGenre?
