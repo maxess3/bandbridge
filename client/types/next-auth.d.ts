@@ -1,4 +1,5 @@
 import { NextAuth } from "next-auth";
+import type { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
   interface Session {
@@ -7,6 +8,18 @@ declare module "next-auth" {
       accessToken: string;
       refreshToken: string;
       expiresIn: number;
+    };
+  }
+  interface Account {
+    backendTokens: {
+      accessToken: string;
+      refreshToken: string;
+      expiresIn: number;
+    };
+    user: {
+      id: string;
+      email: string;
+      firstName: string;
     };
   }
 }
