@@ -1,7 +1,7 @@
 "use client";
 
+import { DialogType } from "@/types/DialogType";
 import Image from "next/image";
-
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { GoVerified } from "react-icons/go";
 import { AiOutlineYoutube } from "react-icons/ai";
@@ -14,7 +14,6 @@ import { CiMusicNote1 } from "react-icons/ci";
 import { TbCrown } from "react-icons/tb";
 import { CgSearch } from "react-icons/cg";
 import { SlPencil } from "react-icons/sl";
-
 import { DialogPopup } from "@/components/DialogPopup";
 
 export default function Me() {
@@ -24,7 +23,7 @@ export default function Me() {
         <div className="w-9/12">
           <div className="flex gap-x-8 w-full">
             <div>
-              <div className="w-52 h-52 flex rounded-full overflow-hidden border border-secondary shadow-lg">
+              <div className="w-56 h-56 flex rounded-full overflow-hidden border border-secondary shadow-lg">
                 <Image
                   width={300}
                   height={300}
@@ -44,6 +43,7 @@ export default function Me() {
                 </div>
                 <div>
                   <DialogPopup
+                    type={DialogType.Profile}
                     icon={<SlPencil />}
                     title="Modifier mon profil"
                   />

@@ -20,7 +20,7 @@ export const signup = async (req: Request, res: Response) => {
     if (error instanceof ZodError) {
       return res.status(400).json({ errors: error.errors });
     } else {
-      return res.status(500).json({ message: "Erreur interne du serveur" });
+      return res.sendStatus(500);
     }
   }
 
@@ -162,25 +162,26 @@ export const google = async (req: Request, res: Response) => {
 };
 
 export const refreshToken = (req: Request, res: Response) => {
-  const authHeader = req.headers["authorization"];
-  const refreshToken = authHeader && authHeader.split(" ")[1];
+  const { refreshToken } = req.body;
 
   if (!refreshToken) {
     return res.sendStatus(401);
   }
 
-  const decodedToken = jwt.verify(
+  jwt.verify(
     refreshToken,
     process.env.REFRESH_TOKEN_SECRET as string,
     (err: Error | null, user: any) => {
       if (err) return res.sendStatus(403);
+
       const userId = user.userId;
       const { backendTokens } = createAuthTokens(userId);
+
+      console.log(backendTokens.accessToken);
+
       return res.status(200).json({ backendTokens });
     }
   );
-
-  (req as any).user = decodedToken;
 };
 
 export const forgotPassword = async (req: Request, res: Response) => {

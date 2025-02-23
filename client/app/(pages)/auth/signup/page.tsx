@@ -3,17 +3,13 @@
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/lib/apiClient";
 import { AxiosError } from "axios";
-
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-
 import { z } from "zod";
 import { formSignUpSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,8 +20,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-import { GoogleButton } from "@/components/GoogleButton";
+import { GoogleButton } from "@/components/general/partials/button/GoogleButton";
 
 type Inputs = z.infer<typeof formSignUpSchema>;
 

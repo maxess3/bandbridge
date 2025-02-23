@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Logo from "@/public/bandbridge.png";
 import Link from "next/link";
@@ -8,7 +10,14 @@ import { FiFacebook } from "react-icons/fi";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
 
+import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
+
 function Footer() {
+  const axiosAuth = useAxiosAuth();
+  const fetchPost = async () => {
+    const res = await axiosAuth.get("/user");
+    console.log(res.data);
+  };
   return (
     <footer className="mt-12">
       <div className="flex justify-center">
@@ -98,7 +107,9 @@ function Footer() {
               droits réservés.
             </div>
             <div className="flex space-x-6 items-center">
-              <Button variant="outline">Signaler un bug</Button>
+              <Button onClick={fetchPost} variant="outline">
+                Signaler un bug
+              </Button>
               <div className="flex space-x-2 justify-center items-center">
                 <Link
                   href={""}

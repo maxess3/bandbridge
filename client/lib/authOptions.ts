@@ -3,39 +3,25 @@ import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import axios from "@/lib/axios";
 
 async function refreshToken(token: JWT): Promise<JWT> {
-  try {
-    const res = await fetch(`${BASE_URL}/auth/refresh`, {
-      method: "POST",
-      headers: {
-        authorization: `refresh ${token.backendTokens.refreshToken}`,
-      },
-    });
+  const res = await axios.post("/auth/refresh", {
+    refreshToken: token.backendTokens.refreshToken,
+  });
 
-    const response = await res.json();
+  const response = await res.data;
 
-    if (!response.ok) {
-      throw response;
-    }
+  console.log("refresh", response.backendTokens.accessToken);
 
-    console.log("refresh", response);
-
-    return {
-      ...token,
-      backendTokens: {
-        accessToken: response.backendTokens.accessToken,
-        refreshToken: response.backendTokens.refreshToken,
-        expiresIn: response.backendTokens.expiresIn,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      ...token,
-      error: "RefreshTokenError",
-    };
-  }
+  return {
+    ...token,
+    backendTokens: {
+      accessToken: response.backendTokens.accessToken,
+      refreshToken: response.backendTokens.refreshToken,
+      expiresIn: response.backendTokens.expiresIn,
+    },
+  };
 }
 
 export const authOptions: NextAuthOptions = {
@@ -90,10 +76,6 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, profile }) {
       if (account?.provider === "google") {
-        // console.log("user google", user);
-        // console.log("account google", account);
-        // console.log("profile google", profile);
-
         const res = await fetch(`${BASE_URL}/auth/google-login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -117,21 +99,14 @@ export const authOptions: NextAuthOptions = {
       return true; // Autoriser la connexion
     },
     async jwt({ token, user, account }) {
-      console.log("JWT callback - token:", token);
-      console.log("JWT callback - account:", account);
-
       if (account?.backendTokens && account?.user) {
         token.backendTokens = account.backendTokens;
         token.user = account.user;
       }
-      // console.log("token jwt", token);
-      // console.log("user jwt", user);
-      // console.log("token", token.backendTokens);
+
       if (user) return { ...token, ...user };
 
       if (new Date().getTime() < token.backendTokens.expiresIn) return token;
-
-      console.log("expiration de l'acces token, appel de la fonction refresg");
 
       return await refreshToken(token);
     },
@@ -139,8 +114,6 @@ export const authOptions: NextAuthOptions = {
     async session({ token, session }) {
       session.user = token.user;
       session.backendTokens = token.backendTokens;
-      console.log("token session", token);
-      console.log("session session", session);
       return session;
     },
   },

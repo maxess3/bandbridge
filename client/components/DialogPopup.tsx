@@ -1,24 +1,18 @@
-"use client";
-
 import * as React from "react";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { cva, type VariantProps } from "class-variance-authority";
-
+import { cva } from "class-variance-authority";
+import { DialogType } from "@/types/DialogType";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogDescription,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Combobox } from "@/components/Combobox";
-import { MultiSelect } from "@/components/MultiSelect";
-
-import { Option } from "multi-select";
+import { UpdateProfileForm } from "@/components/general/partials/form/UpdateProfileForm";
 
 const dialogPopupVariants = cva("w-full text-foreground", {
   variants: {
@@ -33,29 +27,25 @@ const dialogPopupVariants = cva("w-full text-foreground", {
   },
 });
 
-interface DialogPopupProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof dialogPopupVariants> {
+interface DialogPopupProps {
   title?: string;
   icon?: React.ReactNode;
+  type?: DialogType;
+  variant?: "default" | "secondary";
 }
 
 export const DialogPopup = React.forwardRef<
   HTMLButtonElement,
   DialogPopupProps
->(({ variant, title, icon, ...props }, ref) => {
-  const options = [
-    { value: "guitar", label: "Guitare" },
-    { value: "piano", label: "Piano" },
-    { value: "Basse", label: "Basse" },
-    { value: "Violon", label: "Violon" },
-  ];
-
-  const [selectedOptions, setSelectedOptions] = useState<Option[]>([]);
-  const handleChange = (newValue: unknown) => {
-    setSelectedOptions([...(newValue as Option[])]);
+>(({ title, icon, type, variant, ...props }, ref) => {
+  const renderFields = () => {
+    switch (type) {
+      case DialogType.Profile:
+        return <UpdateProfileForm />;
+      default:
+        return null;
+    }
   };
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -73,62 +63,25 @@ export const DialogPopup = React.forwardRef<
           e.preventDefault();
           const contentDiv = document.getElementById("content-div");
           if (contentDiv) {
-            contentDiv.focus();
+            contentDiv.focus(); // Ajout de la mise au point sur la div
           }
         }}
         id="content-div"
-        className="sm:max-h-[85%] md:max-w-3xl sm:max-w-2xl max-w-full max-h-full p-0"
+        className="sm:max-h-[85%] md:max-w-2xl sm:max-w-2xl max-w-full max-h-full p-0"
       >
         <DialogHeader>
           <DialogTitle>
-            <div>
-              <span className="text-xl">{title}</span>
-            </div>
+            <DialogDescription className="text-xl text-foreground">
+              {title}
+            </DialogDescription>
           </DialogTitle>
         </DialogHeader>
         <div className="overflow-y-auto px-6 pt-3 pb-6 space-y-6">
-          <div className="space-y-1">
-            <h4 className="font-semibold text-2xl">Informations de base</h4>
-            <div className="space-y-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="birthdate" className="opacity-80">
-                  Ville
-                </Label>
-                <Combobox />
-              </div>
-              <div className="space-y-1.5">
-                <MultiSelect
-                  placeholder="Sélectionner vos instruments"
-                  label="Instruments pratiqués"
-                  id="main_instrument"
-                  options={options}
-                  selectedOptions={selectedOptions}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="space-y-1">
-            <h4 className="font-semibold text-2xl">Recherche</h4>
-            <div className="space-y-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="birthdate" className="opacity-80">
-                  Recherche
-                </Label>
-                <Combobox />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="city" className="opacity-80">
-                  Recherche 2
-                </Label>
-                <Combobox />
-              </div>
-            </div>
-          </div>
+          {renderFields()}
         </div>
         <DialogFooter>
           <Button type="submit" variant="primary">
-            Enregister
+            Enregistrer
           </Button>
         </DialogFooter>
       </DialogContent>

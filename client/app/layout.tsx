@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
-
 import "./globals.css";
-
 import { Providers } from "./providers";
-import AuthSessionProviders from "@/components/AuthSessionProviders";
-import { ReactQueryClientProvider } from "@/components/ReactQueryClientProvider";
+import AuthSessionProviders from "@/components/providers/AuthSessionProviders";
+import { ReactQueryClientProvider } from "@/components/providers/ReactQueryClientProvider";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import Navbar from "@/components/general/header/Navbar";
