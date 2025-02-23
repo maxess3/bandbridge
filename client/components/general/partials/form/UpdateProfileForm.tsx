@@ -1,6 +1,7 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -13,7 +14,7 @@ import {
 
 export const UpdateProfileForm = () => {
   return (
-    <div className="">
+    <div>
       <div className="space-y-1">
         <h4 className="font-semibold text-2xl">Informations de base</h4>
         <div className="space-y-3">
@@ -71,6 +72,43 @@ export const UpdateProfileForm = () => {
                   maxLength={4}
                 />
               </div>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="birthday" className="opacity-80">
+                Sexe
+              </Label>
+              <RadioGroup defaultValue="male" className="flex space-x-3">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="option-one" id="male" />
+                  <Label htmlFor="male">Homme</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="female" id="female" />
+                  <Label htmlFor="female">Femme</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="other" id="other" />
+                  <Label htmlFor="other">Autre</Label>
+                </div>
+              </RadioGroup>
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="country" className="opacity-80">
+                Pays
+              </Label>
+              <Input id="country" />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="city" className="opacity-80">
+                Ville
+              </Label>
+              <Input id="city" />
+            </div>
+            <div className="space-y-1">
+              <Label htmlFor="zipcode" className="opacity-80">
+                Code Postal
+              </Label>
+              <Input id="zipcode" />
             </div>
           </div>
         </div>

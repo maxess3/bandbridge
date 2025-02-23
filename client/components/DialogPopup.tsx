@@ -76,7 +76,7 @@ export const DialogPopup = React.forwardRef<
             </DialogDescription>
           </DialogTitle>
         </DialogHeader>
-        <div className="overflow-y-auto px-6 pt-3 pb-6 space-y-6">
+        <div className="overflow-y-auto px-6 pt-6 pb-9 space-y-6">
           {renderFields()}
         </div>
         <DialogFooter>
