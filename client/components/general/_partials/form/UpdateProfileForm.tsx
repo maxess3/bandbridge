@@ -14,7 +14,7 @@ import {
 
 export const UpdateProfileForm = () => {
   return (
-    <div>
+    <div className="space-y-6">
       <div className="space-y-1">
         <h4 className="font-semibold text-2xl">Informations de base</h4>
         <div className="space-y-3">
@@ -73,22 +73,26 @@ export const UpdateProfileForm = () => {
                 />
               </div>
             </div>
-            <div className="space-y-1">
-              <Label htmlFor="birthday" className="opacity-80">
-                Sexe
-              </Label>
+            <div className="space-y-1.5">
+              <Label className="opacity-80">Sexe</Label>
               <RadioGroup defaultValue="male" className="flex space-x-3">
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-one" id="male" />
-                  <Label htmlFor="male">Homme</Label>
+                  <RadioGroupItem value="male" id="male" />
+                  <Label htmlFor="male" className="opacity-80">
+                    Homme
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="female" id="female" />
-                  <Label htmlFor="female">Femme</Label>
+                  <Label htmlFor="female" className="opacity-80">
+                    Femme
+                  </Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="other" id="other" />
-                  <Label htmlFor="other">Autre</Label>
+                  <Label htmlFor="other" className="opacity-80">
+                    Autre
+                  </Label>
                 </div>
               </RadioGroup>
             </div>
@@ -96,7 +100,16 @@ export const UpdateProfileForm = () => {
               <Label htmlFor="country" className="opacity-80">
                 Pays
               </Label>
-              <Input id="country" />
+              <Select defaultValue="france">
+                <SelectTrigger className="w-full h-9" id="profile_type">
+                  <SelectValue placeholder="Sélectionner un pays..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="france">France</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
             <div className="space-y-1">
               <Label htmlFor="city" className="opacity-80">
@@ -109,6 +122,38 @@ export const UpdateProfileForm = () => {
                 Code Postal
               </Label>
               <Input id="zipcode" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="space-y-1">
+        <h4 className="font-semibold text-2xl">Profil musical</h4>
+        <div className="space-y-3">
+          <div className="space-y-6">
+            <div className="space-y-1.5">
+              <Label htmlFor="profile_type" className="opacity-80">
+                Type de profil
+              </Label>
+              <RadioGroup defaultValue="male" className="flex space-x-3">
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="musician" id="musician" />
+                  <Label htmlFor="musician" className="opacity-80">
+                    Musicien
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="professional" id="professional" />
+                  <Label htmlFor="professional" className="opacity-80">
+                    Professionnel
+                  </Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="talent-scout" id="talent-scout" />
+                  <Label htmlFor="talent-scout" className="opacity-80">
+                    Dénicheur de talent
+                  </Label>
+                </div>
+              </RadioGroup>
             </div>
           </div>
         </div>

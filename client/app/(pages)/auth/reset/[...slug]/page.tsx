@@ -1,4 +1,4 @@
-import ResetPasswordForm from "@/components/general/partials/form/ResetPasswordForm";
+import ResetPasswordForm from "@/components/general/_partials/form/ResetPasswordForm";
 import { redirect } from "next/navigation";
 import { BASE_URL } from "@/lib/constants";
 

@@ -12,9 +12,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { UpdateProfileForm } from "@/components/general/partials/form/UpdateProfileForm";
+import { UpdateProfileForm } from "@/components/general/_partials/form/UpdateProfileForm";
+import { UpdateSocialLinksForm } from "@/components/general/_partials/form/UpdateSocialLinksForm";
 
-const dialogPopupVariants = cva("w-full text-foreground", {
+const dialogUpdateVariants = cva("w-full text-foreground", {
   variants: {
     variant: {
       default: "border bg-background hover:bg-accent",
@@ -27,21 +28,23 @@ const dialogPopupVariants = cva("w-full text-foreground", {
   },
 });
 
-interface DialogPopupProps {
+interface DialogUpdateProps {
   title?: string;
   icon?: React.ReactNode;
   type?: DialogType;
   variant?: "default" | "secondary";
 }
 
-export const DialogPopup = React.forwardRef<
+export const DialogUpdate = React.forwardRef<
   HTMLButtonElement,
-  DialogPopupProps
+  DialogUpdateProps
 >(({ title, icon, type, variant, ...props }, ref) => {
   const renderFields = () => {
     switch (type) {
       case DialogType.Profile:
         return <UpdateProfileForm />;
+      case DialogType.SocialLinks:
+        return <UpdateSocialLinksForm />;
       default:
         return null;
     }
@@ -53,7 +56,7 @@ export const DialogPopup = React.forwardRef<
           icon={icon}
           ref={ref}
           {...props}
-          className={cn("w-full", dialogPopupVariants({ variant }))}
+          className={cn("w-full", dialogUpdateVariants({ variant }))}
         >
           {title}
         </Button>
@@ -77,7 +80,7 @@ export const DialogPopup = React.forwardRef<
           </DialogTitle>
         </DialogHeader>
         <div className="overflow-y-auto px-6 pt-6 pb-9 space-y-6">
-          {renderFields()}
+          <form action="">{renderFields()}</form>
         </div>
         <DialogFooter>
           <Button type="submit" variant="primary">
@@ -89,4 +92,4 @@ export const DialogPopup = React.forwardRef<
   );
 });
 
-DialogPopup.displayName = "DialogPopup";
+DialogUpdate.displayName = "DialogUpdate";

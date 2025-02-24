@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GoogleButton } from "@/components/general/partials/button/GoogleButton";
+import { GoogleButton } from "@/components/general/_partials/button/GoogleButton";
 
 type Inputs = z.infer<typeof formSignUpSchema>;
 

@@ -14,7 +14,7 @@ import { CiMusicNote1 } from "react-icons/ci";
 import { TbCrown } from "react-icons/tb";
 import { CgSearch } from "react-icons/cg";
 import { SlPencil } from "react-icons/sl";
-import { DialogPopup } from "@/components/DialogPopup";
+import { DialogUpdate } from "@/components/DialogUpdate";
 
 export default function Me() {
   return (
@@ -42,7 +42,7 @@ export default function Me() {
                   <span className="text-lg relative -top-1">@maxess</span>
                 </div>
                 <div>
-                  <DialogPopup
+                  <DialogUpdate
                     type={DialogType.Profile}
                     icon={<SlPencil />}
                     title="Modifier mon profil"
@@ -203,7 +203,11 @@ export default function Me() {
                   Soundcloud
                 </li>
               </ul>
-              <DialogPopup title="Ajouter un lien" variant="secondary" />
+              <DialogUpdate
+                type={DialogType.SocialLinks}
+                title="Ajouter un lien"
+                variant="secondary"
+              />
             </div>
             <div className="text-sm space-y-3 border-t border-secondary py-3">
               <span className="text-sm">Groupe</span>
@@ -213,7 +217,7 @@ export default function Me() {
                   <span>Les incorruptibles</span>
                 </li>
               </ul>
-              <DialogPopup title="Ajouter un groupe" variant="secondary" />
+              <DialogUpdate title="Ajouter un groupe" variant="secondary" />
             </div>
           </div>
         </div>
