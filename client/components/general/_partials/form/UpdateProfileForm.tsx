@@ -74,8 +74,10 @@ export const UpdateProfileForm = () => {
               </div>
             </div>
             <div className="space-y-1.5">
-              <Label className="opacity-80">Sexe</Label>
-              <RadioGroup defaultValue="male" className="flex space-x-3">
+              <Label htmlFor="gender" className="opacity-80">
+                Sexe
+              </Label>
+              <RadioGroup id="gender" className="flex space-x-3">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="male" id="male" />
                   <Label htmlFor="male" className="opacity-80">
@@ -101,7 +103,7 @@ export const UpdateProfileForm = () => {
                 Pays
               </Label>
               <Select defaultValue="france">
-                <SelectTrigger className="w-full h-9" id="profile_type">
+                <SelectTrigger className="w-full h-9" id="country">
                   <SelectValue placeholder="Sélectionner un pays..." />
                 </SelectTrigger>
                 <SelectContent>
@@ -134,7 +136,7 @@ export const UpdateProfileForm = () => {
               <Label htmlFor="profile_type" className="opacity-80">
                 Type de profil
               </Label>
-              <RadioGroup defaultValue="male" className="flex space-x-3">
+              <RadioGroup className="flex space-x-3">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="musician" id="musician" />
                   <Label htmlFor="musician" className="opacity-80">
