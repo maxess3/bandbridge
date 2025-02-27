@@ -2,8 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { DialogUpdate } from "@/components/DialogUpdate";
-import { DialogType } from "@/types/DialogType";
 import { Button } from "@/components/ui/button";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { GoVerified } from "react-icons/go";
@@ -186,18 +184,18 @@ export default function RootPage() {
             <div className="text-sm space-y-3 border-t border-secondary py-3">
               <span className="text-sm">Liens</span>
               <ul className="space-y-2">
-                <li className="flex items-center">
+                <li className="flex items-center hover:underline">
                   <AiOutlineYoutube
                     size="1.65em"
                     className="inline-flex mr-1.5"
                   />
                   Youtube
                 </li>
-                <li className="flex items-center">
+                <li className="flex items-center hover:underline">
                   <FaInstagram size="1.5em" className="inline-flex mr-2" />
                   Instagram
                 </li>
-                <li className="flex items-center">
+                <li className="flex items-center hover:underline">
                   <RiSoundcloudFill
                     size="1.6em"
                     className="inline-flex mr-1.5"
@@ -205,11 +203,9 @@ export default function RootPage() {
                   Soundcloud
                 </li>
               </ul>
-              <DialogUpdate
-                type={DialogType.SocialLinks}
-                title="Ajouter un lien"
-                variant="secondary"
-              />
+              <Link href="/me/edit/profileMusic" className="flex">
+                <Button variant="linkForm">Ajouter un lien</Button>
+              </Link>
             </div>
             <div className="text-sm space-y-3 border-t border-secondary py-3">
               <span className="text-sm">Groupe</span>
@@ -219,7 +215,9 @@ export default function RootPage() {
                   <span>Les incorruptibles</span>
                 </li>
               </ul>
-              <DialogUpdate title="Ajouter un groupe" variant="secondary" />
+              <Link href="/me/edit/profileBand" className="flex">
+                <Button variant="linkForm">Ajouter un groupe</Button>
+              </Link>
             </div>
           </div>
         </div>

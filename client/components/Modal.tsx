@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogOverlay,
@@ -10,7 +11,6 @@ import {
   DialogFooter,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
 
 interface ModalProps {
   children: React.ReactNode;
@@ -27,6 +27,9 @@ export function Modal({ children, route, title }: ModalProps) {
       router.back();
     }
   };
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  };
   return (
     <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
       <DialogOverlay>
@@ -42,7 +45,12 @@ export function Modal({ children, route, title }: ModalProps) {
             <form id="modalForm">{children}</form>
           </div>
           <DialogFooter>
-            <Button type="submit" variant="primary" form="modalForm">
+            <Button
+              type="submit"
+              variant="primary"
+              form="modalForm"
+              onClick={handleSubmit}
+            >
               Enregistrer
             </Button>
           </DialogFooter>
