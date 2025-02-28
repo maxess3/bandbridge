@@ -1,8 +1,9 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { RadioGroup } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
+import { Radio } from "@/components/general/_partials/button/Radio";
 import {
   Select,
   SelectContent,
@@ -75,43 +76,25 @@ export const UpdateProfileForm = () => {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="gender" className="opacity-80">
-                Sexe
+                Genre
               </Label>
-              <RadioGroup id="gender" className="flex space-x-3">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="male" id="male" />
-                  <Label htmlFor="male" className="opacity-80">
-                    Homme
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="female" id="female" />
-                  <Label htmlFor="female" className="opacity-80">
-                    Femme
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="other" id="other" />
-                  <Label htmlFor="other" className="opacity-80">
-                    Autre
-                  </Label>
-                </div>
+              <RadioGroup id="gender" className="flex space-x-0.5">
+                <Radio title="Homme" id="male" />
+                <Radio title="Femme" id="female" />
+                <Radio title="Autre" id="other" />
               </RadioGroup>
             </div>
             <div className="space-y-1">
               <Label htmlFor="country" className="opacity-80">
                 Pays
               </Label>
-              <Select defaultValue="france">
-                <SelectTrigger className="w-full h-9" id="country">
-                  <SelectValue placeholder="Sélectionner un pays..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="france">France</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+              <RadioGroup
+                id="gender"
+                className="flex space-x-0.5"
+                defaultValue="France"
+              >
+                <Radio title="France" id="france" />
+              </RadioGroup>
             </div>
             <div className="space-y-1">
               <Label htmlFor="city" className="opacity-80">
@@ -136,25 +119,9 @@ export const UpdateProfileForm = () => {
               <Label htmlFor="profile_type" className="opacity-80">
                 Type de profil
               </Label>
-              <RadioGroup className="flex space-x-3">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="musician" id="musician" />
-                  <Label htmlFor="musician" className="opacity-80">
-                    Musicien
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="professional" id="professional" />
-                  <Label htmlFor="professional" className="opacity-80">
-                    Professionnel
-                  </Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="talent-scout" id="talent-scout" />
-                  <Label htmlFor="talent-scout" className="opacity-80">
-                    Dénicheur de talent
-                  </Label>
-                </div>
+              <RadioGroup className="flex space-x-0.5">
+                <Radio title="Amateur" id="amateur" />
+                <Radio title="Professionnel" id="professional" />
               </RadioGroup>
             </div>
           </div>
