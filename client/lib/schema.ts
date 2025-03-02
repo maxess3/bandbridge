@@ -55,7 +55,7 @@ export const formResetPwdSchema = z
 /* Edit profile schema */
 
 export const formBasicInfoProfile = z.object({
-  firstName: z
+  firstname: z
     .string()
     .min(1, "Le prénom est requis")
     .regex(
@@ -66,28 +66,28 @@ export const formBasicInfoProfile = z.object({
     .string()
     .min(5, "Le nom d'utilisateur doit contenir au moins 5 caractères")
     .transform((username) => username.trim().toLowerCase()),
-  birthdate: z
-    .string()
-    .refine((date) => europeDateRegex.test(date), {
-      message: "La date doit être au format DD/MM/YYYY",
-    })
-    .refine(
-      (date) => {
-        const [day, month, year] = date.split("/").map(Number);
-        const dateObj = new Date(year, month - 1, day);
-        return (
-          dateObj.getDate() === day &&
-          dateObj.getMonth() === month - 1 &&
-          dateObj.getFullYear() === year
-        );
-      },
-      {
-        message: "La date n'est pas valide",
-      }
-    ),
+  // birthdate: z
+  //   .string()
+  //   .refine((date) => europeDateRegex.test(date), {
+  //     message: "La date doit être au format DD/MM/YYYY",
+  //   })
+  //   .refine(
+  //     (date) => {
+  //       const [day, month, year] = date.split("/").map(Number);
+  //       const dateObj = new Date(year, month - 1, day);
+  //       return (
+  //         dateObj.getDate() === day &&
+  //         dateObj.getMonth() === month - 1 &&
+  //         dateObj.getFullYear() === year
+  //       );
+  //     },
+  //     {
+  //       message: "La date n'est pas valide",
+  //     }
+  //   ),
   gender: z.enum(["male", "female", "other"], {
     errorMap: () => ({
-      message: "Le genre doit être défini sur Homme, Femme ou Autre",
+      message: "Valeur incorrecte",
     }),
   }),
   country: z.string(),

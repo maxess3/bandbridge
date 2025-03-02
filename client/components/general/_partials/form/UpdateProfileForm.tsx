@@ -1,5 +1,6 @@
 "use client";
 
+import { useFormContext, Controller } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
@@ -14,6 +15,11 @@ import {
 } from "@/components/ui/select";
 
 export const UpdateProfileForm = () => {
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext();
   return (
     <div className="space-y-6">
       <div className="space-y-1">
@@ -24,13 +30,31 @@ export const UpdateProfileForm = () => {
               <Label htmlFor="firstname" className="opacity-80">
                 Prénom
               </Label>
-              <Input id="firstname" className="h-9" />
+              <Input
+                id="firstname"
+                {...register("firstname")}
+                className={`${errors.firstname && "border-red-500"}`}
+              />
+              {errors.firstname && (
+                <p className="text-red-500 text-sm">
+                  {errors.firstname?.message?.toString()}
+                </p>
+              )}
             </div>
             <div className="space-y-1">
               <Label htmlFor="username" className="opacity-80">
                 Nom d'utilisateur
               </Label>
-              <Input id="username" />
+              <Input
+                id="username"
+                {...register("username")}
+                className={`${errors.username && "border-red-500"}`}
+              />
+              {errors.username && (
+                <p className="text-red-500 text-sm">
+                  {errors.username?.message?.toString()}
+                </p>
+              )}
             </div>
             <div className="space-y-1">
               <Label htmlFor="birthday" className="opacity-80">
@@ -78,51 +102,55 @@ export const UpdateProfileForm = () => {
               <Label htmlFor="gender" className="opacity-80">
                 Genre
               </Label>
-              <RadioGroup id="gender" className="flex space-x-0.5">
-                <Radio title="Homme" id="male" />
-                <Radio title="Femme" id="female" />
-                <Radio title="Autre" id="other" />
-              </RadioGroup>
+              <Controller
+                name="gender"
+                control={control}
+                render={({ field }) => (
+                  <RadioGroup
+                    {...field}
+                    onValueChange={field.onChange}
+                    defaultValue="other"
+                    value={field.value}
+                    className="flex space-x-0.5"
+                  >
+                    <Radio title="Non défini" id="other" value="other" />
+                    <Radio title="Homme" id="male" value="male" />
+                    <Radio title="Femme" id="female" value="female" />
+                  </RadioGroup>
+                )}
+              />
             </div>
             <div className="space-y-1">
               <Label htmlFor="country" className="opacity-80">
                 Pays
               </Label>
-              <RadioGroup
-                id="gender"
-                className="flex space-x-0.5"
-                defaultValue="France"
-              >
-                <Radio title="France" id="france" />
-              </RadioGroup>
+              <Controller
+                name="country"
+                control={control}
+                render={({ field }) => (
+                  <RadioGroup
+                    {...field}
+                    onValueChange={field.onChange}
+                    defaultValue="france"
+                    value={field.value}
+                    className="flex space-x-0.5"
+                  >
+                    <Radio title="France" id="france" value="france" />
+                  </RadioGroup>
+                )}
+              />
             </div>
             <div className="space-y-1">
               <Label htmlFor="city" className="opacity-80">
                 Ville
               </Label>
-              <Input id="city" />
+              <Input id="city" {...register("city")} />
             </div>
             <div className="space-y-1">
               <Label htmlFor="zipcode" className="opacity-80">
                 Code Postal
               </Label>
-              <Input id="zipcode" />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="space-y-1">
-        <h4 className="font-semibold text-2xl">Profil musical</h4>
-        <div className="space-y-3">
-          <div className="space-y-6">
-            <div className="space-y-1.5">
-              <Label htmlFor="profile_type" className="opacity-80">
-                Type de profil
-              </Label>
-              <RadioGroup className="flex space-x-0.5">
-                <Radio title="Amateur" id="amateur" />
-                <Radio title="Professionnel" id="professional" />
-              </RadioGroup>
+              <Input id="zipcode" {...register("zipcode")} />
             </div>
           </div>
         </div>

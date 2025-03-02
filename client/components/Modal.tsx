@@ -1,5 +1,9 @@
 "use client";
 
+import { formBasicInfoProfile } from "@/lib/schema";
+import { z } from "zod";
+import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import {
   Dialog,
@@ -11,6 +15,8 @@ import {
   DialogFooter,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
+
+type Inputs = z.infer<typeof formBasicInfoProfile>;
 
 interface ModalProps {
   children: React.ReactNode;
@@ -27,9 +33,18 @@ export function Modal({ children, route, title }: ModalProps) {
       router.back();
     }
   };
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+
+  const methods = useForm<Inputs>({
+    mode: "onChange",
+    resolver: zodResolver(formBasicInfoProfile),
+  });
+
+  // console.log(methods.formState.errors);
+
+  const formSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
   };
+
   return (
     <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
       <DialogOverlay>
@@ -42,15 +57,14 @@ export function Modal({ children, route, title }: ModalProps) {
             </DialogTitle>
           </DialogHeader>
           <div className="overflow-y-auto px-6 pt-6 pb-9 space-y-6">
-            <form id="modalForm">{children}</form>
+            <FormProvider {...methods}>
+              <form id="modalForm" onSubmit={methods.handleSubmit(formSubmit)}>
+                {children}
+              </form>
+            </FormProvider>
           </div>
           <DialogFooter>
-            <Button
-              type="submit"
-              variant="primary"
-              form="modalForm"
-              onClick={handleSubmit}
-            >
+            <Button type="submit" variant="primary" form="modalForm">
               Enregistrer
             </Button>
           </DialogFooter>
