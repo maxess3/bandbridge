@@ -34,7 +34,8 @@ export const UpdateProfileForm = () => {
 
   const setFormattedBirthdate = useCallback(() => {
     if (day !== undefined && month !== undefined && year !== undefined) {
-      setValue("formattedBirthdate", `${year}-${month}-${day}`, {
+      const formattedDay = day.padStart(2, "0");
+      setValue("formattedBirthdate", `${year}-${month}-${formattedDay}`, {
         shouldValidate: true,
       });
     }
@@ -137,7 +138,11 @@ export const UpdateProfileForm = () => {
                   maxLength={4}
                 />
               </div>
-              <Input readOnly {...register("formattedBirthdate")} />
+              <Input
+                type="hidden"
+                readOnly
+                {...register("formattedBirthdate")}
+              />
               {errors.formattedBirthdate && (
                 <p className="text-red-500 text-sm">
                   {errors.formattedBirthdate?.message?.toString()}
@@ -164,6 +169,11 @@ export const UpdateProfileForm = () => {
                   </RadioGroup>
                 )}
               />
+              {errors.gender && (
+                <p className="text-red-500 text-sm">
+                  {errors.gender?.message?.toString()}
+                </p>
+              )}
             </div>
             <div className="space-y-1">
               <Label htmlFor="country" className="opacity-80">
@@ -183,6 +193,11 @@ export const UpdateProfileForm = () => {
                   </RadioGroup>
                 )}
               />
+              {errors.country && (
+                <p className="text-red-500 text-sm">
+                  {errors.country?.message?.toString()}
+                </p>
+              )}
             </div>
             <div className="space-y-1">
               <Label htmlFor="zipcode" className="opacity-80">

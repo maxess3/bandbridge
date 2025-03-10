@@ -12,8 +12,6 @@ export default function InterceptedPage() {
       formSchema={formBasicInfoProfile}
       route="/me"
       defaultValues={{
-        firstname: "John",
-        username: "johndoe",
         gender: "other",
         country: "france",
       }}
