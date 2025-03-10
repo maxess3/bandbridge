@@ -13,13 +13,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { formBasicInfoProfile } from "@/lib/schema";
+import { z } from "zod";
+
+type FormValues = z.input<typeof formBasicInfoProfile>;
 
 export const UpdateProfileForm = () => {
   const {
     control,
     register,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<FormValues>();
   return (
     <div className="space-y-6">
       <div className="space-y-1">
@@ -62,41 +66,62 @@ export const UpdateProfileForm = () => {
               </Label>
               <div className="flex items-center gap-2">
                 <Input
+                  {...register("birthdate.day")}
                   placeholder="Jour"
                   id="birthday"
-                  className="w-14"
+                  className={`w-14 ${
+                    errors.birthdate?.day && "border-red-500"
+                  }`}
                   maxLength={2}
                 />
                 <span className="w-1 flex justify-center">-</span>
-                <Select>
-                  <SelectTrigger className="w-32 h-9">
-                    <SelectValue placeholder="Mois" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectItem value="01">Janvier</SelectItem>
-                      <SelectItem value="02">Février</SelectItem>
-                      <SelectItem value="03">Mars</SelectItem>
-                      <SelectItem value="04">Avril</SelectItem>
-                      <SelectItem value="mai">Mai</SelectItem>
-                      <SelectItem value="juin">Juin</SelectItem>
-                      <SelectItem value="juillet">Juillet</SelectItem>
-                      <SelectItem value="aout">Aout</SelectItem>
-                      <SelectItem value="septembre">Septembre</SelectItem>
-                      <SelectItem value="octobre">Octobre</SelectItem>
-                      <SelectItem value="novembre">Novembre</SelectItem>
-                      <SelectItem value="decembre">Décembre</SelectItem>
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+                <Controller
+                  name="birthdate.month"
+                  control={control}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger
+                        className={`w-32 h-9 ${
+                          errors.birthdate?.month && "border-red-500"
+                        }`}
+                      >
+                        <SelectValue placeholder="Mois" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="01">Janvier</SelectItem>
+                          <SelectItem value="02">Février</SelectItem>
+                          <SelectItem value="03">Mars</SelectItem>
+                          <SelectItem value="04">Avril</SelectItem>
+                          <SelectItem value="05">Mai</SelectItem>
+                          <SelectItem value="06">Juin</SelectItem>
+                          <SelectItem value="07">Juillet</SelectItem>
+                          <SelectItem value="08">Août</SelectItem>
+                          <SelectItem value="09">Septembre</SelectItem>
+                          <SelectItem value="10">Octobre</SelectItem>
+                          <SelectItem value="11">Novembre</SelectItem>
+                          <SelectItem value="12">Décembre</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
                 <span className="w-1 flex justify-center">-</span>
                 <Input
+                  {...register("birthdate.year")}
                   placeholder="Année"
-                  className="w-20"
+                  className={`w-20 ${
+                    errors.birthdate?.year && "border-red-500"
+                  }`}
                   id="year"
                   maxLength={4}
                 />
               </div>
+              {errors.birthdate && "root" in errors.birthdate && (
+                <p className="text-red-500 text-sm">
+                  {errors.birthdate.root?.message}
+                </p>
+              )}
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="gender" className="opacity-80">
@@ -109,7 +134,6 @@ export const UpdateProfileForm = () => {
                   <RadioGroup
                     {...field}
                     onValueChange={field.onChange}
-                    defaultValue="other"
                     value={field.value}
                     className="flex space-x-0.5"
                   >
@@ -131,7 +155,6 @@ export const UpdateProfileForm = () => {
                   <RadioGroup
                     {...field}
                     onValueChange={field.onChange}
-                    defaultValue="france"
                     value={field.value}
                     className="flex space-x-0.5"
                   >
@@ -141,16 +164,25 @@ export const UpdateProfileForm = () => {
               />
             </div>
             <div className="space-y-1">
+              <Label htmlFor="zipcode" className="opacity-80">
+                Code Postal
+              </Label>
+              <Input
+                id="zipcode"
+                {...register("zipcode")}
+                className={`${errors.zipcode && "border-red-500"}`}
+              />
+              {errors.zipcode && (
+                <p className="text-red-500 text-sm">
+                  {errors.zipcode?.message?.toString()}
+                </p>
+              )}
+            </div>
+            <div className="space-y-1">
               <Label htmlFor="city" className="opacity-80">
                 Ville
               </Label>
               <Input id="city" {...register("city")} />
-            </div>
-            <div className="space-y-1">
-              <Label htmlFor="zipcode" className="opacity-80">
-                Code Postal
-              </Label>
-              <Input id="zipcode" {...register("zipcode")} />
             </div>
           </div>
         </div>

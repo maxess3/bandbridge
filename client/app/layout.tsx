@@ -33,7 +33,17 @@ export default async function RootLayout({
         <AuthSessionProviders>
           <ReactQueryClientProvider>
             <Providers>
-              <Toaster position="top-right" />
+              <Toaster
+                toastOptions={{
+                  classNames: {
+                    toast:
+                      "bg-accent text-foreground border outline-none border-border",
+                    icon: "text-red-500",
+                  },
+                }}
+                position="top-right"
+                duration={4000}
+              />
               <NextTopLoader color="#a3bef5" showSpinner={false} height={3} />
               <div className="px-8">
                 <Navbar />

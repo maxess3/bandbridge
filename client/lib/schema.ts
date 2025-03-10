@@ -1,6 +1,6 @@
 import z from "zod";
 
-const europeDateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+// const europeDateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
 
 /* Auth schema */
 
@@ -18,8 +18,8 @@ export const formSignUpSchema = z.object({
     .string()
     .min(1, "Le prénom est requis")
     .regex(
-      /^[a-zA-Z]+$/,
-      "Le prénom ne doit contenir que des lettres sans espace"
+      /^[a-zA-ZÀ-ÿ\-]+$/,
+      "Le prénom ne doit contenir que des lettres et tirets"
     ),
 });
 
@@ -59,38 +59,59 @@ export const formBasicInfoProfile = z.object({
     .string()
     .min(1, "Le prénom est requis")
     .regex(
-      /^[a-zA-Z]+$/,
-      "Le prénom ne doit contenir que des lettres sans espace"
+      /^[a-zA-ZÀ-ÿ\-]+$/,
+      "Le prénom ne doit contenir que des lettres et tirets"
     ),
   username: z
     .string()
     .min(5, "Le nom d'utilisateur doit contenir au moins 5 caractères")
     .transform((username) => username.trim().toLowerCase()),
-  // birthdate: z
-  //   .string()
-  //   .refine((date) => europeDateRegex.test(date), {
-  //     message: "La date doit être au format DD/MM/YYYY",
-  //   })
-  //   .refine(
-  //     (date) => {
-  //       const [day, month, year] = date.split("/").map(Number);
-  //       const dateObj = new Date(year, month - 1, day);
-  //       return (
-  //         dateObj.getDate() === day &&
-  //         dateObj.getMonth() === month - 1 &&
-  //         dateObj.getFullYear() === year
-  //       );
-  //     },
-  //     {
-  //       message: "La date n'est pas valide",
-  //     }
-  //   ),
-  gender: z.enum(["male", "female", "other"], {
-    errorMap: () => ({
-      message: "Valeur incorrecte",
+  birthdate: z
+    .object({
+      day: z.string().regex(/^(0?[1-9]|[12][0-9]|3[01])$/, "Jour invalide"),
+      month: z.string().regex(/^(0?[1-9]|1[012])$/, "Mois invalide"),
+      year: z
+        .string()
+        .regex(/^\d{4}$/, "Année invalide")
+        .refine((year) => {
+          const currentYear = new Date().getFullYear();
+          const yearNum = parseInt(year);
+          return yearNum <= currentYear - 18 && yearNum >= currentYear - 120;
+        }, "L'âge doit être compris entre 18 et 120 ans"),
+    })
+    .refine(
+      (data) => {
+        const day = parseInt(data.day);
+        const month = parseInt(data.month);
+        const year = parseInt(data.year);
+
+        const date = new Date(year, month - 1, day);
+        const valid =
+          date.getDate() === day &&
+          date.getMonth() === month - 1 &&
+          date.getFullYear() === year;
+
+        const minDate = new Date();
+        minDate.setFullYear(minDate.getFullYear() - 120);
+        const maxDate = new Date();
+        maxDate.setFullYear(maxDate.getFullYear() - 13);
+
+        return valid && date >= minDate && date <= maxDate;
+      },
+      {
+        message: "Date de naissance non valide",
+      }
+    )
+    .transform((data) => {
+      return `${data.year}-${data.month.padStart(2, "0")}-${data.day.padStart(
+        2,
+        "0"
+      )}`;
     }),
-  }),
+  gender: z.enum(["other", "male", "female"]),
   country: z.string(),
+  zipcode: z
+    .string()
+    .regex(/^\d{5}$/, "Le code postal doit contenir exactement 5 chiffres"),
   city: z.string(),
-  zipCode: z.number(),
 });

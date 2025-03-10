@@ -1,8 +1,13 @@
 "use client";
 
-import { formBasicInfoProfile } from "@/lib/schema";
 import { z } from "zod";
-import { useForm, FormProvider, SubmitHandler } from "react-hook-form";
+import {
+  useForm,
+  FormProvider,
+  SubmitHandler,
+  FieldValues,
+  DefaultValues,
+} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import {
@@ -16,15 +21,23 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 
-type Inputs = z.infer<typeof formBasicInfoProfile>;
-
-interface ModalProps {
+interface ModalProps<T extends FieldValues> {
   children: React.ReactNode;
   route?: string;
   title: string;
+  onSubmit: (data: T) => Promise<void>;
+  formSchema: z.ZodType<T>;
+  defaultValues?: DefaultValues<T>;
 }
 
-export function Modal({ children, route, title }: ModalProps) {
+export function Modal<T extends FieldValues>({
+  children,
+  route,
+  title,
+  onSubmit,
+  formSchema,
+  defaultValues,
+}: ModalProps<T>) {
   const router = useRouter();
   const handleOpenChange = () => {
     if (route) {
@@ -34,15 +47,17 @@ export function Modal({ children, route, title }: ModalProps) {
     }
   };
 
-  const methods = useForm<Inputs>({
+  const methods = useForm<T>({
     mode: "onChange",
-    resolver: zodResolver(formBasicInfoProfile),
+    resolver: zodResolver(formSchema),
+    defaultValues,
   });
 
-  // console.log(methods.formState.errors);
+  console.log(methods.formState.errors);
 
-  const formSubmit: SubmitHandler<Inputs> = async (data) => {
+  const formSubmit: SubmitHandler<T> = async (data) => {
     console.log(data);
+    await onSubmit(data);
   };
 
   return (
