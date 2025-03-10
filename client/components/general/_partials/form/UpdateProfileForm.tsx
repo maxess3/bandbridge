@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useCallback } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup } from "@/components/ui/radio-group";
@@ -22,8 +23,29 @@ export const UpdateProfileForm = () => {
   const {
     control,
     register,
+    setValue,
+    watch,
     formState: { errors },
   } = useFormContext<FormValues>();
+
+  const day = watch("birthdate.day");
+  const month = watch("birthdate.month");
+  const year = watch("birthdate.year");
+
+  const setFormattedBirthdate = useCallback(() => {
+    if (day !== undefined && month !== undefined && year !== undefined) {
+      setValue("formattedBirthdate", `${year}-${month}-${day}`, {
+        shouldValidate: true,
+      });
+    }
+  }, [day, month, year, setValue]);
+
+  useEffect(() => {
+    if (day && month && year) {
+      setFormattedBirthdate();
+    }
+  }, [day, month, year, setFormattedBirthdate]);
+
   return (
     <div className="space-y-6">
       <div className="space-y-1">
@@ -61,9 +83,7 @@ export const UpdateProfileForm = () => {
               )}
             </div>
             <div className="space-y-1">
-              <Label htmlFor="birthday" className="opacity-80">
-                Date de naissance
-              </Label>
+              <Label className="opacity-80">Date de naissance</Label>
               <div className="flex items-center gap-2">
                 <Input
                   {...register("birthdate.day")}
@@ -117,9 +137,10 @@ export const UpdateProfileForm = () => {
                   maxLength={4}
                 />
               </div>
-              {errors.birthdate && "root" in errors.birthdate && (
+              <Input readOnly {...register("formattedBirthdate")} />
+              {errors.formattedBirthdate && (
                 <p className="text-red-500 text-sm">
-                  {errors.birthdate.root?.message}
+                  {errors.formattedBirthdate?.message?.toString()}
                 </p>
               )}
             </div>

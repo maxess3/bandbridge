@@ -1,7 +1,5 @@
 import z from "zod";
 
-// const europeDateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-
 /* Auth schema */
 
 export const formSignUpSchema = z.object({
@@ -66,48 +64,34 @@ export const formBasicInfoProfile = z.object({
     .string()
     .min(5, "Le nom d'utilisateur doit contenir au moins 5 caractères")
     .transform((username) => username.trim().toLowerCase()),
-  birthdate: z
-    .object({
-      day: z.string().regex(/^(0?[1-9]|[12][0-9]|3[01])$/, "Jour invalide"),
-      month: z.string().regex(/^(0?[1-9]|1[012])$/, "Mois invalide"),
-      year: z
-        .string()
-        .regex(/^\d{4}$/, "Année invalide")
-        .refine((year) => {
-          const currentYear = new Date().getFullYear();
-          const yearNum = parseInt(year);
-          return yearNum <= currentYear - 18 && yearNum >= currentYear - 120;
-        }, "L'âge doit être compris entre 18 et 120 ans"),
-    })
-    .refine(
-      (data) => {
-        const day = parseInt(data.day);
-        const month = parseInt(data.month);
-        const year = parseInt(data.year);
-
-        const date = new Date(year, month - 1, day);
-        const valid =
-          date.getDate() === day &&
-          date.getMonth() === month - 1 &&
-          date.getFullYear() === year;
-
-        const minDate = new Date();
-        minDate.setFullYear(minDate.getFullYear() - 120);
-        const maxDate = new Date();
-        maxDate.setFullYear(maxDate.getFullYear() - 13);
-
-        return valid && date >= minDate && date <= maxDate;
-      },
-      {
-        message: "Date de naissance non valide",
-      }
-    )
-    .transform((data) => {
-      return `${data.year}-${data.month.padStart(2, "0")}-${data.day.padStart(
-        2,
-        "0"
-      )}`;
-    }),
+  birthdate: z.object({
+    day: z.string().regex(/^(0?[1-9]|[12][0-9]|3[01])$/, "Jour invalide"),
+    month: z.string().regex(/^(0?[1-9]|1[012])$/, "Mois invalide"),
+    year: z
+      .string()
+      .regex(/^\d{4}$/, "Année invalide")
+      .refine((year) => {
+        const currentYear = new Date().getFullYear();
+        const yearNum = parseInt(year);
+        return yearNum <= currentYear - 18 && yearNum >= currentYear - 120;
+      }, "L'âge doit être compris entre 18 et 120 ans"),
+  }),
+  formattedBirthdate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date de naissance invalide")
+    .refine((date) => {
+      const [year, month, day] = date.split("-").map(Number);
+      const isValidDate =
+        new Date(year, month - 1, day).getFullYear() === year &&
+        new Date(year, month - 1, day).getMonth() === month - 1 &&
+        new Date(year, month - 1, day).getDate() === day;
+      return isValidDate;
+    }, "Date de naissance invalide")
+    .refine((date) => {
+      const birthYear = parseInt(date.split("-")[0]);
+      const currentYear = new Date().getFullYear();
+      return currentYear - birthYear >= 18;
+    }, "L'âge minimum est de 18 ans"),
   gender: z.enum(["other", "male", "female"]),
   country: z.string(),
   zipcode: z
