@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { HiOutlineLocationMarker } from "react-icons/hi";
-import { GoVerified } from "react-icons/go";
 import { AiOutlineYoutube } from "react-icons/ai";
 import { FaInstagram } from "react-icons/fa6";
 import { RiSoundcloudFill } from "react-icons/ri";
@@ -18,11 +17,11 @@ import { SlPencil } from "react-icons/sl";
 
 export default function RootPage() {
   return (
-    <div className="py-10 flex flex-col w-full">
+    <div className="py-8 flex flex-col w-full">
       <div className="w-full flex gap-x-4">
         <div className="w-9/12">
           <div className="flex gap-x-8 w-full">
-            <div>
+            <div className="flex items-center">
               <div className="w-56 h-56 flex rounded-full overflow-hidden border border-secondary shadow-lg">
                 <Image
                   width={300}
@@ -37,7 +36,7 @@ export default function RootPage() {
               <div className="flex justify-between">
                 <div className="flex flex-col">
                   <span className="text-2xl font-semibold inline-flex items-center">
-                    Maxime <GoVerified className="ml-1.5" />
+                    Maxime
                   </span>
                   <span className="text-lg relative -top-1">@maxess</span>
                 </div>

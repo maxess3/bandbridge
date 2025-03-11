@@ -110,18 +110,16 @@ export const UpdateProfileForm = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value="01">Janvier</SelectItem>
-                          <SelectItem value="02">Février</SelectItem>
-                          <SelectItem value="03">Mars</SelectItem>
-                          <SelectItem value="04">Avril</SelectItem>
-                          <SelectItem value="05">Mai</SelectItem>
-                          <SelectItem value="06">Juin</SelectItem>
-                          <SelectItem value="07">Juillet</SelectItem>
-                          <SelectItem value="08">Août</SelectItem>
-                          <SelectItem value="09">Septembre</SelectItem>
-                          <SelectItem value="10">Octobre</SelectItem>
-                          <SelectItem value="11">Novembre</SelectItem>
-                          <SelectItem value="12">Décembre</SelectItem>
+                          {Array.from({ length: 12 }, (_, i) => (
+                            <SelectItem
+                              key={i + 1}
+                              value={String(i + 1).padStart(2, "0")}
+                            >
+                              {new Date(0, i).toLocaleString("fr-FR", {
+                                month: "long",
+                              })}
+                            </SelectItem>
+                          ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -218,7 +216,33 @@ export const UpdateProfileForm = () => {
               <Label htmlFor="city" className="opacity-80">
                 Ville
               </Label>
-              <Input id="city" {...register("city")} />
+              <Controller
+                name="city"
+                control={control}
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger
+                      className={`w-full h-9 ${
+                        errors.city && "border-red-500"
+                      }`}
+                    >
+                      <SelectValue placeholder="Mois" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="Castanet-Tolosan">
+                          Castanet-Tolosan
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+              {errors.city && (
+                <p className="text-red-500 text-sm">
+                  {errors.city?.message?.toString()}
+                </p>
+              )}
             </div>
           </div>
         </div>

@@ -63,6 +63,10 @@ export const formBasicInfoProfile = z.object({
   username: z
     .string()
     .min(5, "Le nom d'utilisateur doit contenir au moins 5 caractères")
+    .regex(
+      /^[a-zA-Z0-9]+$/,
+      "Le nom d'utilisateur ne doit contenir que des lettres et des chiffres"
+    )
     .transform((username) => username.trim().toLowerCase()),
   birthdate: z
     .object({
@@ -116,6 +120,15 @@ export const formBasicInfoProfile = z.object({
   }),
   zipcode: z
     .string()
-    .regex(/^\d{5}$/, "Le code postal doit contenir exactement 5 chiffres"),
-  city: z.string(),
+    .regex(/^\d{5}$/, "Le code postal doit contenir exactement 5 chiffres")
+    .optional()
+    .or(z.literal("")),
+  city: z
+    .string()
+    .regex(
+      /^[a-zA-ZÀ-ÿ\-]+$/,
+      "La ville ne doit contenir que des lettres et tirets"
+    )
+    .optional()
+    .or(z.literal("")),
 });
