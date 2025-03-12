@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect, useCallback } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup } from "@/components/ui/radio-group";
@@ -20,6 +21,7 @@ import { z } from "zod";
 type FormValues = z.input<typeof formBasicInfoProfile>;
 
 export const UpdateProfileForm = () => {
+  const [debouncedZipcode, setDebouncedZipcode] = useState("");
   const {
     control,
     register,
@@ -46,6 +48,35 @@ export const UpdateProfileForm = () => {
       setFormattedBirthdate();
     }
   }, [day, month, year, setFormattedBirthdate]);
+
+  const {
+    data: cities,
+    isLoading,
+    isSuccess,
+  } = useQuery({
+    queryKey: ["cities", debouncedZipcode],
+    queryFn: async () => {
+      if (!debouncedZipcode || debouncedZipcode.length !== 5) return [];
+
+      const response = await fetch(
+        `https://geo.api.gouv.fr/communes?codePostal=${debouncedZipcode}&fields=nom`
+      );
+      const data = await response.json();
+
+      return data.map((item: { nom: string }) => item.nom);
+    },
+    enabled: debouncedZipcode.length === 5,
+  });
+
+  useEffect(() => {
+    const zipcode = watch("zipcode");
+    const timeoutId = setTimeout(() => {
+      setDebouncedZipcode(zipcode || "");
+      setValue("city", "");
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [watch("zipcode")]);
 
   return (
     <div className="space-y-6">
@@ -226,13 +257,23 @@ export const UpdateProfileForm = () => {
                         errors.city && "border-red-500"
                       }`}
                     >
-                      <SelectValue placeholder="Mois" />
+                      <SelectValue
+                        placeholder={
+                          isLoading
+                            ? "Chargement..."
+                            : isSuccess && cities?.length
+                            ? "Sélectionner une ville"
+                            : "Aucune ville trouvée"
+                        }
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectItem value="Castanet-Tolosan">
-                          Castanet-Tolosan
-                        </SelectItem>
+                        {cities?.map((city: string) => (
+                          <SelectItem key={city} value={city}>
+                            {city}
+                          </SelectItem>
+                        ))}
                       </SelectGroup>
                     </SelectContent>
                   </Select>
