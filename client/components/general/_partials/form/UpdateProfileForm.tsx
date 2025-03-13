@@ -87,7 +87,7 @@ export const UpdateProfileForm = () => {
           <div className="space-y-6">
             <div className="space-y-1">
               <Label htmlFor="firstname" className="opacity-80">
-                <span className="text-red-500 mr-0.5 inline-flex">*</span>Prénom
+                Prénom
               </Label>
               <Input
                 id="firstname"
@@ -102,8 +102,7 @@ export const UpdateProfileForm = () => {
             </div>
             <div className="space-y-1">
               <Label htmlFor="username" className="opacity-80">
-                <span className="text-red-500 mr-0.5 inline-flex">*</span>Nom
-                d'utilisateur
+                Nom d'utilisateur
               </Label>
               <Input
                 id="username"
@@ -117,10 +116,7 @@ export const UpdateProfileForm = () => {
               )}
             </div>
             <div className="space-y-1">
-              <Label className="opacity-80">
-                <span className="text-red-500 mr-0.5 inline-flex">*</span>Date
-                de naissance
-              </Label>
+              <Label className="opacity-80">Date de naissance</Label>
               <div className="flex items-center gap-2">
                 <Input
                   {...register("birthdate.day")}
@@ -185,7 +181,7 @@ export const UpdateProfileForm = () => {
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="gender" className="opacity-80">
-                <span className="text-red-500 mr-0.5 inline-flex">*</span>Genre
+                Genre
               </Label>
               <Controller
                 name="gender"
@@ -211,7 +207,7 @@ export const UpdateProfileForm = () => {
             </div>
             <div className="space-y-1">
               <Label htmlFor="country" className="opacity-80">
-                <span className="text-red-500 mr-0.5 inline-flex">*</span>Pays
+                Pays
               </Label>
               <Controller
                 name="country"
@@ -235,8 +231,7 @@ export const UpdateProfileForm = () => {
             </div>
             <div className="space-y-1">
               <Label htmlFor="zipcode" className="opacity-80">
-                <span className="text-red-500 mr-0.5 inline-flex">*</span>Code
-                Postal
+                Code Postal
               </Label>
               <Input
                 id="zipcode"
@@ -251,7 +246,7 @@ export const UpdateProfileForm = () => {
             </div>
             <div className="space-y-1">
               <Label htmlFor="city" className="opacity-80">
-                <span className="text-red-500 mr-0.5 inline-flex">*</span>Ville
+                Ville
               </Label>
               <Controller
                 name="city"
