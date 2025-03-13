@@ -53,7 +53,7 @@ export function Modal<T extends FieldValues>({
     defaultValues,
   });
 
-  console.log(methods.formState.errors);
+  // console.log(methods.formState.errors);
 
   const formSubmit: SubmitHandler<T> = async (data) => {
     console.log(data);
@@ -61,30 +61,35 @@ export function Modal<T extends FieldValues>({
   };
 
   return (
-    <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
-      <DialogOverlay>
-        <DialogContent className="md:max-w-2xl sm:max-w-2xl max-w-full sm:max-h-[85%] max-h-full p-0">
-          <DialogHeader>
-            <DialogTitle>
-              <DialogDescription className="text-xl text-foreground">
-                {title}
-              </DialogDescription>
-            </DialogTitle>
-          </DialogHeader>
-          <div className="overflow-y-auto px-6 pt-6 pb-9 space-y-6">
-            <FormProvider {...methods}>
-              <form id="modalForm" onSubmit={methods.handleSubmit(formSubmit)}>
-                {children}
-              </form>
-            </FormProvider>
-          </div>
-          <DialogFooter>
-            <Button type="submit" variant="primary" form="modalForm">
-              Enregistrer
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </DialogOverlay>
-    </Dialog>
+    <div>
+      <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
+        <DialogOverlay>
+          <DialogContent className="md:max-w-2xl sm:max-w-2xl max-w-full sm:max-h-[85%] max-h-full p-0">
+            <DialogHeader>
+              <DialogTitle>
+                <DialogDescription className="text-xl text-foreground">
+                  {title}
+                </DialogDescription>
+              </DialogTitle>
+            </DialogHeader>
+            <div className="overflow-y-auto px-6 pt-6 pb-9 space-y-6">
+              <FormProvider {...methods}>
+                <form
+                  id="modalForm"
+                  onSubmit={methods.handleSubmit(formSubmit)}
+                >
+                  {children}
+                </form>
+              </FormProvider>
+            </div>
+            <DialogFooter>
+              <Button type="submit" variant="primary" form="modalForm">
+                Enregistrer
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </DialogOverlay>
+      </Dialog>
+    </div>
   );
 }

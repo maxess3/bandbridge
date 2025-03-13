@@ -1,7 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useState, useEffect, useCallback } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
+import { useEffect, useCallback } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { RadioGroup } from "@/components/ui/radio-group";
@@ -21,7 +22,6 @@ import { z } from "zod";
 type FormValues = z.input<typeof formBasicInfoProfile>;
 
 export const UpdateProfileForm = () => {
-  const [debouncedZipcode, setDebouncedZipcode] = useState("");
   const {
     control,
     register,
@@ -33,6 +33,9 @@ export const UpdateProfileForm = () => {
   const day = watch("birthdate.day");
   const month = watch("birthdate.month");
   const year = watch("birthdate.year");
+  const zipcode = watch("zipcode");
+
+  const debouncedZipcode = useDebounce(zipcode || "", 500);
 
   const setFormattedBirthdate = useCallback(() => {
     if (day !== undefined && month !== undefined && year !== undefined) {
@@ -63,20 +66,18 @@ export const UpdateProfileForm = () => {
       );
       const data = await response.json();
 
+      console.log(data);
+
       return data.map((item: { nom: string }) => item.nom);
     },
     enabled: debouncedZipcode.length === 5,
   });
 
   useEffect(() => {
-    const zipcode = watch("zipcode");
-    const timeoutId = setTimeout(() => {
-      setDebouncedZipcode(zipcode || "");
+    if (debouncedZipcode !== zipcode) {
       setValue("city", "");
-    }, 500);
-
-    return () => clearTimeout(timeoutId);
-  }, [watch("zipcode")]);
+    }
+  }, [debouncedZipcode, zipcode, setValue]);
 
   return (
     <div className="space-y-6">

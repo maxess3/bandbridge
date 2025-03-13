@@ -12,7 +12,7 @@ async function refreshToken(token: JWT): Promise<JWT> {
 
   const response = await res.data;
 
-  console.log("refresh", response.backendTokens.accessToken);
+  // console.log("refresh", response.backendTokens.accessToken);
 
   return {
     ...token,
