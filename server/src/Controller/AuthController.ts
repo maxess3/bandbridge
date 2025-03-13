@@ -5,25 +5,8 @@ import { Request, Response } from "express";
 import { formatName } from "../utils/utils";
 import { createAuthTokens } from "../utils/token";
 import nodemailer from "nodemailer";
-import {
-  formSignUpSchema,
-  formForgotPwdSchema,
-  formResetPwdSchema,
-} from "../lib/schema";
-import { ZodError } from "zod";
 
 export const signup = async (req: Request, res: Response) => {
-  // Validate user inputs with zod
-  try {
-    const validatedData = formSignUpSchema.parse(req.body);
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return res.status(400).json({ errors: error.errors });
-    } else {
-      return res.sendStatus(500);
-    }
-  }
-
   const { email, password, firstName } = req.body;
 
   const findUser = await prisma.user.findFirst({
@@ -33,9 +16,8 @@ export const signup = async (req: Request, res: Response) => {
   });
 
   if (findUser) {
-    return res
-      .status(400)
-      .json({ message: "L'adresse email est déjà utilisée" });
+    res.status(400).json({ message: "L'adresse email est déjà utilisée" });
+    return;
   }
 
   const formatFirstName = formatName(firstName);
@@ -60,9 +42,10 @@ export const signup = async (req: Request, res: Response) => {
     });
   } catch (error) {
     res.status(500).json({ error: "Signup failed." });
+    return;
   }
 
-  return res.status(200).json({ message: "User created." });
+  res.status(200).json({ message: "User created." });
 };
 
 export const login = async (req: Request, res: Response) => {
@@ -79,11 +62,13 @@ export const login = async (req: Request, res: Response) => {
   });
 
   if (!user) {
-    return res.status(400).json({ message: "Email ou mot de passe incorrect" });
+    res.status(400).json({ message: "Email ou mot de passe incorrect" });
+    return;
   }
 
   if (!compareSync(password, user.password)) {
-    return res.status(400).json({ message: "Email ou mot de passe incorrect" });
+    res.status(400).json({ message: "Email ou mot de passe incorrect" });
+    return;
   }
 
   const userId = user.id;
@@ -98,7 +83,7 @@ export const login = async (req: Request, res: Response) => {
     firstName: userFirstName,
   };
 
-  return res.status(200).json({
+  res.status(200).json({
     user: currentUser,
     backendTokens,
   });
@@ -135,7 +120,6 @@ export const google = async (req: Request, res: Response) => {
         });
       }
 
-      console.log(findUser);
       return findUser;
     });
 
@@ -151,13 +135,12 @@ export const google = async (req: Request, res: Response) => {
       firstName: userFirstName,
     };
 
-    return res.status(200).json({
+    res.status(200).json({
       user: currentUser,
       backendTokens,
     });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -165,7 +148,8 @@ export const refreshToken = (req: Request, res: Response) => {
   const { refreshToken } = req.body;
 
   if (!refreshToken) {
-    return res.sendStatus(401);
+    res.sendStatus(401);
+    return;
   }
 
   jwt.verify(
@@ -179,23 +163,12 @@ export const refreshToken = (req: Request, res: Response) => {
 
       console.log(backendTokens.accessToken);
 
-      return res.status(200).json({ backendTokens });
+      res.status(200).json({ backendTokens });
     }
   );
 };
 
 export const forgotPassword = async (req: Request, res: Response) => {
-  // Validate user inputs with zod
-  try {
-    const validatedData = formForgotPwdSchema.parse(req.body);
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return res.status(400).json({ errors: error.errors });
-    } else {
-      return res.status(500).json({ message: "Erreur interne du serveur" });
-    }
-  }
-
   const { email } = req.body;
 
   const user = await prisma.user.findFirst({
@@ -207,9 +180,8 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   // Send no errors (for security), but don't send email.
   if (!user) {
-    return res
-      .status(200)
-      .json({ message: "Email de réinitialisation envoyé." });
+    res.status(200).json({ message: "Email de réinitialisation envoyé." });
+    return;
   }
 
   const forgotToken = jwt.sign(
@@ -242,29 +214,15 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return res
-        .status(500)
-        .json({ message: "Erreur lors de l'envoi de l'email." });
+      res.status(500).json({ message: "Erreur lors de l'envoi de l'email." });
+      return;
     }
-    return res
-      .status(200)
-      .json({ message: "Email de réinitialisation envoyé." });
+    res.status(200).json({ message: "Email de réinitialisation envoyé." });
   });
 };
 
 export const resetPassword = async (req: Request, res: Response) => {
   const { id, token, password } = req.body;
-
-  // Validate user inputs with zod
-  try {
-    const validatedData = formResetPwdSchema.parse(req.body);
-  } catch (error) {
-    if (error instanceof ZodError) {
-      return res.status(400).json({ errors: error.errors });
-    } else {
-      return res.status(500).json({ message: "Erreur interne du serveur" });
-    }
-  }
 
   jwt.verify(
     token,
@@ -290,7 +248,7 @@ export const resetPassword = async (req: Request, res: Response) => {
         },
       });
 
-      return res
+      res
         .status(200)
         .json({ message: "Mot de passe réinitialisé avec succès." });
     }
@@ -301,7 +259,8 @@ export const validateResetToken = async (req: Request, res: Response) => {
   const { token } = req.query;
 
   if (typeof token !== "string") {
-    return res.status(400).json({ valid: false, error: "Invalid token" });
+    res.status(400).json({ valid: false, error: "Invalid token" });
+    return;
   }
 
   try {
