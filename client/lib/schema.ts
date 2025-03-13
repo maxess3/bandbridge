@@ -25,7 +25,7 @@ export const formLoginSchema = z.object({
   email: z.string().email("Adresse email invalide"),
   password: z
     .string()
-    .min(1, "Mot de passe requis")
+    .min(1, "le mot de passe est requis")
     .regex(/^[^\s]*$/, "Le mot de passe ne doit pas contenir d'espace"),
 });
 
@@ -120,15 +120,13 @@ export const formBasicInfoProfile = z.object({
   }),
   zipcode: z
     .string()
-    .regex(/^\d{5}$/, "Le code postal doit contenir exactement 5 chiffres")
-    .optional()
-    .or(z.literal("")),
+    .min(1, "Le code postal est requis")
+    .regex(/^\d{5}$/, "Le code postal doit contenir exactement 5 chiffres"),
   city: z
     .string()
+    .min(1, "La ville est requise")
     .regex(
       /^[a-zA-ZÀ-ÿ\-]+$/,
       "La ville ne doit contenir que des lettres et tirets"
-    )
-    .optional()
-    .or(z.literal("")),
+    ),
 });
