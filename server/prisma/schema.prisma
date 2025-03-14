@@ -12,6 +12,12 @@ enum Provider {
   GOOGLE
 }
 
+enum Gender {
+  Male
+  Female
+  Other
+}
+
 enum UserRole {
   USER
   ADMIN
@@ -50,12 +56,13 @@ model User {
 
 model Profile {
     id           String        @id @default(uuid())
+    gender       Gender        @default(Other)
     username     String?       @unique
     firstName    String        @db.VarChar(60)
-    birthDate    DateTime?
+    birthDate    DateTime?     @db.Date
     country      String?
     city         String?
-    zipCode      Int?
+    zipCode      String?
     role         ProfileRole   @default(MUSICIAN)
     instruments  Instrument[]
     genre        MusicGenre?

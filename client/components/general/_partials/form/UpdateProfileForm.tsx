@@ -87,7 +87,7 @@ export const UpdateProfileForm = () => {
           <div className="space-y-6">
             <div className="space-y-1">
               <Label htmlFor="firstname" className="opacity-80">
-                Prénom
+                Prénom*
               </Label>
               <Input
                 id="firstname"
@@ -102,7 +102,7 @@ export const UpdateProfileForm = () => {
             </div>
             <div className="space-y-1">
               <Label htmlFor="username" className="opacity-80">
-                Nom d'utilisateur
+                Nom d'utilisateur*
               </Label>
               <Input
                 id="username"
@@ -116,7 +116,7 @@ export const UpdateProfileForm = () => {
               )}
             </div>
             <div className="space-y-1">
-              <Label className="opacity-80">Date de naissance</Label>
+              <Label className="opacity-80">Date de naissance*</Label>
               <div className="flex items-center gap-2">
                 <Input
                   {...register("birthdate.day")}
@@ -193,9 +193,9 @@ export const UpdateProfileForm = () => {
                     value={field.value}
                     className="flex space-x-0.5"
                   >
-                    <Radio title="Non défini" id="other" value="other" />
-                    <Radio title="Homme" id="male" value="male" />
-                    <Radio title="Femme" id="female" value="female" />
+                    <Radio title="Non défini" id="other" value="OTHER" />
+                    <Radio title="Homme" id="male" value="MALE" />
+                    <Radio title="Femme" id="female" value="FEMALE" />
                   </RadioGroup>
                 )}
               />
@@ -219,7 +219,7 @@ export const UpdateProfileForm = () => {
                     value={field.value}
                     className="flex space-x-0.5"
                   >
-                    <Radio title="France" id="france" value="france" />
+                    <Radio title="France" id="france" value="France" />
                   </RadioGroup>
                 )}
               />
@@ -231,7 +231,7 @@ export const UpdateProfileForm = () => {
             </div>
             <div className="space-y-1">
               <Label htmlFor="zipcode" className="opacity-80">
-                Code Postal
+                Code Postal*
               </Label>
               <Input
                 id="zipcode"
@@ -246,7 +246,7 @@ export const UpdateProfileForm = () => {
             </div>
             <div className="space-y-1">
               <Label htmlFor="city" className="opacity-80">
-                Ville
+                Ville*
               </Label>
               <Controller
                 name="city"

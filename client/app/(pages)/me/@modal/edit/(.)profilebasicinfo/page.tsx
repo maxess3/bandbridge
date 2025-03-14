@@ -12,8 +12,8 @@ export default function InterceptedPage() {
       formSchema={formBasicInfoProfile}
       route="/me"
       defaultValues={{
-        gender: "other",
-        country: "france",
+        gender: "Other",
+        country: "France",
       }}
       title="Modifier le profil"
     >
