@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/apiClient";
+import axios from "@/lib/axios";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -48,7 +48,7 @@ export default function Signup() {
   const router = useRouter();
   const mutation = useMutation({
     mutationFn: async (data: Inputs) => {
-      return await apiClient.post("/auth/signup", data);
+      return await axios.post("/auth/signup", data);
     },
     onError: (err: unknown) => {
       setHasError((prevError) => ({

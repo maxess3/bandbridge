@@ -3,15 +3,12 @@ import { Request, Response } from "express";
 
 export const updateProfile = async (req: Request, res: Response) => {
   try {
-    // Get user ID from session/token
     const userId = req.user.userId;
-    console.log(userId);
     if (!userId) {
       res.status(401).json({ message: "Non authentifié" });
       return;
     }
 
-    // Les données sont déjà validées par le middleware
     const updatedUser = await prisma.profile.update({
       where: { userId: userId },
       data: {

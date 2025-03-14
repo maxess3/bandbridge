@@ -193,9 +193,9 @@ export const UpdateProfileForm = () => {
                     value={field.value}
                     className="flex space-x-0.5"
                   >
-                    <Radio title="Non défini" id="other" value="OTHER" />
-                    <Radio title="Homme" id="male" value="MALE" />
-                    <Radio title="Femme" id="female" value="FEMALE" />
+                    <Radio title="Non défini" id="other" value="Other" />
+                    <Radio title="Homme" id="male" value="Male" />
+                    <Radio title="Femme" id="female" value="Female" />
                   </RadioGroup>
                 )}
               />

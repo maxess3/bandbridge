@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/apiClient";
+import axios from "@/lib/axios";
 
 import {
   Card,
@@ -33,7 +33,7 @@ export default function Forgot() {
 
   const mutation = useMutation({
     mutationFn: async (data: Input) => {
-      return await apiClient.post("/auth/forgot-password", data);
+      return await axios.post("/auth/forgot-password", data);
     },
     onMutate: () => {
       setCurrentStep(1);

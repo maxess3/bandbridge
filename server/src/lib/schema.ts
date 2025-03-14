@@ -108,7 +108,7 @@ export const formBasicInfoProfile = z.object({
       const currentYear = new Date().getFullYear();
       return currentYear - birthYear <= 120;
     }, "Merci d'entrer une date de naissance valide"),
-  gender: z.enum(["OTHER", "MALE", "FEMALE"], {
+  gender: z.enum(["Other", "Male", "Female"], {
     errorMap: () => ({
       message: "Merci de sélectionner un genre",
     }),

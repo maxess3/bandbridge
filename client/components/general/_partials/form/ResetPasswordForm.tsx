@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import apiClient from "@/lib/apiClient";
+import axios from "@/lib/axios";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -46,7 +46,7 @@ export default function ResetPasswordForm({
   const [successMessage, setSuccessMessage] = useState("");
   const mutation = useMutation({
     mutationFn: async (data: Payload) => {
-      return await apiClient.post("/auth/reset-password", data);
+      return await axios.post("/auth/reset-password", data);
     },
     onSuccess: (data) => {
       setCurrentStep(1);
