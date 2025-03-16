@@ -20,6 +20,7 @@ import {
   DialogFooter,
 } from "./ui/dialog";
 import { Button } from "./ui/button";
+import { Loader2 } from "lucide-react";
 
 interface ModalProps<T extends FieldValues> {
   children: React.ReactNode;
@@ -28,6 +29,7 @@ interface ModalProps<T extends FieldValues> {
   onSubmit: (data: T) => Promise<void>;
   formSchema: z.ZodType<T>;
   defaultValues?: DefaultValues<T>;
+  isSubmitting?: boolean;
 }
 
 export function Modal<T extends FieldValues>({
@@ -37,6 +39,7 @@ export function Modal<T extends FieldValues>({
   onSubmit,
   formSchema,
   defaultValues,
+  isSubmitting = false,
 }: ModalProps<T>) {
   const router = useRouter();
   const handleOpenChange = () => {
@@ -52,8 +55,6 @@ export function Modal<T extends FieldValues>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
-
-  // console.log(methods.formState.errors);
 
   const formSubmit: SubmitHandler<T> = async (data) => {
     console.log(data);
@@ -83,8 +84,14 @@ export function Modal<T extends FieldValues>({
               </FormProvider>
             </div>
             <DialogFooter>
-              <Button type="submit" variant="primary" form="modalForm">
+              <Button
+                disabled={isSubmitting}
+                type="submit"
+                variant="primary"
+                form="modalForm"
+              >
                 Enregistrer
+                {isSubmitting ? <Loader2 className="animate-spin" /> : ""}
               </Button>
             </DialogFooter>
           </DialogContent>

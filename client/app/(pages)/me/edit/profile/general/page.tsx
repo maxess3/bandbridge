@@ -41,7 +41,7 @@ export default function RootPage() {
                   <span className="text-lg relative -top-1">@maxess</span>
                 </div>
                 <div>
-                  <Link href="/me/edit/profilebasicinfo">
+                  <Link href="/me/edit/profile/general">
                     <Button variant="outline" icon={<SlPencil />}>
                       Modifier mon profil
                     </Button>
@@ -202,7 +202,7 @@ export default function RootPage() {
                   Soundcloud
                 </li>
               </ul>
-              <Link href="/me/edit/profileMusic" className="flex">
+              <Link href="/me/edit/profile/social" className="flex">
                 <Button variant="linkForm">Ajouter un lien</Button>
               </Link>
             </div>

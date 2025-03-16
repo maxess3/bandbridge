@@ -37,11 +37,16 @@ export default async function RootLayout({
                 toastOptions={{
                   classNames: {
                     toast:
-                      "bg-accent text-foreground border outline-none border-border",
-                    icon: "text-red-500",
+                      "bg-accent text-foreground border outline-none border-border text-sm",
+                    error: "bg-red-400",
+                    success: "text-green-400",
+                    warning: "text-yellow-400",
+                    info: "bg-blue-400",
+                    actionButton:
+                      "!bg-transparent absolute right-1 !text-foreground",
                   },
                 }}
-                position="top-right"
+                position="bottom-left"
                 duration={4000}
               />
               <NextTopLoader color="#a3bef5" showSpinner={false} height={3} />
