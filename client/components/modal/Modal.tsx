@@ -18,8 +18,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "./ui/dialog";
-import { Button } from "./ui/button";
+} from "../ui/dialog";
+import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 
 interface ModalProps<T extends FieldValues> {
@@ -30,6 +30,7 @@ interface ModalProps<T extends FieldValues> {
   formSchema: z.ZodType<T>;
   defaultValues?: DefaultValues<T>;
   isSubmitting?: boolean;
+  open?: boolean;
 }
 
 export function Modal<T extends FieldValues>({
@@ -40,6 +41,7 @@ export function Modal<T extends FieldValues>({
   formSchema,
   defaultValues,
   isSubmitting = false,
+  open = true,
 }: ModalProps<T>) {
   const router = useRouter();
   const handleOpenChange = () => {
@@ -63,7 +65,7 @@ export function Modal<T extends FieldValues>({
 
   return (
     <div>
-      <Dialog defaultOpen={true} open={true} onOpenChange={handleOpenChange}>
+      <Dialog defaultOpen={open} open={open} onOpenChange={handleOpenChange}>
         <DialogOverlay>
           <DialogContent className="md:max-w-2xl sm:max-w-2xl max-w-full sm:max-h-[85%] max-h-full p-0">
             <DialogHeader>

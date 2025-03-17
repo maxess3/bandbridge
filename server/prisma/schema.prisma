@@ -13,9 +13,9 @@ enum Provider {
 }
 
 enum Gender {
-  Male
-  Female
-  Other
+  MALE
+  FEMALE
+  OTHER
 }
 
 enum UserRole {
@@ -58,7 +58,7 @@ model User {
 
 model Profile {
     id           String        @id @default(uuid())
-    gender       Gender        @default(Other)
+    gender       Gender        @default(OTHER)
     username     String?       @unique
     firstName    String        @db.VarChar(60)
     birthDate    DateTime?     @db.Date

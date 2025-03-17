@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import AuthSessionProviders from "@/components/providers/AuthSessionProviders";
-import { ReactQueryClientProvider } from "@/components/providers/ReactQueryClientProvider";
+import AuthSessionProviders from "@/providers/AuthSessionProviders";
+import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import Navbar from "@/components/general/header/Navbar";
@@ -38,7 +38,7 @@ export default async function RootLayout({
                   classNames: {
                     toast:
                       "bg-accent text-foreground border outline-none border-border text-sm",
-                    error: "bg-red-400",
+                    error: "text-red-400",
                     success: "text-green-400",
                     warning: "text-yellow-400",
                     info: "bg-blue-400",

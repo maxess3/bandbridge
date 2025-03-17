@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { validateSchema } from "../middleware/validateSchema";
-import { formBasicInfoProfile } from "../lib/schema";
-import { formSocialProfile } from "../lib/schema";
+import { formGeneralProfile, formSocialProfile } from "../lib/schema";
 import * as ProfileController from "../Controller/ProfileController";
 
 const router = Router();
@@ -10,14 +9,14 @@ router.get("/", ProfileController.getProfile);
 
 router.put(
   "/",
-  validateSchema(formBasicInfoProfile),
+  validateSchema(formGeneralProfile),
   ProfileController.updateGeneralProfile
 );
 
 router.put(
-  "/social-links",
+  "/social",
   validateSchema(formSocialProfile),
-  ProfileController.updateSocialLinks
+  ProfileController.updateSocialProfile
 );
 
 export default router;

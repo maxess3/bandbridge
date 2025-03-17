@@ -2,11 +2,58 @@ import prisma from "../db/db.config";
 import { Request, Response } from "express";
 import { Platform } from "@prisma/client";
 
+export const getProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    if (!userId) {
+      res.status(401).json({ message: "[Erreur] Non authentifié" });
+      return;
+    }
+
+    const profile = await prisma.profile.findUnique({
+      where: { userId: userId },
+      select: {
+        firstName: true,
+        username: true,
+        birthDate: true,
+        gender: true,
+        country: true,
+        zipCode: true,
+        city: true,
+        socialLinks: {
+          select: {
+            platform: true,
+            url: true,
+          },
+        },
+      },
+    });
+
+    const formattedSocialLinks = Object.fromEntries(
+      profile?.socialLinks.map((link) => [
+        link.platform.toLowerCase(),
+        link.url,
+      ])
+    );
+
+    const responseProfile = {
+      ...profile,
+      socialLinks: formattedSocialLinks,
+    };
+
+    res.status(200).json(responseProfile);
+  } catch (error) {
+    res.status(500).json({
+      message: "[Erreur] Impossible de récupérer les données du profil.",
+    });
+  }
+};
+
 export const updateGeneralProfile = async (req: Request, res: Response) => {
   try {
     const userId = req.user.userId;
     if (!userId) {
-      res.status(401).json({ message: "[Erreur]: Non authentifié" });
+      res.status(401).json({ message: "[Erreur] Non authentifié" });
       return;
     }
 
@@ -43,40 +90,11 @@ export const updateGeneralProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const getProfile = async (req: Request, res: Response) => {
+export const updateSocialProfile = async (req: Request, res: Response) => {
   try {
     const userId = req.user.userId;
     if (!userId) {
-      res.status(401).json({ message: "[Erreur]: Non authentifié" });
-      return;
-    }
-
-    const profile = await prisma.profile.findUnique({
-      where: { userId: userId },
-      select: {
-        firstName: true,
-        username: true,
-        birthDate: true,
-        gender: true,
-        country: true,
-        zipCode: true,
-        city: true,
-      },
-    });
-
-    res.status(200).json(profile);
-  } catch (error) {
-    res.status(500).json({
-      message: "[Erreur] Impossible de récupérer les données du profil.",
-    });
-  }
-};
-
-export const updateSocialLinks = async (req: Request, res: Response) => {
-  try {
-    const userId = req.user.userId;
-    if (!userId) {
-      res.status(401).json({ message: "[Erreur]: Non authentifié" });
+      res.status(401).json({ message: "[Erreur] Non authentifié" });
       return;
     }
 
@@ -86,7 +104,7 @@ export const updateSocialLinks = async (req: Request, res: Response) => {
     });
 
     if (!profile) {
-      res.status(404).json({ message: "[Erreur]: Profil non trouvé" });
+      res.status(404).json({ message: "[Erreur] Profil non trouvé" });
       return;
     }
 

@@ -6,7 +6,7 @@ interface UseTransitionDelayReturn {
 }
 
 export const useTransitionDelay = (
-  delay: number = 500
+  delay: number = 600
 ): UseTransitionDelayReturn => {
   const [isDelaying, setIsDelaying] = useState(false);
 

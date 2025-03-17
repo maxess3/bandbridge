@@ -11,7 +11,7 @@ import { RiSoundcloudFill } from "react-icons/ri";
 
 type FormValues = z.infer<typeof formSocialProfile>;
 
-export const UpdateSocialLinksForm = () => {
+export const UpdateSocialForm = () => {
   const {
     register,
     formState: { errors },

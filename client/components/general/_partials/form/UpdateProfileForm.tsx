@@ -16,10 +16,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { formBasicInfoProfile } from "@/lib/schema";
+import { formGeneralProfile } from "@/lib/schema";
 import { z } from "zod";
 
-type FormValues = z.input<typeof formBasicInfoProfile>;
+type FormValues = z.input<typeof formGeneralProfile>;
 
 export const UpdateProfileForm = () => {
   const {
@@ -193,9 +193,9 @@ export const UpdateProfileForm = () => {
                     value={field.value}
                     className="flex space-x-0.5"
                   >
-                    <Radio title="Non défini" id="other" value="Other" />
-                    <Radio title="Homme" id="male" value="Male" />
-                    <Radio title="Femme" id="female" value="Female" />
+                    <Radio title="Non défini" id="other" value="OTHER" />
+                    <Radio title="Homme" id="male" value="MALE" />
+                    <Radio title="Femme" id="female" value="FEMALE" />
                   </RadioGroup>
                 )}
               />

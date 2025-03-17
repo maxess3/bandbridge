@@ -52,7 +52,7 @@ export const formResetPwdSchema = z
 
 /* EDIT PROFILE SCHEMA */
 
-export const formBasicInfoProfile = z.object({
+export const formGeneralProfile = z.object({
   firstname: z
     .string()
     .min(1, "Le prénom est requis")
@@ -108,7 +108,7 @@ export const formBasicInfoProfile = z.object({
       const currentYear = new Date().getFullYear();
       return currentYear - birthYear <= 120;
     }, "Merci d'entrer une date de naissance valide"),
-  gender: z.enum(["Other", "Male", "Female"], {
+  gender: z.enum(["OTHER", "MALE", "FEMALE"], {
     errorMap: () => ({
       message: "Merci de sélectionner un genre",
     }),

@@ -2,10 +2,8 @@
 
 import { useMutation } from "@tanstack/react-query";
 import axios from "@/lib/axios";
-
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
 import {
   Card,
   CardContent,
@@ -13,14 +11,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-
 import { z } from "zod";
 import { formResetPwdSchema } from "@/lib/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
