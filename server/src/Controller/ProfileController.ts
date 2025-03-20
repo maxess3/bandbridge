@@ -19,6 +19,7 @@ export const getProfile = async (req: Request, res: Response) => {
         gender: true,
         country: true,
         zipCode: true,
+        role: true,
         city: true,
         socialLinks: {
           select: {

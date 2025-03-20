@@ -1,7 +1,7 @@
 import { FaRegBookmark } from "react-icons/fa";
 
 import { Button } from "@/components/ui/button";
-import BandTableContainer from "@/components/table/BandTableContainer";
+import { BandTableContainer } from "@/components/table/index";
 
 export default function Ads() {
   return (
