@@ -11,7 +11,7 @@ export function useProfile() {
   return useQuery({
     queryKey: PROFILE_QUERY_KEY,
     queryFn: async () => {
-      const { data } = await axiosAuth.get("/profile");
+      const { data } = await axiosAuth.get("/profile/me");
       console.log(data);
       return data;
     },

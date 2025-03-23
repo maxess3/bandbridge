@@ -39,22 +39,3 @@ export const fetchUsers = async (req: Request, res: Response) => {
   const users = await prisma.user.findMany();
   return res.status(200).json({ data: users });
 };
-
-export const showUserProfile = async (req: Request, res: Response) => {
-  const userId = req.user.userId;
-  const user = await prisma.user.findFirst({
-    where: {
-      id: String(userId),
-    },
-    select: {
-      email: true,
-      Profile: {
-        select: {
-          firstName: true,
-        },
-      },
-    },
-  });
-
-  return res.status(200).json({ data: user });
-};

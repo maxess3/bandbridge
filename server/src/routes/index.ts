@@ -9,7 +9,7 @@ const router = Router();
 
 router.use("/api/auth", AuthRoutes);
 
-router.use("/api/profile", authenticateToken, ProfileRoutes);
+router.use("/api/profile", ProfileRoutes);
 
 router.use("/api/user", authenticateToken, UserRoutes);
 

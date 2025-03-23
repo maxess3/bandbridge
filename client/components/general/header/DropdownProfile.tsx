@@ -72,7 +72,7 @@ export const DropdownProfile = () => {
                 </div>
               </div>
               <span className="w-full border border-border flex rounded-full justify-center py-1 font-medium">
-                Voir le profil
+                Voir mon profil
               </span>
             </div>
           </DropdownMenuItem>

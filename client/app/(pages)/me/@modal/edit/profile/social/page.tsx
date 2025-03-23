@@ -21,7 +21,7 @@ export default function Page() {
 
   const updateSocialFormMutation = useMutation({
     mutationFn: async (values: z.infer<typeof formSocialProfile>) => {
-      const { data } = await axiosAuth.put("/profile/social", values);
+      const { data } = await axiosAuth.put("/profile/me/social", values);
       return data;
     },
     onSuccess: () => {

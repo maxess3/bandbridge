@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/bandbridge.png";
-
 import { NavbarAuthBtn } from "@/components/general/header/NavbarAuthBtn";
 import { MenuLinks } from "@/components/general/header/MenuLinks";
 
@@ -12,7 +11,7 @@ async function Navbar() {
         <div className="flex items-center gap-x-2.5">
           <Image src={Logo} alt="Logo" width={36} height={36} />
           <Link
-            href={"/"}
+            href={"/home"}
             className="font-host-grotesk text-2xl font-bold bg-gradient-to-l"
           >
             directband

@@ -1,37 +1,14 @@
 "use client";
 
-import {
-  ProfileImage,
-  ProfileHeader,
-  ProfileInfo,
-  ProfileDetails,
-  ProfileSidebar,
-} from "@/components/pages/profile/index";
 import { useProfile } from "@/hooks/useProfile";
+import { ProfileLayout } from "@/components/pages/profile";
+import { ProfileSkeleton } from "@/components/skeleton/profile/ProfileSkeleton";
 
 export default function RootPage() {
-  const { data: profile } = useProfile();
+  const { data: profile, isLoading } = useProfile();
 
-  return (
-    <div className="py-8 flex flex-col w-full">
-      <div className="w-full flex gap-x-4">
-        <div className="w-9/12">
-          <div className="flex gap-x-8 w-full">
-            <div className="flex items-center">
-              <ProfileImage src="/profile.jpeg" alt="Photo de profil" />
-            </div>
-            <div className="flex flex-col w-full">
-              <ProfileHeader
-                firstname={profile?.firstName}
-                username={`@${profile?.username}`}
-              />
-              <ProfileInfo />
-              <ProfileDetails profile={profile} />
-            </div>
-          </div>
-        </div>
-        <ProfileSidebar socialLinks={profile?.socialLinks} />
-      </div>
-    </div>
-  );
+  if (isLoading) {
+    return <ProfileSkeleton />;
+  }
+  return <ProfileLayout profile={profile} />;
 }

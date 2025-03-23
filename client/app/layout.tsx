@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
-import { Providers } from "./providers";
+import { ThemeProviders } from "@/providers/ThemeProviders";
 import AuthSessionProviders from "@/providers/AuthSessionProviders";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
 import NextTopLoader from "nextjs-toploader";
@@ -32,7 +32,7 @@ export default async function RootLayout({
       >
         <AuthSessionProviders>
           <ReactQueryClientProvider>
-            <Providers>
+            <ThemeProviders>
               <Toaster
                 toastOptions={{
                   classNames: {
@@ -56,7 +56,7 @@ export default async function RootLayout({
                 <Footer />
               </div>
               <div className="w-full py-0.5 bg-primary"></div>
-            </Providers>
+            </ThemeProviders>
           </ReactQueryClientProvider>
         </AuthSessionProviders>
       </body>

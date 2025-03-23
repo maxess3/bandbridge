@@ -21,7 +21,7 @@ export default function Page() {
 
   const updateProfileMutation = useMutation({
     mutationFn: async (values: z.infer<typeof formGeneralProfile>) => {
-      const { data } = await axiosAuth.put("/profile", values);
+      const { data } = await axiosAuth.put("/profile/me", values);
       return data;
     },
     onSuccess: () => {
