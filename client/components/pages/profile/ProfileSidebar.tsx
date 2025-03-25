@@ -16,14 +16,12 @@ export const ProfileSidebar = () => {
           ""
         ) : (
           <div className="space-y-3 p-4 border border-secondary rounded-xl">
-            <span className="font-semibold text-sm uppercase">
-              Profil public
-            </span>
+            <span className="font-semibold">Profil public</span>
             <div className="text-sm w-full text-wrap">{`https://www.bandbridge/${profile?.username}`}</div>
           </div>
         )}
         <div className="space-y-3 p-4 border border-secondary rounded-xl">
-          <span className="font-semibold text-sm uppercase">Liens</span>
+          <span className="font-semibold">Liens</span>
           <div className="space-y-2">
             <ul className="text-sm flex items-center flex-wrap gap-2">
               {profile?.socialLinks.youtube && (
@@ -71,9 +69,7 @@ export const ProfileSidebar = () => {
         </div>
         <div className="border border-secondary rounded-xl">
           <div className="p-4 space-y-3">
-            <span className="font-semibold text-sm uppercase">
-              Groupes à proximité
-            </span>
+            <span className="font-semibold">Groupes à proximité</span>
             <div>
               <ul className="space-y-3 text-sm">
                 <li className="flex items-center space-x-2 border-b border-secondary pb-3">
@@ -166,9 +162,7 @@ export const ProfileSidebar = () => {
         </div>
         <div className="border border-secondary rounded-xl">
           <div className="p-4 space-y-3">
-            <span className="font-semibold text-sm uppercase">
-              Musiciens à proximité
-            </span>
+            <span className="font-semibold">Musiciens à proximité</span>
             <ul className="space-y-3 text-sm">
               <li className="flex items-center space-x-2 border-b border-secondary pb-3">
                 <Avatar className="w-11 h-11">

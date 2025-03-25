@@ -14,7 +14,7 @@ export const ProfileHeader = () => {
           {profile?.firstName}
           <RiVerifiedBadgeFill size={"0.9em"} />
         </span>
-        <span className="text-lg relative opacity-80">
+        <span className="text-lg font-medium opacity-80">
           @{profile?.username}
         </span>
       </div>
