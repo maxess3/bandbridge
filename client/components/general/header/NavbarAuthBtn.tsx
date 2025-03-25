@@ -1,11 +1,7 @@
 import Link from "next/link";
-
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-
 import { DropdownProfile } from "@/components/general/header/DropdownProfile";
-import { Button } from "@/components/ui/button";
-import { FiPlusCircle } from "react-icons/fi";
 
 export const NavbarAuthBtn = async () => {
   const session = await getServerSession(authOptions);
@@ -13,9 +9,6 @@ export const NavbarAuthBtn = async () => {
   if (session?.user)
     return (
       <div className="flex items-center text-sm relative gap-x-4">
-        <Button variant="primary" icon={<FiPlusCircle />}>
-          Créer une annonce
-        </Button>
         <DropdownProfile />
       </div>
     );

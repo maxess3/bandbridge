@@ -5,7 +5,6 @@ import { Platform } from "@prisma/client";
 export const getProfilePublic = async (req: Request, res: Response) => {
   try {
     const { username } = req.params;
-    console.log(username);
 
     const profile = await prisma.profile.findUnique({
       where: {

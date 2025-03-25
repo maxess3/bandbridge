@@ -23,13 +23,11 @@ async function getProfile(username: string): Promise<Profile> {
 
 export default async function Root({
   params,
-  isPublic = true,
 }: {
   params: Promise<{ slug: string }>;
-  isPublic: boolean;
 }) {
   const { slug } = await params;
-
   const profile = await getProfile(slug);
-  return <ProfileLayout profile={profile} isPublic={isPublic} />;
+
+  return <ProfileLayout profile={profile} isPublic={true} />;
 }
