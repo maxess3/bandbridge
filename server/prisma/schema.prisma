@@ -72,7 +72,7 @@ model Profile {
     band         Band[]
     lastActiveAt DateTime?
     userId       String        @unique
-    user         User          @relation(fields: [userId], references: [id])
+    user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Instrument {
@@ -80,7 +80,7 @@ model Instrument {
     name        String
     yearStarted Int
     profileId   String
-    profile     Profile  @relation(fields: [profileId], references: [id])
+    profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model SocialLink {

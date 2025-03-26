@@ -3,15 +3,13 @@
 import {
   ProfileImage,
   ProfileHeader,
-  ProfileInfo,
-  ProfileDetails,
+  ProfileStats,
+  ProfileUserInfo,
+  ProfileInterests,
   ProfileSidebar,
 } from "@/components/pages/profile/index";
 import { ProfileProvider } from "@/providers/ProfileProvider";
 import { Profile } from "@/types/Profile";
-import { Badge } from "@/components/ui/badge";
-import { HiOutlineLocationMarker } from "react-icons/hi";
-import { AiOutlineUser } from "react-icons/ai";
 
 interface ProfileLayoutProps {
   isPublic?: boolean;
@@ -33,55 +31,11 @@ export function ProfileLayout({
               </div>
               <div className="flex flex-col w-full space-y-6">
                 <ProfileHeader />
-                <div className="flex gap-x-6">
-                  <div>
-                    <span className="font-black">2000</span>
-                    <span className="opacity-80"> Followers</span>
-                  </div>
-                  <div>
-                    <span className="font-black">0</span>{" "}
-                    <span className="opacity-80"> Suivi(e)s</span>
-                  </div>
-                </div>
+                <ProfileStats followers={2000} following={20} />
                 <div className="space-y-2">
-                  <div>
-                    <ul className="flex flex-wrap gap-x-6">
-                      <li className="inline-flex items-center gap-x-1">
-                        <HiOutlineLocationMarker
-                          size={"1.2em"}
-                          className="opacity-80"
-                        />
-                        Castanet-Tolosan, Haute-Garonne (31320)
-                      </li>
-                      <li className="inline-flex items-center gap-x-1">
-                        <AiOutlineUser size={"1.2em"} className="opacity-80" />{" "}
-                        Musicien (26 ans)
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="flex border border-secondary rounded-xl">
-                    <div className="flex flex-col p-3 border-r border-secondary w-1/2">
-                      <span className="font-bold">Jeux</span>
-                      <ul className="flex">
-                        <li className="mt-3 mr-1.5">
-                          <Badge variant="outline">Guitare</Badge>
-                        </li>
-                        <li className="mt-3">
-                          <Badge variant="outline">Piano</Badge>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="flex flex-col p-3 rounded-xl w-1/2">
-                      <span className="font-bold">Styles musicaux</span>
-                      <ul className="flex space-x-1">
-                        <li className="mt-3">
-                          <Badge variant="outline">Non défini</Badge>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  <ProfileUserInfo />
+                  <ProfileInterests />
                 </div>
-                {/* <ProfileInfo /> */}
               </div>
             </div>
             <div className="flex flex-col gap-x-2">

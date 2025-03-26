@@ -20,7 +20,9 @@ export const ProfileHeader = () => {
       </div>
       {isPublic ? (
         <Link href="/me/edit/profile/general">
-          <Button variant="primary">Suivre</Button>
+          <Button className="bg-foreground text-background font-semibold">
+            Suivre
+          </Button>
         </Link>
       ) : (
         <Link href="/me/edit/profile/general">
