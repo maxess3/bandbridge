@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { DropdownProfile } from "@/components/general/header/DropdownProfile";
+import { buttonVariants } from "@/components/ui/button";
 
 export const NavbarAuthBtn = async () => {
   const session = await getServerSession(authOptions);
@@ -22,7 +23,7 @@ export const NavbarAuthBtn = async () => {
         Se connecter
       </Link>
       <Link
-        className="hover:bg-primary/90 bg-primary text-white dark:text-black px-4 py-2 h-9 rounded-md inline-flex items-center font-semibold"
+        className={buttonVariants({ variant: "primary", size: "md" })}
         href={"/auth/signup"}
       >
         S'inscrire

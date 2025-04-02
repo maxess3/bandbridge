@@ -16,7 +16,7 @@ const DM = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Rejoindre un groupe de musique",
+  title: "Annonces - Chordeus",
   description: "Faites des rencontres et vivez la scène.",
 };
 
@@ -49,7 +49,7 @@ export default async function RootLayout({
                 position="bottom-left"
                 duration={4000}
               />
-              <NextTopLoader color="#a3bef5" showSpinner={false} height={3} />
+              <NextTopLoader color="#b9181b" showSpinner={false} height={3} />
               <div className="px-8">
                 <Navbar />
                 <main className="max-w-7xl mx-auto flex-grow">{children}</main>

@@ -5,7 +5,6 @@ import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -17,7 +16,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-
 import { FiMoon } from "react-icons/fi";
 import { LuLogOut } from "react-icons/lu";
 import { LuSettings } from "react-icons/lu";
@@ -55,7 +53,7 @@ export const DropdownProfile = () => {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-60 mt-[7px] border-secondary">
+      <DropdownMenuContent className="w-60 mt-[7px] border-border-light">
         <DropdownMenuGroup>
           <DropdownMenuItem onClick={() => router.push("/me")}>
             <div className="w-full space-y-3">
@@ -71,12 +69,12 @@ export const DropdownProfile = () => {
                   </span>
                 </div>
               </div>
-              <span className="w-full border border-border flex rounded-full justify-center py-1 font-medium">
+              <span className="w-full border flex rounded-full justify-center py-1 font-medium">
                 Voir mon profil
               </span>
             </div>
           </DropdownMenuItem>
-          <DropdownMenuSeparator className="bg-secondary" />
+          <DropdownMenuSeparator className="bg-border-light" />
           <DropdownMenuItem
             className="flex justify-between"
             onClick={(e) => handleClick(e)}
@@ -95,7 +93,7 @@ export const DropdownProfile = () => {
             <LuSettings style={{ width: "1.35em", height: "1.35em" }} />
             Paramètres
           </DropdownMenuItem>
-          <DropdownMenuSeparator className="bg-secondary" />
+          <DropdownMenuSeparator className="bg-border-light" />
           <DropdownMenuItem onClick={() => signOut()}>
             <LuLogOut style={{ width: "1.25em", height: "1.25em" }} />
             Se déconnecter

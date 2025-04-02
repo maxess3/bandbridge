@@ -23,15 +23,18 @@ export function ProfileLayout({
   return (
     <ProfileProvider isPublic={isPublic} profile={profile}>
       <div className="py-8 flex flex-col w-full">
-        <div className="w-full flex gap-x-6">
+        <div className="w-full flex gap-x-8">
           <div className="w-9/12 space-y-8">
-            <div className="flex w-full gap-x-4">
+            <div className="flex w-full gap-x-6">
               <div className="flex items-center">
                 <ProfileImage src="/profile.jpeg" alt="Photo de profil" />
               </div>
               <div className="flex flex-col w-full space-y-6">
                 <ProfileHeader />
-                <ProfileStats followers={2000} following={20} />
+                <ProfileStats
+                  followers={profile?.followers}
+                  following={profile?.following}
+                />
                 <div className="space-y-2">
                   <ProfileUserInfo />
                   <ProfileInterests />
@@ -39,7 +42,7 @@ export function ProfileLayout({
               </div>
             </div>
             <div className="flex flex-col gap-x-2">
-              <div className="space-y-4 p-4 border border-secondary gap-2 rounded-xl">
+              <div className="space-y-4 p-4 border border-border-light gap-2 rounded-xl">
                 <h2 className="text-lg font-medium">Infos</h2>
                 <p>
                   Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est

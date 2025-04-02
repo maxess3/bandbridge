@@ -16,7 +16,7 @@ export function Radio({
     <>
       <Label
         htmlFor={id}
-        className={`border cursor-pointer rounded-md px-3 h-9 flex justify-center flex-col gap-2 [&:has(:checked)]:bg-accent dark:[&:has(:checked)]:bg-accent [&:has(:checked)]:border-primary ${className}`}
+        className={`border cursor-pointer rounded-md px-3 h-9 flex justify-center flex-col gap-2 [&:has(:checked)]:bg-transparent dark:[&:has(:checked)]:bg-transparent [&:has(:checked)]:border-primary ${className}`}
       >
         <div className="flex items-center gap-2">
           <RadioGroupItem id={id} value={value} />

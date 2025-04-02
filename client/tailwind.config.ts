@@ -21,23 +21,17 @@ export default {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
+        dialog: {
+          DEFAULT: "hsl(var(--dialog))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
-          hover: "hsl(var(--primary-hover))",
-          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        tertiary: {
-          DEFAULT: "hsl(var(--tertiary))",
-          hover: "hsl(var(--tertiary-hover))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-          background: "hsl(var(--muted-background))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
@@ -49,7 +43,8 @@ export default {
         },
         border: {
           DEFAULT: "hsl(var(--border))",
-          foreground: "hsl(var(--border-foreground))",
+          light: "hsl(var(--border-light))",
+          extralight: "hsl(var(--border-extralight))",
         },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

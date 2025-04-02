@@ -2,7 +2,7 @@ import prisma from "../db/db.config";
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { formatName } from "../utils/utils";
+import { formatName, generateUniqueUsername } from "../utils/utils";
 import { createAuthTokens } from "../utils/token";
 import nodemailer from "nodemailer";
 
@@ -24,7 +24,6 @@ export const signup = async (req: Request, res: Response) => {
 
   try {
     await prisma.$transaction(async (prisma) => {
-      // INSERT User
       const user = await prisma.user.create({
         data: {
           email,
@@ -32,10 +31,13 @@ export const signup = async (req: Request, res: Response) => {
           provider: "MANUAL",
         },
       });
-      // INSERT Profile
+
+      const username = await generateUniqueUsername(formatFirstName, prisma);
+
       const profile = await prisma.profile.create({
         data: {
           firstName: formatFirstName,
+          username,
           userId: user.id,
         },
       });
@@ -74,6 +76,7 @@ export const login = async (req: Request, res: Response) => {
   const userId = user.id;
   const userEmail = user.email;
   const userFirstName = user.Profile?.firstName;
+  const username = user.Profile?.username;
 
   const { backendTokens } = createAuthTokens(userId);
 
@@ -81,6 +84,7 @@ export const login = async (req: Request, res: Response) => {
     id: userId,
     email: userEmail,
     firstName: userFirstName,
+    username,
   };
 
   res.status(200).json({
@@ -107,9 +111,12 @@ export const google = async (req: Request, res: Response) => {
           },
         });
 
+        const username = await generateUniqueUsername(name, prisma);
+
         const profile = await prisma.profile.create({
           data: {
             firstName: name,
+            username,
             userId: newUser.id,
           },
         });
@@ -126,6 +133,7 @@ export const google = async (req: Request, res: Response) => {
     const userId = result.id;
     const userEmail = result.email;
     const userFirstName = result.Profile?.firstName;
+    const username = result.Profile?.username;
 
     const { backendTokens } = createAuthTokens(userId);
 
@@ -133,6 +141,7 @@ export const google = async (req: Request, res: Response) => {
       id: userId,
       email: userEmail,
       firstName: userFirstName,
+      username,
     };
 
     res.status(200).json({
@@ -180,7 +189,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   // Send no errors (for security), but don't send email.
   if (!user) {
-    res.status(200).json({ message: "Email de réinitialisation envoyé." });
+    res.status(200).json({ message: "Email de réinitialisation envoyé" });
     return;
   }
 
@@ -214,10 +223,10 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      res.status(500).json({ message: "Erreur lors de l'envoi de l'email." });
+      res.status(500).json({ message: "Erreur lors de l'envoi de l'email" });
       return;
     }
-    res.status(200).json({ message: "Email de réinitialisation envoyé." });
+    res.status(200).json({ message: "Email de réinitialisation envoyé" });
   });
 };
 
@@ -250,7 +259,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 
       res
         .status(200)
-        .json({ message: "Mot de passe réinitialisé avec succès." });
+        .json({ message: "Mot de passe réinitialisé avec succès" });
     }
   );
 };

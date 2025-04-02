@@ -58,6 +58,8 @@ model User {
 
 model Profile {
     id           String        @id @default(uuid())
+    followers    Profile[]     @relation("UserFollows")
+    following    Profile[]     @relation("UserFollows")
     gender       Gender        @default(OTHER)
     username     String?       @unique
     firstName    String        @db.VarChar(60)

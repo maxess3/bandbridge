@@ -16,4 +16,6 @@ export interface Profile {
   role: "MUSICIAN" | string;
   city: string;
   socialLinks: SocialLinks;
+  followers: number;
+  following: number;
 }

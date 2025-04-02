@@ -25,6 +25,12 @@ export const getProfilePublic = async (req: Request, res: Response) => {
             url: true,
           },
         },
+        _count: {
+          select: {
+            followers: true,
+            following: true,
+          },
+        },
       },
     });
 
@@ -40,6 +46,8 @@ export const getProfilePublic = async (req: Request, res: Response) => {
     const responseProfile = {
       ...profile,
       socialLinks: formattedSocialLinks,
+      followers: profile._count.followers,
+      following: profile._count.following,
     };
 
     res.status(200).json(responseProfile);
@@ -75,6 +83,12 @@ export const getProfilePrivate = async (req: Request, res: Response) => {
             url: true,
           },
         },
+        _count: {
+          select: {
+            followers: true,
+            following: true,
+          },
+        },
       },
     });
 
@@ -88,6 +102,8 @@ export const getProfilePrivate = async (req: Request, res: Response) => {
     const responseProfile = {
       ...profile,
       socialLinks: formattedSocialLinks,
+      followers: profile._count.followers,
+      following: profile._count.following,
     };
 
     res.status(200).json(responseProfile);
@@ -198,6 +214,152 @@ export const updateSocialProfilePrivate = async (
     console.error(error);
     res.status(500).json({
       message: "[Erreur] Mise à jour des liens sociaux impossible",
+    });
+  }
+};
+
+export const follow = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const { targetUsername } = req.params;
+
+    if (!userId) {
+      res.status(401).json({ message: "[Erreur] Non authentifié" });
+      return;
+    }
+
+    // Get the user profile
+    const currentUserProfile = await prisma.profile.findUnique({
+      where: { userId },
+    });
+
+    if (!currentUserProfile) {
+      res.status(404).json({ message: "[Erreur] Profil non trouvé" });
+      return;
+    }
+
+    // Get the target user profle
+    const targetProfile = await prisma.profile.findUnique({
+      where: { username: targetUsername },
+    });
+
+    if (!targetProfile) {
+      res.status(404).json({ message: "[Erreur] Profil cible non trouvé" });
+      return;
+    }
+
+    // Check if user profile is not the target profile
+    if (currentUserProfile.id === targetProfile.id) {
+      res
+        .status(400)
+        .json({ message: "[Erreur] Vous ne pouvez pas vous suivre vous-même" });
+      return;
+    }
+
+    // Ajouter la relation de follow
+    await prisma.profile.update({
+      where: { id: currentUserProfile.id },
+      data: {
+        following: {
+          connect: { id: targetProfile.id },
+        },
+      },
+    });
+
+    res.status(200).json({ message: "Profil suivi avec succès" });
+  } catch (error) {
+    res.status(500).json({
+      message: "[Erreur] Impossible de suivre ce profil",
+    });
+  }
+};
+
+export const unfollow = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const { targetUsername } = req.params;
+
+    if (!userId) {
+      res.status(401).json({ message: "[Erreur] Non authentifié" });
+      return;
+    }
+
+    // Get the user profile
+    const currentUserProfile = await prisma.profile.findUnique({
+      where: { userId },
+    });
+
+    if (!currentUserProfile) {
+      res.status(404).json({ message: "[Erreur] Profil non trouvé" });
+      return;
+    }
+
+    // Get the target user profle
+    const targetProfile = await prisma.profile.findUnique({
+      where: { username: targetUsername },
+    });
+
+    if (!targetProfile) {
+      res.status(404).json({ message: "[Erreur] Profil cible non trouvé" });
+      return;
+    }
+
+    // Delete profile relation
+    await prisma.profile.update({
+      where: { id: currentUserProfile.id },
+      data: {
+        following: {
+          disconnect: { id: targetProfile.id },
+        },
+      },
+    });
+
+    res.status(200).json({ message: "Profil non suivi avec succès" });
+  } catch (error) {
+    res.status(500).json({
+      message: "[Erreur] Impossible d'arrêter de suivre ce profil",
+    });
+  }
+};
+
+export const isFollowing = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    const { targetUsername } = req.params;
+
+    if (!userId) {
+      res.status(401).json({ message: "[Erreur] Non authentifié" });
+      return;
+    }
+
+    // Get the user profile with the following relation
+    const currentUserProfile = await prisma.profile.findUnique({
+      where: { userId },
+      select: {
+        id: true,
+        following: {
+          where: { username: targetUsername },
+          select: { id: true },
+        },
+      },
+    });
+
+    if (!currentUserProfile) {
+      res.status(404).json({ message: "[Erreur] Profil non trouvé" });
+      return;
+    }
+
+    // Check if following relation exists
+    const isFollowing = currentUserProfile.following.length > 0;
+
+    res.status(200).json({
+      isFollowing,
+      targetUsername,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "[Erreur] Impossible de vérifier le statut du follow",
     });
   }
 };

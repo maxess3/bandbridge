@@ -36,14 +36,6 @@ const createColumns = (tableLayoutMode: BandTableProps["tableLayoutMode"]) => {
   const columnHelper = createColumnHelper<Ads>();
 
   return [
-    columnHelper.accessor("bandImage", {
-      header: () => "",
-      cell: () => (
-        <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-          <IoMdMusicalNotes className="text-md" />
-        </div>
-      ),
-    }),
     columnHelper.accessor("bandName", {
       header: () => "Nom",
       cell: (info) => info.getValue(),
@@ -111,39 +103,44 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
 
   if (tableLayoutMode === "list") {
     return (
-      <table className="w-full text-left border border-secondary">
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id} className="bg-secondary">
-              {headerGroup.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="font-normal [&:not(:first-child):not(:last-child)]:px-3 [&:first-child]:rounded-tl-md [&:last-child]:rounded-tr-md py-1 px-4 border-2 border-transparent"
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-b border-secondary">
-              {row.getVisibleCells().map((cell) => (
-                <td
-                  key={cell.id}
-                  className="[&:not(:first-child):not(:last-child)]:px-3 py-2 px-4"
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="border border-border-light rounded-md">
+        <table className="w-full text-left">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="font-semibold opacity-70 [&:not(:first-child):not(:last-child)]:px-3 [&:first-child]:rounded-tl-md [&:last-child]:rounded-tr-md py-2 px-4"
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className="[&:not(:last-child)]:border-y border-border-light"
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="[&:not(:first-child):not(:last-child)]:px-3 py-4 px-4"
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     );
   }
 

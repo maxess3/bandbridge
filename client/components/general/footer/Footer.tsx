@@ -1,15 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Logo from "@/public/bandbridge.png";
+import Logo from "@/public/chordeus_logo.png";
 import Link from "next/link";
-
 import { FaInstagram, FaXTwitter } from "react-icons/fa6";
 import { FiFacebook } from "react-icons/fi";
-
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
-
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 
 function Footer() {
@@ -22,7 +19,7 @@ function Footer() {
     <footer className="mt-12">
       <div className="flex justify-center">
         <div className="w-full max-w-7xl">
-          <div className="flex justify-between w-full border-b border-secondary pb-10">
+          <div className="flex justify-between w-full border-b border-border-light pb-10">
             <div>
               <div className="flex flex-col gap-y-4">
                 <Image src={Logo} alt="Readyband Logo" width={36} height={36} />
@@ -32,7 +29,7 @@ function Footer() {
                   </span>
                 </h2>
                 <p className="text-lg">
-                  <span className="font-bold">directband</span>, 2025.
+                  <span className="font-semibold">chordeus</span>, 2025.
                 </p>
               </div>
             </div>
@@ -103,7 +100,7 @@ function Footer() {
           </div>
           <div className="py-4 flex justify-between items-center">
             <div>
-              © 2025 <span className="font-extrabold">🇫🇷 directband</span>. Tous
+              © 2025 <span className="font-semibold">🇫🇷 chordeus</span>. Tous
               droits réservés.
             </div>
             <div className="flex space-x-6 items-center">

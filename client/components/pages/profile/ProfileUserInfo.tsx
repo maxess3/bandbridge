@@ -3,20 +3,45 @@ import { getAgeFromTimestamp } from "@/utils/utils";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { AiOutlineUser } from "react-icons/ai";
 
+type InfoItemProps = {
+  icon: React.ReactNode;
+  children: React.ReactNode;
+};
+
+const InfoItem = ({ icon, children }: InfoItemProps) => (
+  <li className="inline-flex items-center gap-x-1">
+    {icon}
+    {children}
+  </li>
+);
+
 export const ProfileUserInfo = () => {
-  const { isPublic, profile } = useProfileContext();
+  const { profile } = useProfileContext();
+
+  const hasLocation = profile?.city && profile?.zipCode;
+  const locationText = hasLocation
+    ? `${profile.city}, ${profile.zipCode}`
+    : null;
+
+  const ageText = profile?.birthDate
+    ? ` (${getAgeFromTimestamp(profile.birthDate)} ans)`
+    : "";
 
   return (
     <div>
       <ul className="flex flex-wrap gap-x-6">
-        <li className="inline-flex items-center gap-x-1">
-          <HiOutlineLocationMarker size={"1.2em"} className="opacity-80" />
-          {profile?.city}, {profile?.department} {profile?.zipCode}
-        </li>
-        <li className="inline-flex items-center gap-x-1">
-          <AiOutlineUser size={"1.2em"} className="opacity-80" /> Musicien (
-          {getAgeFromTimestamp(profile?.birthdate)} ans)
-        </li>
+        {locationText && (
+          <InfoItem
+            icon={
+              <HiOutlineLocationMarker size="1.2em" className="opacity-80" />
+            }
+          >
+            {locationText}
+          </InfoItem>
+        )}
+        <InfoItem icon={<AiOutlineUser size="1.2em" className="opacity-80" />}>
+          {`Musicien${ageText}`}
+        </InfoItem>
       </ul>
     </div>
   );

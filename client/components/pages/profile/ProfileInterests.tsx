@@ -17,12 +17,12 @@ const Category = ({ title, items, isSkill }: CategoryProps) => (
     <span className="font-bold">{title}</span>
     <ul className="flex flex-wrap">
       {items.map((item, index) => (
-        <li key={index} className="mt-3 mr-1.5">
+        <li key={index} className="mt-1.5 mr-1.5">
           <Badge variant="outline">
             <span className="flex items-center gap-x-1">
               {typeof item === "string" ? item : item.name}{" "}
               {isSkill && typeof item !== "string" && item.isMain && (
-                <FaStar color="orange" />
+                <FaStar className="text-primary" />
               )}
             </span>
           </Badge>
@@ -38,12 +38,12 @@ export const ProfileInterests = () => {
     { name: "Piano", isMain: false },
   ];
 
-  const musicStyles = ["Rock", "Pop", "Jazz", "Hip-Hop", "Reggae"].map(
-    (name) => ({ name })
-  );
+  const musicStyles = ["Rock", "Pop", "Jazz", "Hip-Hop", "Rap"].map((name) => ({
+    name,
+  }));
 
   return (
-    <div className="flex border border-secondary rounded-xl">
+    <div className="flex border border-border-light rounded-xl">
       <Category title="Jeux" items={games} isSkill />
       <Category title="Styles musicaux" items={musicStyles} />
     </div>

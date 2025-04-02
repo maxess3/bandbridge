@@ -4,27 +4,25 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "rounded-md inline-flex items-center justify-center gap-2 text-base font-normal focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "rounded-md inline-flex items-center justify-center gap-2 font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        primary: "bg-primary hover:bg-primary-hover text-white dark:text-black",
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        primary: "bg-primary text-[white]",
+        default: "bg-primary",
         destructive:
           "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-        outline:
-          "border border-border bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+        outline: "border hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
+          "bg-secondary hover:bg-tertiary-hover hover:underline text-sm rounded-full !gap-1 font-medium",
+        ghost: "hover:bg-accent hover:text-accent-foreground text-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        linkForm:
-          "bg-tertiary hover:bg-tertiary-hover hover:underline text-sm rounded-full !gap-1 font-medium",
       },
       size: {
         default: "px-4 py-2",
         xs: "h-8 px-3",
         sm: "h-9 px-3 text-sm",
+        md: "h-9 px-4",
         lg: "h-10 px-8",
         icon: "h-10 w-10",
       },

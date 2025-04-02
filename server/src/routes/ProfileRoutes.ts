@@ -22,6 +22,24 @@ router.put(
   ProfileController.updateSocialProfilePrivate
 );
 
+router.post(
+  "/follow/:targetUsername",
+  authenticateToken,
+  ProfileController.follow
+);
+
+router.post(
+  "/unfollow/:targetUsername",
+  authenticateToken,
+  ProfileController.unfollow
+);
+
+router.get(
+  "/following/:targetUsername",
+  authenticateToken,
+  ProfileController.isFollowing
+);
+
 router.get("/:username", ProfileController.getProfilePublic);
 
 export default router;
