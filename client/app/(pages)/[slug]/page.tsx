@@ -1,8 +1,9 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { ProfileLayout } from "@/components/pages/profile";
 import { Profile } from "@/types/Profile";
+import { ClientProfile } from "@/components/pages/profile/ClientProfile";
 
 async function getProfile(username: string): Promise<Profile> {
   const res = await fetch(`${process.env.API_URL}/profile/${username}`, {
@@ -28,11 +29,12 @@ export default async function Root({
   const session = await getServerSession(authOptions);
   const { slug } = await params;
 
+  // If slug is the same as the current user, use the client component
   if (slug === session?.user.username) {
-    redirect("/me");
+    return <ClientProfile />;
   }
 
+  // Otherwise, use the server fetch for SEO
   const profile = await getProfile(slug);
-
   return <ProfileLayout profile={profile} isPublic={true} />;
 }
