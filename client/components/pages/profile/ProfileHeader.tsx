@@ -71,7 +71,7 @@ export const ProfileHeader = () => {
     }
 
     return (
-      <Link href="/me/edit/profile/general">
+      <Link href={`/${session?.user.username}/edit/profile/general`}>
         <Button variant="outline" icon={<SlPencil />}>
           Modifier mon profil
         </Button>
@@ -82,7 +82,7 @@ export const ProfileHeader = () => {
   return (
     <div className="flex justify-between">
       <div className="flex flex-col">
-        <span className="text-3xl gap-x-1.5 font-bold inline-flex items-center">
+        <span className="text-3xl gap-x-1.5 font-semibold inline-flex items-center">
           {profile?.firstName}
           <RiVerifiedBadgeFill size={"0.9em"} />
         </span>

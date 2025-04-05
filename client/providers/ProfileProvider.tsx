@@ -1,10 +1,11 @@
 import { ReactNode } from "react";
 import { ProfileContext } from "@/context/ProfileContext";
+import { Profile } from "@/types/Profile";
 
 interface ProfileProviderProps {
   children: ReactNode;
   isPublic: boolean;
-  profile: any;
+  profile: Profile;
 }
 
 export function ProfileProvider({

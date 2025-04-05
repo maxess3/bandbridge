@@ -12,7 +12,7 @@ export const GoogleButton = () => {
       }
       size="lg"
       variant="outline"
-      className="w-full font-medium bg-card hover:bg-accent"
+      className="w-full font-medium"
     >
       <FcGoogle style={{ width: "1.4em", height: "1.4em" }} />
       Se connecter avec Google

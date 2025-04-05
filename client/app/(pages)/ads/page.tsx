@@ -1,5 +1,4 @@
 import { FaRegBookmark } from "react-icons/fa";
-
 import { Button } from "@/components/ui/button";
 import { BandTableContainer } from "@/components/table/index";
 
@@ -8,7 +7,7 @@ export default function Ads() {
     <div className="flex flex-col justify-center py-8">
       <div className="flex justify-between items-center">
         <div className="space-y-2.5">
-          <span className="text-sm font-semibold bg-muted-background px-4 py-1 rounded-full inline-flex">
+          <span className="text-sm font-semibold bg-secondary px-4 py-1 rounded-full inline-flex">
             🔥 +300 annonces publiées
           </span>
           <div className="space-y-1.5">

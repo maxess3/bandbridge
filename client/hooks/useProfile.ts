@@ -1,21 +1,24 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
+import { useDelayedQuery } from "@/hooks/useDelayedQuery";
 
 export const PROFILE_QUERY_KEY = ["profile"];
 
 export function useProfile() {
   const axiosAuth = useAxiosAuth();
 
-  return useQuery({
-    queryKey: PROFILE_QUERY_KEY,
-    queryFn: async () => {
+  return useDelayedQuery(
+    PROFILE_QUERY_KEY,
+    async () => {
       const { data } = await axiosAuth.get("/profile/me");
-      console.log(data);
       return data;
     },
-    refetchOnMount: true,
-    staleTime: Infinity,
-  });
+    {
+      queryKey: PROFILE_QUERY_KEY,
+      refetchOnMount: true,
+      staleTime: Infinity,
+      delay: 400,
+    }
+  );
 }

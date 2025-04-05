@@ -1,12 +1,8 @@
 "use client";
 
 import { DATA } from "../../app/data";
-
 import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
-
-import { IoMdMusicalNotes } from "react-icons/io";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 import { FaRegBookmark } from "react-icons/fa";
 

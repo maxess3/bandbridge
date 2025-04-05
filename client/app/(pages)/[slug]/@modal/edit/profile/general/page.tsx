@@ -26,14 +26,16 @@ export default function Page() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
-      router.push("/me");
+      setTimeout(() => {
+        router.push(`/${profile?.username}`);
+      }, 300);
     },
   });
 
   return (
     <>
       <LoadingModal
-        route="/me"
+        route={`/${profile?.username}`}
         title="Modifier le profil"
         open={loadingProfile}
       >
@@ -46,7 +48,7 @@ export default function Page() {
             return withDelay(() => updateProfileMutation.mutateAsync(values));
           }}
           formSchema={formGeneralProfile}
-          route="/me"
+          route={`/${profile?.username}`}
           defaultValues={{
             firstname: profile?.firstName ?? "",
             username: profile?.username ?? "",

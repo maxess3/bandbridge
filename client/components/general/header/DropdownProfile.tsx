@@ -55,7 +55,9 @@ export const DropdownProfile = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-60 mt-[7px] border-border-light">
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => router.push("/me")}>
+          <DropdownMenuItem
+            onClick={() => router.push(`/${session?.user.username}`)}
+          >
             <div className="w-full space-y-3">
               <div className="flex space-x-2">
                 <Avatar>

@@ -27,14 +27,18 @@ export default function Page() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
       setTimeout(() => {
-        router.push("/me");
+        router.push(`/${profile?.username}`);
       }, 300);
     },
   });
 
   return (
     <>
-      <LoadingModal route="/me" title="Liens sociaux" open={loadingProfile}>
+      <LoadingModal
+        route={`/${profile?.username}`}
+        title="Liens sociaux"
+        open={loadingProfile}
+      >
         Chargement...
       </LoadingModal>
       {profile && (
@@ -46,7 +50,7 @@ export default function Page() {
             );
           }}
           formSchema={formSocialProfile}
-          route="/me"
+          route={`/${profile?.username}`}
           defaultValues={{
             youtube: profile?.socialLinks.youtube ?? "",
             instagram: profile?.socialLinks.instagram ?? "",

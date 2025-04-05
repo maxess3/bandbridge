@@ -17,7 +17,7 @@ export const NavbarAuthBtn = async () => {
   return (
     <div className="flex gap-x-2 justify-center items-center">
       <Link
-        className="hover:bg-accent border justify-center px-4 py-2 h-9 rounded-md inline-flex items-center font-medium"
+        className={buttonVariants({ variant: "outline", size: "md" })}
         href={"/api/auth/signin"}
       >
         Se connecter

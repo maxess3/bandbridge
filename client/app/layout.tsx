@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProviders } from "@/providers/ThemeProviders";
@@ -8,6 +9,42 @@ import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import Navbar from "@/components/general/header/Navbar";
 import Footer from "@/components/general/footer/Footer";
+
+const NewKansas = localFont({
+  src: [
+    {
+      path: "../public/fonts/NewKansas/New Kansas Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/New Kansas Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/New Kansas SemiBold.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/New Kansas Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/New Kansas Heavy.otf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/New Kansas Black.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-new-kansas",
+});
 
 const DM = DM_Sans({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -28,26 +65,30 @@ export default async function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${DM.className} antialiased min-h-screen flex flex-col`}
+        className={`${DM.className} ${NewKansas.variable} antialiased min-h-screen flex flex-col`}
       >
-        <AuthSessionProviders>
-          <ReactQueryClientProvider>
-            <ThemeProviders>
+        <ThemeProviders>
+          <AuthSessionProviders>
+            <ReactQueryClientProvider>
               <Toaster
                 toastOptions={{
                   classNames: {
                     toast:
-                      "bg-accent text-foreground border outline-none border-border text-sm",
-                    error: "text-red-400",
-                    success: "text-green-400",
-                    warning: "text-yellow-400",
-                    info: "bg-blue-400",
+                      "bg-background border border-border-light text-foreground text-sm shadow-xl [&>div>[data-title]]:opacity-90 [&>div>[data-title]]:font-normal",
+                    error:
+                      "[&>div>svg]:text-red-700 dark:[&>div>svg]:text-red-600",
+                    success:
+                      "[&>div>svg]:text-green-700 dark:[&>div>svg]:text-green-600",
+                    warning:
+                      "[&>div>svg]:text-orange-700 dark:[&>div>svg]:text-orange-600",
+                    info: "[&>div>svg]:text-blue-700 dark:[&>div>svg]:text-blue-600",
                     actionButton:
                       "!bg-transparent absolute right-1 !text-foreground",
+                    icon: "[&>svg]:w-6 [&>svg]:h-6 mr-2",
                   },
                 }}
                 position="bottom-left"
-                duration={4000}
+                duration={100000}
               />
               <NextTopLoader color="#b9181b" showSpinner={false} height={3} />
               <div className="px-8">
@@ -56,9 +97,9 @@ export default async function RootLayout({
                 <Footer />
               </div>
               <div className="w-full py-0.5 bg-primary"></div>
-            </ThemeProviders>
-          </ReactQueryClientProvider>
-        </AuthSessionProviders>
+            </ReactQueryClientProvider>
+          </AuthSessionProviders>
+        </ThemeProviders>
       </body>
     </html>
   );

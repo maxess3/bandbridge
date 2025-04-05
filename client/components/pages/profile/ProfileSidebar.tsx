@@ -16,6 +16,7 @@ type SocialLinks = Partial<Record<SocialPlatform, string>>;
 
 interface SocialLinksProps {
   socialLinks: SocialLinks;
+  username: string;
   isPublic: boolean;
 }
 
@@ -84,7 +85,7 @@ const ListSection = ({
   </div>
 );
 
-const SocialLinks = ({ socialLinks, isPublic }: SocialLinksProps) => {
+const SocialLinks = ({ socialLinks, username, isPublic }: SocialLinksProps) => {
   const platforms: SocialPlatform[] = [
     "youtube",
     "instagram",
@@ -100,7 +101,7 @@ const SocialLinks = ({ socialLinks, isPublic }: SocialLinksProps) => {
         <ul className="text-sm flex items-center flex-wrap gap-2">
           {platforms.map(
             (platform) =>
-              socialLinks[platform] && (
+              socialLinks?.[platform] && (
                 <ProfileSocialLink
                   key={platform}
                   platform={platform}
@@ -110,7 +111,7 @@ const SocialLinks = ({ socialLinks, isPublic }: SocialLinksProps) => {
           )}
         </ul>
         {!isPublic && (
-          <Link href="/me/edit/profile/social" className="flex">
+          <Link href={`/${username}/edit/profile/social`} className="flex">
             <Button variant="secondary" size="xs">
               <IoAdd style={{ height: 18, width: 18 }} />
               Ajouter un lien
@@ -147,12 +148,16 @@ export const ProfileSidebar = () => {
         ) : (
           <div className="space-y-3 p-4 border border-border-light rounded-xl">
             <span className="font-semibold">Profil public</span>
-            <div className="text-sm">{`https://www.bandbridge/${profile?.username}`}</div>
+            <div className="text-sm">{`http://localhost:3000/${profile?.username}`}</div>
           </div>
         )}
 
         {(isPublic ? Object.keys(profile?.socialLinks).length > 0 : true) && (
-          <SocialLinks socialLinks={profile?.socialLinks} isPublic={isPublic} />
+          <SocialLinks
+            socialLinks={profile?.socialLinks}
+            username={profile?.username}
+            isPublic={isPublic}
+          />
         )}
 
         <ListSection

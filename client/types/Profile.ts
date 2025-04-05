@@ -18,4 +18,7 @@ export interface Profile {
   socialLinks: SocialLinks;
   followers: number;
   following: number;
+  instruments: string[];
+  styles: string[];
+  lastSeen: string;
 }

@@ -10,6 +10,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        newKansas: ["var(--font-new-kansas)"],
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -24,11 +27,16 @@ export default {
         dialog: {
           DEFAULT: "hsl(var(--dialog))",
         },
+        hover: {
+          DEFAULT: "hsl(var(--hover))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
+          hover: "hsl(var(--primary-hover))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
+          hover: "hsl(var(--secondary-hover))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",

@@ -1,10 +1,10 @@
 "use client";
-
+import { Profile } from "@/types/Profile";
 import { createContext, useContext } from "react";
 
 interface ProfileContextType {
   isPublic: boolean;
-  profile: any;
+  profile: Profile;
 }
 
 export const ProfileContext = createContext<ProfileContextType | null>(null);
