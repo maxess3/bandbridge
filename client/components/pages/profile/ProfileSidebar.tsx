@@ -141,17 +141,8 @@ export const ProfileSidebar = () => {
   ];
 
   return (
-    <div className="w-3/12 rounded-xl">
+    <div className="xl:w-3/12 rounded-xl">
       <div className="space-y-2">
-        {isPublic ? (
-          ""
-        ) : (
-          <div className="space-y-3 p-4 border border-border-light rounded-xl">
-            <span className="font-semibold">Profil public</span>
-            <div className="text-sm">{`http://localhost:3000/${profile?.username}`}</div>
-          </div>
-        )}
-
         {(isPublic ? Object.keys(profile?.socialLinks).length > 0 : true) && (
           <SocialLinks
             socialLinks={profile?.socialLinks}
@@ -159,17 +150,96 @@ export const ProfileSidebar = () => {
             isPublic={isPublic}
           />
         )}
-
+        <div className="space-y-3 border border-border-light rounded-xl">
+          <div className="space-y-3 p-4">
+            <span className="font-semibold">Followers (1)</span>
+            <div className="w-full">
+              <ul className="text-sm flex items-center justify-between w-full">
+                <li className="relative">
+                  <Avatar>
+                    <AvatarImage
+                      className="rounded-full w-12 border-2 border-background"
+                      src="https://github.com/shadcn.png"
+                    />
+                    <AvatarFallback>O</AvatarFallback>
+                  </Avatar>
+                </li>
+                <li className="relative -ml-3">
+                  <Avatar>
+                    <AvatarImage
+                      className="rounded-full w-12 border-2 border-background"
+                      src="https://github.com/shadcn.png"
+                    />
+                    <AvatarFallback>O</AvatarFallback>
+                  </Avatar>
+                </li>
+                <li className="relative -ml-3">
+                  <Avatar>
+                    <AvatarImage
+                      className="rounded-full w-12 border-2 border-background"
+                      src="https://github.com/shadcn.png"
+                    />
+                    <AvatarFallback>O</AvatarFallback>
+                  </Avatar>
+                </li>
+                <li className="relative -ml-3">
+                  <Avatar>
+                    <AvatarImage
+                      className="rounded-full w-12 border-2 border-background"
+                      src="https://github.com/shadcn.png"
+                    />
+                    <AvatarFallback>O</AvatarFallback>
+                  </Avatar>
+                </li>
+                <li className="relative -ml-3">
+                  <Avatar>
+                    <AvatarImage
+                      className="rounded-full w-12 border-2 border-background"
+                      src="https://github.com/shadcn.png"
+                    />
+                    <AvatarFallback>O</AvatarFallback>
+                  </Avatar>
+                </li>
+                <li className="relative -ml-3">
+                  <Avatar>
+                    <AvatarImage
+                      className="rounded-full w-12 border-2 border-background"
+                      src="https://github.com/shadcn.png"
+                    />
+                    <AvatarFallback>O</AvatarFallback>
+                  </Avatar>
+                </li>
+                <li className="relative -ml-3">
+                  <Avatar>
+                    <AvatarImage
+                      className="rounded-full w-12 border-2 border-background"
+                      src="https://github.com/shadcn.png"
+                    />
+                    <AvatarFallback>O</AvatarFallback>
+                  </Avatar>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="flex items-center justify-center w-full border-t border-border-light">
+            <Button
+              variant="ghost"
+              className="font-semibold w-full h-10 rounded-t-none rounded-b-xl"
+            >
+              Tout afficher
+            </Button>
+          </div>
+        </div>
         <ListSection
           title="Groupes à proximité"
           items={nearbyGroups}
-          buttonText="Voir les groupes"
+          buttonText="Tout afficher"
         />
 
         <ListSection
           title="Musiciens à proximité"
           items={nearbyMusicians}
-          buttonText="Voir les musiciens"
+          buttonText="Tout afficher"
         />
       </div>
     </div>

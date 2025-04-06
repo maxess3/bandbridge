@@ -8,7 +8,27 @@ export const MenuLinks = () => {
 
   return (
     <div>
-      <ul className="flex justify-center items-center font-medium">
+      <ul className="flex justify-center items-center font-medium space-x-12">
+        <Link
+          href={"/home"}
+          className={`inline-flex flex-col items-center ${
+            currentPath === "/home"
+              ? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.5em] before:bg-primary font-bold"
+              : "opacity-90"
+          }`}
+        >
+          <span>Musiciens</span>
+        </Link>
+        <Link
+          href={"/home"}
+          className={`inline-flex flex-col items-center ${
+            currentPath === "/home"
+              ? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.5em] before:bg-primary font-bold"
+              : "opacity-90"
+          }`}
+        >
+          <span>Groupes</span>
+        </Link>
         <Link
           href={"/ads"}
           className={`inline-flex flex-col items-center ${

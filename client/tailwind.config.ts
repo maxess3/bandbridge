@@ -10,6 +10,9 @@ export default {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        "auto-fit": "repeat(auto-fit, minmax(10rem, 1fr))",
+      },
       fontFamily: {
         newKansas: ["var(--font-new-kansas)"],
       },
