@@ -75,7 +75,7 @@ const ListSection = ({
 }) => (
   <div className="border border-border-light rounded-xl">
     <div className="p-4 space-y-3">
-      <span className="font-semibold">{title}</span>
+      <span className="font-bold text-sm uppercase">{title}</span>
       <ul className="space-y-3 text-sm">
         {items.map((item: ListItem, index: number) => (
           <ListItemWithAvatar key={index} {...item} />
@@ -104,7 +104,7 @@ const SocialLinks = ({ socialLinks, username, isPublic }: SocialLinksProps) => {
 
   return (
     <div className="space-y-3 p-4 border border-border-light rounded-xl">
-      <span className="font-semibold">Liens</span>
+      <span className="uppercase text-sm font-bold">Liens</span>
       <div className="space-y-2">
         <ul className="text-sm flex items-center flex-wrap gap-2">
           {platforms.map(
@@ -162,62 +162,127 @@ export const ProfileSidebar = () => {
             isPublic={isPublic}
           />
         )}
-        <div className="space-y-3 border border-border-light rounded-xl">
-          <div className="space-y-3 p-4">
-            <span className="font-semibold">
-              Followers
-              {profile?.followers > 0 ? ` (${profile?.followers})` : ""}
-            </span>
-            <div className="w-full">
-              <ul className="flex items-center justify-between w-full">
-                {profile?.lastFollowers?.map((follower) => (
-                  <li key={follower.username}>
-                    <Avatar>
-                      <div className="w-12 h-12 rounded-full relative group">
-                        <Image
-                          src={ProfileSmall}
-                          alt="Follower"
-                          className="rounded-full border-2 border-background"
-                          fill
-                          sizes="48px"
-                          priority
-                        />
-                        <div className="absolute space-y-6 p-4 shadow-xl flex flex-col items-center top-16 left-1/2 -translate-x-1/2 z-50 rounded-lg border border-border-light bg-popover before:content-[''] before:absolute before:-top-2.5 before:left-1/2 before:-translate-x-1/2 before:w-5 before:h-5 before:bg-popover before:border-t before:border-l before:border-border-light before:rotate-45">
-                          <div className="h-32 w-32 rounded-full relative bg-[red]"></div>
-                          <div className="flex flex-col items-center gap-y-2">
-                            <span className="text-lg font-semibold font-satoshi">
+        {profile?.lastFollowers.length > 0 ? (
+          <div className="space-y-4 border border-border-light rounded-xl">
+            <div className="">
+              <span className="uppercase text-sm font-bold p-4 inline-flex w-full">
+                {profile?.followers} Followers
+              </span>
+              <div className="w-full">
+                {/* {profile?.lastFollowers?.map((follower) => (
+                    <li key={follower.username} className="py-2 cursor-pointer">
+                      <div className="flex items-center justify-between px-4">
+                        <div className="flex items-center gap-x-2">
+                          <Avatar>
+                            <div className="w-12 h-12 rounded-full relative group">
+                              <Link href={`/${follower.username}`}>
+                                <Image
+                                  src={ProfileSmall}
+                                  alt="Follower"
+                                  className="rounded-full border-2 border-background"
+                                  fill
+                                  sizes="48px"
+                                  priority
+                                />
+                              </Link>
+                              <div className="absolute space-y-6 p-4 shadow-xl flex flex-col items-center top-16 left-1/2 -translate-x-1/2 z-50 rounded-lg border border-border-light bg-popover before:content-[''] before:absolute before:-top-2.5 before:left-1/2 before:-translate-x-1/2 before:w-5 before:h-5 before:bg-popover before:border-t before:border-l before:border-border-light before:rotate-45">
+                                <div className="h-32 w-32 rounded-full relative bg-[red]"></div>
+                                <div className="flex flex-col items-center gap-y-2">
+                                  <span className="text-lg font-semibold font-satoshi">
+                                    {follower.firstName}
+                                  </span>
+                                  <span className="text-sm flex items-center gap-x-1 opacity-80 font-semibold">
+                                    <FaUser />
+                                    {follower.followersCount}
+                                  </span>
+                                  <span className="text-sm flex items-center gap-1 opacity-80 font-semibold">
+                                    {follower.city}
+                                  </span>
+                                </div>
+                                <div>
+                                  <Button variant="primary" size="md">
+                                    Suivre
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </Avatar>
+                          <div>
+                            <span className="text-lg font-extrabold font-satoshi hover:underline">
                               {follower.firstName}
                             </span>
                             <span className="text-sm flex items-center gap-x-1 opacity-80 font-semibold">
-                              <FaUser />
-                              {follower.followersCount}
+                              @{follower.username}
                             </span>
-                            <span className="text-sm flex items-center gap-1 opacity-80 font-semibold">
-                              {follower.city}
-                            </span>
-                          </div>
-                          <div>
-                            <Button variant="primary" size="md">
-                              Suivre
-                            </Button>
                           </div>
                         </div>
+                        <div>
+                          <Button
+                            variant="primary"
+                            size="md"
+                            className="text-sm"
+                          >
+                            Suivre
+                          </Button>
+                        </div>
                       </div>
-                    </Avatar>
-                  </li>
-                ))}
-              </ul>
+                    </li>
+                  ))*/}
+                <ul className="flex items-center w-full px-4">
+                  {profile?.lastFollowers?.map((follower) => (
+                    <li key={follower.username} className="-mr-2">
+                      <Avatar>
+                        <div className="w-12 h-12 rounded-full relative group">
+                          <Link href={`/${follower.username}`}>
+                            <Image
+                              src={ProfileSmall}
+                              alt="Follower"
+                              className="rounded-full border-2 border-background"
+                              fill
+                              sizes="48px"
+                              priority
+                            />
+                          </Link>
+                          <div className="hidden group-hover:flex absolute space-y-6 p-4 shadow-xl flex-col items-center top-16 left-1/2 -translate-x-1/2 z-50 rounded-lg border border-border-light bg-popover before:content-[''] before:absolute before:-top-2.5 before:left-1/2 before:-translate-x-1/2 before:w-5 before:h-5 before:bg-popover before:border-t before:border-l before:border-border-light before:rotate-45">
+                            <div className="h-32 w-32 rounded-full relative bg-[red]"></div>
+                            <div className="flex flex-col items-center gap-y-2">
+                              <span className="text-lg font-semibold font-satoshi">
+                                {follower.firstName}
+                              </span>
+                              <span className="text-sm flex items-center gap-x-1 opacity-80 font-semibold">
+                                <FaUser />
+                                {follower.followersCount}
+                              </span>
+                              <span className="text-sm flex items-center gap-1 opacity-80 font-semibold">
+                                {follower.city}
+                              </span>
+                            </div>
+                            <div>
+                              <Button variant="primary" size="md">
+                                Suivre
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      </Avatar>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="flex items-center justify-center w-full border-t border-border-light">
+              <Button
+                variant="ghost"
+                className="font-semibold w-full h-10 rounded-t-none rounded-b-xl"
+              >
+                Tout afficher
+              </Button>
             </div>
           </div>
-          <div className="flex items-center justify-center w-full border-t border-border-light">
-            <Button
-              variant="ghost"
-              className="font-semibold w-full h-10 rounded-t-none rounded-b-xl"
-            >
-              Tout afficher
-            </Button>
-          </div>
-        </div>
+        ) : (
+          ""
+        )}
+
         <ListSection
           title="Groupes à proximité"
           items={nearbyGroups}

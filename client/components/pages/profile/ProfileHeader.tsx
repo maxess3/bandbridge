@@ -6,7 +6,8 @@ import { PROFILE_QUERY_KEY } from "@/hooks/useProfile";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { SlPencil } from "react-icons/sl";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { LucideUserRoundPlus, LucideUserRoundMinus } from "lucide-react";
+import { LucideUserRoundPlus } from "lucide-react";
+import { FaUserCheck } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 
 export const ProfileHeader = () => {
@@ -52,18 +53,17 @@ export const ProfileHeader = () => {
             disabled={isPending}
             icon={
               followData?.isFollowing ? (
-                <LucideUserRoundMinus
-                  style={{ width: "1.1em", height: "1.1em" }}
-                />
+                <FaUserCheck style={{ width: "1.1em", height: "1.1em" }} />
               ) : (
                 <LucideUserRoundPlus
                   style={{ width: "1.1em", height: "1.1em" }}
                 />
               )
             }
-            variant={followData?.isFollowing ? "outline" : "primary"}
+            variant={followData?.isFollowing ? "secondary" : "primary"}
+            className="rounded-md text-base"
           >
-            {followData?.isFollowing ? "Suivi(e)" : "Suivre"}
+            {followData?.isFollowing ? "Abonné(e)" : "Suivre"}
           </Button>
           <Button variant="outline">Partager</Button>
         </>

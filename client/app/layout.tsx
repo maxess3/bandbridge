@@ -93,7 +93,7 @@ export default async function RootLayout({
                   },
                 }}
                 position="bottom-left"
-                duration={100000}
+                duration={4000}
               />
               <NextTopLoader color="#b9181b" showSpinner={false} height={3} />
               <div className="px-8">
