@@ -67,7 +67,7 @@ export function ProfileLayout({
           <div className="xl:w-9/12 space-y-8">
             <div className="flex w-full gap-x-6">
               <div className="flex items-center">
-                <ProfileImage src="/profile.jpeg" alt="Photo de profil" />
+                <ProfileImage src="/profile_large.jpeg" alt="Photo de profil" />
               </div>
               <div className="flex flex-col w-full space-y-6">
                 <ProfileHeader />

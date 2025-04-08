@@ -12,6 +12,7 @@ export function useProfile() {
     PROFILE_QUERY_KEY,
     async () => {
       const { data } = await axiosAuth.get("/profile/me");
+      console.log(data);
       return data;
     },
     {

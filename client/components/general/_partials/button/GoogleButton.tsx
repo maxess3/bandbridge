@@ -2,7 +2,7 @@ import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 
-export const GoogleButton = () => {
+export const GoogleButton = ({ title }: { title: string }) => {
   return (
     <Button
       onClick={() =>
@@ -15,7 +15,7 @@ export const GoogleButton = () => {
       className="w-full font-medium"
     >
       <FcGoogle style={{ width: "1.4em", height: "1.4em" }} />
-      Se connecter avec Google
+      {title}
     </Button>
   );
 };

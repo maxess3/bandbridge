@@ -64,7 +64,7 @@ export default function Login() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <GoogleButton />
+          <GoogleButton title="Se connecter avec Google" />
           <span className="my-2 border-b relative before:content-['ou'] before:absolute before:-translate-x-1/2 before:-translate-y-1/2 before:left-1/2 before:bg-card before:px-3 before:opacity-90"></span>
           <form
             className="space-y-4"

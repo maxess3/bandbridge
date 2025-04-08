@@ -24,13 +24,13 @@ function Footer() {
               <div className="flex flex-col gap-y-4">
                 <Image src={Logo} alt="Readyband Logo" width={36} height={36} />
                 <h2 className="text-2xl">
-                  <span className="font-semibold">
+                  <span className="font-satoshi font-semibold">
                     La musique qui vous rassemble.
                   </span>
                 </h2>
                 <p className="text-lg">
-                  <span className="font-semibold font-newKansas">chordeus</span>
-                  , 2025.
+                  <span className="font-satoshi font-bold">chordeus</span>,
+                  2025.
                 </p>
               </div>
             </div>
@@ -101,9 +101,8 @@ function Footer() {
           </div>
           <div className="py-4 flex justify-between items-center">
             <div>
-              © 2025{" "}
-              <span className="font-newKansas font-semibold">🇫🇷 chordeus</span>.
-              Tous droits réservés.
+              © 2025 <span className="font-satoshi font-bold">🇫🇷 chordeus</span>
+              . Tous droits réservés.
             </div>
             <div className="flex space-x-6 items-center">
               <Button onClick={fetchPost} variant="outline" size="md">

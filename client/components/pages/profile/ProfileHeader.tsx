@@ -3,7 +3,7 @@ import { useProfileContext } from "@/context/ProfileContext";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PROFILE_QUERY_KEY } from "@/hooks/useProfile";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { SlPencil } from "react-icons/sl";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { LucideUserRoundPlus, LucideUserRoundMinus } from "lucide-react";
@@ -71,10 +71,12 @@ export const ProfileHeader = () => {
     }
 
     return (
-      <Link href={`/${session?.user.username}/edit/profile/general`}>
-        <Button variant="outline" icon={<SlPencil />}>
-          Modifier mon profil
-        </Button>
+      <Link
+        href={`/${session?.user.username}/edit/profile/general`}
+        className={buttonVariants({ variant: "outline" })}
+      >
+        <SlPencil className="mr-1 h-4 w-4" />
+        Modifier mon profil
       </Link>
     );
   };
@@ -82,7 +84,7 @@ export const ProfileHeader = () => {
   return (
     <div className="flex justify-between">
       <div className="flex flex-col">
-        <span className="text-3xl gap-x-1.5 font-semibold inline-flex items-center">
+        <span className="text-3xl gap-x-1.5 font-satoshi font-semibold inline-flex items-center">
           {profile?.firstName}
           <RiVerifiedBadgeFill size={"0.9em"} />
         </span>

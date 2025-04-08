@@ -6,6 +6,13 @@ export interface SocialLinks {
   soundcloud?: string;
 }
 
+export interface LastFollowers {
+  city: string;
+  firstName: string;
+  followersCount: number;
+  username: string;
+}
+
 export interface Profile {
   firstName: string;
   username: string;
@@ -18,6 +25,7 @@ export interface Profile {
   socialLinks: SocialLinks;
   followers: number;
   following: number;
+  lastFollowers: LastFollowers[];
   instruments: string[];
   styles: string[];
   lastSeen: string;

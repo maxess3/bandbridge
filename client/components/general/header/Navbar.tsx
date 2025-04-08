@@ -11,10 +11,7 @@ async function Navbar() {
         <div>
           <div className="flex items-center gap-x-2.5">
             <Image src={Logo} alt="Logo" width={36} height={36} />
-            <Link
-              href={"/home"}
-              className="font-newKansas text-[1.6em] font-bold"
-            >
+            <Link href={"/home"} className="font-satoshi text-2xl font-bold">
               chordeus
             </Link>
           </div>

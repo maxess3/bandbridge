@@ -5,7 +5,9 @@ import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
+import ProfileSmall from "@/public/profile_small.png";
+import { Avatar } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,10 +48,18 @@ export const DropdownProfile = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className="w-auto h-auto flex p-0 rounded-full">
-          <Avatar className="w-9 h-9 cursor-pointer">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+        <Button className="w-auto h-auto flex p-0 rounded-full bg-background">
+          <Avatar className="w-9 h-9">
+            <div className="relative w-full h-full">
+              <Image
+                src={ProfileSmall}
+                alt="Profile"
+                fill
+                className="rounded-full object-cover"
+                sizes="36px"
+                priority
+              />
+            </div>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -61,8 +71,16 @@ export const DropdownProfile = () => {
             <div className="w-full space-y-3">
               <div className="flex space-x-2">
                 <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={ProfileSmall}
+                      alt="Profile"
+                      fill
+                      className="rounded-full object-cover"
+                      sizes="40px"
+                      priority
+                    />
+                  </div>
                 </Avatar>
                 <div className="flex flex-col ml-0.5">
                   <span className="text-md">{session?.user.firstName}</span>

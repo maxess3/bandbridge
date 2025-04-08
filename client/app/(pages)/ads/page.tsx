@@ -11,7 +11,7 @@ export default function Ads() {
             🔥 +300 annonces publiées
           </span>
           <div className="space-y-1.5">
-            <h2 className="text-3xl font-semibold">
+            <h2 className="text-3xl font-satoshi font-semibold">
               De nouveaux groupes vous attendent à Paris.
             </h2>
             <p className="opacity-90">

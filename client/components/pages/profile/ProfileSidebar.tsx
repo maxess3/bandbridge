@@ -1,10 +1,14 @@
 import Link from "next/link";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
+import Image from "next/image";
+import ProfileSmall from "@/public/profile_small.png";
+import { Avatar } from "@radix-ui/react-avatar";
 import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProfileSocialLink } from "@/components/pages/profile/ProfileSocialLink";
 import { IoAdd } from "react-icons/io5";
 import { useProfileContext } from "@/context/ProfileContext";
+import { FaUser } from "react-icons/fa";
 
 type SocialPlatform =
   | "youtube"
@@ -37,12 +41,16 @@ const ListItemWithAvatar = ({
 }) => (
   <li className="flex items-center space-x-2 border-b pb-3 last:border-b-0 border-border-extralight last:pb-0">
     <Avatar className="w-11 h-11">
-      <AvatarImage
-        className="rounded-full"
-        src="https://github.com/shadcn.png"
-        alt={name}
-      />
-      <AvatarFallback>{name.substring(0, 2).toUpperCase()}</AvatarFallback>
+      <div className="relative w-full h-full">
+        <Image
+          src={ProfileSmall}
+          alt={name}
+          fill
+          className="rounded-full object-cover"
+          sizes="44px"
+          priority
+        />
+      </div>
     </Avatar>
     <div className="flex flex-col">
       <span className="font-semibold text-base">
@@ -111,11 +119,15 @@ const SocialLinks = ({ socialLinks, username, isPublic }: SocialLinksProps) => {
           )}
         </ul>
         {!isPublic && (
-          <Link href={`/${username}/edit/profile/social`} className="flex">
-            <Button variant="secondary" size="xs">
-              <IoAdd style={{ height: 18, width: 18 }} />
-              Ajouter un lien
-            </Button>
+          <Link
+            href={`/${username}/edit/profile/social`}
+            className={
+              buttonVariants({ variant: "secondary", size: "xs" }) +
+              " !rounded-full"
+            }
+          >
+            <IoAdd style={{ height: 18, width: 18 }} />
+            Ajouter un lien
           </Link>
         )}
       </div>
@@ -152,72 +164,48 @@ export const ProfileSidebar = () => {
         )}
         <div className="space-y-3 border border-border-light rounded-xl">
           <div className="space-y-3 p-4">
-            <span className="font-semibold">Followers (1)</span>
+            <span className="font-semibold">
+              Followers
+              {profile?.followers > 0 ? ` (${profile?.followers})` : ""}
+            </span>
             <div className="w-full">
-              <ul className="text-sm flex items-center justify-between w-full">
-                <li className="relative">
-                  <Avatar>
-                    <AvatarImage
-                      className="rounded-full w-12 border-2 border-background"
-                      src="https://github.com/shadcn.png"
-                    />
-                    <AvatarFallback>O</AvatarFallback>
-                  </Avatar>
-                </li>
-                <li className="relative -ml-3">
-                  <Avatar>
-                    <AvatarImage
-                      className="rounded-full w-12 border-2 border-background"
-                      src="https://github.com/shadcn.png"
-                    />
-                    <AvatarFallback>O</AvatarFallback>
-                  </Avatar>
-                </li>
-                <li className="relative -ml-3">
-                  <Avatar>
-                    <AvatarImage
-                      className="rounded-full w-12 border-2 border-background"
-                      src="https://github.com/shadcn.png"
-                    />
-                    <AvatarFallback>O</AvatarFallback>
-                  </Avatar>
-                </li>
-                <li className="relative -ml-3">
-                  <Avatar>
-                    <AvatarImage
-                      className="rounded-full w-12 border-2 border-background"
-                      src="https://github.com/shadcn.png"
-                    />
-                    <AvatarFallback>O</AvatarFallback>
-                  </Avatar>
-                </li>
-                <li className="relative -ml-3">
-                  <Avatar>
-                    <AvatarImage
-                      className="rounded-full w-12 border-2 border-background"
-                      src="https://github.com/shadcn.png"
-                    />
-                    <AvatarFallback>O</AvatarFallback>
-                  </Avatar>
-                </li>
-                <li className="relative -ml-3">
-                  <Avatar>
-                    <AvatarImage
-                      className="rounded-full w-12 border-2 border-background"
-                      src="https://github.com/shadcn.png"
-                    />
-                    <AvatarFallback>O</AvatarFallback>
-                  </Avatar>
-                </li>
-                <li className="relative -ml-3">
-                  <Avatar>
-                    <AvatarImage
-                      className="rounded-full w-12 border-2 border-background"
-                      src="https://github.com/shadcn.png"
-                    />
-                    <AvatarFallback>O</AvatarFallback>
-                  </Avatar>
-                </li>
+              <ul className="flex items-center justify-between w-full">
+                {profile?.lastFollowers?.map((follower) => (
+                  <li key={follower.username}>
+                    <Avatar>
+                      <div className="w-12 h-12 rounded-full relative group">
+                        <Image
+                          src={ProfileSmall}
+                          alt="Follower"
+                          className="rounded-full border-2 border-background"
+                          fill
+                          sizes="48px"
+                          priority
+                        />
+                        <div className="absolute space-y-6 p-4 shadow-xl flex flex-col items-center top-16 left-1/2 -translate-x-1/2 z-50 rounded-lg border border-border-light bg-popover before:content-[''] before:absolute before:-top-2.5 before:left-1/2 before:-translate-x-1/2 before:w-5 before:h-5 before:bg-popover before:border-t before:border-l before:border-border-light before:rotate-45">
+                          <div className="h-32 w-32 rounded-full relative bg-[red]"></div>
+                          <div className="flex flex-col items-center gap-y-2">
+                            <span className="text-lg font-semibold font-satoshi">
+                              {follower.firstName}
+                            </span>
+                            <span className="text-sm flex items-center gap-x-1 opacity-80 font-semibold">
+                              <FaUser />
+                              {follower.followersCount}
+                            </span>
+                            <span className="text-sm flex items-center gap-1 opacity-80 font-semibold">
+                              {follower.city}
+                            </span>
+                          </div>
+                          <div>
+                            <Button variant="primary" size="md">
+                              Suivre
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </Avatar>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
@@ -235,7 +223,6 @@ export const ProfileSidebar = () => {
           items={nearbyGroups}
           buttonText="Tout afficher"
         />
-
         <ListSection
           title="Musiciens à proximité"
           items={nearbyMusicians}

@@ -14,7 +14,7 @@ export default {
         "auto-fit": "repeat(auto-fit, minmax(10rem, 1fr))",
       },
       fontFamily: {
-        newKansas: ["var(--font-new-kansas)"],
+        satoshi: ["var(--font-satoshi)"],
       },
       colors: {
         background: "hsl(var(--background))",

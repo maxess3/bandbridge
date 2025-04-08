@@ -31,6 +31,22 @@ export const getProfilePublic = async (req: Request, res: Response) => {
             following: true,
           },
         },
+        followers: {
+          take: 7,
+          orderBy: {
+            lastActiveAt: "desc",
+          },
+          select: {
+            username: true,
+            firstName: true,
+            city: true,
+            _count: {
+              select: {
+                followers: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -40,14 +56,32 @@ export const getProfilePublic = async (req: Request, res: Response) => {
     }
 
     const formattedSocialLinks = Object.fromEntries(
-      profile.socialLinks.map((link) => [link.platform.toLowerCase(), link.url])
+      (profile.socialLinks || []).map(
+        (link: { platform: string; url: string }) => [
+          link.platform.toLowerCase(),
+          link.url,
+        ]
+      )
     );
 
     const responseProfile = {
       ...profile,
       socialLinks: formattedSocialLinks,
-      followers: profile._count.followers,
-      following: profile._count.following,
+      followers: profile._count?.followers || 0,
+      following: profile._count?.following || 0,
+      lastFollowers: (profile.followers || []).map(
+        (follower: {
+          username: string;
+          firstName: string;
+          city: string;
+          _count: { followers: number };
+        }) => ({
+          username: follower.username,
+          firstName: follower.firstName,
+          city: follower.city,
+          followersCount: follower._count.followers,
+        })
+      ),
     };
 
     res.status(200).json(responseProfile);
@@ -67,7 +101,9 @@ export const getProfilePrivate = async (req: Request, res: Response) => {
     }
 
     const profile = await prisma.profile.findUnique({
-      where: { userId: userId },
+      where: {
+        userId: userId,
+      },
       select: {
         firstName: true,
         username: true,
@@ -89,21 +125,57 @@ export const getProfilePrivate = async (req: Request, res: Response) => {
             following: true,
           },
         },
+        followers: {
+          take: 7,
+          orderBy: {
+            lastActiveAt: "desc",
+          },
+          select: {
+            username: true,
+            firstName: true,
+            city: true,
+            _count: {
+              select: {
+                followers: true,
+              },
+            },
+          },
+        },
       },
     });
 
+    if (!profile) {
+      res.status(404).json({ message: "Profil introuvable" });
+      return;
+    }
+
     const formattedSocialLinks = Object.fromEntries(
-      profile?.socialLinks.map((link) => [
-        link.platform.toLowerCase(),
-        link.url,
-      ])
+      (profile.socialLinks || []).map(
+        (link: { platform: string; url: string }) => [
+          link.platform.toLowerCase(),
+          link.url,
+        ]
+      )
     );
 
     const responseProfile = {
       ...profile,
       socialLinks: formattedSocialLinks,
-      followers: profile._count.followers,
-      following: profile._count.following,
+      followers: profile._count?.followers || 0,
+      following: profile._count?.following || 0,
+      lastFollowers: (profile.followers || []).map(
+        (follower: {
+          username: string;
+          firstName: string;
+          city: string;
+          _count: { followers: number };
+        }) => ({
+          username: follower.username,
+          firstName: follower.firstName,
+          city: follower.city,
+          followersCount: follower._count.followers,
+        })
+      ),
     };
 
     res.status(200).json(responseProfile);

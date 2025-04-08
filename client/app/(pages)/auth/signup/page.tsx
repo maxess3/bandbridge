@@ -121,7 +121,7 @@ export default function Signup() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {currentStep === 0 && <GoogleButton />}
+          {currentStep === 0 && <GoogleButton title="S'inscrire avec Google" />}
           <form onSubmit={handleStepCompletion}>
             {currentStep === 0 && (
               <div className="grid gap-4">
