@@ -1,5 +1,6 @@
+"use client";
+
 import Link from "next/link";
-import { useProfileContext } from "@/context/ProfileContext";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { PROFILE_QUERY_KEY } from "@/hooks/useProfile";
@@ -9,10 +10,15 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { LucideUserRoundPlus } from "lucide-react";
 import { FaUserCheck } from "react-icons/fa";
 import { useSession } from "next-auth/react";
+import { Profile } from "@/types/Profile";
 
-export const ProfileHeader = () => {
+interface ProfileHeaderProps {
+  profile: Profile;
+  isOwner: boolean;
+}
+
+export const ProfileHeader = ({ profile, isOwner }: ProfileHeaderProps) => {
   const { data: session } = useSession();
-  const { isPublic, profile } = useProfileContext();
   const axiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
 
@@ -28,7 +34,7 @@ export const ProfileHeader = () => {
       );
       return data;
     },
-    enabled: !!session?.user && !!profile?.username && isPublic,
+    enabled: !!session?.user && !!profile?.username && !isOwner,
   });
 
   const { mutate: toggleFollow, isPending } = useMutation({
@@ -45,7 +51,7 @@ export const ProfileHeader = () => {
   const renderButton = () => {
     if (!session?.user) return null;
 
-    if (isPublic && isSuccess) {
+    if (!isOwner && isSuccess) {
       return (
         <>
           <Button
@@ -65,7 +71,6 @@ export const ProfileHeader = () => {
           >
             {followData?.isFollowing ? "Abonné(e)" : "Suivre"}
           </Button>
-          <Button variant="outline">Partager</Button>
         </>
       );
     }

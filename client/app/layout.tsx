@@ -10,42 +10,6 @@ import { Toaster } from "sonner";
 import Navbar from "@/components/general/header/Navbar";
 import Footer from "@/components/general/footer/Footer";
 
-// const NewKansas = localFont({
-//   src: [
-//     {
-//       path: "../public/fonts/NewKansas/New Kansas Regular.otf",
-//       weight: "400",
-//       style: "normal",
-//     },
-//     {
-//       path: "../public/fonts/NewKansas/New Kansas Medium.otf",
-//       weight: "500",
-//       style: "normal",
-//     },
-//     {
-//       path: "../public/fonts/NewKansas/New Kansas SemiBold.otf",
-//       weight: "600",
-//       style: "normal",
-//     },
-//     {
-//       path: "../public/fonts/NewKansas/New Kansas Bold.otf",
-//       weight: "700",
-//       style: "normal",
-//     },
-//     {
-//       path: "../public/fonts/NewKansas/New Kansas Heavy.otf",
-//       weight: "800",
-//       style: "normal",
-//     },
-//     {
-//       path: "../public/fonts/NewKansas/New Kansas Black.otf",
-//       weight: "900",
-//       style: "normal",
-//     },
-//   ],
-//   variable: "--font-new-kansas",
-// });
-
 const Satoshi = localFont({
   src: "../public/fonts/Satoshi/Satoshi-Variable.ttf",
   variable: "--font-satoshi",

@@ -1,3 +1,6 @@
+"use client";
+
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import ProfileSmall from "@/public/profile_small.png";
@@ -5,10 +8,14 @@ import { Avatar } from "@radix-ui/react-avatar";
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ProfileSocialLink } from "@/components/pages/profile/ProfileSocialLink";
+import {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+} from "@/components/ui/hover-card";
+import { ProfileSocialLink } from "@/components/pages/profile/sidebar/ProfileSocialLink";
 import { IoAdd } from "react-icons/io5";
-import { useProfileContext } from "@/context/ProfileContext";
-import { FaUser } from "react-icons/fa";
+import { Profile } from "@/types/Profile";
 
 type SocialPlatform =
   | "youtube"
@@ -16,12 +23,13 @@ type SocialPlatform =
   | "tiktok"
   | "twitter"
   | "soundcloud";
+
 type SocialLinks = Partial<Record<SocialPlatform, string>>;
 
 interface SocialLinksProps {
   socialLinks: SocialLinks;
   username: string;
-  isPublic: boolean;
+  isOwner: boolean;
 }
 
 interface ListItem {
@@ -93,7 +101,7 @@ const ListSection = ({
   </div>
 );
 
-const SocialLinks = ({ socialLinks, username, isPublic }: SocialLinksProps) => {
+const SocialLinks = ({ socialLinks, username, isOwner }: SocialLinksProps) => {
   const platforms: SocialPlatform[] = [
     "youtube",
     "instagram",
@@ -118,7 +126,7 @@ const SocialLinks = ({ socialLinks, username, isPublic }: SocialLinksProps) => {
               )
           )}
         </ul>
-        {!isPublic && (
+        {isOwner && (
           <Link
             href={`/${username}/edit/profile/social`}
             className={
@@ -135,8 +143,14 @@ const SocialLinks = ({ socialLinks, username, isPublic }: SocialLinksProps) => {
   );
 };
 
-export const ProfileSidebar = () => {
-  const { isPublic, profile } = useProfileContext();
+export const ProfileSidebar = ({
+  profile,
+  isOwner,
+}: {
+  profile: Profile;
+  isOwner: boolean;
+}) => {
+  const { data: session } = useSession();
 
   const nearbyGroups = [
     { name: "Groupe 1", tag: "Rock", subtitle: "Recherche des musiciens" },
@@ -155,14 +169,14 @@ export const ProfileSidebar = () => {
   return (
     <div className="xl:w-3/12 rounded-xl">
       <div className="space-y-2">
-        {(isPublic ? Object.keys(profile?.socialLinks).length > 0 : true) && (
+        {(isOwner ? Object.keys(profile?.socialLinks).length > 0 : true) && (
           <SocialLinks
             socialLinks={profile?.socialLinks}
             username={profile?.username}
-            isPublic={isPublic}
+            isOwner={isOwner}
           />
         )}
-        {profile?.lastFollowers.length > 0 ? (
+        {profile?.lastFollowers.length && !isOwner ? (
           <div className="space-y-4 border border-border-light rounded-xl">
             <div className="">
               <span className="uppercase text-sm font-bold p-4 inline-flex w-full">
@@ -231,7 +245,53 @@ export const ProfileSidebar = () => {
                 <ul className="flex items-center w-full px-4">
                   {profile?.lastFollowers?.map((follower) => (
                     <li key={follower.username} className="-mr-2">
-                      <Avatar>
+                      <HoverCard>
+                        <HoverCardTrigger asChild>
+                          <Link href={`/${follower.username}`}>
+                            <Image
+                              src={ProfileSmall}
+                              alt="Follower"
+                              className="rounded-full border-2 border-background"
+                              sizes="48px"
+                              priority
+                            />
+                          </Link>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div className="h-16 w-16 rounded-full relative bg-secondary">
+                              <Link href={`/${follower.username}`}>
+                                <Image src={ProfileSmall} alt="Follower" fill />
+                              </Link>
+                            </div>
+                            {follower?.username === session?.user?.username && (
+                              <div>
+                                <Button
+                                  variant="default"
+                                  size="sm"
+                                  className="text-base"
+                                >
+                                  Suivre
+                                </Button>
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            <span className="text-lg font-semibold font-satoshi">
+                              <Link
+                                href={`/${follower.username}`}
+                                className="hover:underline"
+                              >
+                                {follower.firstName}
+                              </Link>
+                            </span>
+                            <span className="text-sm flex items-center gap-x-1 opacity-80 font-semibold">
+                              @{follower.username}
+                            </span>
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
+                      {/* <Avatar>
                         <div className="w-12 h-12 rounded-full relative group">
                           <Link href={`/${follower.username}`}>
                             <Image
@@ -243,9 +303,9 @@ export const ProfileSidebar = () => {
                               priority
                             />
                           </Link>
-                          <div className="hidden group-hover:flex absolute space-y-6 p-4 shadow-xl flex-col items-center top-16 left-1/2 -translate-x-1/2 z-50 rounded-lg border border-border-light bg-popover before:content-[''] before:absolute before:-top-2.5 before:left-1/2 before:-translate-x-1/2 before:w-5 before:h-5 before:bg-popover before:border-t before:border-l before:border-border-light before:rotate-45">
-                            <div className="h-32 w-32 rounded-full relative bg-[red]"></div>
-                            <div className="flex flex-col items-center gap-y-2">
+                          <div className="hidden group-hover:flex absolute p-4 shadow-xl top-16 left-1/2 -translate-x-1/2 z-50 rounded-lg border border-border-light bg-popover before:content-[''] before:absolute before:-top-2.5 before:left-1/2 before:-translate-x-1/2 before:w-5 before:h-5 before:bg-popover before:border-t before:border-l before:border-border-light before:rotate-45">
+                            <div className="h-20 w-20 rounded-full relative bg-[red]"></div>
+                            <div className="flex flex-col items-center">
                               <span className="text-lg font-semibold font-satoshi">
                                 {follower.firstName}
                               </span>
@@ -257,14 +317,16 @@ export const ProfileSidebar = () => {
                                 {follower.city}
                               </span>
                             </div>
-                            <div>
-                              <Button variant="primary" size="md">
-                                Suivre
-                              </Button>
-                            </div>
+                            {follower?.username !== session?.user?.username && (
+                              <div>
+                                <Button variant="primary" size="md">
+                                  Suivre
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </Avatar>
+                      </Avatar> */}
                     </li>
                   ))}
                 </ul>
@@ -282,7 +344,6 @@ export const ProfileSidebar = () => {
         ) : (
           ""
         )}
-
         <ListSection
           title="Groupes à proximité"
           items={nearbyGroups}

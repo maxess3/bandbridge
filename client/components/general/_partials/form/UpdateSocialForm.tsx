@@ -25,14 +25,11 @@ export const UpdateSocialForm = () => {
           Youtube
         </Label>
         <div className="relative">
-          <span className="text-sm h-full absolute -translate-y-1/2 top-1/2 border-l border-t border-b bg-accent px-2.5 rounded-l-md flex items-center justify-center">
-            URL
-          </span>
           <Input
             id="youtube"
             className={`relative bg-transparent h-9 ${
               errors.youtube && "border-red-500"
-            } pl-14`}
+            }`}
             placeholder="https://www.youtube.com/@username"
             {...register("youtube")}
           />
@@ -49,14 +46,11 @@ export const UpdateSocialForm = () => {
           Instagram
         </Label>
         <div className="relative">
-          <span className="text-sm h-full absolute -translate-y-1/2 top-1/2 border-l border-t border-b bg-accent px-2.5 rounded-l-md flex items-center justify-center">
-            URL
-          </span>
           <Input
             id="instagram"
             className={`relative bg-transparent h-9 ${
               errors.instagram && "border-red-500"
-            } pl-14`}
+            }`}
             placeholder="https://www.instagram.com/username"
             {...register("instagram")}
           />
@@ -73,14 +67,11 @@ export const UpdateSocialForm = () => {
           TikTok
         </Label>
         <div className="relative">
-          <span className="text-sm h-full absolute -translate-y-1/2 top-1/2 border-l border-t border-b bg-accent px-2.5 rounded-l-md flex items-center justify-center">
-            URL
-          </span>
           <Input
             id="tiktok"
             className={`relative bg-transparent h-9 ${
               errors.tiktok && "border-red-500"
-            } pl-14`}
+            }`}
             placeholder="https://www.tiktok.com/@username"
             {...register("tiktok")}
           />
@@ -97,14 +88,11 @@ export const UpdateSocialForm = () => {
           Twitter
         </Label>
         <div className="relative">
-          <span className="text-sm h-full absolute -translate-y-1/2 top-1/2 border-l border-t border-b bg-accent px-2.5 rounded-l-md flex items-center justify-center">
-            URL
-          </span>
           <Input
             id="twitter"
             className={`relative bg-transparent h-9 ${
               errors.twitter && "border-red-500"
-            } pl-14`}
+            }`}
             placeholder="https://x.com/username"
             {...register("twitter")}
           />
@@ -121,14 +109,11 @@ export const UpdateSocialForm = () => {
           SoundCloud
         </Label>
         <div className="relative">
-          <span className="text-sm h-full absolute -translate-y-1/2 top-1/2 border-l border-t border-b bg-accent px-2.5 rounded-l-md flex items-center justify-center">
-            URL
-          </span>
           <Input
             id="soundcloud"
             className={`relative bg-transparent h-9 ${
               errors.soundcloud && "border-red-500"
-            } pl-14`}
+            }`}
             placeholder="https://www.instagram.com/_maxess"
             {...register("soundcloud")}
           />

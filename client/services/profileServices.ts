@@ -16,7 +16,7 @@ export const profileServices = {
       throw new Error("Le profil ne peut pas être récupéré");
     }
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
     return data;
   },
 };

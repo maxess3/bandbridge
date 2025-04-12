@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-import { ClientProfile } from "@/components/pages/profile/ClientProfile";
+import { ProfileOwner } from "@/components/pages/profile/ProfileOwner";
 import { notFound } from "next/navigation";
 
 export default async function Root({
@@ -15,5 +15,5 @@ export default async function Root({
     notFound();
   }
 
-  return <ClientProfile />;
+  return <ProfileOwner />;
 }

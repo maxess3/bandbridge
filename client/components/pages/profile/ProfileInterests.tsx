@@ -10,10 +10,13 @@ interface CategoryProps {
   title: string;
   items: (string | Skill)[];
   isSkill?: boolean;
+  className?: string;
 }
 
-const Category = ({ title, items, isSkill }: CategoryProps) => (
-  <div className="flex flex-col p-3 border-r border-secondary w-1/2 last:border-r-0">
+const Category = ({ title, items, isSkill, className }: CategoryProps) => (
+  <div
+    className={`flex flex-col p-3 border-r border-border-extralight w-1/2 last:border-r-0 $ hover:bg-hover cursor-pointer ${className}`}
+  >
     <span className="font-bold">{title}</span>
     <ul className="flex flex-wrap">
       {items.map((item, index) => (
@@ -44,8 +47,17 @@ export const ProfileInterests = () => {
 
   return (
     <div className="flex border border-border-light rounded-xl">
-      <Category title="Jeux" items={games} isSkill />
-      <Category title="Styles musicaux" items={musicStyles} />
+      <Category
+        title="Jeux"
+        items={games}
+        isSkill
+        className="rounded-tl-xl rounded-bl-xl"
+      />
+      <Category
+        title="Styles musicaux"
+        items={musicStyles}
+        className="rounded-tr-xl rounded-br-xl"
+      />
     </div>
   );
 };

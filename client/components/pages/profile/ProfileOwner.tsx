@@ -4,12 +4,12 @@ import { useProfile } from "@/hooks/useProfile";
 import { ProfileLayout } from "@/components/pages/profile";
 import { ProfileSkeleton } from "@/components/skeleton/profile/ProfileSkeleton";
 
-export function ClientProfile() {
+export function ProfileOwner() {
   const { data: profile, isLoading } = useProfile();
 
   if (isLoading) {
     return <ProfileSkeleton />;
   }
 
-  return <ProfileLayout profile={profile} />;
+  return <ProfileLayout profile={profile} isOwner={true} />;
 }
