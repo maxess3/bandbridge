@@ -46,7 +46,7 @@ export const DropdownProfile = () => {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button className="w-auto h-auto flex p-0 rounded-full bg-background">
           <Avatar className="w-9 h-9">
