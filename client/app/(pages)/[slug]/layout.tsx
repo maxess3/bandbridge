@@ -1,15 +1,15 @@
 interface LayoutProps {
-  modal: React.ReactNode;
-  children: React.ReactNode;
+	modal: React.ReactNode;
+	children: React.ReactNode;
 }
 
 export default async function Layout({ modal, children }: LayoutProps) {
-  return (
-    <div>
-      <main>
-        {modal}
-        {children}
-      </main>
-    </div>
-  );
+	return (
+		<div>
+			<main>
+				{modal}
+				{children}
+			</main>
+		</div>
+	);
 }

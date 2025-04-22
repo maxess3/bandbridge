@@ -5,21 +5,20 @@ import { useDelayedQuery } from "@/hooks/useDelayedQuery";
 
 export const PROFILE_QUERY_KEY = ["profile"];
 
-export function useProfile() {
-  const axiosAuth = useAxiosAuth();
+export function useProfile(username?: string) {
+	const axiosAuth = useAxiosAuth();
 
-  return useDelayedQuery(
-    PROFILE_QUERY_KEY,
-    async () => {
-      const { data } = await axiosAuth.get("/profile/me");
-      // console.log(data);
-      return data;
-    },
-    {
-      queryKey: PROFILE_QUERY_KEY,
-      refetchOnMount: true,
-      staleTime: Infinity,
-      delay: 400,
-    }
-  );
+	return useDelayedQuery(
+		PROFILE_QUERY_KEY,
+		async () => {
+			const endpoint = username ? `/profile/${username}` : "/profile/me";
+			const { data } = await axiosAuth.get(endpoint);
+			return data;
+		},
+		{
+			queryKey: [...PROFILE_QUERY_KEY, username ?? "me"],
+			staleTime: Infinity,
+			delay: 400,
+		}
+	);
 }

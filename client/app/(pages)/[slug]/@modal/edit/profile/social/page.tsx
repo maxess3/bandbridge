@@ -13,57 +13,59 @@ import { useRouter } from "next/navigation";
 import { z } from "zod";
 
 export default function Page() {
-  const router = useRouter();
-  const axiosAuth = useAxiosAuth();
-  const queryClient = useQueryClient();
-  const { data: profile, isLoading: loadingProfile } = useProfile();
-  const { isDelaying, withDelay } = useTransitionDelay(500);
+	const router = useRouter();
+	const axiosAuth = useAxiosAuth();
+	const queryClient = useQueryClient();
+	const { data: profile, isLoading: loadingProfile } = useProfile();
+	const { isDelaying, withDelay } = useTransitionDelay(500);
 
-  const updateSocialFormMutation = useMutation({
-    mutationFn: async (values: z.infer<typeof formSocialProfile>) => {
-      const { data } = await axiosAuth.put("/profile/me/social", values);
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
-      setTimeout(() => {
-        router.push(`/${profile?.username}`);
-      }, 300);
-    },
-  });
+	const updateSocialFormMutation = useMutation({
+		mutationFn: async (values: z.infer<typeof formSocialProfile>) => {
+			const { data } = await axiosAuth.put("/profile/me/social", values);
+			return data;
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+			if (window.history.length > 2) {
+				router.back();
+			} else {
+				router.push(`/${profile?.username}`);
+			}
+		},
+	});
 
-  return (
-    <>
-      <LoadingModal
-        route={`/${profile?.username}`}
-        title="Liens sociaux"
-        open={loadingProfile}
-      >
-        Chargement...
-      </LoadingModal>
-      {profile && (
-        <Modal
-          open={!loadingProfile}
-          onSubmit={async (values) => {
-            return withDelay(() =>
-              updateSocialFormMutation.mutateAsync(values)
-            );
-          }}
-          formSchema={formSocialProfile}
-          route={`/${profile?.username}`}
-          defaultValues={{
-            youtube: profile?.socialLinks.youtube ?? "",
-            instagram: profile?.socialLinks.instagram ?? "",
-            tiktok: profile?.socialLinks.tiktok ?? "",
-            twitter: profile?.socialLinks.twitter ?? "",
-            soundcloud: profile?.socialLinks.soundcloud ?? "",
-          }}
-          title="Liens sociaux"
-          isSubmitting={updateSocialFormMutation.isPending || isDelaying}
-        >
-          <UpdateSocialForm />
-        </Modal>
-      )}
-    </>
-  );
+	return (
+		<>
+			<LoadingModal
+				route={`/${profile?.username}`}
+				title="Liens sociaux"
+				open={loadingProfile}
+			>
+				Chargement...
+			</LoadingModal>
+			{profile && (
+				<Modal
+					open={!loadingProfile}
+					onSubmit={async (values) => {
+						return withDelay(() =>
+							updateSocialFormMutation.mutateAsync(values)
+						);
+					}}
+					formSchema={formSocialProfile}
+					route={`/${profile?.username}`}
+					defaultValues={{
+						youtube: profile?.socialLinks.youtube ?? "",
+						instagram: profile?.socialLinks.instagram ?? "",
+						tiktok: profile?.socialLinks.tiktok ?? "",
+						twitter: profile?.socialLinks.twitter ?? "",
+						soundcloud: profile?.socialLinks.soundcloud ?? "",
+					}}
+					title="Liens sociaux"
+					isSubmitting={updateSocialFormMutation.isPending || isDelaying}
+				>
+					<UpdateSocialForm />
+				</Modal>
+			)}
+		</>
+	);
 }

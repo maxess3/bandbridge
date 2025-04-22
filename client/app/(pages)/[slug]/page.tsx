@@ -1,21 +1,37 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-import { ProfileLayout } from "@/components/pages/profile";
 import { profileServices } from "@/services/profileServices";
-import { ProfileOwner } from "@/components/pages/profile/ProfileOwner";
+import { Profile } from "@/components/pages/profile/Profile";
+import { notFound } from "next/navigation";
+import { getQueryClient } from "@/lib/react-query/getQueryClient";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function Root({
-  params,
+	params,
 }: {
-  params: Promise<{ slug: string }>;
+	params: Promise<{ slug: string }>;
 }) {
-  const session = await getServerSession(authOptions);
-  const { slug } = await params;
+	console.log("Page rendered");
+	const session = await getServerSession(authOptions);
+	const { slug } = await params;
 
-  if (slug === session?.user.username) {
-    return <ProfileOwner />;
-  }
+	const isOwner = slug === session?.user.username;
 
-  const profile = await profileServices.getProfile(slug);
-  return <ProfileLayout profile={profile} isOwner={false} />;
+	const profile = await profileServices.getProfile(slug);
+	if (!profile) {
+		notFound();
+	}
+
+	const queryClient = getQueryClient();
+
+	await queryClient.prefetchQuery({
+		queryKey: ["profile", isOwner ? "me" : slug],
+		queryFn: () => Promise.resolve(profile),
+	});
+
+	return (
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<Profile isOwner={isOwner} slug={slug} />
+		</HydrationBoundary>
+	);
 }

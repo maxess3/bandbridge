@@ -11,65 +11,65 @@ import Navbar from "@/components/general/header/Navbar";
 import Footer from "@/components/general/footer/Footer";
 
 const Satoshi = localFont({
-  src: "../public/fonts/Satoshi/Satoshi-Variable.ttf",
-  variable: "--font-satoshi",
+	src: "../public/fonts/Satoshi/Satoshi-Variable.ttf",
+	variable: "--font-satoshi",
 });
 
 const DM = DM_Sans({
-  weight: ["400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"],
-  variable: "--font-dm",
+	weight: ["400", "500", "600", "700", "800", "900"],
+	subsets: ["latin"],
+	variable: "--font-dm",
 });
 
 export const metadata: Metadata = {
-  title: "Annonces - Chordeus",
-  description: "Faites des rencontres et vivez la scène.",
+	title: "Annonces - Chordeus",
+	description: "Faites des rencontres et vivez la scène.",
 };
 
 export default async function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="fr" suppressHydrationWarning>
-      <body
-        className={`${DM.className} ${Satoshi.variable} antialiased min-h-screen flex flex-col`}
-      >
-        <ThemeProviders>
-          <AuthSessionProviders>
-            <ReactQueryClientProvider>
-              <Toaster
-                toastOptions={{
-                  classNames: {
-                    toast:
-                      "bg-background border border-border-light text-foreground text-sm shadow-xl [&>div>[data-title]]:opacity-90 [&>div>[data-title]]:font-normal",
-                    error:
-                      "[&>div>svg]:text-red-700 dark:[&>div>svg]:text-red-600",
-                    success:
-                      "[&>div>svg]:text-green-700 dark:[&>div>svg]:text-green-600",
-                    warning:
-                      "[&>div>svg]:text-orange-700 dark:[&>div>svg]:text-orange-600",
-                    info: "[&>div>svg]:text-blue-700 dark:[&>div>svg]:text-blue-600",
-                    actionButton:
-                      "!bg-transparent absolute right-1 !text-foreground",
-                    icon: "[&>svg]:w-6 [&>svg]:h-6 mr-2",
-                  },
-                }}
-                position="bottom-left"
-                duration={4000}
-              />
-              <NextTopLoader color="#b9181b" showSpinner={false} height={3} />
-              <div className="px-8">
-                <Navbar />
-                <main className="max-w-7xl mx-auto flex-grow">{children}</main>
-                <Footer />
-              </div>
-              <div className="w-full py-0.5 bg-primary"></div>
-            </ReactQueryClientProvider>
-          </AuthSessionProviders>
-        </ThemeProviders>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="fr" suppressHydrationWarning>
+			<body
+				className={`${DM.className} ${Satoshi.variable} antialiased min-h-screen flex flex-col`}
+			>
+				<ThemeProviders>
+					<AuthSessionProviders>
+						<ReactQueryClientProvider>
+							<Toaster
+								toastOptions={{
+									classNames: {
+										toast:
+											"bg-background border border-border-light text-foreground text-sm shadow-xl [&>div>[data-title]]:opacity-90 [&>div>[data-title]]:font-normal",
+										error:
+											"[&>div>svg]:text-red-700 dark:[&>div>svg]:text-red-600",
+										success:
+											"[&>div>svg]:text-green-700 dark:[&>div>svg]:text-green-600",
+										warning:
+											"[&>div>svg]:text-orange-700 dark:[&>div>svg]:text-orange-600",
+										info: "[&>div>svg]:text-blue-700 dark:[&>div>svg]:text-blue-600",
+										actionButton:
+											"!bg-transparent absolute right-1 !text-foreground",
+										icon: "[&>svg]:w-6 [&>svg]:h-6 mr-2",
+									},
+								}}
+								position="bottom-left"
+								duration={4000}
+							/>
+							<NextTopLoader color="#b9181b" showSpinner={false} height={3} />
+							<div className="px-8">
+								<Navbar />
+								<main className="max-w-7xl mx-auto flex-grow">{children}</main>
+								<Footer />
+							</div>
+							<div className="w-full py-0.5 bg-primary"></div>
+						</ReactQueryClientProvider>
+					</AuthSessionProviders>
+				</ThemeProviders>
+			</body>
+		</html>
+	);
 }
