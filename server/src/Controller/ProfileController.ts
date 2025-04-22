@@ -197,6 +197,25 @@ export const updateGeneralProfileOwner = async (
       return;
     }
 
+    const currentProfile = await prisma.profile.findUnique({
+      where: { userId: userId },
+      select: { username: true },
+    });
+
+    // Check if the username is already taken
+    if (currentProfile?.username !== req.body.username) {
+      const existingProfile = await prisma.profile.findUnique({
+        where: { username: req.body.username },
+      });
+
+      if (existingProfile) {
+        res.status(400).json({
+          message: "Le nom d'utilisateur est déjà pris",
+        });
+        return;
+      }
+    }
+
     const updatedUser = await prisma.profile.update({
       where: { userId: userId },
       data: {
