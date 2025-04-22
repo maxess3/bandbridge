@@ -1,71 +1,38 @@
-"use client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import { profileServices } from "@/services/profileServices";
+import { notFound } from "next/navigation";
+import { getQueryClient } from "@/lib/react-query/getQueryClient";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { EditProfileSocialModal } from "@/components/modal/EditProfileSocialModal";
 
-import { Modal } from "@/components/modal/Modal";
-import { LoadingModal } from "@/components/modal/LoadingModal";
-import { UpdateSocialForm } from "@/components/general/_partials/form/UpdateSocialForm";
-import { formSocialProfile } from "@/lib/schema";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useProfile } from "@/hooks/useProfile";
-import { PROFILE_QUERY_KEY } from "@/hooks/useProfile";
-import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
-import { useTransitionDelay } from "@/hooks/useTransitionDelay";
-import { useRouter } from "next/navigation";
-import { z } from "zod";
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const session = await getServerSession(authOptions);
+  const { slug } = await params;
 
-export default function Page() {
-	const router = useRouter();
-	const axiosAuth = useAxiosAuth();
-	const queryClient = useQueryClient();
-	const { data: profile, isLoading: loadingProfile } = useProfile();
-	const { isDelaying, withDelay } = useTransitionDelay(500);
+  if (!session || slug !== session?.user.username) {
+    notFound();
+  }
 
-	const updateSocialFormMutation = useMutation({
-		mutationFn: async (values: z.infer<typeof formSocialProfile>) => {
-			const { data } = await axiosAuth.put("/profile/me/social", values);
-			return data;
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
-			if (window.history.length > 2) {
-				router.back();
-			} else {
-				router.push(`/${profile?.username}`);
-			}
-		},
-	});
+  const profile = await profileServices.getProfile(slug);
+  if (!profile) {
+    notFound();
+  }
 
-	return (
-		<>
-			<LoadingModal
-				route={`/${profile?.username}`}
-				title="Liens sociaux"
-				open={loadingProfile}
-			>
-				Chargement...
-			</LoadingModal>
-			{profile && (
-				<Modal
-					open={!loadingProfile}
-					onSubmit={async (values) => {
-						return withDelay(() =>
-							updateSocialFormMutation.mutateAsync(values)
-						);
-					}}
-					formSchema={formSocialProfile}
-					route={`/${profile?.username}`}
-					defaultValues={{
-						youtube: profile?.socialLinks.youtube ?? "",
-						instagram: profile?.socialLinks.instagram ?? "",
-						tiktok: profile?.socialLinks.tiktok ?? "",
-						twitter: profile?.socialLinks.twitter ?? "",
-						soundcloud: profile?.socialLinks.soundcloud ?? "",
-					}}
-					title="Liens sociaux"
-					isSubmitting={updateSocialFormMutation.isPending || isDelaying}
-				>
-					<UpdateSocialForm />
-				</Modal>
-			)}
-		</>
-	);
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["profile", "me"],
+    queryFn: () => Promise.resolve(profile),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <EditProfileSocialModal />
+    </HydrationBoundary>
+  );
 }
