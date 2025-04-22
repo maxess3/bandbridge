@@ -16,7 +16,7 @@ export function useProfile(username?: string) {
       return data;
     },
     {
-      queryKey: [PROFILE_QUERY_KEY, username ?? "me"],
+      queryKey: [...PROFILE_QUERY_KEY, username ?? "me"],
       staleTime: Infinity,
       delay: 400,
     }
