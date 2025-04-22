@@ -3,77 +3,77 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 @layer base {
-  :root {
-    --background: 362 20% 99%;
-    --foreground: 0 0% 0%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
-    --popover: 0 0% 98%;
-    --popover-foreground: 0 0% 0%;
-    --dialog: 0 0% 96%;
-    --hover: 362 20% 91%;
-    --primary: 362 93% 47%;
-    --primary-hover: 362 93% 40%;
-    --secondary: 0 0% 84%;
-    --secondary-hover: 0 0% 77%;
-    --muted: 0 0% 100%;
-    --accent: 0 0% 100%;
-    --destructive: 0 0% 100%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 50%;
-    --border-light: 0 0% 70%;
-    --border-extralight: 0 0% 80%;
-    --input: 0 0% 50%;
-    --ring: 0 0% 50%;
-    --radius: 0.5rem;
-  }
-  .dark {
-    --background: 362 20% 1%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 0%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 8%;
-    --popover-foreground: 0 0% 100%;
-    --dialog: 0 0% 4%;
-    --hover: 362 20% 8%;
-    --primary: 362 93% 47%;
-    --primary-hover: 362 93% 40%;
-    --secondary: 0 0% 16%;
-    --secondary-hover: 0 0% 23%;
-    --muted: 0 0% 0%;
-    --accent: 0 0% 0%;
-    --destructive: 0 0% 0%;
-    --destructive-foreground: 0 0% 0%;
-    --border: 0 0% 50%;
-    --border-light: 0 0% 30%;
-    --border-extralight: 0 0% 20%;
-    --input: 0 0% 50%;
-    --ring: 0 0% 50%;
-    --radius: 0.5rem;
-  }
+	:root {
+		--background: 362 20% 99%;
+		--foreground: 0 0% 0%;
+		--card: 0 0% 100%;
+		--card-foreground: 0 0% 0%;
+		--popover: 0 0% 98%;
+		--popover-foreground: 0 0% 0%;
+		--dialog: 0 0% 96%;
+		--hover: 362 20% 91%;
+		--primary: 362 93% 47%;
+		--primary-hover: 362 93% 40%;
+		--secondary: 0 0% 84%;
+		--secondary-hover: 0 0% 77%;
+		--muted: 0 0% 100%;
+		--accent: 0 0% 100%;
+		--destructive: 0 0% 100%;
+		--destructive-foreground: 0 0% 100%;
+		--border: 0 0% 50%;
+		--border-light: 0 0% 70%;
+		--border-extralight: 0 0% 80%;
+		--input: 0 0% 50%;
+		--ring: 0 0% 50%;
+		--radius: 0.5rem;
+	}
+	.dark {
+		--background: 362 20% 1%;
+		--foreground: 0 0% 100%;
+		--card: 0 0% 0%;
+		--card-foreground: 0 0% 100%;
+		--popover: 0 0% 8%;
+		--popover-foreground: 0 0% 100%;
+		--dialog: 0 0% 4%;
+		--hover: 362 20% 8%;
+		--primary: 362 93% 47%;
+		--primary-hover: 362 93% 40%;
+		--secondary: 0 0% 16%;
+		--secondary-hover: 0 0% 23%;
+		--muted: 0 0% 0%;
+		--accent: 0 0% 0%;
+		--destructive: 0 0% 0%;
+		--destructive-foreground: 0 0% 0%;
+		--border: 0 0% 50%;
+		--border-light: 0 0% 30%;
+		--border-extralight: 0 0% 20%;
+		--input: 0 0% 50%;
+		--ring: 0 0% 50%;
+		--radius: 0.5rem;
+	}
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    /* display: none; <- Crashes Chrome on hover */
-    -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
-  }
-  input[type="number"] {
-    -moz-appearance: textfield; /* Firefox */
-  }
+	* {
+		@apply border-border outline-ring/50;
+	}
+	html {
+		scroll-behavior: smooth;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+		/* display: none; <- Crashes Chrome on hover */
+		-webkit-appearance: none;
+		margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+	}
+	input[type="number"] {
+		-moz-appearance: textfield; /* Firefox */
+	}
 }

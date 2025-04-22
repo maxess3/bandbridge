@@ -11,6 +11,7 @@ export default async function Root({
 }: {
 	params: Promise<{ slug: string }>;
 }) {
+	// Check if the user is the owner of the profile
 	const session = await getServerSession(authOptions);
 	const { slug } = await params;
 
@@ -18,11 +19,13 @@ export default async function Root({
 		notFound();
 	}
 
+	// Check if the profile exists
 	const profile = await profileServices.getProfile(slug);
 	if (!profile) {
 		notFound();
 	}
 
+	// Prefetch the profile
 	const queryClient = getQueryClient();
 
 	await queryClient.prefetchQuery({
