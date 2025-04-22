@@ -6,20 +6,20 @@ import * as ProfileController from "../Controller/ProfileController";
 
 const router = Router();
 
-router.get("/me", authenticateToken, ProfileController.getProfilePrivate);
+router.get("/me", authenticateToken, ProfileController.getProfileOwner);
 
 router.put(
   "/me",
   authenticateToken,
   validateSchema(formGeneralProfile),
-  ProfileController.updateGeneralProfilePrivate
+  ProfileController.updateGeneralProfileOwner
 );
 
 router.put(
   "/me/social",
   authenticateToken,
   validateSchema(formSocialProfile),
-  ProfileController.updateSocialProfilePrivate
+  ProfileController.updateSocialProfileOwner
 );
 
 router.post(

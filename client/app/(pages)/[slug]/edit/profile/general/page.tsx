@@ -7,32 +7,33 @@ import { getQueryClient } from "@/lib/react-query/getQueryClient";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 export default async function Root({
-	params,
+  params,
 }: {
-	params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-	const session = await getServerSession(authOptions);
-	const { slug } = await params;
+  console.log("refresh page");
+  const session = await getServerSession(authOptions);
+  const { slug } = await params;
 
-	if (!session || slug !== session?.user.username) {
-		notFound();
-	}
+  if (!session || slug !== session?.user.username) {
+    notFound();
+  }
 
-	const profile = await profileServices.getProfile(slug);
-	if (!profile) {
-		notFound();
-	}
+  const profile = await profileServices.getProfile(slug);
+  if (!profile) {
+    notFound();
+  }
 
-	const queryClient = getQueryClient();
+  const queryClient = getQueryClient();
 
-	await queryClient.prefetchQuery({
-		queryKey: ["profile", "me"],
-		queryFn: () => Promise.resolve(profile),
-	});
+  await queryClient.prefetchQuery({
+    queryKey: ["profile", "me"],
+    queryFn: () => Promise.resolve(profile),
+  });
 
-	return (
-		<HydrationBoundary state={dehydrate(queryClient)}>
-			<Profile isOwner={true} slug={slug} />
-		</HydrationBoundary>
-	);
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Profile isOwner={true} slug={slug} />
+    </HydrationBoundary>
+  );
 }
