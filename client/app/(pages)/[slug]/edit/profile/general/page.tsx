@@ -13,15 +13,15 @@ export default async function Root({
 }) {
 	const { slug } = await params;
 
-	// Check if the profile exists
-	const profile = await profileServices.getProfile(slug);
-	if (!profile) {
-		notFound();
-	}
-
 	// Check if the user is the owner of the profile
 	const session = await getServerSession(authOptions);
 	if (!session || slug !== session?.user.username) {
+		notFound();
+	}
+
+	// Check if the profile exists
+	const profile = await profileServices.getProfile(slug);
+	if (!profile) {
 		notFound();
 	}
 
