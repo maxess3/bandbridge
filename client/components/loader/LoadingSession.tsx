@@ -6,7 +6,8 @@ export const LoadingSession = () => {
 		<div className="min-h-screen flex flex-col items-center justify-center gap-4">
 			<div className="flex items-center gap-x-2.5">
 				<Image src={Logo} alt="Logo" width={46} height={46} />
-				<span className="font-satoshi text-[2.1em] font-bold ml-0.5">
+				<span className="font-satoshi text-[2.1em] font-bold ml-0.5 relative">
+					<span className="absolute -top-2 right-0 text-xs">BETA</span>
 					chordeus
 				</span>
 			</div>

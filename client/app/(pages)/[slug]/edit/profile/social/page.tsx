@@ -5,6 +5,29 @@ import { Profile } from "@/components/pages/profile/Profile";
 import { notFound } from "next/navigation";
 import { getQueryClient } from "@/lib/react-query/getQueryClient";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { Metadata } from "next";
+
+async function getProfile(slug: string) {
+	const profile = await profileServices.getProfile(slug);
+	if (!profile) {
+		notFound();
+	}
+	return profile;
+}
+
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+	const { slug } = await params;
+	const profile = await getProfile(slug);
+
+	return {
+		title: `${profile.firstName} (@${profile.username}) | Chordeus`,
+		description: `Découvrez le profil de ${profile.firstName} sur Chordeus`,
+	};
+}
 
 export default async function Root({
 	params,
@@ -20,10 +43,7 @@ export default async function Root({
 	}
 
 	// Check if the profile exists
-	const profile = await profileServices.getProfile(slug);
-	if (!profile) {
-		notFound();
-	}
+	const profile = await getProfile(slug);
 
 	// Prefetch the profile
 	const queryClient = getQueryClient();

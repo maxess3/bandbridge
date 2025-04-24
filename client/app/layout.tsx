@@ -22,8 +22,9 @@ const DM = DM_Sans({
 });
 
 export const metadata: Metadata = {
-	title: "Annonces - Chordeus",
-	description: "Faites des rencontres et vivez la scène.",
+	title: "Chordeus - La musique qui vous rassemble",
+	description:
+		"Faites de nouvelles rencontres, créez des groupes, et partagez vos musiques.",
 };
 
 export default async function RootLayout({
