@@ -13,7 +13,7 @@ export const ProfileTop = ({ profile, isOwner }: ProfileTopProps) => {
 			<div className="flex flex-col">
 				<span className="text-3xl gap-x-1.5 font-satoshi font-semibold inline-flex items-center">
 					{profile?.firstName}
-					<RiVerifiedBadgeFill size={"0.8em"} color="#4658ff" />
+					<RiVerifiedBadgeFill size={"0.8em"} color="#3b6ffd" />
 				</span>
 				<span className="text-lg font-medium opacity-80">
 					{profile?.username ? `@${profile?.username}` : ""}
