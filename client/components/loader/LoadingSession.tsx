@@ -8,7 +8,7 @@ export const LoadingSession = () => {
 				<Image src={Logo} alt="Logo" width={46} height={46} />
 				<span className="font-satoshi text-[2.1em] font-bold ml-0.5 relative">
 					<span className="absolute -top-2 right-0 text-xs">BETA</span>
-					chordeus
+					Chordeus
 				</span>
 			</div>
 			<div className="w-48 h-1 bg-secondary-hover mt-4 relative">
