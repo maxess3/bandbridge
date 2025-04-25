@@ -39,7 +39,10 @@ function makeQueryClient() {
 			},
 		}),
 		mutationCache: new MutationCache({
-			onSuccess: (data: unknown) => {
+			onSuccess: (data: unknown, _variables, _context, mutation) => {
+				if (mutation.options.meta?.skipToast) {
+					return;
+				}
 				if ((data as ApiResponse)?.message) {
 					toast.success((data as ApiResponse).message, {
 						action: {

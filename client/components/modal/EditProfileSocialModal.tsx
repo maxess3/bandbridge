@@ -11,21 +11,28 @@ import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/useTransitionDelay";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import { toast } from "sonner";
 
 export function EditProfileSocialModal() {
 	const router = useRouter();
 	const axiosAuth = useAxiosAuth();
 	const queryClient = useQueryClient();
 	const { data: profile, isLoading: loadingProfile } = useProfile();
-	const { isDelaying, withDelay } = useTransitionDelay(500);
+	const { isDelaying, withDelay } = useTransitionDelay(600);
 
 	const updateSocialFormMutation = useMutation({
 		mutationFn: async (values: z.infer<typeof formSocialProfile>) => {
 			const { data } = await axiosAuth.put("/profile/me/social", values);
 			return data;
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+		meta: { skipToast: true },
+		onSuccess: async (data) => {
+			await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+
+			if (data?.message) {
+				toast.success(data.message);
+			}
+
 			if (window.history.length > 2) {
 				router.back();
 			} else {

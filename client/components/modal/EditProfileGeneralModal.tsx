@@ -11,6 +11,7 @@ import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/useTransitionDelay";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
+import { toast } from "sonner";
 
 export function EditProfileGeneralModal() {
 	const router = useRouter();
@@ -24,8 +25,14 @@ export function EditProfileGeneralModal() {
 			const { data } = await axiosAuth.put("/profile/me", values);
 			return data;
 		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+		meta: { skipToast: true },
+		onSuccess: async (data) => {
+			await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+
+			if (data?.message) {
+				toast.success(data.message);
+			}
+
 			if (window.history.length > 2) {
 				router.back();
 			} else {
