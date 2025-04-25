@@ -178,7 +178,7 @@ export const ProfileSidebar = ({
 						isOwner={isOwner}
 					/>
 				)}
-				{profile?.lastFollowers.length && !isOwner ? (
+				{profile?.lastFollowers.length && profile?.followers > 0 && !isOwner ? (
 					<div className="space-y-4 border border-border-light rounded-xl">
 						<div className="">
 							<span className="uppercase text-sm font-bold p-4 inline-flex w-full">
@@ -204,7 +204,12 @@ export const ProfileSidebar = ({
 													<div className="flex items-center justify-between">
 														<div className="h-16 w-16 rounded-full relative bg-secondary">
 															<Link href={`/${follower.username}`}>
-																<Image src={ProfileSmall} alt="Follower" fill />
+																<Image
+																	src={ProfileSmall}
+																	alt="Follower"
+																	fill
+																	className="rounded-full"
+																/>
 															</Link>
 														</div>
 														{follower?.username !== session?.user?.username &&
