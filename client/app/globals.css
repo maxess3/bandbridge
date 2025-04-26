@@ -28,7 +28,7 @@ body {
 		--border-light: 0 0% 70%;
 		--border-extralight: 0 0% 80%;
 		--input: 0 0% 50%;
-		--ring: 0 0% 50%;
+		--ring: 0 0% 0%;
 		--radius: 0.5rem;
 	}
 	.dark {
@@ -52,7 +52,7 @@ body {
 		--border-light: 0 0% 30%;
 		--border-extralight: 0 0% 20%;
 		--input: 0 0% 50%;
-		--ring: 0 0% 50%;
+		--ring: 0 0% 100%;
 		--radius: 0.5rem;
 	}
 }
