@@ -260,7 +260,9 @@ export const UpdateProfileGeneralForm = () => {
 										>
 											<SelectValue
 												placeholder={
-													isLoading
+													field.value
+														? field.value
+														: isLoading
 														? "Chargement..."
 														: isSuccess && cities?.length
 														? "Sélectionner une ville"

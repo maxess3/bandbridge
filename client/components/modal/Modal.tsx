@@ -70,6 +70,15 @@ export function Modal<T extends FieldValues>({
 	const formSubmit: SubmitHandler<T> = async (data) => {
 		console.log(data);
 		await onSubmit(data);
+		setTimeout(() => {
+			if (
+				typeof window !== "undefined" &&
+				window.__lastFocusedElement instanceof HTMLElement
+			) {
+				window.__lastFocusedElement.focus();
+				window.__lastFocusedElement = null;
+			}
+		}, 100);
 	};
 
 	return (

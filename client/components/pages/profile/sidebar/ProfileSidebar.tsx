@@ -178,7 +178,7 @@ export const ProfileSidebar = ({
 						isOwner={isOwner}
 					/>
 				)}
-				{profile?.lastFollowers.length && profile?.followers > 0 && !isOwner ? (
+				{profile?.lastFollowers.length && !isOwner ? (
 					<div className="space-y-4 border border-border-light rounded-xl">
 						<div className="">
 							<span className="uppercase text-sm font-bold p-4 inline-flex w-full">

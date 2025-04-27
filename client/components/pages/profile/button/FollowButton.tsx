@@ -30,36 +30,6 @@ export const FollowButton = ({ profile }: { profile: Profile }) => {
 			const endpoint = followData?.isFollowing ? "unfollow" : "follow";
 			await axiosAuth.post(`/profile/${endpoint}/${profile?.username}`);
 		},
-		onMutate: async () => {
-			await queryClient.cancelQueries({
-				queryKey: [...PROFILE_QUERY_KEY, profile?.username],
-			});
-
-			const previousProfile = queryClient.getQueryData([
-				...PROFILE_QUERY_KEY,
-				profile?.username,
-			]) as Profile | undefined;
-
-			queryClient.setQueryData(["isFollowing", profile?.username], {
-				isFollowing: !followData?.isFollowing,
-			});
-
-			if (previousProfile) {
-				queryClient.setQueryData([...PROFILE_QUERY_KEY, profile?.username], {
-					...previousProfile,
-					followers:
-						previousProfile.followers + (followData?.isFollowing ? -1 : 1),
-				});
-			}
-
-			return { previousProfile };
-		},
-		onError: (_, __, context) => {
-			queryClient.setQueryData(
-				[...PROFILE_QUERY_KEY, profile?.username],
-				context?.previousProfile
-			);
-		},
 		onSuccess: () => {
 			refetchFollowStatus();
 			queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
