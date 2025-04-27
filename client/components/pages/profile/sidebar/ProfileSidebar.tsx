@@ -182,7 +182,7 @@ export const ProfileSidebar = ({
 					<div className="space-y-4 border border-border-light rounded-xl">
 						<div className="">
 							<span className="uppercase text-sm font-bold p-4 inline-flex w-full">
-								{profile?.followers} Followers
+								{profile?.followers} Abonnés
 							</span>
 							<div className="w-full">
 								<ul className="flex items-center w-full px-4">
