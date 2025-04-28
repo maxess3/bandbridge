@@ -14,6 +14,7 @@ export interface LastFollowers {
 }
 
 export interface Profile {
+  userId: string;
   firstName: string;
   username: string;
   birthDate: string;
