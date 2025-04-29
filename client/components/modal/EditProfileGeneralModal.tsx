@@ -10,12 +10,14 @@ import { PROFILE_QUERY_KEY } from "@/hooks/useProfile";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/useTransitionDelay";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { IoMdClose } from "react-icons/io";
 
 export function EditProfileGeneralModal() {
   const router = useRouter();
+  const { data: session, update } = useSession();
   const axiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
   const { data: profile, isLoading: loadingProfile } = useProfile();
@@ -30,6 +32,15 @@ export function EditProfileGeneralModal() {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
 
+      const usernameChanged =
+        data?.user.username && session?.user?.username !== data.user.username;
+
+      if (usernameChanged) {
+        await update({
+          user: { ...session?.user, username: data.user.username },
+        });
+      }
+
       if (data?.message) {
         toast.success(data.message, {
           action: {
@@ -43,10 +54,14 @@ export function EditProfileGeneralModal() {
         });
       }
 
-      if (window.history.length > 2) {
-        router.back();
+      if (usernameChanged) {
+        router.push(`/${data?.user?.username}`);
       } else {
-        router.push(`/${profile?.username}`);
+        if (window.history.length > 2) {
+          router.back();
+        } else {
+          router.push(`/${profile?.username}`);
+        }
       }
     },
   });
