@@ -11,6 +11,7 @@ import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/useTransitionDelay";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSessionLoader } from "@/contexts/SessionLoaderContext";
 import { z } from "zod";
 import { toast } from "sonner";
 import { IoMdClose } from "react-icons/io";
@@ -18,6 +19,7 @@ import { IoMdClose } from "react-icons/io";
 export function EditProfileGeneralModal() {
 	const router = useRouter();
 	const { data: session, update } = useSession();
+	const { setIgnoreLoader } = useSessionLoader();
 	const axiosAuth = useAxiosAuth();
 	const queryClient = useQueryClient();
 	const { data: profile, isLoading: loadingProfile } = useProfile();
@@ -36,9 +38,11 @@ export function EditProfileGeneralModal() {
 				data?.user.username && session?.user?.username !== data.user.username;
 
 			if (usernameChanged) {
+				setIgnoreLoader(true);
 				await update({
 					user: { ...session?.user, username: data.user.username },
 				});
+				setTimeout(() => setIgnoreLoader(false), 1000);
 			}
 
 			if (data?.message) {
