@@ -67,11 +67,9 @@ export const DropdownProfile = () => {
 				<DropdownMenuGroup>
 					<DropdownMenuItem
 						onClick={() => {
-							console.log("clicked");
 							const trigger = document.activeElement as HTMLElement;
 							if (trigger) trigger.blur();
 							router.push(`/${session?.user.username}`);
-							// retire le focus du bouton après clic
 						}}
 					>
 						<div className="w-full space-y-3">

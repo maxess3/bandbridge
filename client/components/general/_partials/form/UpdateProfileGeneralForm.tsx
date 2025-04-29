@@ -66,8 +66,6 @@ export const UpdateProfileGeneralForm = () => {
 			);
 			const data = await response.json();
 
-			console.log(data);
-
 			return data.map((item: { nom: string }) => item.nom);
 		},
 		enabled: debouncedZipcode.length === 5,
