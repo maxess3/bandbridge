@@ -46,7 +46,7 @@ export function EditProfileSocialModal() {
       if (window.history.length > 2) {
         router.back();
       } else {
-        router.push(`/${profile?.username}`);
+        router.replace(`/${data?.user?.username}`);
       }
     },
   });

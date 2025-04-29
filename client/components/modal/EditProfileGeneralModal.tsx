@@ -54,14 +54,10 @@ export function EditProfileGeneralModal() {
         });
       }
 
-      if (usernameChanged) {
-        router.push(`/${data?.user?.username}`);
+      if (window.history.length > 2) {
+        router.back();
       } else {
-        if (window.history.length > 2) {
-          router.back();
-        } else {
-          router.push(`/${profile?.username}`);
-        }
+        router.replace(`/${data?.user?.username}`);
       }
     },
   });
