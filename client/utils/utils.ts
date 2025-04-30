@@ -1,3 +1,9 @@
+export function saveLastFocusedElement() {
+  if (typeof window !== "undefined") {
+    window.__lastFocusedElement = document.activeElement;
+  }
+}
+
 export function getAgeFromTimestamp(timestamp: string): number {
   const birthDate = new Date(timestamp);
   const today = new Date();

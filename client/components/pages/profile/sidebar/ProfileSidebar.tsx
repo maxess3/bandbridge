@@ -16,6 +16,7 @@ import {
 import { ProfileSocialLink } from "@/components/pages/profile/sidebar/ProfileSocialLink";
 import { IoAdd } from "react-icons/io5";
 import { Profile } from "@/types/Profile";
+import { saveLastFocusedElement } from "@/utils/utils";
 
 type SocialPlatform =
   | "youtube"
@@ -129,11 +130,7 @@ const SocialLinks = ({ socialLinks, username, isOwner }: SocialLinksProps) => {
         {isOwner && (
           <Link
             href={`/${username}/edit/profile/social`}
-            onClick={() => {
-              if (typeof window !== "undefined") {
-                window.__lastFocusedElement = document.activeElement;
-              }
-            }}
+            onClick={saveLastFocusedElement}
             className={
               buttonVariants({ variant: "secondary", size: "xs" }) +
               " !rounded-full"
