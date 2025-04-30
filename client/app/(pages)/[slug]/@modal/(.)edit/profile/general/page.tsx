@@ -2,29 +2,40 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { profileServices } from "@/services/profileServices";
 import { EditProfileGeneralModal } from "@/components/modal/EditProfileGeneralModal";
+import { ProfileEditGuard } from "@/components/modal/ProfileEditGuard";
 
 async function getProfile(slug: string) {
-	const profile = await profileServices.getProfile(slug);
-	if (!profile) {
-		notFound();
-	}
-	return profile;
+  const profile = await profileServices.getProfile(slug);
+  if (!profile) {
+    notFound();
+  }
+  return profile;
 }
 
 export async function generateMetadata({
-	params,
+  params,
 }: {
-	params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-	const { slug } = await params;
-	const profile = await getProfile(slug);
+  const { slug } = await params;
+  const profile = await getProfile(slug);
 
-	return {
-		title: `${profile.firstName} (@${profile.username}) | Chordeus`,
-		description: `Découvrez le profil de ${profile.firstName} sur Chordeus`,
-	};
+  return {
+    title: `${profile.firstName} (@${profile.username}) | Chordeus`,
+    description: `Découvrez le profil de ${profile.firstName} sur Chordeus`,
+  };
 }
 
-export default function Page() {
-	return <EditProfileGeneralModal />;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+
+  return (
+    <ProfileEditGuard slug={slug}>
+      <EditProfileGeneralModal />
+    </ProfileEditGuard>
+  );
 }

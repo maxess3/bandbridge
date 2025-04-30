@@ -4,6 +4,7 @@ import { profileServices } from "@/services/profileServices";
 import { notFound } from "next/navigation";
 import { getQueryClient } from "@/lib/react-query/getQueryClient";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { ProfileEditGuard } from "@/components/modal/ProfileEditGuard";
 import { EditProfileGeneralModal } from "@/components/modal/EditProfileGeneralModal";
 
 export default async function Page({
@@ -35,7 +36,9 @@ export default async function Page({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <EditProfileGeneralModal />
+      <ProfileEditGuard slug={slug}>
+        <EditProfileGeneralModal />
+      </ProfileEditGuard>
     </HydrationBoundary>
   );
 }

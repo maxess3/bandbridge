@@ -1,7 +1,6 @@
 "use client";
 
 import { Modal } from "@/components/modal/Modal";
-import { LoadingModal } from "@/components/modal/LoadingModal";
 import { UpdateProfileSocialForm } from "@/components/general/_partials/form/UpdateProfileSocialForm";
 import { formSocialProfile } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -53,13 +52,6 @@ export function EditProfileSocialModal() {
 
   return (
     <>
-      <LoadingModal
-        route={`/${profile?.username}`}
-        title="Liens sociaux"
-        open={loadingProfile}
-      >
-        Chargement...
-      </LoadingModal>
       {profile && (
         <Modal
           open={!loadingProfile}
