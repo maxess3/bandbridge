@@ -27,6 +27,10 @@ export default {
 				satoshi: ["var(--font-satoshi)"],
 			},
 			colors: {
+				link: {
+					DEFAULT: "hsl(var(--link))",
+					muted: "hsl(var(--link-muted))",
+				},
 				background: "hsl(var(--background))",
 				foreground: "hsl(var(--foreground))",
 				card: {

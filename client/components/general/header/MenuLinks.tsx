@@ -13,7 +13,7 @@ export const MenuLinks = () => {
 					href={"/"}
 					className={`inline-flex flex-col items-center ${
 						currentPath === "/musician"
-							? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.5em] before:bg-primary font-bold"
+							? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.6em] before:bg-primary font-bold"
 							: "opacity-90"
 					}`}
 				>
@@ -23,7 +23,7 @@ export const MenuLinks = () => {
 					href={"/"}
 					className={`inline-flex flex-col items-center ${
 						currentPath === "/groups"
-							? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.5em] before:bg-primary font-bold"
+							? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.6em] before:bg-primary font-bold"
 							: "opacity-90"
 					}`}
 				>
@@ -33,7 +33,7 @@ export const MenuLinks = () => {
 					href={"/ads"}
 					className={`inline-flex flex-col items-center ${
 						currentPath === "/ads"
-							? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.5em] before:bg-primary font-bold"
+							? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.6em] before:bg-primary font-bold"
 							: "opacity-90"
 					}`}
 				>

@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export const ProfilePicture = ({ src, alt }: { src: string; alt: string }) => {
 	return (
-		<div className="w-64 h-64 flex rounded-full overflow-hidden">
+		<div className="w-56 h-56 flex rounded-full overflow-hidden">
 			<Image
 				width={300}
 				height={300}

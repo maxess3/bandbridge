@@ -33,7 +33,7 @@ interface ModalProps<T extends FieldValues> {
 	open?: boolean;
 }
 
-export function Modal<T extends FieldValues>({
+export function EditModal<T extends FieldValues>({
 	children,
 	route,
 	title,

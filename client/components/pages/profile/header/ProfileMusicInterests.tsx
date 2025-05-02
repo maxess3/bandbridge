@@ -25,7 +25,7 @@ const Category = ({ title, items, isSkill, className }: CategoryProps) => (
 						<span className="flex items-center gap-x-1">
 							{typeof item === "string" ? item : item.name}{" "}
 							{isSkill && typeof item !== "string" && item.isMain && (
-								<FaStar className="text-primary" />
+								<FaStar className="text-foreground opacity-60" />
 							)}
 						</span>
 					</Badge>
@@ -41,7 +41,7 @@ export const ProfileMusicInterests = () => {
 		{ name: "Piano", isMain: false },
 	];
 
-	const musicStyles = ["Rock", "Pop", "Jazz", "Hip-Hop", "Rap"].map((name) => ({
+	const musicStyles = ["Rock", "Pop", "Jazz", "Hip-Hop"].map((name) => ({
 		name,
 	}));
 

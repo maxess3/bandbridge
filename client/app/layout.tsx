@@ -61,9 +61,11 @@ export default async function RootLayout({
 								duration={4000}
 							/>
 							<NextTopLoader color="#b9181b" showSpinner={false} height={3} />
-							<div className="px-8">
+							<div>
 								<Navbar />
-								<main className="max-w-7xl mx-auto flex-grow">{children}</main>
+								<main className="max-w-[1200px] mx-auto flex-grow">
+									{children}
+								</main>
 								<Footer />
 							</div>
 							<div className="w-full py-0.5 bg-primary"></div>

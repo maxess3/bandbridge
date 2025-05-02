@@ -5,29 +5,29 @@ import { DropdownProfile } from "@/components/general/header/DropdownProfile";
 import { buttonVariants } from "@/components/ui/button";
 
 export const NavbarAuthBtn = async () => {
-  const session = await getServerSession(authOptions);
+	const session = await getServerSession(authOptions);
 
-  if (session?.user)
-    return (
-      <div className="flex items-center text-sm relative gap-x-4">
-        <DropdownProfile />
-      </div>
-    );
+	if (session?.user)
+		return (
+			<div className="flex justify-end items-center text-sm relative gap-x-4 min-w-[150px]">
+				<DropdownProfile />
+			</div>
+		);
 
-  return (
-    <div className="flex gap-x-2 justify-center items-center">
-      <Link
-        className={buttonVariants({ variant: "outline", size: "md" })}
-        href={"/api/auth/signin"}
-      >
-        Se connecter
-      </Link>
-      <Link
-        className={buttonVariants({ variant: "primary", size: "md" })}
-        href={"/auth/signup"}
-      >
-        S'inscrire
-      </Link>
-    </div>
-  );
+	return (
+		<div className="flex gap-x-2 justify-center items-center">
+			<Link
+				className={buttonVariants({ variant: "outline", size: "md" })}
+				href={"/api/auth/signin"}
+			>
+				Se connecter
+			</Link>
+			<Link
+				className={buttonVariants({ variant: "primary", size: "md" })}
+				href={"/auth/signup"}
+			>
+				S'inscrire
+			</Link>
+		</div>
+	);
 };
