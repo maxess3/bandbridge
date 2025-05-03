@@ -1,7 +1,7 @@
 "use client";
 
 import { EditModal } from "@/components/modal/EditModal";
-import { UpdateProfileGeneralForm } from "@/components/general/_partials/form/UpdateProfileGeneralForm";
+import { UpdateProfileGeneralForm } from "@/components/form/UpdateProfileGeneralForm";
 import { formGeneralProfile } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/useProfile";

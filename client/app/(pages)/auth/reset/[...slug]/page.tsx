@@ -1,4 +1,4 @@
-import ResetPasswordForm from "@/components/general/_partials/form/ResetPasswordForm";
+import ResetPasswordForm from "@/components/form/ResetPasswordForm";
 import { redirect } from "next/navigation";
 
 export default async function Reset({

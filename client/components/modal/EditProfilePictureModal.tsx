@@ -1,7 +1,7 @@
 "use client";
 
 import { EditModal } from "@/components/modal/EditModal";
-import { UpdateProfilePictureForm } from "@/components/general/_partials/form/UpdateProfilePictureForm";
+import { UpdateProfilePictureForm } from "@/components/form/UpdateProfilePictureForm";
 import { formSocialProfile } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/useProfile";
