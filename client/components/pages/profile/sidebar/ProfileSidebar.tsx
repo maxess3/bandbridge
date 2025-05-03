@@ -228,7 +228,7 @@ export const ProfileSidebar = ({
 															)}
 													</div>
 													<div>
-														<span className="text-lg font-semibold font-satoshi">
+														<span className="text-lg font-semibold">
 															<Link
 																href={`/${follower.username}`}
 																className="hover:underline"

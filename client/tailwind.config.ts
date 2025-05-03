@@ -23,9 +23,6 @@ export default {
 			gridTemplateColumns: {
 				"auto-fit": "repeat(auto-fit, minmax(10rem, 1fr))",
 			},
-			fontFamily: {
-				satoshi: ["var(--font-satoshi)"],
-			},
 			colors: {
 				link: {
 					DEFAULT: "hsl(var(--link))",

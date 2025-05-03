@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProviders } from "@/providers/ThemeProviders";
@@ -9,11 +8,6 @@ import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import Navbar from "@/components/general/header/Navbar";
 import Footer from "@/components/general/footer/Footer";
-
-const Satoshi = localFont({
-	src: "../public/fonts/Satoshi/Satoshi-Variable.ttf",
-	variable: "--font-satoshi",
-});
 
 const DM = DM_Sans({
 	weight: ["400", "500", "600", "700", "800", "900"],
@@ -35,7 +29,7 @@ export default async function RootLayout({
 	return (
 		<html lang="fr" suppressHydrationWarning>
 			<body
-				className={`${DM.className} ${Satoshi.variable} antialiased min-h-screen flex flex-col`}
+				className={`${DM.className} antialiased min-h-screen flex flex-col`}
 			>
 				<ThemeProviders>
 					<AuthSessionProviders>

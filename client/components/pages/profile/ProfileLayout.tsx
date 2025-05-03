@@ -21,7 +21,11 @@ export function ProfileLayout({
 				<div className="w-[800px] space-y-8">
 					<div className="flex w-full gap-x-6">
 						<div className="flex items-center">
-							<ProfilePicture src="/profile_large.jpeg" alt="Photo de profil" />
+							<ProfilePicture
+								isOwner={isOwner}
+								src="/profile_large.jpeg"
+								alt="Photo de profil"
+							/>
 						</div>
 						<div className="flex flex-col w-full space-y-6">
 							<ProfileTop isOwner={isOwner} profile={profile} />
@@ -38,7 +42,7 @@ export function ProfileLayout({
 					<div className="border border-border-light rounded-xl flex flex-col">
 						<div className="p-6 space-y-6">
 							<div>
-								<h2 className="text-xl font-semibold font-satoshi">
+								<h2 className="text-xl font-semibold">
 									Maxime en quelques mots...
 								</h2>
 							</div>
