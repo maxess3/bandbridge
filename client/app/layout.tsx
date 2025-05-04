@@ -6,6 +6,7 @@ import AuthSessionProviders from "@/providers/AuthSessionProviders";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
 import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/general/header/Navbar";
 import Footer from "@/components/general/footer/Footer";
 
@@ -55,13 +56,15 @@ export default async function RootLayout({
 								duration={4000}
 							/>
 							<NextTopLoader color="#b9181b" showSpinner={false} height={3} />
-							<div>
-								<Navbar />
-								<main className="max-w-[1200px] mx-auto flex-grow">
-									{children}
-								</main>
-								<Footer />
-							</div>
+							<TooltipProvider>
+								<div>
+									<Navbar />
+									<main className="max-w-[1200px] mx-auto flex-grow">
+										{children}
+									</main>
+									<Footer />
+								</div>
+							</TooltipProvider>
 							<div className="w-full py-0.5 bg-primary"></div>
 						</ReactQueryClientProvider>
 					</AuthSessionProviders>

@@ -93,7 +93,7 @@ export function EditModal<T extends FieldValues>({
 								</DialogDescription>
 							</DialogTitle>
 						</DialogHeader>
-						<div className="overflow-y-auto px-6 pt-6 pb-9 space-y-6">
+						<div className="overflow-y-auto p-6 space-y-6">
 							<FormProvider {...methods}>
 								<form
 									id="modalForm"
