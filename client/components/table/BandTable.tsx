@@ -99,7 +99,7 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
 
   if (tableLayoutMode === "list") {
     return (
-      <div className="border border-border-light rounded-md">
+      <div className="border rounded-md">
         <table className="w-full text-left">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -120,10 +120,7 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr
-                key={row.id}
-                className="[&:not(:last-child)]:border-y border-border-light"
-              >
+              <tr key={row.id} className="[&:not(:last-child)]:border-y">
                 {row.getVisibleCells().map((cell) => (
                   <td
                     key={cell.id}
