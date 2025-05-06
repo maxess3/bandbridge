@@ -2,7 +2,6 @@ import prisma from "../db/db.config";
 import { Request, Response } from "express";
 import { Platform } from "@prisma/client";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 export const getProfilePublic = async (req: Request, res: Response) => {
