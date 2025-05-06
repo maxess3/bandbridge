@@ -57,48 +57,49 @@ model User {
 }
 
 model Profile {
-    id           String        @id @default(uuid())
-    followers    Profile[]     @relation("UserFollows")
-    following    Profile[]     @relation("UserFollows")
-    gender       Gender        @default(OTHER)
-    username     String?       @unique
-    firstName    String        @db.VarChar(60)
-    birthDate    DateTime?     @db.Date
-    country      String?
-    city         String?
-    zipCode      String?
-    role         ProfileRole   @default(MUSICIAN)
-    instruments  Instrument[]
-    genre        MusicGenre?
-    socialLinks  SocialLink[]
-    band         Band[]
-    lastActiveAt DateTime?
-    userId       String        @unique
-    user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String       @id @default(uuid())
+  followers         Profile[]    @relation("UserFollows")
+  following         Profile[]    @relation("UserFollows")
+  gender            Gender       @default(OTHER)
+  username          String?      @unique
+  firstName         String       @db.VarChar(60)
+  birthDate         DateTime?    @db.Date
+  country           String?
+  city              String?
+  zipCode           String?
+  role              ProfileRole  @default(MUSICIAN)
+  instruments       Instrument[]
+  genre             MusicGenre?
+  socialLinks       SocialLink[]
+  band              Band[]
+  lastActiveAt      DateTime?
+  profilePictureKey String?
+  userId            String       @unique
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Instrument {
-    id          String   @id @default(uuid())
-    name        String
-    yearStarted Int
-    profileId   String
-    profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  id          String  @id @default(uuid())
+  name        String
+  yearStarted Int
+  profileId   String
+  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 }
 
 model SocialLink {
-    id        String   @id @default(uuid())
-    platform  Platform
-    url       String   
-    profileId String   
-    profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  id        String   @id @default(uuid())
+  platform  Platform
+  url       String
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-    @@unique([platform, profileId])
+  @@unique([platform, profileId])
 }
 
 model Band {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  members   Profile[]
+  id      String    @id @default(uuid())
+  name    String    @unique
+  members Profile[]
 }
 
 model Post {

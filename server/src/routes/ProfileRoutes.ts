@@ -1,9 +1,9 @@
 import { Router } from "express";
 import authenticateToken from "../middleware/authenticateToken";
 import { validateSchema } from "../middleware/validateSchema";
+import upload from "../middleware/multerUpload";
 import { formGeneralProfile, formSocialProfile } from "../lib/schema";
 import * as ProfileController from "../Controller/ProfileController";
-
 const router = Router();
 
 router.get("/me", authenticateToken, ProfileController.getProfileOwner);
@@ -20,6 +20,13 @@ router.put(
   authenticateToken,
   validateSchema(formSocialProfile),
   ProfileController.updateSocialProfileOwner
+);
+
+router.post(
+  "/me/picture",
+  authenticateToken,
+  upload.single("file"),
+  ProfileController.uploadProfilePicture
 );
 
 router.post(

@@ -1,7 +1,10 @@
 import prisma from "../db/db.config";
 import { Request, Response } from "express";
 import { Platform } from "@prisma/client";
-
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { v4 as uuidv4 } from "uuid";
+import sharp from "sharp";
 export const getProfilePublic = async (req: Request, res: Response) => {
   try {
     const { username } = req.params;
@@ -97,7 +100,7 @@ export const getProfileOwner = async (req: Request, res: Response) => {
   try {
     const userId = req.user.userId;
     if (!userId) {
-      res.status(401).json({ message: "[Erreur] Non authentifié" });
+      res.status(401).json({ message: "Utilisateur non authentifié" });
       return;
     }
 
@@ -195,7 +198,7 @@ export const updateGeneralProfileOwner = async (
   try {
     const userId = req.user.userId;
     if (!userId) {
-      res.status(401).json({ message: "[Erreur] Non authentifié" });
+      res.status(401).json({ message: "Utilisateur non authentifié" });
       return;
     }
 
@@ -255,7 +258,7 @@ export const updateSocialProfileOwner = async (req: Request, res: Response) => {
   try {
     const userId = req.user.userId;
     if (!userId) {
-      res.status(401).json({ message: "[Erreur] Non authentifié" });
+      res.status(401).json({ message: "Utilisateur non authentifié" });
       return;
     }
 
@@ -305,6 +308,83 @@ export const updateSocialProfileOwner = async (req: Request, res: Response) => {
     res.status(500).json({
       message: "[Erreur] Mise à jour des liens sociaux impossible",
     });
+  }
+};
+
+export const uploadProfilePicture = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user.userId;
+    if (!userId) {
+      res.status(401).json({ message: "Utilisateur non authentifié" });
+      return;
+    }
+
+    if (!req.file) {
+      res.status(400).json({ message: "Aucun fichier n'a été uploadé" });
+      return;
+    }
+
+    const file = req.file;
+    const uuid = uuidv4();
+    const r2 = new S3Client({
+      region: "auto",
+      endpoint: process.env.R2_ENDPOINT,
+      credentials: {
+        accessKeyId: process.env.R2_ACCESS_KEY_ID,
+        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+      },
+    });
+
+    // Define the desired image sizes
+    const sizes = {
+      thumbnail: 44,
+      small: 80,
+      medium: 224,
+      large: 400,
+    };
+
+    const uploadPromises = Object.entries(sizes).map(async ([size, width]) => {
+      const resizedImage = await sharp(file.buffer)
+        .resize(width, width, {
+          fit: "cover",
+          withoutEnlargement: true,
+        })
+        .webp({ quality: 80 })
+        .toBuffer();
+
+      const key = `profile-pictures/${userId}/${uuid}-${size}.webp`;
+
+      const command = new PutObjectCommand({
+        Bucket: process.env.R2_BUCKET_NAME,
+        Key: key,
+        Body: resizedImage,
+        ContentType: "image/webp",
+      });
+
+      await r2.send(command);
+      return { size, key };
+    });
+
+    const uploadedImages = await Promise.all(uploadPromises);
+
+    // Update profile with the main image key
+    const mainImageKey = uploadedImages.find(
+      (img) => img.size === "medium"
+    )?.key;
+    if (mainImageKey) {
+      await prisma.profile.update({
+        where: { userId },
+        data: { profilePictureKey: mainImageKey },
+      });
+    }
+
+    res.status(200).json({
+      message: "Images uploadées avec succès",
+      images: uploadedImages,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Erreur lors de l'upload des images" });
   }
 };
 
