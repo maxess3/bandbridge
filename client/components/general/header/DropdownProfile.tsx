@@ -2,11 +2,11 @@
 
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import { getProfileImageUrl } from "@/utils/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import ProfileSmall from "@/public/profile_small.png";
 import { Avatar } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -52,7 +52,10 @@ export const DropdownProfile = () => {
           <Avatar className="w-9 h-9">
             <div className="relative w-full h-full">
               <Image
-                src={ProfileSmall}
+                src={getProfileImageUrl(
+                  session?.user.profilePictureKey || "",
+                  "thumbnail"
+                )}
                 alt="Profile"
                 fill
                 className="rounded-full object-cover"
@@ -63,7 +66,7 @@ export const DropdownProfile = () => {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-60 mt-[5px] border">
+      <DropdownMenuContent className="w-60 mt-[9px] border">
         <DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => {
@@ -77,7 +80,10 @@ export const DropdownProfile = () => {
                 <Avatar>
                   <div className="relative w-full h-full">
                     <Image
-                      src={ProfileSmall}
+                      src={getProfileImageUrl(
+                        session?.user.profilePictureKey || "",
+                        "thumbnail"
+                      )}
                       alt="Profile"
                       fill
                       className="rounded-full object-cover"

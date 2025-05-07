@@ -4,6 +4,21 @@ export function saveLastFocusedElement() {
   }
 }
 
+export function getProfileImageUrl(
+  profilePictureKey: string,
+  size: "thumbnail" | "small" | "medium" | "large"
+): string {
+  // Default profile picture if no profile picture is set
+  if (!profilePictureKey) return "/profile_large.jpeg";
+
+  // Get the base key of the profile picture
+  const oldKey = profilePictureKey;
+  const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
+
+  // Return the profile picture url
+  return `${process.env.NEXT_PUBLIC_R2_URL}/${oldKeyBase}-${size}.webp`;
+}
+
 export function getAgeFromTimestamp(timestamp: string): number {
   const birthDate = new Date(timestamp);
   const today = new Date();
@@ -12,7 +27,7 @@ export function getAgeFromTimestamp(timestamp: string): number {
   const monthDiff = today.getMonth() - birthDate.getMonth();
   const dayDiff = today.getDate() - birthDate.getDate();
 
-  // Ajustement si l'anniversaire n'est pas encore passé cette année
+  // Adjustment if the birthday hasn't passed this year
   if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
     age--;
   }

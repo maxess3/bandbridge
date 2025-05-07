@@ -21,6 +21,7 @@ export interface Profile {
   gender: "MALE" | "FEMALE" | "OTHER";
   country: string;
   zipCode: string;
+  profilePictureKey: string;
   role: "MUSICIAN" | string;
   city: string;
   socialLinks: SocialLinks;

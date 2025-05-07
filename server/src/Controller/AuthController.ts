@@ -77,6 +77,7 @@ export const login = async (req: Request, res: Response) => {
   const userEmail = user.email;
   const userFirstName = user.Profile?.firstName;
   const username = user.Profile?.username;
+  const profilePictureKey = user.Profile?.profilePictureKey;
 
   const { backendTokens } = createAuthTokens(userId);
 
@@ -85,6 +86,7 @@ export const login = async (req: Request, res: Response) => {
     email: userEmail,
     firstName: userFirstName,
     username,
+    profilePictureKey,
   };
 
   res.status(200).json({
@@ -134,6 +136,7 @@ export const google = async (req: Request, res: Response) => {
     const userEmail = result.email;
     const userFirstName = result.Profile?.firstName;
     const username = result.Profile?.username;
+    const profilePictureKey = result.Profile?.profilePictureKey;
 
     const { backendTokens } = createAuthTokens(userId);
 
@@ -142,6 +145,7 @@ export const google = async (req: Request, res: Response) => {
       email: userEmail,
       firstName: userFirstName,
       username,
+      profilePictureKey,
     };
 
     res.status(200).json({

@@ -23,7 +23,7 @@ export function ProfileLayout({
             <div className="flex items-center">
               <ProfilePicture
                 isOwner={isOwner}
-                src="/profile_large.jpeg"
+                src={profile?.profilePictureKey}
                 alt="Photo de profil"
               />
             </div>

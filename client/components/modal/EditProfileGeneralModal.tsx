@@ -34,18 +34,19 @@ export function EditProfileGeneralModal() {
       await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
 
       const usernameChanged =
-        data?.user.username && session?.user?.username !== data.user.username;
+        data?.user?.username &&
+        session?.user?.username !== data?.user?.username;
       const firstnameChanged =
-        data?.user.firstName &&
-        session?.user?.firstName !== data.user.firstName;
+        data?.user?.firstName &&
+        session?.user?.firstName !== data?.user?.firstName;
 
       if (usernameChanged || firstnameChanged) {
         setIgnoreLoader(true);
         await update({
           user: {
             ...session?.user,
-            username: data.user.username,
-            firstName: data.user.firstName,
+            username: data?.user?.username,
+            firstName: data?.user?.firstName,
           },
         });
         setTimeout(() => setIgnoreLoader(false), 1000);

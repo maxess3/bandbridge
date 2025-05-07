@@ -1,7 +1,11 @@
 import prisma from "../db/db.config";
 import { Request, Response } from "express";
 import { Platform } from "@prisma/client";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 export const getProfilePublic = async (req: Request, res: Response) => {
@@ -20,6 +24,7 @@ export const getProfilePublic = async (req: Request, res: Response) => {
         gender: true,
         country: true,
         zipCode: true,
+        profilePictureKey: true,
         role: true,
         city: true,
         socialLinks: {
@@ -115,6 +120,7 @@ export const getProfileOwner = async (req: Request, res: Response) => {
         gender: true,
         country: true,
         zipCode: true,
+        profilePictureKey: true,
         role: true,
         city: true,
         socialLinks: {
@@ -342,6 +348,34 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
       large: 400,
     };
 
+    const currentProfile = await prisma.profile.findUnique({
+      where: { userId },
+      select: { profilePictureKey: true },
+    });
+
+    // Delete the old images if they exist
+    if (currentProfile?.profilePictureKey) {
+      const oldKey = currentProfile.profilePictureKey;
+      const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
+
+      const deletePromises = Object.keys(sizes).map(async (size) => {
+        const keyToDelete = `${oldKeyBase}-${size}.webp`;
+        const deleteCommand = new DeleteObjectCommand({
+          Bucket: process.env.R2_BUCKET_NAME,
+          Key: keyToDelete,
+        });
+        try {
+          await r2.send(deleteCommand);
+        } catch (error) {
+          console.error(
+            `Erreur lors de la suppression de ${keyToDelete}:`,
+            error
+          );
+        }
+      });
+      await Promise.all(deletePromises);
+    }
+
     const uploadPromises = Object.entries(sizes).map(async ([size, width]) => {
       const resizedImage = await sharp(file.buffer)
         .resize(width, width, {
@@ -378,8 +412,10 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
     }
 
     res.status(200).json({
-      message: "Images uploadées avec succès",
-      images: uploadedImages,
+      message: "Photo de profil mise à jour",
+      user: {
+        profilePictureKey: mainImageKey,
+      },
     });
   } catch (err) {
     console.error(err);
