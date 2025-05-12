@@ -19,8 +19,8 @@ export async function generateUniqueUsername(
     username += String.fromCharCode(97 + Math.floor(Math.random() * 26));
   }
 
-  // Generate a random 6-digit number
-  const randomNum = Math.floor(100000 + Math.random() * 900000);
+  // Generate a random 3-digit number
+  const randomNum = Math.floor(100 + Math.random() * 900);
   const finalUsername = `${username}${randomNum}`;
 
   // Check if username already exists

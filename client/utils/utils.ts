@@ -7,10 +7,7 @@ export function saveLastFocusedElement() {
 export function getProfileImageUrl(
   profilePictureKey: string,
   size: "thumbnail" | "small" | "medium" | "large"
-): string {
-  // Default profile picture if no profile picture is set
-  if (!profilePictureKey) return "/profile_large.jpeg";
-
+) {
   // Get the base key of the profile picture
   const oldKey = profilePictureKey;
   const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));

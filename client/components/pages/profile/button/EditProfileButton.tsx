@@ -10,7 +10,7 @@ export const EditProfileButton = ({ username }: { username: string }) => {
       onClick={saveLastFocusedElement}
       className={buttonVariants({ variant: "outline" })}
     >
-      <Pencil className="mr-1 h-4 w-4" />
+      <Pencil className="mr-1" style={{ width: "1.15em", height: "1.15em" }} />
       Modifier mon profil
     </Link>
   );

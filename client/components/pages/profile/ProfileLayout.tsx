@@ -6,6 +6,7 @@ import { ProfileMusicInterests } from "@/components/pages/profile/header/Profile
 import { ProfileSidebar } from "@/components/pages/profile/sidebar/ProfileSidebar";
 import { Button } from "@/components/ui/button";
 import { Profile } from "@/types/Profile";
+
 interface ProfileLayoutProps {
   isOwner?: boolean;
   profile: Profile;
