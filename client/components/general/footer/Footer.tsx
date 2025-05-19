@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import Logo from "@/public/chordeus_logo.png";
+import Logo from "@/public/logo/chordeus_logo.png";
 import Link from "next/link";
 import { FaInstagram, FaXTwitter } from "react-icons/fa6";
 import { FiFacebook } from "react-icons/fi";
@@ -16,7 +16,7 @@ function Footer() {
     console.log(res.data);
   };
   return (
-    <footer className="mt-12 max-w-[1240px] mx-auto px-4">
+    <footer className="max-w-[1128px] mt-12 mx-auto px-4">
       <div className="flex justify-center">
         <div className="w-full">
           <div className="flex justify-between w-full border-b pb-10">
@@ -48,23 +48,6 @@ function Footer() {
                   </li>
                   <li>
                     <Link href={"/"}>Groupes sur Toulouse</Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="space-y-4">
-                <h2 className="text-sm opacity-90">Touver un musicien</h2>
-                <ul className="space-y-2">
-                  <li>
-                    <Link href={"/"}>Musiciens sur Paris</Link>
-                  </li>
-                  <li>
-                    <Link href={"/"}>Musiciens sur Lyon</Link>
-                  </li>
-                  <li>
-                    <Link href={"/"}>Musiciens sur Marseille</Link>
-                  </li>
-                  <li>
-                    <Link href={"/"}>Musiciens sur Toulouse</Link>
                   </li>
                 </ul>
               </div>

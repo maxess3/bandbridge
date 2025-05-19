@@ -1,22 +1,21 @@
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "@/public/chordeus_logo.png";
+import Logo from "@/public/logo/chordeus_logo.png";
 import { NavbarAuthBtn } from "@/components/general/header/NavbarAuthBtn";
 import { MenuLinks } from "@/components/general/header/MenuLinks";
 
 async function Navbar() {
   return (
-    <nav className="flex items-center justify-center w-full border-b border-border h-16">
-      <div className="flex justify-between items-center w-full max-w-[1240px] mx-auto px-4">
-        <div>
+    <nav className="h-14 flex items-center justify-center w-full border-b border-border">
+      <div className="max-w-[1128px] mx-auto px-4 flex justify-between items-center w-full">
+        <div className="flex items-center gap-x-8">
           <div className="flex items-center gap-x-2.5">
-            <Image src={Logo} alt="Logo" width={36} height={36} />
             <Link href={"/home"} className="text-2xl font-medium">
-              Chordeus
+              <Image src={Logo} alt="Logo" width={36} height={36} />
             </Link>
           </div>
+          <MenuLinks />
         </div>
-        <MenuLinks />
         <NavbarAuthBtn />
       </div>
     </nav>

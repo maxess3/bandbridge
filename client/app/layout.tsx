@@ -4,7 +4,6 @@ import "./globals.css";
 import { ThemeProviders } from "@/providers/ThemeProviders";
 import AuthSessionProviders from "@/providers/AuthSessionProviders";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
-import NextTopLoader from "nextjs-toploader";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/general/header/Navbar";
@@ -55,11 +54,10 @@ export default async function RootLayout({
                 position="bottom-left"
                 duration={4000}
               />
-              <NextTopLoader color="#b9181b" showSpinner={false} height={3} />
               <TooltipProvider>
                 <div>
                   <Navbar />
-                  <main className="max-w-[1240px] mx-auto px-4">
+                  <main className="max-w-[1128px] mx-auto px-4">
                     {children}
                   </main>
                   <Footer />

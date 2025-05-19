@@ -20,7 +20,7 @@ import { FiMoon } from "react-icons/fi";
 import { LuLogOut } from "react-icons/lu";
 import { LuSettings } from "react-icons/lu";
 import { RiBugLine } from "react-icons/ri";
-import { PiUserBold } from "react-icons/pi";
+import { DefaultProfilePicture } from "@/components/features/profile/svg/DefaultProfilePicture";
 
 export const DropdownProfile = () => {
   const router = useRouter();
@@ -54,15 +54,15 @@ export const DropdownProfile = () => {
               "thumbnail"
             )}
             alt="Profile picture"
-            className="rounded-full object-cover"
+            className="rounded-full object-cover pointer-events-none"
             sizes="36px"
           />
-          <AvatarFallback>
-            <PiUserBold size={18} />
+          <AvatarFallback className="bg-secondary pointer-events-none">
+            <DefaultProfilePicture className="mt-7 mr-1 w-[50px] h-[50px] text-background" />
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-60 mt-[7px] border">
+      <DropdownMenuContent className="w-60 mt-[3px] border">
         <DropdownMenuGroup>
           <DropdownMenuItem
             onClick={() => {
@@ -73,19 +73,18 @@ export const DropdownProfile = () => {
           >
             <div className="w-full space-y-3">
               <div className="flex space-x-2">
-                <Avatar>
+                <Avatar className="cursor-pointer">
                   <AvatarImage
                     src={getProfileImageUrl(
-                      session?.user?.profilePictureKey || "",
+                      session?.user.profilePictureKey || "",
                       "thumbnail"
                     )}
                     alt="Profile picture"
-                    className="rounded-full object-cover"
-                    sizes="40px"
+                    className="rounded-full object-cover pointer-events-none"
+                    sizes="36px"
                   />
-                  <AvatarFallback>
-                    {" "}
-                    <PiUserBold size={18} />
+                  <AvatarFallback className="bg-secondary pointer-events-none">
+                    <DefaultProfilePicture className="mt-7 mr-1 !w-[50px] !h-[50px] text-background" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col ml-0.5">

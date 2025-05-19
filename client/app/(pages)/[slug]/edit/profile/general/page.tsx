@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { profileServices } from "@/services/profileServices";
-import { Profile } from "@/components/pages/profile/Profile";
+import { Profile } from "@/components/features/profile/Profile";
 import { notFound } from "next/navigation";
 import { getQueryClient } from "@/lib/react-query/getQueryClient";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";

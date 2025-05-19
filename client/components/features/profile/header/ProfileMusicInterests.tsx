@@ -25,7 +25,7 @@ const Category = ({ title, items, isSkill, className }: CategoryProps) => (
             <span className="flex items-center gap-x-1">
               {typeof item === "string" ? item : item.name}{" "}
               {isSkill && typeof item !== "string" && item.isMain && (
-                <FaStar className="text-foreground opacity-60" />
+                <FaStar className="text-primary" />
               )}
             </span>
           </Badge>

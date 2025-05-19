@@ -13,7 +13,7 @@ import {
   HoverCardTrigger,
   HoverCardContent,
 } from "@/components/ui/hover-card";
-import { ProfileSocialLink } from "@/components/pages/profile/sidebar/ProfileSocialLink";
+import { ProfileSocialLink } from "@/components/features/profile/sidebar/ProfileSocialLink";
 import { FiPlusCircle } from "react-icons/fi";
 import { Profile } from "@/types/Profile";
 import { saveLastFocusedElement } from "@/utils/utils";
