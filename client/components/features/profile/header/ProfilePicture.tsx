@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { UpdateProfilePictureModal } from "@/components/modal/UpdateProfilePictureModal";
 import { UploadProfilePictureModal } from "@/components/modal/UploadProfilePictureModal";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -46,12 +47,15 @@ export const ProfilePicture = ({
           IMG_PROFILE
         )}
       </div>
-      {isModalOpen && (
-        <UploadProfilePictureModal
-          onClose={() => setIsModalOpen(false)}
-          open={isModalOpen}
-        />
-      )}
+      {isModalOpen &&
+        (src ? (
+          <UpdateProfilePictureModal></UpdateProfilePictureModal>
+        ) : (
+          <UploadProfilePictureModal
+            onClose={() => setIsModalOpen(false)}
+            open={isModalOpen}
+          />
+        ))}
     </div>
   );
 };

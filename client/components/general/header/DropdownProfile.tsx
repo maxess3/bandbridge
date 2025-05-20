@@ -47,20 +47,22 @@ export const DropdownProfile = () => {
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
-        <Avatar className="cursor-pointer">
-          <AvatarImage
-            src={getProfileImageUrl(
-              session?.user.profilePictureKey || "",
-              "thumbnail"
-            )}
-            alt="Profile picture"
-            className="rounded-full object-cover pointer-events-none"
-            sizes="36px"
-          />
-          <AvatarFallback className="bg-secondary pointer-events-none">
-            <DefaultProfilePicture className="mt-7 mr-1 w-[50px] h-[50px] text-background" />
-          </AvatarFallback>
-        </Avatar>
+        <button>
+          <Avatar className="cursor-pointer">
+            <AvatarImage
+              src={getProfileImageUrl(
+                session?.user.profilePictureKey || "",
+                "thumbnail"
+              )}
+              alt="Profile picture"
+              className="rounded-full object-cover pointer-events-none"
+              sizes="36px"
+            />
+            <AvatarFallback className="bg-secondary pointer-events-none">
+              <DefaultProfilePicture className="mt-7 mr-1 w-[50px] h-[50px] text-background" />
+            </AvatarFallback>
+          </Avatar>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-60 mt-[3px] border">
         <DropdownMenuGroup>

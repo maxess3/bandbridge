@@ -80,7 +80,7 @@ export const UpdateProfileGeneralForm = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <h4 className="font-semibold text-2xl">Informations de base</h4>
+        <h4 className="font-semibold text-2xl mb-2">Informations de base</h4>
         <div className="space-y-3">
           <div className="space-y-6">
             <div className="space-y-1">
@@ -204,6 +204,7 @@ export const UpdateProfileGeneralForm = () => {
               )}
             </div>
             <div className="space-y-1">
+              <h4 className="font-semibold text-2xl mb-2">Lieu</h4>
               <Label htmlFor="country" className="opacity-80">
                 Pays
               </Label>
