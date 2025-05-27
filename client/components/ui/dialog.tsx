@@ -39,52 +39,73 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => {
-  const dummyButtonRef = useRef<HTMLButtonElement>(null);
-  const [dummyTabIndex, setDummyTabIndex] = useState(0);
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    closeTooltipText?: string;
+    showOverlay?: boolean;
+  }
+>(
+  (
+    {
+      className,
+      children,
+      closeTooltipText = "Fermer",
+      showOverlay = true,
+      ...props
+    },
+    ref
+  ) => {
+    const dummyButtonRef = useRef<HTMLButtonElement>(null);
+    const [dummyTabIndex, setDummyTabIndex] = useState(0);
 
-  useEffect(() => {
-    if (dummyButtonRef.current) {
-      dummyButtonRef.current.focus();
-    }
-  }, []);
+    useEffect(() => {
+      if (dummyButtonRef.current) {
+        dummyButtonRef.current.focus();
+      }
+    }, []);
 
-  const handleDummyBlur = () => {
-    setDummyTabIndex(-1);
-  };
+    const handleDummyBlur = () => {
+      setDummyTabIndex(-1);
+    };
 
-  return (
-    <DialogPortal>
-      <DialogOverlay>
-        <DialogPrimitive.Content
-          ref={ref}
-          className={cn(
-            "fixed left-[50%] top-[50%] z-50 flex w-full max-w-lg translate-x-[-50%] translate-y-[-50%] flex-col border bg-dialog p-6 shadow-lg sm:rounded-lg",
-            className
-          )}
-          {...props}
-        >
-          <button
-            ref={dummyButtonRef}
-            tabIndex={dummyTabIndex}
-            onBlur={handleDummyBlur}
-          ></button>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <DialogPrimitive.Close className="absolute flex justify-center items-center w-11 h-11 top-2 right-4 hover:bg-accent-foreground rounded-full focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-                <X className="h-7 w-7 opacity-70" />
-                <span className="sr-only">Close</span>
-              </DialogPrimitive.Close>
-            </TooltipTrigger>
-            <TooltipContent sideOffset={7}>Fermer</TooltipContent>
-          </Tooltip>
-          {children}
-        </DialogPrimitive.Content>
-      </DialogOverlay>
-    </DialogPortal>
-  );
-});
+    const renderContent = () => (
+      <DialogPrimitive.Content
+        ref={ref}
+        className={cn(
+          "fixed left-[50%] top-[50%] z-50 flex w-full max-w-lg translate-x-[-50%] translate-y-[-50%] flex-col border bg-dialog p-6 shadow-lg sm:rounded-lg",
+          className
+        )}
+        {...props}
+      >
+        <button
+          ref={dummyButtonRef}
+          tabIndex={dummyTabIndex}
+          onBlur={handleDummyBlur}
+          aria-hidden="true"
+        />
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogPrimitive.Close className="absolute flex justify-center items-center w-11 h-11 top-2 right-4 hover:bg-accent-foreground rounded-full focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+              <X className="h-7 w-7 opacity-70" />
+              <span className="sr-only">Close</span>
+            </DialogPrimitive.Close>
+          </TooltipTrigger>
+          <TooltipContent sideOffset={7}>{closeTooltipText}</TooltipContent>
+        </Tooltip>
+        {children}
+      </DialogPrimitive.Content>
+    );
+
+    return (
+      <DialogPortal>
+        {showOverlay ? (
+          <DialogOverlay>{renderContent()}</DialogOverlay>
+        ) : (
+          renderContent()
+        )}
+      </DialogPortal>
+    );
+  }
+);
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const DialogHeader = ({
@@ -107,7 +128,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 px-6 py-4 border-t",
+      "flex flex-col-reverse sm:flex-row sm:space-x-2 px-6 py-4 border-t",
       className
     )}
     {...props}

@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "../ui/dialog";
+} from "../../ui/dialog";
 
 interface LoadingModalProps {
   children: React.ReactNode;

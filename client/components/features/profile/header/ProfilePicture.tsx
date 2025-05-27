@@ -1,12 +1,11 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { UpdateProfilePictureModal } from "@/components/modal/UpdateProfilePictureModal";
-import { UploadProfilePictureModal } from "@/components/modal/UploadProfilePictureModal";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaCamera } from "react-icons/fa";
 import { DefaultProfilePicture } from "@/components/features/profile/svg/DefaultProfilePicture";
+import { EditProfilePictureModal } from "@/components/modal/EditProfilePictureModal";
 
 export const ProfilePicture = ({
   isOwner,
@@ -47,15 +46,12 @@ export const ProfilePicture = ({
           IMG_PROFILE
         )}
       </div>
-      {isModalOpen &&
-        (src ? (
-          <UpdateProfilePictureModal></UpdateProfilePictureModal>
-        ) : (
-          <UploadProfilePictureModal
-            onClose={() => setIsModalOpen(false)}
-            open={isModalOpen}
-          />
-        ))}
+      {isModalOpen && (
+        <EditProfilePictureModal
+          onClose={() => setIsModalOpen(false)}
+          open={isModalOpen}
+        />
+      )}
     </div>
   );
 };

@@ -10,7 +10,7 @@ import { MdOutlineFileUpload } from "react-icons/md";
 
 type FormValues = z.infer<typeof formProfilePicture>;
 
-export const UpdateProfilePictureForm = () => {
+export const AddProfilePictureForm = () => {
   const {
     setValue,
     setError,
@@ -23,11 +23,23 @@ export const UpdateProfilePictureForm = () => {
     (acceptedFiles: File[]) => {
       if (acceptedFiles && acceptedFiles.length > 0) {
         const selectedFile = acceptedFiles[0];
+        if (selectedFile.size > 5 * 1024 * 1024) {
+          setError("profilePicture", {
+            message: "L'image ne doit pas dépasser 5 Mo",
+          });
+          return;
+        }
+        if (!selectedFile.type.startsWith("image/")) {
+          setError("profilePicture", {
+            message: "Le fichier doit être une image",
+          });
+          return;
+        }
         setFile(selectedFile);
-        setValue("profilePicture", selectedFile);
+        setValue("profilePicture", selectedFile, { shouldValidate: true });
       }
     },
-    [setValue]
+    [setValue, setError]
   );
 
   useEffect(() => {
@@ -52,7 +64,7 @@ export const UpdateProfilePictureForm = () => {
   });
 
   return (
-    <div className="space-y-6 min-h-46">
+    <div className="min-h-72">
       {file ? (
         <div className="flex flex-col items-center">
           {previewUrl && (
@@ -83,7 +95,7 @@ export const UpdateProfilePictureForm = () => {
         <div>
           <div
             {...getRootProps()}
-            className={`min-h-56 flex items-center justify-center border-2 border-dashed rounded-md p-6 text-center cursor-pointer ${
+            className={`min-h-72 flex items-center justify-center border-2 border-dashed rounded-md p-6 text-center cursor-pointer ${
               isDragActive ? "!border-solid border-link bg-muted" : "border"
             }`}
           >

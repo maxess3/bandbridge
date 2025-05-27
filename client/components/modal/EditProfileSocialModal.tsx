@@ -1,6 +1,6 @@
 "use client";
 
-import { EditModal } from "@/components/modal/EditModal";
+import { EditModalWithNavigation } from "@/components/modal/EditModalWithNavigation";
 import { UpdateProfileSocialForm } from "@/components/form/UpdateProfileSocialForm";
 import { formSocialProfile } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -53,7 +53,7 @@ export function EditProfileSocialModal() {
   return (
     <>
       {profile && (
-        <EditModal
+        <EditModalWithNavigation
           open={!loadingProfile}
           onSubmit={async (values) => {
             return withDelay(() =>
@@ -73,7 +73,7 @@ export function EditProfileSocialModal() {
           isSubmitting={updateSocialFormMutation.isPending || isDelaying}
         >
           <UpdateProfileSocialForm />
-        </EditModal>
+        </EditModalWithNavigation>
       )}
     </>
   );

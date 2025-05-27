@@ -1,6 +1,6 @@
 "use client";
 
-import { EditModal } from "@/components/modal/EditModal";
+import { EditModalWithNavigation } from "@/components/modal/EditModalWithNavigation";
 import { UpdateProfileGeneralForm } from "@/components/form/UpdateProfileGeneralForm";
 import { formGeneralProfile } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -80,7 +80,7 @@ export function EditProfileGeneralModal() {
   return (
     <>
       {profile && (
-        <EditModal
+        <EditModalWithNavigation
           open={!loadingProfile}
           onSubmit={async (values) => {
             return withDelay(() => updateProfileMutation.mutateAsync(values));
@@ -116,7 +116,7 @@ export function EditProfileGeneralModal() {
           isSubmitting={updateProfileMutation.isPending || isDelaying}
         >
           <UpdateProfileGeneralForm />
-        </EditModal>
+        </EditModalWithNavigation>
       )}
     </>
   );

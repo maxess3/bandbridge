@@ -1,7 +1,7 @@
 "use client";
 
-import { EditModalWithoutParallel } from "@/components/modal/EditModalWithoutParallel";
-import { UpdateProfilePictureForm } from "@/components/form/UpdateProfilePictureForm";
+import { EditModal } from "@/components/modal/EditModal";
+import { AddProfilePictureForm } from "@/components/form/AddProfilePictureForm";
 import { formProfilePicture } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/useProfile";
@@ -14,15 +14,15 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { IoMdClose } from "react-icons/io";
 
-interface UploadProfilePictureModalProps {
+interface EditProfilePictureUploadModalProps {
   onClose: () => void;
   open: boolean;
 }
 
-export function UploadProfilePictureModal({
+export function EditProfilePictureUploadModal({
   onClose,
   open,
-}: UploadProfilePictureModalProps) {
+}: EditProfilePictureUploadModalProps) {
   const { data: session, update } = useSession();
   const { setIgnoreLoader } = useSessionLoader();
   const axiosAuth = useAxiosAuth();
@@ -81,7 +81,7 @@ export function UploadProfilePictureModal({
   return (
     <>
       {profile && (
-        <EditModalWithoutParallel
+        <EditModal
           open={open && !loadingProfile}
           onClose={onClose}
           onSubmit={async (values) => {
@@ -91,11 +91,12 @@ export function UploadProfilePictureModal({
           }}
           formSchema={formProfilePicture}
           defaultValues={{}}
-          title="Modifier la photo de profil"
+          title="Ajouter une photo de profil"
           isSubmitting={updateProfilePictureMutation.isPending || isDelaying}
+          showOverlay={false}
         >
-          <UpdateProfilePictureForm />
-        </EditModalWithoutParallel>
+          <AddProfilePictureForm />
+        </EditModal>
       )}
     </>
   );
