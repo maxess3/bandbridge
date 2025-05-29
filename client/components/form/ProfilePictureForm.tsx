@@ -11,10 +11,10 @@ export const ProfilePictureForm = () => {
     process.env.NEXT_PUBLIC_R2_URL + "/" + profile?.profilePictureKey;
 
   return (
-    <div className="space-y-6 min-h-46">
+    <div className="space-y-6 min-h-46 py-2">
       <div className="flex flex-col items-center">
-        <div className="w-64 h-64 flex rounded-full relative">
-          <Avatar className="w-64 h-64">
+        <div className="w-60 h-60 flex rounded-full relative">
+          <Avatar className="w-60 h-60">
             <AvatarImage src={imageURL} alt="Photo de profil" />
             <AvatarFallback className="bg-secondary">
               <DefaultProfilePicture className="mr-4 mt-24 text-background w-[285px] h-[285px]" />
