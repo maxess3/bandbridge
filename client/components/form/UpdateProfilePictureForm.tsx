@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 
 type FormValues = z.infer<typeof formProfilePicture>;
 
-export const AddProfilePictureForm = () => {
+export const UpdateProfilePictureForm = () => {
 	const {
 		setValue,
 		setError,

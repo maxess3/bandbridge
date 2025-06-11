@@ -70,8 +70,9 @@ export function BaseEditModal<T extends FieldValues>({
 	const formSubmit = useCallback<SubmitHandler<T>>(
 		async (data) => {
 			await onSubmit(data);
+			methods.reset(defaultValues);
 		},
-		[onSubmit]
+		[onSubmit, methods, defaultValues]
 	);
 
 	// Handle the open change

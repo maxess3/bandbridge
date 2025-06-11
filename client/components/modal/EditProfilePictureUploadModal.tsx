@@ -1,7 +1,7 @@
 "use client";
 
 import { EditModal } from "@/components/modal/EditModal";
-import { AddProfilePictureForm } from "@/components/form/AddProfilePictureForm";
+import { UpdateProfilePictureForm } from "@/components/form/UpdateProfilePictureForm";
 import { formProfilePicture } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/useProfile";
@@ -95,7 +95,7 @@ export function EditProfilePictureUploadModal({
 					isSubmitting={updateProfilePictureMutation.isPending || isDelaying}
 					showOverlay={false}
 				>
-					<AddProfilePictureForm />
+					<UpdateProfilePictureForm />
 				</EditModal>
 			)}
 		</>
