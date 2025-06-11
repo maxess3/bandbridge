@@ -73,7 +73,10 @@ export function EditProfilePictureModal({
 					</ViewModal>
 					<EditProfilePictureUploadModal
 						open={showUploadModal}
-						onClose={() => setShowUploadModal(false)}
+						onClose={() => {
+							setShowUploadModal(false);
+							onClose();
+						}}
 					/>
 				</>
 			)}
