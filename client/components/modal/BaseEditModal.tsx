@@ -137,7 +137,6 @@ export function BaseEditModal<T extends FieldValues>({
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>
-
 			<AlertDialog
 				open={showExitConfirmation}
 				onOpenChange={setShowExitConfirmation}
@@ -145,17 +144,16 @@ export function BaseEditModal<T extends FieldValues>({
 				<AlertDialogContent>
 					<AlertDialogHeader>
 						<AlertDialogTitle>Modifications non sauvegardées</AlertDialogTitle>
-						<AlertDialogDescription>
-							Vous avez des modifications non sauvegardées. Que souhaitez-vous
-							faire ?
+						<AlertDialogDescription className="text-base opacity-80">
+							Annuler les modifications ?
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 					<AlertDialogFooter>
 						<AlertDialogCancel onClick={() => setShowExitConfirmation(false)}>
-							Non merci
+							Ignorer
 						</AlertDialogCancel>
 						<AlertDialogAction onClick={handleCloseModal}>
-							Abandonner
+							Annuler
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>

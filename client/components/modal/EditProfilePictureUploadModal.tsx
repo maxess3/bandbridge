@@ -17,11 +17,13 @@ import { IoMdClose } from "react-icons/io";
 interface EditProfilePictureUploadModalProps {
 	onClose: () => void;
 	open: boolean;
+	onSuccess?: () => void;
 }
 
 export function EditProfilePictureUploadModal({
 	onClose,
 	open,
+	onSuccess,
 }: EditProfilePictureUploadModalProps) {
 	const { data: session, update } = useSession();
 	const { setIgnoreLoader } = useSessionLoader();
@@ -75,6 +77,7 @@ export function EditProfilePictureUploadModal({
 			}
 
 			onClose();
+			onSuccess?.();
 		},
 	});
 

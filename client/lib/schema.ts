@@ -19,6 +19,13 @@ export const formSignUpSchema = z.object({
 			/^[a-zA-ZÀ-ÿ\-]+$/,
 			"Le prénom ne doit contenir que des lettres et tirets"
 		),
+	lastName: z
+		.string()
+		.min(1, "Le nom est requis")
+		.regex(
+			/^[a-zA-ZÀ-ÿ\-]+$/,
+			"Le nom ne doit contenir que des lettres et tirets"
+		),
 });
 
 export const formLoginSchema = z.object({
@@ -59,6 +66,13 @@ export const formGeneralProfile = z.object({
 		.regex(
 			/^[a-zA-ZÀ-ÿ\-]+$/,
 			"Le prénom ne doit contenir que des lettres et tirets"
+		),
+	lastname: z
+		.string()
+		.min(1, "Le nom est requis")
+		.regex(
+			/^[a-zA-ZÀ-ÿ\-]+$/,
+			"Le nom ne doit contenir que des lettres et tirets"
 		),
 	username: z
 		.string()

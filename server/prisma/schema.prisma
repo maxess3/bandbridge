@@ -63,6 +63,7 @@ model Profile {
   gender            Gender       @default(OTHER)
   username          String?      @unique
   firstName         String       @db.VarChar(60)
+  lastName          String       @db.VarChar(60)
   birthDate         DateTime?    @db.Date
   country           String?
   city              String?
