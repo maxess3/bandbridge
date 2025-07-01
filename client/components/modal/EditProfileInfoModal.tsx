@@ -1,7 +1,7 @@
 "use client";
 
 import { EditModalWithNavigation } from "@/components/modal/EditModalWithNavigation";
-import { UpdateProfileGeneralForm } from "@/components/form/UpdateProfileGeneralForm";
+import { UpdateProfileInfoForm } from "@/components/form/UpdateProfileInfoForm";
 import { formGeneralProfile } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/useProfile";
@@ -15,7 +15,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { IoMdClose } from "react-icons/io";
 
-export function EditProfileGeneralModal() {
+export function EditProfileInfoModal() {
 	const router = useRouter();
 	const { data: session } = useSession();
 	const { updateSession } = useSessionUpdate();
@@ -82,36 +82,11 @@ export function EditProfileGeneralModal() {
 					}}
 					formSchema={formGeneralProfile}
 					route={`/${profile?.username}`}
-					defaultValues={{
-						firstname: profile?.firstName ?? "",
-						lastname: profile?.lastName ?? "",
-						username: profile?.username ?? "",
-						birthdate: {
-							day: profile?.birthDate
-								? new Date(profile.birthDate)
-										.getDate()
-										.toString()
-										.padStart(2, "0")
-								: "",
-							month: profile?.birthDate
-								? (new Date(profile.birthDate).getMonth() + 1)
-										.toString()
-										.padStart(2, "0")
-								: "",
-							year: profile?.birthDate
-								? new Date(profile.birthDate).getFullYear().toString()
-								: "",
-						},
-						gender: profile?.gender || "OTHER",
-						country: profile?.country || "France",
-						zipcode: profile?.zipCode ?? "",
-						city: profile?.city ?? "",
-						formattedBirthdate: profile?.birthDate ?? "",
-					}}
-					title="Modifier le profil"
+					defaultValues={{}}
+					title="Modifier les infos"
 					isSubmitting={updateProfileMutation.isPending || isDelaying}
 				>
-					<UpdateProfileGeneralForm />
+					<UpdateProfileInfoForm />
 				</EditModalWithNavigation>
 			)}
 		</>

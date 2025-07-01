@@ -15,6 +15,7 @@ export interface LastFollowers {
 
 export interface Profile {
 	userId: string;
+	description: string;
 	firstName: string;
 	lastName: string;
 	username: string;

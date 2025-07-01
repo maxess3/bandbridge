@@ -75,6 +75,7 @@ model Profile {
   band              Band[]
   lastActiveAt      DateTime?
   profilePictureKey String?
+  description       String?      @db.Text
   userId            String       @unique
   user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
