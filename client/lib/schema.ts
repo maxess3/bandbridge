@@ -189,7 +189,7 @@ export const formSocialProfile = z.object({
 });
 
 export const formInfoProfile = z.object({
-	description: z.string().min(1, "La description est requise"),
+	description: z.string().optional(),
 	youtube: z
 		.string()
 		.trim()

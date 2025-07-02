@@ -2,50 +2,32 @@
 
 import { EditModalWithNavigation } from "@/components/modal/EditModalWithNavigation";
 import { UpdateProfileInfoForm } from "@/components/form/UpdateProfileInfoForm";
-import { formGeneralProfile } from "@/lib/schema";
+import { formInfoProfile } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/useProfile";
 import { PROFILE_QUERY_KEY } from "@/hooks/useProfile";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/useTransitionDelay";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useSessionUpdate } from "@/hooks/useSessionUpdate";
 import { z } from "zod";
 import { toast } from "sonner";
 import { IoMdClose } from "react-icons/io";
 
 export function EditProfileInfoModal() {
 	const router = useRouter();
-	const { data: session } = useSession();
-	const { updateSession } = useSessionUpdate();
 	const axiosAuth = useAxiosAuth();
 	const queryClient = useQueryClient();
 	const { data: profile, isLoading: loadingProfile } = useProfile();
 	const { isDelaying, withDelay } = useTransitionDelay(600);
 
 	const updateProfileMutation = useMutation({
-		mutationFn: async (values: z.infer<typeof formGeneralProfile>) => {
-			const { data } = await axiosAuth.put("/profile/me", values);
+		mutationFn: async (values: z.infer<typeof formInfoProfile>) => {
+			const { data } = await axiosAuth.put("/profile/me/info", values);
 			return data;
 		},
 		meta: { skipToast: true },
 		onSuccess: async (data) => {
 			await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
-
-			const usernameChanged =
-				data?.user?.username &&
-				session?.user?.username !== data?.user?.username;
-			const firstnameChanged =
-				data?.user?.firstName &&
-				session?.user?.firstName !== data?.user?.firstName;
-
-			if (usernameChanged || firstnameChanged) {
-				await updateSession({
-					username: data?.user?.username,
-					firstName: data?.user?.firstName,
-				});
-			}
 
 			if (data?.message) {
 				toast.success(data.message, {
@@ -60,14 +42,10 @@ export function EditProfileInfoModal() {
 				});
 			}
 
-			if (usernameChanged) {
-				router.push(`/${data?.user?.username}`);
+			if (window.history.length > 2) {
+				router.back();
 			} else {
-				if (window.history.length > 2) {
-					router.back();
-				} else {
-					router.push(`/${data?.user?.username}`);
-				}
+				router.push(`/${data?.user?.username}`);
 			}
 		},
 	});
@@ -78,11 +56,19 @@ export function EditProfileInfoModal() {
 				<EditModalWithNavigation
 					open={!loadingProfile}
 					onSubmit={async (values) => {
+						console.log(values);
 						return withDelay(() => updateProfileMutation.mutateAsync(values));
 					}}
-					formSchema={formGeneralProfile}
+					formSchema={formInfoProfile}
 					route={`/${profile?.username}`}
-					defaultValues={{}}
+					defaultValues={{
+						description: profile?.description || "",
+						youtube: profile?.youtube || "",
+						instagram: profile?.instagram || "",
+						tiktok: profile?.tiktok || "",
+						twitter: profile?.twitter || "",
+						soundcloud: profile?.soundcloud || "",
+					}}
 					title="Modifier les infos"
 					isSubmitting={updateProfileMutation.isPending || isDelaying}
 				>

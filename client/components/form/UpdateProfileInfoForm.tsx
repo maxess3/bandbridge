@@ -7,11 +7,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { AiOutlineYoutube } from "react-icons/ai";
@@ -19,204 +19,320 @@ import { FaInstagram } from "react-icons/fa6";
 import { FaTiktok } from "react-icons/fa6";
 import { FaXTwitter } from "react-icons/fa6";
 import { RiSoundcloudFill } from "react-icons/ri";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Plus, X } from "lucide-react";
 
 type FormValues = z.infer<typeof formInfoProfile>;
 
 interface SocialLink {
-  id: string;
-  platform: string;
-  url: string;
+	id: string;
+	platform: string;
+	url: string;
 }
 
 const SOCIAL_PLATFORMS = [
-  {
-    value: "youtube",
-    label: "YouTube",
-    icon: AiOutlineYoutube,
-    placeholder: "https://www.youtube.com/@username",
-  },
-  {
-    value: "instagram",
-    label: "Instagram",
-    icon: FaInstagram,
-    placeholder: "https://www.instagram.com/username",
-  },
-  {
-    value: "tiktok",
-    label: "TikTok",
-    icon: FaTiktok,
-    placeholder: "https://www.tiktok.com/@username",
-  },
-  {
-    value: "twitter",
-    label: "Twitter",
-    icon: FaXTwitter,
-    placeholder: "https://x.com/username",
-  },
-  {
-    value: "soundcloud",
-    label: "SoundCloud",
-    icon: RiSoundcloudFill,
-    placeholder: "https://soundcloud.com/username",
-  },
+	{
+		value: "youtube",
+		label: "YouTube",
+		icon: AiOutlineYoutube,
+		placeholder: "https://www.youtube.com/@username",
+	},
+	{
+		value: "instagram",
+		label: "Instagram",
+		icon: FaInstagram,
+		placeholder: "https://www.instagram.com/username",
+	},
+	{
+		value: "tiktok",
+		label: "TikTok",
+		icon: FaTiktok,
+		placeholder: "https://www.tiktok.com/@username",
+	},
+	{
+		value: "twitter",
+		label: "Twitter",
+		icon: FaXTwitter,
+		placeholder: "https://x.com/username",
+	},
+	{
+		value: "soundcloud",
+		label: "SoundCloud",
+		icon: RiSoundcloudFill,
+		placeholder: "https://soundcloud.com/username",
+	},
 ];
 
 export const UpdateProfileInfoForm = () => {
-  const {
-    register,
-    formState: { errors },
-    setValue,
-    watch,
-  } = useFormContext<FormValues>();
+	const {
+		register,
+		formState: { errors },
+		setValue,
+		watch,
+	} = useFormContext<FormValues>();
 
-  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
+	const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
+	const initialized = useRef(false);
 
-  const addSocialLink = useCallback(() => {
-    const newLink: SocialLink = {
-      id: `social-${Date.now()}`,
-      platform: "",
-      url: "",
-    };
-    setSocialLinks((prev) => [...prev, newLink]);
-  }, []);
+	// Obtenir les valeurs actuelles du formulaire
+	const formValues = watch();
 
-  const removeSocialLink = useCallback((id: string) => {
-    setSocialLinks((prev) => prev.filter((link) => link.id !== id));
-  }, []);
+	// Synchroniser les liens sociaux avec le formulaire
+	const updateFormSocialLinks = useCallback(
+		(links: SocialLink[]) => {
+			// Réinitialiser tous les champs sociaux
+			SOCIAL_PLATFORMS.forEach((platform) => {
+				setValue(platform.value as keyof FormValues, "", {
+					shouldDirty: true,
+					shouldValidate: true,
+				});
+			});
 
-  const updateSocialLink = useCallback(
-    (id: string, field: "platform" | "url", value: string) => {
-      setSocialLinks((prev) =>
-        prev.map((link) =>
-          link.id === id ? { ...link, [field]: value } : link
-        )
-      );
-    },
-    []
-  );
+			// Mettre à jour avec les liens actuels
+			links.forEach((link) => {
+				if (link.platform && link.url) {
+					setValue(link.platform as keyof FormValues, link.url, {
+						shouldDirty: true,
+						shouldValidate: true,
+					});
+				}
+			});
+		},
+		[setValue]
+	);
 
-  const getPlatformIcon = (platformValue: string) => {
-    const platform = SOCIAL_PLATFORMS.find((p) => p.value === platformValue);
-    return platform?.icon;
-  };
+	// Initialiser les liens sociaux depuis les valeurs du formulaire
+	useEffect(() => {
+		if (initialized.current) return;
 
-  const getPlatformPlaceholder = (platformValue: string) => {
-    const platform = SOCIAL_PLATFORMS.find((p) => p.value === platformValue);
-    return platform?.placeholder || "";
-  };
+		const initialLinks: SocialLink[] = [];
 
-  return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <Label
-          htmlFor="description"
-          className="opacity-80 flex items-center text-sm"
-        >
-          Vous pouvez évoquer votre expérience, votre domaine d'activité ou vos
-          compétences.
-        </Label>
-        <Textarea
-          id="description"
-          {...register("description")}
-          className={`bg-transparent text-base md:text-base min-h-[220px] ${
-            errors.description && "border-red-500"
-          }`}
-        />
-        {errors.description && (
-          <p className="text-red-500 text-sm">{errors.description.message}</p>
-        )}
-      </div>
+		SOCIAL_PLATFORMS.forEach((platform) => {
+			const url = formValues[platform.value as keyof FormValues] as string;
+			if (url) {
+				initialLinks.push({
+					id: `social-${platform.value}-${Date.now()}`,
+					platform: platform.value,
+					url: url,
+				});
+			}
+		});
 
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h4 className="font-semibold text-2xl">Liens sociaux</h4>
-          <Button
-            type="button"
-            onClick={addSocialLink}
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            Ajouter un lien social
-          </Button>
-        </div>
+		setSocialLinks(initialLinks);
+		initialized.current = true;
+	}, [formValues]);
 
-        <div className="space-y-3">
-          {socialLinks.map((link) => {
-            const IconComponent = getPlatformIcon(link.platform);
+	const addSocialLink = useCallback(() => {
+		// Vérifier si on a atteint le maximum de liens sociaux
+		if (socialLinks.length >= SOCIAL_PLATFORMS.length) {
+			return;
+		}
 
-            return (
-              <div
-                key={link.id}
-                className="flex items-center gap-3 p-3 border rounded-lg"
-              >
-                <div className="flex items-center gap-2 min-w-[140px]">
-                  {IconComponent && <IconComponent className="text-lg" />}
-                  <Select
-                    value={link.platform}
-                    onValueChange={(value) =>
-                      updateSocialLink(link.id, "platform", value)
-                    }
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Plateforme" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {SOCIAL_PLATFORMS.map((platform) => {
-                        const PlatformIcon = platform.icon;
-                        return (
-                          <SelectItem
-                            key={platform.value}
-                            value={platform.value}
-                          >
-                            <div className="flex items-center gap-2">
-                              <PlatformIcon className="text-lg" />
-                              {platform.label}
-                            </div>
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectContent>
-                  </Select>
-                </div>
+		const newLink: SocialLink = {
+			id: `social-${Date.now()}`,
+			platform: "",
+			url: "",
+		};
+		const updatedLinks = [...socialLinks, newLink];
+		setSocialLinks(updatedLinks);
+		updateFormSocialLinks(updatedLinks);
+	}, [socialLinks, updateFormSocialLinks]);
 
-                <div className="flex-1">
-                  <Input
-                    placeholder={getPlatformPlaceholder(link.platform)}
-                    value={link.url}
-                    onChange={(e) =>
-                      updateSocialLink(link.id, "url", e.target.value)
-                    }
-                    className="bg-transparent"
-                  />
-                </div>
+	const removeSocialLink = useCallback(
+		(id: string) => {
+			const updatedLinks = socialLinks.filter((link) => link.id !== id);
+			setSocialLinks(updatedLinks);
+			updateFormSocialLinks(updatedLinks);
+		},
+		[socialLinks, updateFormSocialLinks]
+	);
 
-                <Button
-                  type="button"
-                  onClick={() => removeSocialLink(link.id)}
-                  variant="ghost"
-                  size="sm"
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-            );
-          })}
+	const updateSocialLink = useCallback(
+		(id: string, field: "platform" | "url", value: string) => {
+			const updatedLinks = socialLinks.map((link) =>
+				link.id === id ? { ...link, [field]: value } : link
+			);
 
-          {socialLinks.length === 0 && (
-            <div className="text-center py-8 text-muted-foreground border-2 border-dashed rounded-lg">
-              <p>Aucun lien social ajouté</p>
-              <p className="text-sm">
-                Cliquez sur "Ajouter un lien social" pour commencer
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+			// Si on change de plateforme, réinitialiser les liens qui utilisent maintenant une plateforme non disponible
+			if (field === "platform") {
+				const usedPlatforms = updatedLinks
+					.filter((link) => link.platform)
+					.map((link) => link.platform);
+
+				// Trouver les liens qui ont une plateforme qui n'est plus disponible
+				const invalidLinks = updatedLinks.filter(
+					(link) =>
+						link.platform &&
+						usedPlatforms.filter((p) => p === link.platform).length > 1
+				);
+
+				// Réinitialiser ces liens
+				invalidLinks.forEach((invalidLink) => {
+					const linkIndex = updatedLinks.findIndex(
+						(link) => link.id === invalidLink.id
+					);
+					if (linkIndex !== -1) {
+						updatedLinks[linkIndex] = { ...invalidLink, platform: "", url: "" };
+					}
+				});
+			}
+
+			setSocialLinks(updatedLinks);
+			updateFormSocialLinks(updatedLinks);
+
+			// Déclencher la validation immédiatement pour le champ modifié
+			if (field === "url") {
+				const link = updatedLinks.find((l) => l.id === id);
+				if (link && link.platform) {
+					setValue(link.platform as keyof FormValues, value, {
+						shouldValidate: true,
+					});
+				}
+			}
+		},
+		[socialLinks, updateFormSocialLinks, setValue]
+	);
+
+	const getPlatformPlaceholder = (platformValue: string) => {
+		const platform = SOCIAL_PLATFORMS.find((p) => p.value === platformValue);
+		return platform?.placeholder || "";
+	};
+
+	const getAvailablePlatforms = (currentLinkId: string) => {
+		const usedPlatforms = socialLinks
+			.filter((link) => link.id !== currentLinkId && link.platform)
+			.map((link) => link.platform);
+
+		return SOCIAL_PLATFORMS.filter(
+			(platform) => !usedPlatforms.includes(platform.value)
+		);
+	};
+
+	// Fonction pour obtenir l'erreur d'un lien social spécifique
+	const getSocialLinkError = (platform: string) => {
+		return errors[platform as keyof FormValues]?.message as string | undefined;
+	};
+
+	return (
+		<div className="space-y-6">
+			<div className="space-y-2">
+				<Label
+					htmlFor="description"
+					className="opacity-80 flex items-center text-sm"
+				>
+					Vous pouvez évoquer votre expérience, votre domaine d'activité ou vos
+					compétences.
+				</Label>
+				<Textarea
+					id="description"
+					{...register("description")}
+					className={`bg-transparent text-base md:text-base min-h-[220px] ${
+						errors.description && "border-red-500"
+					}`}
+				/>
+				{errors.description && (
+					<p className="text-red-500 text-sm">{errors.description.message}</p>
+				)}
+			</div>
+
+			<div className="space-y-4">
+				<h4 className="font-semibold text-xl">Liens sociaux</h4>
+
+				<div className="space-y-3">
+					{socialLinks.map((link) => {
+						const linkError = getSocialLinkError(link.platform);
+						return (
+							<div key={link.id} className="space-y-2">
+								<div className="flex items-center gap-3 p-3 border rounded-lg">
+									<div className="w-[170px]">
+										<Select
+											value={link.platform}
+											onValueChange={(value) => {
+												updateSocialLink(link.id, "platform", value);
+												// Déclencher la validation après le changement de plateforme
+												if (link.url) {
+													setValue(value as keyof FormValues, link.url, {
+														shouldValidate: true,
+													});
+												}
+											}}
+										>
+											<SelectTrigger className="w-full">
+												<SelectValue placeholder="Plateforme" />
+											</SelectTrigger>
+											<SelectContent>
+												{getAvailablePlatforms(link.id).map((platform) => {
+													const PlatformIcon = platform.icon;
+													return (
+														<SelectItem
+															key={platform.value}
+															value={platform.value}
+														>
+															<div className="flex items-center gap-2">
+																<PlatformIcon className="text-lg" />
+																{platform.label}
+															</div>
+														</SelectItem>
+													);
+												})}
+											</SelectContent>
+										</Select>
+									</div>
+
+									<div className="flex-1">
+										{link.platform && (
+											<Input
+												placeholder={getPlatformPlaceholder(link.platform)}
+												value={link.url}
+												onChange={(e) =>
+													updateSocialLink(link.id, "url", e.target.value)
+												}
+												onBlur={() => {
+													// Déclencher la validation lors de la perte de focus
+													const currentValue = link.url;
+													setValue(
+														link.platform as keyof FormValues,
+														currentValue,
+														{
+															shouldValidate: true,
+														}
+													);
+												}}
+												className={`bg-transparent ${
+													linkError ? "border-red-500" : ""
+												}`}
+											/>
+										)}
+									</div>
+
+									<Button
+										onClick={() => removeSocialLink(link.id)}
+										variant="ghost"
+										size="sm"
+										className="text-red-500"
+									>
+										<X />
+									</Button>
+								</div>
+								{linkError && (
+									<p className="text-red-500 text-sm px-3">{linkError}</p>
+								)}
+							</div>
+						);
+					})}
+				</div>
+
+				<Button
+					onClick={addSocialLink}
+					variant="secondary"
+					className="flex items-center gap-2"
+					disabled={socialLinks.length >= SOCIAL_PLATFORMS.length}
+					type="button"
+				>
+					<Plus className="h-4 w-4" />
+					Ajouter un lien
+				</Button>
+			</div>
+		</div>
+	);
 };
