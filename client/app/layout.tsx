@@ -6,8 +6,8 @@ import AuthSessionProviders from "@/providers/AuthSessionProviders";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Navbar from "@/components/general/header/Navbar";
-import Footer from "@/components/general/footer/Footer";
+import Navbar from "@/components/layout/header/Navbar";
+import Footer from "@/components/layout/footer/Footer";
 
 const DM = DM_Sans({
 	weight: ["400", "500", "600", "700", "800", "900"],

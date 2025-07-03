@@ -4,7 +4,7 @@ import { profileServices } from "@/services/profileServices";
 import { notFound } from "next/navigation";
 import { getQueryClient } from "@/lib/react-query/getQueryClient";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import { EditProfileGeneralModal } from "@/components/modal/EditProfileGeneralModal";
+import { EditProfileGeneralModal } from "@/components/features/profile/modals/EditProfileGeneralModal";
 
 export default async function Page({
 	params,

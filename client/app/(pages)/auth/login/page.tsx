@@ -18,7 +18,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GoogleButton } from "@/components/general/_partials/button/GoogleButton";
+import { GoogleButton } from "@/components/shared/buttons/GoogleButton";
 import { MdError } from "react-icons/md";
 
 type Inputs = z.infer<typeof formLoginSchema>;

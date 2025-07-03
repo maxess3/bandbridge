@@ -5,7 +5,7 @@ import {
 	SessionLoaderProvider,
 	useSessionLoader,
 } from "@/contexts/SessionLoaderContext";
-import { LoadingSession } from "@/components/loader/LoadingSession";
+import { LoadingSession } from "@/components/shared/loader/LoadingSession";
 import { useState, useEffect } from "react";
 
 type SessionProps = {
