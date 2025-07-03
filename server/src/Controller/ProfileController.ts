@@ -28,6 +28,7 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 				profilePictureKey: true,
 				role: true,
 				city: true,
+				description: true,
 				socialLinks: {
 					select: {
 						platform: true,
@@ -128,6 +129,7 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 				profilePictureKey: true,
 				role: true,
 				city: true,
+				description: true,
 				socialLinks: {
 					select: {
 						platform: true,
@@ -269,7 +271,7 @@ export const updateGeneralProfileOwner = async (
 	}
 };
 
-export const updateSocialProfileOwner = async (req: Request, res: Response) => {
+export const updateInfoProfileOwner = async (req: Request, res: Response) => {
 	try {
 		const userId = req.user.userId;
 		if (!userId) {
@@ -287,6 +289,15 @@ export const updateSocialProfileOwner = async (req: Request, res: Response) => {
 			return;
 		}
 
+		// Update description
+		await prisma.profile.update({
+			where: { userId },
+			data: {
+				description: req.body.description || null,
+			},
+		});
+
+		// Update social links
 		await prisma.socialLink.deleteMany({
 			where: { profileId: profile.id },
 		});
@@ -314,14 +325,24 @@ export const updateSocialProfileOwner = async (req: Request, res: Response) => {
 			data: socialLinks,
 		});
 
+		// Get updated profile data
+		const updatedProfile = await prisma.profile.findUnique({
+			where: { userId },
+			select: {
+				username: true,
+				description: true,
+			},
+		});
+
 		res.status(200).json({
-			message: "Vos liens sociaux ont bien été mis à jour",
+			message: "Vos informations ont bien été mises à jour",
+			user: updatedProfile,
 			links: updatedLinks,
 		});
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({
-			message: "[Erreur] Mise à jour des liens sociaux impossible",
+			message: "[Erreur] Mise à jour des informations impossible",
 		});
 	}
 };

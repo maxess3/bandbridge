@@ -2,7 +2,7 @@ import { Router } from "express";
 import authenticateToken from "../middleware/authenticateToken";
 import { validateSchema } from "../middleware/validateSchema";
 import upload from "../middleware/multerUpload";
-import { formGeneralProfile, formSocialProfile } from "../lib/schema";
+import { formGeneralProfile, formInfoProfile } from "../lib/schema";
 import * as ProfileController from "../Controller/ProfileController";
 const router = Router();
 
@@ -16,10 +16,10 @@ router.put(
 );
 
 router.put(
-	"/me/social",
+	"/me/info",
 	authenticateToken,
-	validateSchema(formSocialProfile),
-	ProfileController.updateSocialProfileOwner
+	validateSchema(formInfoProfile),
+	ProfileController.updateInfoProfileOwner
 );
 
 router.post(

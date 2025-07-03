@@ -6,32 +6,13 @@ import Image from "next/image";
 import ProfileSmall from "@/public/profile_small.png";
 import { Avatar } from "@radix-ui/react-avatar";
 import { Button } from "@/components/ui/button";
-import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
 	HoverCard,
 	HoverCardTrigger,
 	HoverCardContent,
 } from "@/components/ui/hover-card";
-import { ProfileSocialLink } from "@/components/features/profile/sidebar/ProfileSocialLink";
-import { FiPlusCircle } from "react-icons/fi";
 import { Profile } from "@/types/Profile";
-import { saveLastFocusedElement } from "@/utils/utils";
-
-type SocialPlatform =
-	| "youtube"
-	| "instagram"
-	| "tiktok"
-	| "twitter"
-	| "soundcloud";
-
-type SocialLinks = Partial<Record<SocialPlatform, string>>;
-
-interface SocialLinksProps {
-	socialLinks: SocialLinks;
-	username: string;
-	isOwner: boolean;
-}
 
 interface ListItem {
 	name: string;
@@ -102,49 +83,6 @@ const ListSection = ({
 	</div>
 );
 
-const SocialLinks = ({ socialLinks, username, isOwner }: SocialLinksProps) => {
-	const platforms: SocialPlatform[] = [
-		"youtube",
-		"instagram",
-		"tiktok",
-		"twitter",
-		"soundcloud",
-	];
-
-	return (
-		<div className="space-y-3 p-4 border rounded-xl">
-			<span className="uppercase text-sm font-bold">Liens</span>
-			<div className="space-y-4">
-				<ul className="text-sm flex items-center flex-wrap gap-2">
-					{platforms.map(
-						(platform) =>
-							socialLinks?.[platform] && (
-								<ProfileSocialLink
-									key={platform}
-									platform={platform}
-									url={socialLinks[platform]}
-								/>
-							)
-					)}
-				</ul>
-				{isOwner && (
-					<Link
-						href={`/${username}/edit/profile/social`}
-						onClick={saveLastFocusedElement}
-						className={
-							buttonVariants({ variant: "secondary", size: "xs" }) +
-							" !rounded-full text-sm"
-						}
-					>
-						<FiPlusCircle style={{ height: 16, width: 16 }} />
-						Ajouter un lien
-					</Link>
-				)}
-			</div>
-		</div>
-	);
-};
-
 export const ProfileSidebar = ({
 	profile,
 	isOwner,
@@ -171,15 +109,6 @@ export const ProfileSidebar = ({
 	return (
 		<div className="w-[300px] rounded-xl">
 			<div className="space-y-3">
-				{(!isOwner
-					? profile?.socialLinks && Object.keys(profile?.socialLinks).length > 0
-					: true) && (
-					<SocialLinks
-						socialLinks={profile?.socialLinks}
-						username={profile?.username}
-						isOwner={isOwner}
-					/>
-				)}
 				{profile?.lastFollowers.length && !isOwner ? (
 					<div className="space-y-4 border rounded-xl">
 						<div className="">

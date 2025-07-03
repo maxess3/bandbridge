@@ -145,49 +145,6 @@ export const formGeneralProfile = z.object({
 		),
 });
 
-export const formSocialProfile = z.object({
-	youtube: z
-		.string()
-		.trim()
-		.optional()
-		.refine(
-			(val) => !val || val.startsWith("https://www.youtube.com/"),
-			'L\'URL doit commencer par "https://www.youtube.com/"'
-		),
-	instagram: z
-		.string()
-		.trim()
-		.optional()
-		.refine(
-			(val) => !val || val.startsWith("https://www.instagram.com/"),
-			'L\'URL doit commencer par "https://www.instagram.com/"'
-		),
-	tiktok: z
-		.string()
-		.trim()
-		.optional()
-		.refine(
-			(val) => !val || val.startsWith("https://www.tiktok.com/"),
-			'L\'URL doit commencer par "https://www.tiktok.com/"'
-		),
-	twitter: z
-		.string()
-		.trim()
-		.optional()
-		.refine(
-			(val) => !val || val.startsWith("https://x.com/"),
-			'L\'URL doit commencer par "https://x.com/"'
-		),
-	soundcloud: z
-		.string()
-		.trim()
-		.optional()
-		.refine(
-			(val) => !val || val.startsWith("https://soundcloud.com/"),
-			'L\'URL doit commencer par "https://soundcloud.com/"'
-		),
-});
-
 export const formInfoProfile = z.object({
 	description: z.string().optional(),
 	youtube: z

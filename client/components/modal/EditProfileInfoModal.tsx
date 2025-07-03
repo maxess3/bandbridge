@@ -30,6 +30,7 @@ export function EditProfileInfoModal() {
 			await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
 
 			if (data?.message) {
+				console.log(data);
 				toast.success(data.message, {
 					action: {
 						label: (
@@ -63,10 +64,10 @@ export function EditProfileInfoModal() {
 					route={`/${profile?.username}`}
 					defaultValues={{
 						description: profile?.description || "",
-						youtube: profile?.youtube || "",
-						instagram: profile?.instagram || "",
-						tiktok: profile?.tiktok || "",
-						twitter: profile?.twitter || "",
+						youtube: profile?.socialLinks.youtube || "",
+						instagram: profile?.socialLinks.instagram || "",
+						tiktok: profile?.socialLinks.tiktok || "",
+						twitter: profile?.socialLinks.twitter || "",
 						soundcloud: profile?.soundcloud || "",
 					}}
 					title="Modifier les infos"

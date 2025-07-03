@@ -145,7 +145,8 @@ export const formGeneralProfile = z.object({
 		),
 });
 
-export const formSocialProfile = z.object({
+export const formInfoProfile = z.object({
+	description: z.string().optional(),
 	youtube: z
 		.string()
 		.trim()
@@ -185,5 +186,17 @@ export const formSocialProfile = z.object({
 		.refine(
 			(val) => !val || val.startsWith("https://soundcloud.com/"),
 			'L\'URL doit commencer par "https://soundcloud.com/"'
+		),
+});
+
+export const formProfilePicture = z.object({
+	profilePicture: z
+		.instanceof(File, { message: "Le fichier est requis" })
+		.refine((file) => file.type.startsWith("image/"), {
+			message: "Le fichier doit être une image",
+		})
+		.refine(
+			(file) => file.size <= 5 * 1024 * 1024, // 5 Mo
+			{ message: "L'image ne doit pas dépasser 5 Mo" }
 		),
 });
