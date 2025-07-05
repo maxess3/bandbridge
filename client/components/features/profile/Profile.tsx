@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 export function Profile({ isOwner, slug }: { isOwner: boolean; slug: string }) {
 	const { data: profile } = useProfile(isOwner ? undefined : slug);
+	console.log(profile);
 	const router = useRouter();
 
 	useEffect(() => {

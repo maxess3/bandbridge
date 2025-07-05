@@ -1,10 +1,12 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { formInfoProfile } from "@/lib/schema";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { RadioGroup } from "@/components/ui/radio-group";
+import { Radio } from "@/components/shared/buttons/Radio";
 import { Input } from "@/components/ui/input";
 import {
 	Select,
@@ -65,6 +67,7 @@ const SOCIAL_PLATFORMS = [
 
 export const UpdateProfileInfoForm = () => {
 	const {
+		control,
 		register,
 		formState: { errors },
 		setValue,
@@ -236,6 +239,87 @@ export const UpdateProfileInfoForm = () => {
 			</div>
 
 			<div className="space-y-4">
+				<h4 className="font-semibold text-xl">Expérience musicale</h4>
+				<div className="space-y-1.5">
+					<Label htmlFor="concertsPlayed" className="opacity-80">
+						Concerts joués
+					</Label>
+					<Controller
+						name="concertsPlayed"
+						control={control}
+						render={({ field }) => (
+							<RadioGroup
+								{...field}
+								onValueChange={field.onChange}
+								value={field.value}
+								className="flex flex-wrap gap-2 w-full"
+							>
+								<Radio
+									title="Non spécifié"
+									id="not-specified"
+									value="NOT_SPECIFIED"
+								/>
+								<Radio
+									title="Moins de 10"
+									id="less-than-10"
+									value="LESS_THAN_10"
+								/>
+								<Radio title="10 à 50" id="ten-to-fifty" value="TEN_TO_FIFTY" />
+								<Radio
+									title="50 à 100"
+									id="fifty-to-hundred"
+									value="FIFTY_TO_HUNDRED"
+								/>
+								<Radio
+									title="100+"
+									id="more-than-hundred"
+									value="MORE_THAN_HUNDRED"
+								/>
+							</RadioGroup>
+						)}
+					/>
+				</div>
+				<div className="space-y-1.5">
+					<Label htmlFor="rehearsalsPerWeek" className="opacity-80">
+						Répétitions par semaine
+					</Label>
+					<Controller
+						name="rehearsalsPerWeek"
+						control={control}
+						render={({ field }) => (
+							<RadioGroup
+								{...field}
+								onValueChange={field.onChange}
+								value={field.value}
+								className="flex flex-wrap gap-2 w-full"
+							>
+								<Radio
+									title="Non spécifié"
+									id="rehearsals-not-specified"
+									value="NOT_SPECIFIED"
+								/>
+								<Radio
+									title="1 fois par semaine"
+									id="once-per-week"
+									value="ONCE_PER_WEEK"
+								/>
+								<Radio
+									title="2-3 fois par semaine"
+									id="two-to-three-per-week"
+									value="TWO_TO_THREE_PER_WEEK"
+								/>
+								<Radio
+									title="Plus de 3 fois par semaine"
+									id="more-than-three-per-week"
+									value="MORE_THAN_THREE_PER_WEEK"
+								/>
+							</RadioGroup>
+						)}
+					/>
+				</div>
+			</div>
+
+			<div className="space-y-4">
 				<h4 className="font-semibold text-xl">Liens sociaux</h4>
 
 				<div className="space-y-3">
@@ -321,7 +405,6 @@ export const UpdateProfileInfoForm = () => {
 						);
 					})}
 				</div>
-
 				<Button
 					onClick={addSocialLink}
 					variant="secondary"

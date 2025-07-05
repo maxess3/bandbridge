@@ -26,6 +26,17 @@ export interface Profile {
 	profilePictureKey: string;
 	role: "MUSICIAN" | string;
 	city: string;
+	concertsPlayed:
+		| "NOT_SPECIFIED"
+		| "LESS_THAN_10"
+		| "TEN_TO_FIFTY"
+		| "FIFTY_TO_HUNDRED"
+		| "MORE_THAN_HUNDRED";
+	rehearsalsPerWeek:
+		| "NOT_SPECIFIED"
+		| "ONCE_PER_WEEK"
+		| "TWO_TO_THREE_PER_WEEK"
+		| "MORE_THAN_THREE_PER_WEEK";
 	socialLinks: SocialLinks;
 	followers: number;
 	following: number;
@@ -33,4 +44,5 @@ export interface Profile {
 	instruments: string[];
 	styles: string[];
 	lastSeen: string;
+	createdAt?: string;
 }

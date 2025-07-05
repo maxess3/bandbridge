@@ -107,7 +107,7 @@ export const ProfileSidebar = ({
 	];
 
 	return (
-		<div className="w-[300px] rounded-xl">
+		<div className="min-w-[300px] rounded-xl">
 			<div className="space-y-3">
 				{profile?.lastFollowers.length && !isOwner ? (
 					<div className="space-y-4 border rounded-xl">

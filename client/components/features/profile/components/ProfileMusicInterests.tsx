@@ -22,7 +22,7 @@ const Category = ({ title, items, isSkill, className }: CategoryProps) => (
 	>
 		<div className="flex justify-between items-center">
 			<div>
-				<span className="font-extrabold text-lg uppercase">{title}</span>
+				<span className="font-extrabold text-lg">{title}</span>
 			</div>
 			<div>
 				<Link
@@ -40,7 +40,7 @@ const Category = ({ title, items, isSkill, className }: CategoryProps) => (
 		<ul className="flex flex-wrap">
 			{items.map((item, index) => (
 				<li key={index} className="mr-1.5">
-					<Badge variant="outline">
+					<Badge variant="outline" className="text-sm">
 						<span className="flex items-center gap-x-1">
 							{typeof item === "string" ? item : item.name}{" "}
 							{isSkill && typeof item !== "string" && item.isMain && (

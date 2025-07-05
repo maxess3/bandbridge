@@ -147,6 +147,33 @@ export const formGeneralProfile = z.object({
 
 export const formInfoProfile = z.object({
 	description: z.string().optional(),
+	concertsPlayed: z.enum(
+		[
+			"NOT_SPECIFIED",
+			"LESS_THAN_10",
+			"TEN_TO_FIFTY",
+			"FIFTY_TO_HUNDRED",
+			"MORE_THAN_HUNDRED",
+		],
+		{
+			errorMap: () => ({
+				message: "Merci de sélectionner une option",
+			}),
+		}
+	),
+	rehearsalsPerWeek: z.enum(
+		[
+			"NOT_SPECIFIED",
+			"ONCE_PER_WEEK",
+			"TWO_TO_THREE_PER_WEEK",
+			"MORE_THAN_THREE_PER_WEEK",
+		],
+		{
+			errorMap: () => ({
+				message: "Merci de sélectionner une option",
+			}),
+		}
+	),
 	youtube: z
 		.string()
 		.trim()
