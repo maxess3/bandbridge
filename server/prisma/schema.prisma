@@ -58,6 +58,12 @@ enum RehearsalFrequency {
   MORE_THAN_THREE_PER_WEEK
 }
 
+enum PracticeType {
+  NOT_SPECIFIED
+  HOBBY
+  ACTIVE
+}
+
 model User {
   id                  String    @id @default(uuid())
   email               String    @unique
@@ -93,6 +99,7 @@ model Profile {
   description       String?      @db.Text
   concertsPlayed    ConcertCount @default(NOT_SPECIFIED)
   rehearsalsPerWeek RehearsalFrequency @default(NOT_SPECIFIED)
+  practiceType      PracticeType @default(NOT_SPECIFIED)
   userId            String       @unique
   user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

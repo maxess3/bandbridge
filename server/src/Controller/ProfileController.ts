@@ -31,6 +31,7 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 				description: true,
 				concertsPlayed: true,
 				rehearsalsPerWeek: true,
+				practiceType: true,
 				user: {
 					select: {
 						created_at: true,
@@ -140,6 +141,7 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 				description: true,
 				concertsPlayed: true,
 				rehearsalsPerWeek: true,
+				practiceType: true,
 				user: {
 					select: {
 						created_at: true,
@@ -305,13 +307,14 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
 			return;
 		}
 
-		// Update description, concerts played and rehearsals per week
+		// Update description, concerts played, rehearsals per week and practice type
 		await prisma.profile.update({
 			where: { userId },
 			data: {
 				description: req.body.description || null,
 				concertsPlayed: req.body.concertsPlayed || "NOT_SPECIFIED",
 				rehearsalsPerWeek: req.body.rehearsalsPerWeek || "NOT_SPECIFIED",
+				practiceType: req.body.practiceType || "NOT_SPECIFIED",
 			},
 		});
 
@@ -351,6 +354,7 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
 				description: true,
 				concertsPlayed: true,
 				rehearsalsPerWeek: true,
+				practiceType: true,
 			},
 		});
 

@@ -37,6 +37,7 @@ export interface Profile {
 		| "ONCE_PER_WEEK"
 		| "TWO_TO_THREE_PER_WEEK"
 		| "MORE_THAN_THREE_PER_WEEK";
+	practiceType: "NOT_SPECIFIED" | "HOBBY" | "ACTIVE";
 	socialLinks: SocialLinks;
 	followers: number;
 	following: number;

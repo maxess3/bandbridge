@@ -146,7 +146,10 @@ export const formGeneralProfile = z.object({
 });
 
 export const formInfoProfile = z.object({
-	description: z.string().optional(),
+	description: z
+		.string()
+		.max(2600, "La description ne doit pas dépasser 2600 caractères")
+		.optional(),
 	concertsPlayed: z.enum(
 		[
 			"NOT_SPECIFIED",
@@ -174,6 +177,11 @@ export const formInfoProfile = z.object({
 			}),
 		}
 	),
+	practiceType: z.enum(["NOT_SPECIFIED", "HOBBY", "ACTIVE"], {
+		errorMap: () => ({
+			message: "Merci de sélectionner une option",
+		}),
+	}),
 	youtube: z
 		.string()
 		.trim()

@@ -66,6 +66,7 @@ export function EditProfileInfoModal() {
 						description: profile?.description || "",
 						concertsPlayed: profile?.concertsPlayed || "NOT_SPECIFIED",
 						rehearsalsPerWeek: profile?.rehearsalsPerWeek || "NOT_SPECIFIED",
+						practiceType: profile?.practiceType || "NOT_SPECIFIED",
 						youtube: profile?.socialLinks.youtube || "",
 						instagram: profile?.socialLinks.instagram || "",
 						tiktok: profile?.socialLinks.tiktok || "",

@@ -79,6 +79,9 @@ export const UpdateProfileInfoForm = () => {
 
 	// Obtenir les valeurs actuelles du formulaire
 	const formValues = watch();
+	const descriptionValue = formValues.description || "";
+	const maxChars = 2600;
+	const currentChars = descriptionValue.length;
 
 	// Synchroniser les liens sociaux avec le formulaire
 	const updateFormSocialLinks = useCallback(
@@ -233,9 +236,18 @@ export const UpdateProfileInfoForm = () => {
 						errors.description && "border-red-500"
 					}`}
 				/>
-				{errors.description && (
-					<p className="text-red-500 text-sm">{errors.description.message}</p>
-				)}
+				<div className="flex justify-between items-center">
+					{errors.description && (
+						<p className="text-red-500 text-sm">{errors.description.message}</p>
+					)}
+					<p
+						className={`text-sm ml-auto ${
+							currentChars > maxChars ? "text-red-500" : "text-foreground/80"
+						}`}
+					>
+						{currentChars} / {maxChars}
+					</p>
+				</div>
 			</div>
 
 			<div className="space-y-4">
@@ -313,6 +325,31 @@ export const UpdateProfileInfoForm = () => {
 									id="more-than-three-per-week"
 									value="MORE_THAN_THREE_PER_WEEK"
 								/>
+							</RadioGroup>
+						)}
+					/>
+				</div>
+				<div className="space-y-1.5">
+					<Label htmlFor="practiceType" className="opacity-80">
+						Type de pratique musicale
+					</Label>
+					<Controller
+						name="practiceType"
+						control={control}
+						render={({ field }) => (
+							<RadioGroup
+								{...field}
+								onValueChange={field.onChange}
+								value={field.value}
+								className="flex flex-wrap gap-2 w-full"
+							>
+								<Radio
+									title="Non spécifié"
+									id="practice-not-specified"
+									value="NOT_SPECIFIED"
+								/>
+								<Radio title="Loisir" id="hobby" value="HOBBY" />
+								<Radio title="En activité" id="active" value="ACTIVE" />
 							</RadioGroup>
 						)}
 					/>

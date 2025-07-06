@@ -9,6 +9,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { RiSoundcloudFill } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { CollapsibleText } from "@/components/shared/buttons/CollapsibleText";
 
 const SOCIAL_PLATFORMS = [
 	{
@@ -45,6 +46,8 @@ export const ProfileMusicianInfos = ({ profile }: { profile: Profile }) => {
 			profile?.socialLinks?.[platform.key as keyof typeof profile.socialLinks]
 	);
 
+	const description = profile?.description || "";
+
 	return (
 		<div className="flex flex-col gap-y-4">
 			<div className="border rounded-xl flex flex-col">
@@ -62,10 +65,13 @@ export const ProfileMusicianInfos = ({ profile }: { profile: Profile }) => {
 							/>
 						</Link>
 					</div>
-					<div className="opacity-90 whitespace-pre-wrap">
-						{profile?.description}
-					</div>
-					<div className="mt-8 flex justify-center flex-col gap-y-2">
+					<CollapsibleText
+						text={description}
+						maxLines={5}
+						className="opacity-90"
+						alignButton="right"
+					/>
+					<div className="mt-4 flex justify-center flex-col gap-y-2">
 						<div className="flex gap-x-2">
 							<span className="font-extrabold">Membre depuis : </span>
 							<span>
@@ -95,6 +101,14 @@ export const ProfileMusicianInfos = ({ profile }: { profile: Profile }) => {
 									"2-3 fois par semaine"}
 								{profile?.rehearsalsPerWeek === "MORE_THAN_THREE_PER_WEEK" &&
 									"Plus de 3 fois par semaine"}
+							</span>
+						</div>
+						<div className="flex gap-x-2">
+							<span className="font-extrabold">Type de pratique : </span>
+							<span>
+								{profile?.practiceType === "NOT_SPECIFIED" && "Non spécifié"}
+								{profile?.practiceType === "HOBBY" && "Loisir"}
+								{profile?.practiceType === "ACTIVE" && "En activité"}
 							</span>
 						</div>
 					</div>
