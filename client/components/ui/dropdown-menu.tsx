@@ -85,7 +85,7 @@ const DropdownMenuItem = React.forwardRef<
     onPointerMove={(event) => event.preventDefault()}
     ref={ref}
     className={cn(
-      "!transition-none hover:bg-accent-foreground font-medium cursor-pointer relative flex select-none items-center gap-2 rounded-md px-3 py-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+      "!transition-none hover:bg-accent-foreground focus:bg-accent-foreground font-medium cursor-pointer relative flex select-none items-center gap-2 rounded-md px-3 py-2 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
       inset && "pl-8",
       className
     )}
