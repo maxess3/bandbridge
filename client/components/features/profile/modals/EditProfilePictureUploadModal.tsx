@@ -15,92 +15,92 @@ import { toast } from "sonner";
 import { IoMdClose } from "react-icons/io";
 
 interface EditProfilePictureUploadModalProps {
-	onClose: () => void;
-	open: boolean;
-	onSuccess?: () => void;
+  onClose: () => void;
+  open: boolean;
+  onSuccess?: () => void;
 }
 
 export function EditProfilePictureUploadModal({
-	onClose,
-	open,
-	onSuccess,
+  onClose,
+  open,
+  onSuccess,
 }: EditProfilePictureUploadModalProps) {
-	const { data: session, update } = useSession();
-	const { setIgnoreLoader } = useSessionLoader();
-	const axiosAuth = useAxiosAuth();
-	const queryClient = useQueryClient();
-	const { data: profile, isLoading: loadingProfile } = useProfile();
-	const { isDelaying, withDelay } = useTransitionDelay(600);
+  const { data: session, update } = useSession();
+  const { setIgnoreLoader } = useSessionLoader();
+  const axiosAuth = useAxiosAuth();
+  const queryClient = useQueryClient();
+  const { data: profile, isLoading: loadingProfile } = useProfile();
+  const { isDelaying, withDelay } = useTransitionDelay(600);
 
-	const updateProfilePictureMutation = useMutation({
-		mutationFn: async (values: z.infer<typeof formProfilePicture>) => {
-			console.log(values);
-			const formData = new FormData();
-			formData.append("file", values.profilePicture);
+  const updateProfilePictureMutation = useMutation({
+    mutationFn: async (values: z.infer<typeof formProfilePicture>) => {
+      console.log(values);
+      const formData = new FormData();
+      formData.append("file", values.profilePicture);
 
-			const { data } = await axiosAuth.post("/profile/me/picture", formData, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			});
+      const { data } = await axiosAuth.post("/profile/me/picture", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-			return data;
-		},
-		meta: { skipToast: true },
-		onSuccess: async (data) => {
-			console.log(data);
+      return data;
+    },
+    meta: { skipToast: true },
+    onSuccess: async (data) => {
+      console.log(data);
 
-			await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
+      await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
 
-			if (data?.user?.profilePictureKey) {
-				setIgnoreLoader(true);
-				await update({
-					user: {
-						...session?.user,
-						profilePictureKey: data?.user?.profilePictureKey,
-					},
-				});
-				setTimeout(() => setIgnoreLoader(false), 1000);
-			}
+      if (data?.user?.profilePictureKey) {
+        setIgnoreLoader(true);
+        await update({
+          user: {
+            ...session?.user,
+            profilePictureKey: data?.user?.profilePictureKey,
+          },
+        });
+        setTimeout(() => setIgnoreLoader(false), 1000);
+      }
 
-			if (data?.message) {
-				toast.success(data.message, {
-					action: {
-						label: (
-							<div className="w-9 h-9 hover:bg-hover rounded-full flex items-center justify-center">
-								<IoMdClose className="text-xl" />
-							</div>
-						),
-						onClick: () => {},
-					},
-				});
-			}
+      if (data?.message) {
+        toast.success(data.message, {
+          action: {
+            label: (
+              <div className="w-9 h-9 hover:bg-hover rounded-full flex items-center justify-center">
+                <IoMdClose className="text-xl" />
+              </div>
+            ),
+            onClick: () => {},
+          },
+        });
+      }
 
-			onClose();
-			onSuccess?.();
-		},
-	});
+      onClose();
+      onSuccess?.();
+    },
+  });
 
-	return (
-		<>
-			{profile && (
-				<EditModal
-					open={open && !loadingProfile}
-					onClose={onClose}
-					onSubmit={async (values) => {
-						return withDelay(() =>
-							updateProfilePictureMutation.mutateAsync(values)
-						);
-					}}
-					formSchema={formProfilePicture}
-					defaultValues={{}}
-					title="Ajouter une photo de profil"
-					isSubmitting={updateProfilePictureMutation.isPending || isDelaying}
-					showOverlay={false}
-				>
-					<UpdateProfilePictureForm />
-				</EditModal>
-			)}
-		</>
-	);
+  return (
+    <>
+      {profile && (
+        <EditModal
+          open={open && !loadingProfile}
+          onClose={onClose}
+          onSubmit={async (values) => {
+            return withDelay(() =>
+              updateProfilePictureMutation.mutateAsync(values)
+            );
+          }}
+          formSchema={formProfilePicture}
+          defaultValues={{}}
+          title="Ajouter une photo de profil"
+          isSubmitting={updateProfilePictureMutation.isPending || isDelaying}
+          showOverlay={false}
+        >
+          <UpdateProfilePictureForm />
+        </EditModal>
+      )}
+    </>
+  );
 }
