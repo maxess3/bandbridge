@@ -59,19 +59,15 @@ export const CollapsibleText = ({
         {text}
       </div>
 
-      {/* Élément d'affichage */}
+      {/* Élément d'affichage - applique toujours la troncature initialement */}
       <div
         ref={textRef}
         className={cn("whitespace-pre-wrap", className)}
         style={{
-          ...(isTruncated &&
-            !isExpanded &&
-            ({
-              display: "-webkit-box",
-              WebkitLineClamp: maxLines,
-              WebkitBoxOrient: "vertical" as const,
-              overflow: "hidden",
-            } as React.CSSProperties)),
+          display: isExpanded ? "block" : "-webkit-box",
+          WebkitLineClamp: isExpanded ? "unset" : maxLines,
+          WebkitBoxOrient: "vertical" as const,
+          overflow: isExpanded ? "visible" : "hidden",
         }}
       >
         {text}

@@ -208,7 +208,7 @@ export const UpdateProfileGeneralForm = () => {
               )}
             </div>
             <div className="space-y-1">
-              <h4 className="font-semibold text-2xl mb-2">Lieu</h4>
+              <h4 className="font-semibold text-xl mb-2">Localisation</h4>
               <Label htmlFor="country" className="opacity-80">
                 Pays
               </Label>

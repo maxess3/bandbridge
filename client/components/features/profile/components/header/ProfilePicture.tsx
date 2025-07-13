@@ -3,63 +3,57 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FaCamera } from "react-icons/fa";
 import { DefaultProfilePicture } from "@/components/features/profile/components/icons/DefaultProfilePicture";
 import { EditProfilePictureModal } from "@/components/features/profile/modals/EditProfilePictureModal";
 import { saveLastFocusedElement } from "@/utils/utils";
 
 export const ProfilePicture = ({
-	isOwner,
-	src,
-	alt,
+  isOwner,
+  src,
+  alt,
 }: {
-	isOwner: boolean;
-	src: string;
-	alt: string;
+  isOwner: boolean;
+  src: string;
+  alt: string;
 }) => {
-	const { data: session } = useSession();
-	const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: session } = useSession();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-	const imageURL = process.env.NEXT_PUBLIC_R2_URL + "/" + src;
+  const imageURL = process.env.NEXT_PUBLIC_R2_URL + "/" + src;
 
-	const IMG_PROFILE = (
-		<div className="relative group overflow-hidden rounded-full">
-			{isOwner && session?.user?.username && (
-				<div className="flex items-center justify-center absolute bottom-0 left-0 w-full h-1/3 bg-black/50 z-50 opacity-0 group-hover:opacity-100 transition-opacity">
-					<FaCamera size={22} className="text-white/80" />
-				</div>
-			)}
-			<Avatar className="w-44 h-44">
-				<AvatarImage src={imageURL} alt={alt} />
-				<AvatarFallback className="bg-secondary pointer-events-none">
-					<DefaultProfilePicture className="mr-4 mt-24 text-background w-[220px] h-[220px]" />
-				</AvatarFallback>
-			</Avatar>
-		</div>
-	);
+  const IMG_PROFILE = (
+    <div className="relative group overflow-hidden rounded-full">
+      <Avatar className="w-40 h-40 border-8 border-opacity-5 border-white">
+        <AvatarImage src={imageURL} alt={alt} />
+        <AvatarFallback className="bg-secondary pointer-events-none">
+          <DefaultProfilePicture className="mr-4 mt-24 text-background w-[220px] h-[220px]" />
+        </AvatarFallback>
+      </Avatar>
+    </div>
+  );
 
-	return (
-		<div className="relative">
-			<div className="w-44 h-44 flex rounded-full relative">
-				{isOwner && session?.user?.username ? (
-					<button
-						onClick={() => {
-							setIsModalOpen(true);
-							saveLastFocusedElement();
-						}}
-					>
-						{IMG_PROFILE}
-					</button>
-				) : (
-					IMG_PROFILE
-				)}
-			</div>
-			{isModalOpen && (
-				<EditProfilePictureModal
-					onClose={() => setIsModalOpen(false)}
-					open={isModalOpen}
-				/>
-			)}
-		</div>
-	);
+  return (
+    <div className="absolute -bottom-12 left-6">
+      <div className="w-40 h-40 flex rounded-full relative">
+        {isOwner && session?.user?.username ? (
+          <button
+            onClick={() => {
+              setIsModalOpen(true);
+              saveLastFocusedElement();
+            }}
+          >
+            {IMG_PROFILE}
+          </button>
+        ) : (
+          IMG_PROFILE
+        )}
+      </div>
+      {isModalOpen && (
+        <EditProfilePictureModal
+          onClose={() => setIsModalOpen(false)}
+          open={isModalOpen}
+        />
+      )}
+    </div>
+  );
 };
