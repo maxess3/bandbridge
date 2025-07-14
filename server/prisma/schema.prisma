@@ -125,7 +125,7 @@ model InstrumentType {
 
 model Instrument {
   id                String         @id @default(uuid())
-  yearStarted       Int
+  experienceYears   Int
   order             Int             @default(0) // Ordre d'utilisation (0 = principal, 1 = secondaire, etc.)
   profileId         String
   instrumentTypeId  String

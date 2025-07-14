@@ -237,23 +237,30 @@ export const updateGeneralProfileOwner = async (
 
 		const currentProfile = await prisma.profile.findUnique({
 			where: { userId: userId },
-			select: { username: true },
+			select: { id: true, username: true },
 		});
 
-		// Check if the username is already taken
-		if (currentProfile?.username !== req.body.username) {
-			const existingProfile = await prisma.profile.findUnique({
-				where: { username: req.body.username },
-			});
-
-			if (existingProfile) {
-				res.status(400).json({
-					message: "Le nom d'utilisateur est déjà pris",
-				});
-				return;
-			}
+		if (!currentProfile) {
+			res.status(404).json({ message: "Profil non trouvé" });
+			return;
 		}
 
+		// Check if the username is already taken by another user
+		const existingProfile = await prisma.profile.findFirst({
+			where: {
+				username: req.body.username,
+				userId: { not: userId },
+			},
+		});
+
+		if (existingProfile) {
+			res.status(400).json({
+				message: "Le nom d'utilisateur est déjà pris",
+			});
+			return;
+		}
+
+		// Update profile information
 		const updatedUser = await prisma.profile.update({
 			where: { userId: userId },
 			data: {
@@ -278,11 +285,36 @@ export const updateGeneralProfileOwner = async (
 			},
 		});
 
+		// Handle instruments if provided
+		if (req.body.instruments && Array.isArray(req.body.instruments)) {
+			// Delete existing instruments
+			await prisma.instrument.deleteMany({
+				where: { profileId: currentProfile.id },
+			});
+
+			// Add new instruments if any
+			if (req.body.instruments.length > 0) {
+				const instrumentsData = req.body.instruments.map(
+					(instrument: any, index: number) => ({
+						instrumentTypeId: instrument.instrumentTypeId,
+						experienceYears: instrument.experienceYears,
+						order: instrument.order ?? index, // Use provided order or default to index
+						profileId: currentProfile.id,
+					})
+				);
+
+				await prisma.instrument.createMany({
+					data: instrumentsData,
+				});
+			}
+		}
+
 		res.status(200).json({
 			message: "Votre profil a bien été mis à jour",
 			user: updatedUser,
 		});
 	} catch (error) {
+		console.error("Error updating general profile:", error);
 		res.status(500).json({
 			message: "[Erreur] Mise à jour du profil impossible",
 		});

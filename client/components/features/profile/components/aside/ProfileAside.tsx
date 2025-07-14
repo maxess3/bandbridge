@@ -27,7 +27,7 @@ export const ProfileAside = ({
 			<div className="space-y-3">
 				<ProfileMusicianInfos profile={profile} />
 				{profile?.lastFollowers.length && !isOwner ? (
-					<div className="space-y-4 border rounded-xl bg-background">
+					<div className="space-y-4 border rounded-xl bg-[#111111]">
 						<div className="">
 							<span className="uppercase text-sm font-bold p-4 inline-flex w-full">
 								{profile?.followers} Abonnés
