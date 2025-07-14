@@ -64,6 +64,15 @@ enum PracticeType {
   ACTIVE
 }
 
+enum InstrumentCategory {
+  STRINGS
+  WIND
+  PERCUSSION
+  KEYBOARD
+  ELECTRONIC
+  OTHER
+}
+
 model User {
   id                  String    @id @default(uuid())
   email               String    @unique
@@ -104,12 +113,26 @@ model Profile {
   user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model InstrumentType {
+  id          String              @id @default(uuid())
+  name        String              @unique
+  category    InstrumentCategory
+  isActive    Boolean             @default(true)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  instruments Instrument[]
+}
+
 model Instrument {
-  id          String  @id @default(uuid())
-  name        String
-  yearStarted Int
-  profileId   String
-  profile     Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  id                String         @id @default(uuid())
+  yearStarted       Int
+  order             Int             @default(0) // Ordre d'utilisation (0 = principal, 1 = secondaire, etc.)
+  profileId         String
+  instrumentTypeId  String
+  profile           Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  instrumentType    InstrumentType @relation(fields: [instrumentTypeId], references: [id], onDelete: Cascade)
+  
+  @@unique([profileId, instrumentTypeId])
 }
 
 model SocialLink {
