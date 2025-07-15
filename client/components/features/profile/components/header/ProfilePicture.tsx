@@ -34,7 +34,7 @@ export const ProfilePicture = ({
 
   return (
     <div className="absolute -bottom-12 left-6">
-      <div className="w-40 h-40 flex rounded-full relative">
+      <div className="w-40 h-40 flex rounded-full relative bg-background">
         {isOwner && session?.user?.username ? (
           <button
             onClick={() => {

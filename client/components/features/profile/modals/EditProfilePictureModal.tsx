@@ -208,10 +208,7 @@ export function EditProfilePictureModal({
     <>
       {profile && (
         <Dialog open={open && !loadingProfile} onOpenChange={handleOpenChange}>
-          <DialogContent
-            showOverlay={false}
-            className="md:max-w-2xl sm:max-w-2xl max-w-full sm:max-h-[85%] max-h-full p-0"
-          >
+          <DialogContent className="md:max-w-2xl sm:max-w-2xl max-w-full sm:max-h-[85%] max-h-full p-0">
             <DialogHeader>
               <DialogTitle>
                 <DialogDescription className="text-xl text-foreground">

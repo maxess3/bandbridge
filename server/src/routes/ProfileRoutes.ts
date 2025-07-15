@@ -9,49 +9,51 @@ const router = Router();
 router.get("/me", authenticateToken, ProfileController.getProfileOwner);
 
 router.put(
-	"/me",
-	authenticateToken,
-	validateSchema(formGeneralProfile),
-	ProfileController.updateGeneralProfileOwner
+  "/me",
+  authenticateToken,
+  validateSchema(formGeneralProfile),
+  ProfileController.updateGeneralProfileOwner
 );
 
 router.put(
-	"/me/info",
-	authenticateToken,
-	validateSchema(formInfoProfile),
-	ProfileController.updateInfoProfileOwner
+  "/me/info",
+  authenticateToken,
+  validateSchema(formInfoProfile),
+  ProfileController.updateInfoProfileOwner
 );
 
 router.post(
-	"/me/picture",
-	authenticateToken,
-	upload.single("file"),
-	ProfileController.uploadProfilePicture
+  "/me/picture",
+  authenticateToken,
+  upload.single("file"),
+  ProfileController.uploadProfilePicture
 );
 
 router.delete(
-	"/me/picture",
-	authenticateToken,
-	ProfileController.deleteProfilePicture
+  "/me/picture",
+  authenticateToken,
+  ProfileController.deleteProfilePicture
 );
 
 router.post(
-	"/follow/:targetUsername",
-	authenticateToken,
-	ProfileController.follow
+  "/follow/:targetUsername",
+  authenticateToken,
+  ProfileController.follow
 );
 
 router.post(
-	"/unfollow/:targetUsername",
-	authenticateToken,
-	ProfileController.unfollow
+  "/unfollow/:targetUsername",
+  authenticateToken,
+  ProfileController.unfollow
 );
 
 router.get(
-	"/following/:targetUsername",
-	authenticateToken,
-	ProfileController.isFollowing
+  "/following/:targetUsername",
+  authenticateToken,
+  ProfileController.isFollowing
 );
+
+router.get("/instruments", ProfileController.getInstrumentTypes);
 
 router.get("/:username", ProfileController.getProfilePublic);
 
