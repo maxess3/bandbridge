@@ -1,6 +1,6 @@
 "use client";
 
-import { BaseEditModal } from "./BaseEditModal";
+import { BaseEditModal } from "@/components/shared/modals/BaseEditModal";
 import { FieldValues, DefaultValues } from "react-hook-form";
 import { z } from "zod";
 

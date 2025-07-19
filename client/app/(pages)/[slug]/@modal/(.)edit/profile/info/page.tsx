@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { profileServices } from "@/services/profileServices";
 import { EditProfileInfoModal } from "@/components/features/profile/modals/EditProfileInfoModal";
-import { EditProfileGuard } from "@/components/features/profile/modals/EditProfileGuard";
+import { EditProfileGuard } from "@/components/features/profile/guard/EditProfileGuard";
 
 async function getProfile(slug: string) {
 	const profile = await profileServices.getProfile(slug);

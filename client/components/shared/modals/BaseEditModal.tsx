@@ -45,18 +45,6 @@ interface BaseModalProps<T extends FieldValues> {
 	showOverlay?: boolean;
 }
 
-// Fonction utilitaire pour restaurer le focus sur l'élément précédent
-const restoreFocus = () => {
-	if (typeof window !== "undefined" && window.__lastFocusedElement) {
-		// Vérifier que l'élément existe toujours dans le DOM
-		if (document.contains(window.__lastFocusedElement)) {
-			(window.__lastFocusedElement as HTMLElement).focus();
-		}
-		// Nettoyer la référence
-		window.__lastFocusedElement = null;
-	}
-};
-
 export function BaseEditModal<T extends FieldValues>({
 	children,
 	title,
@@ -85,8 +73,6 @@ export function BaseEditModal<T extends FieldValues>({
 		async (data) => {
 			await onSubmit(data);
 			methods.reset(defaultValues);
-			// Restaurer le focus après soumission réussie
-			restoreFocus();
 		},
 		[onSubmit, methods, defaultValues]
 	);
@@ -97,10 +83,6 @@ export function BaseEditModal<T extends FieldValues>({
 			setShowExitConfirmation(true);
 		} else {
 			onOpenChange();
-			// Restaurer le focus après fermeture sans modifications
-			setTimeout(() => {
-				restoreFocus();
-			}, 0);
 		}
 	}, [isDirty, onOpenChange]);
 
@@ -109,10 +91,6 @@ export function BaseEditModal<T extends FieldValues>({
 		setShowExitConfirmation(false);
 		methods.reset(defaultValues);
 		onOpenChange();
-		// Restaurer le focus après fermeture avec confirmation
-		setTimeout(() => {
-			restoreFocus();
-		}, 0);
 	}, [onOpenChange, methods, defaultValues]);
 
 	// Clean the state when the modal is closed
