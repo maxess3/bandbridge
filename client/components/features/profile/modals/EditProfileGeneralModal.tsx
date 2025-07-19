@@ -12,8 +12,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useSessionUpdate } from "@/hooks/useSessionUpdate";
 import { z } from "zod";
-import { toast } from "sonner";
-import { IoMdClose } from "react-icons/io";
+import { AutocompleteProvider } from "@/contexts/AutocompleteContext";
 
 export function EditProfileGeneralModal() {
 	const router = useRouter();
@@ -29,7 +28,6 @@ export function EditProfileGeneralModal() {
 			const { data } = await axiosAuth.put("/profile/me", values);
 			return data;
 		},
-		meta: { skipToast: true },
 		onSuccess: async (data) => {
 			await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
 
@@ -51,19 +49,6 @@ export function EditProfileGeneralModal() {
 				});
 			}
 
-			if (data?.message) {
-				toast.success(data.message, {
-					action: {
-						label: (
-							<div className="w-9 h-9 hover:bg-hover rounded-full flex items-center justify-center">
-								<IoMdClose className="text-xl" />
-							</div>
-						),
-						onClick: () => {},
-					},
-				});
-			}
-
 			if (usernameChanged) {
 				router.push(`/${data?.user?.username}`);
 			} else {
@@ -77,7 +62,7 @@ export function EditProfileGeneralModal() {
 	});
 
 	return (
-		<>
+		<AutocompleteProvider>
 			{profile && (
 				<EditModalWithNavigation
 					open={!loadingProfile}
@@ -111,6 +96,21 @@ export function EditProfileGeneralModal() {
 						zipcode: profile?.zipCode ?? "",
 						city: profile?.city ?? "",
 						formattedBirthdate: profile?.birthDate ?? "",
+						instruments:
+							profile?.instruments?.map(
+								(
+									instrument: {
+										instrumentTypeId: string;
+										level: string;
+										order?: number;
+									},
+									index: string
+								) => ({
+									instrumentTypeId: instrument.instrumentTypeId || "",
+									level: instrument.level || "BEGINNER",
+									order: instrument.order ?? index,
+								})
+							) || [],
 					}}
 					title="Modifier le résumé"
 					isSubmitting={updateProfileMutation.isPending || isDelaying}
@@ -118,6 +118,6 @@ export function EditProfileGeneralModal() {
 					<UpdateProfileGeneralForm />
 				</EditModalWithNavigation>
 			)}
-		</>
+		</AutocompleteProvider>
 	);
 }

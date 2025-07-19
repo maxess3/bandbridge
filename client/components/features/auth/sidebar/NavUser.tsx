@@ -21,7 +21,7 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
-import { DefaultProfilePicture } from "@/components/features/profile/components/icons/DefaultProfilePicture";
+import { DefaultProfilePicture } from "@/components/features/profile/icons/DefaultProfilePicture";
 import { getProfileImageUrl } from "@/utils/utils";
 import { FiMoon } from "react-icons/fi";
 import { LuLogOut } from "react-icons/lu";

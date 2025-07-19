@@ -26,12 +26,10 @@ export const useTextCollapse = (
 
 	const [isExpanded, setIsExpanded] = useState(false);
 
-	// Texte du bouton
 	const currentButtonText = isExpanded
 		? buttonText.expanded || "...voir moins"
 		: buttonText.collapsed || "...voir plus";
 
-	// Fonction pour basculer l'état
 	const toggleExpanded = () => {
 		setIsExpanded(!isExpanded);
 	};

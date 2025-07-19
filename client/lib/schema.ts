@@ -61,28 +61,13 @@ export const formResetPwdSchema = z
 
 export const instrumentSchema = z.object({
 	instrumentTypeId: z.string().min(1, "L'instrument est requis"),
-	experienceYears: z
-		.number()
-		.min(0, "L'expérience doit être d'au moins 0 an")
-		.max(100, "L'expérience ne peut pas dépasser 100 ans"),
+	level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "PROFESSIONAL"], {
+		errorMap: () => ({
+			message: "Merci de sélectionner un niveau",
+		}),
+	}),
 	order: z.number().min(0, "L'ordre doit être d'au moins 0").optional(),
 });
-
-export const instrumentsArraySchema = z
-	.array(instrumentSchema)
-	.min(0, "Le nombre d'instruments ne peut pas être négatif")
-	.max(10, "Vous ne pouvez pas ajouter plus de 10 instruments")
-	.refine(
-		(instruments) => {
-			// Vérifier qu'il n'y a pas de doublons d'instruments
-			const instrumentIds = instruments.map((i) => i.instrumentTypeId);
-			const uniqueIds = new Set(instrumentIds);
-			return uniqueIds.size === instrumentIds.length;
-		},
-		{
-			message: "Vous ne pouvez pas ajouter le même instrument plusieurs fois",
-		}
-	);
 
 /* EDIT PROFILE SCHEMA */
 
@@ -170,7 +155,23 @@ export const formGeneralProfile = z.object({
 			/^[a-zA-ZÀ-ÿ\-]+$/,
 			"La ville ne doit contenir que des lettres et tirets"
 		),
-	instruments: instrumentsArraySchema.optional(),
+	instruments: z
+		.array(instrumentSchema)
+		.min(0, "Le nombre d'instruments ne peut pas être négatif")
+		.max(10, "Vous ne pouvez pas ajouter plus de 10 instruments")
+		.refine(
+			(instruments) => {
+				// Vérifier qu'il n'y a pas de doublons d'instruments
+				const instrumentIds = instruments
+					.filter((instrument) => instrument.instrumentTypeId) // Filtrer les instruments vides
+					.map((instrument) => instrument.instrumentTypeId);
+				const uniqueIds = new Set(instrumentIds);
+				return uniqueIds.size === instrumentIds.length;
+			},
+			{
+				message: "Vous ne pouvez pas ajouter le même instrument plusieurs fois",
+			}
+		),
 });
 
 export const formInfoProfile = z.object({

@@ -35,7 +35,6 @@ export const CollapsibleText = ({
 		maxLines,
 	});
 
-	// Classes pour l'alignement du bouton
 	const buttonContainerClasses = {
 		left: "flex justify-start",
 		right: "flex justify-end",
@@ -44,7 +43,6 @@ export const CollapsibleText = ({
 
 	return (
 		<div className="flex flex-col">
-			{/* Élément d'affichage - applique toujours la troncature initialement */}
 			<div
 				ref={textRef}
 				className={cn("whitespace-pre-wrap", className)}
@@ -58,7 +56,6 @@ export const CollapsibleText = ({
 				{text}
 			</div>
 
-			{/* Élément de mesure caché - positionné en dehors du flux normal */}
 			<div
 				ref={measureRef}
 				className={cn("whitespace-pre-wrap", className)}

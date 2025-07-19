@@ -25,4 +25,32 @@ const upload = multer({
 	},
 });
 
+// Middleware pour gérer les erreurs Multer
+export const handleMulterError = (err: any, req: any, res: any, next: any) => {
+	if (err instanceof multer.MulterError) {
+		// Erreur de taille de fichier
+		if (err.code === "LIMIT_FILE_SIZE") {
+			return res.status(400).json({
+				message: "Le fichier est trop volumineux. Taille maximum : 5 Mo",
+			});
+		}
+		// Autres erreurs Multer
+		return res.status(400).json({
+			message: err.message || "Erreur lors de l'upload du fichier",
+		});
+	}
+
+	// Erreurs personnalisées du fileFilter
+	if (err.message) {
+		return res.status(400).json({
+			message: err.message,
+		});
+	}
+
+	// Erreurs inconnues
+	return res.status(500).json({
+		message: "Erreur interne du serveur",
+	});
+};
+
 export default upload;

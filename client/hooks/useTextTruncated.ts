@@ -1,76 +1,70 @@
 import { useRef, useEffect, useState } from "react";
 
 interface UseTextTruncatedOptions {
-  maxLines?: number;
+	maxLines?: number;
 }
 
 interface UseTextTruncatedReturn {
-  isTruncated: boolean;
-  textRef: React.RefObject<HTMLDivElement>;
-  measureRef: React.RefObject<HTMLDivElement>;
+	isTruncated: boolean;
+	textRef: React.RefObject<HTMLDivElement>;
+	measureRef: React.RefObject<HTMLDivElement>;
 }
 
 export const useTextTruncated = (
-  text: string,
-  options: UseTextTruncatedOptions = {}
+	text: string,
+	options: UseTextTruncatedOptions = {}
 ): UseTextTruncatedReturn => {
-  const { maxLines = 5 } = options;
+	const { maxLines = 5 } = options;
 
-  const textRef = useRef<HTMLDivElement>(null);
-  const measureRef = useRef<HTMLDivElement>(null);
-  const [isTruncated, setIsTruncated] = useState(false);
+	const textRef = useRef<HTMLDivElement>(null);
+	const measureRef = useRef<HTMLDivElement>(null);
+	const [isTruncated, setIsTruncated] = useState(false);
 
-  // Détecter si le texte est coupé en utilisant un élément de mesure caché
-  useEffect(() => {
-    const checkIfTextTruncated = () => {
-      if (textRef.current && measureRef.current) {
-        const measureElement = measureRef.current;
-        const displayElement = textRef.current;
+	useEffect(() => {
+		const checkIfTextTruncated = () => {
+			if (textRef.current && measureRef.current) {
+				const measureElement = measureRef.current;
+				const displayElement = textRef.current;
 
-        // Copier les styles de l'élément d'affichage vers l'élément de mesure
-        const computedStyle = window.getComputedStyle(displayElement);
-        measureElement.style.fontSize = computedStyle.fontSize;
-        measureElement.style.fontFamily = computedStyle.fontFamily;
-        measureElement.style.fontWeight = computedStyle.fontWeight;
-        measureElement.style.lineHeight = computedStyle.lineHeight;
-        measureElement.style.width = computedStyle.width;
-        measureElement.style.padding = computedStyle.padding;
-        measureElement.style.margin = computedStyle.margin;
-        measureElement.style.letterSpacing = computedStyle.letterSpacing;
-        measureElement.style.wordSpacing = computedStyle.wordSpacing;
+				// Copy display element styles to measure element
+				const computedStyle = window.getComputedStyle(displayElement);
+				measureElement.style.fontSize = computedStyle.fontSize;
+				measureElement.style.fontFamily = computedStyle.fontFamily;
+				measureElement.style.fontWeight = computedStyle.fontWeight;
+				measureElement.style.lineHeight = computedStyle.lineHeight;
+				measureElement.style.width = computedStyle.width;
+				measureElement.style.padding = computedStyle.padding;
+				measureElement.style.margin = computedStyle.margin;
+				measureElement.style.letterSpacing = computedStyle.letterSpacing;
+				measureElement.style.wordSpacing = computedStyle.wordSpacing;
 
-        // Mesurer la hauteur réelle
-        const actualHeight = measureElement.scrollHeight;
+				const actualHeight = measureElement.scrollHeight;
+				const lineHeight =
+					parseFloat(computedStyle.lineHeight) ||
+					parseFloat(computedStyle.fontSize) * 1.2;
+				const maxHeight = lineHeight * maxLines;
 
-        // Calculer la hauteur maximale autorisée
-        const lineHeight =
-          parseFloat(computedStyle.lineHeight) ||
-          parseFloat(computedStyle.fontSize) * 1.2;
-        const maxHeight = lineHeight * maxLines;
+				setIsTruncated(actualHeight > maxHeight);
+			}
+		};
 
-        setIsTruncated(actualHeight > maxHeight);
-      }
-    };
+		const timeoutId = setTimeout(checkIfTextTruncated, 0);
 
-    // Délai pour s'assurer que le DOM est rendu
-    const timeoutId = setTimeout(checkIfTextTruncated, 0);
+		const handleResize = () => {
+			checkIfTextTruncated();
+		};
 
-    // Re-vérifier lors du redimensionnement de la fenêtre
-    const handleResize = () => {
-      checkIfTextTruncated();
-    };
+		window.addEventListener("resize", handleResize);
 
-    window.addEventListener("resize", handleResize);
+		return () => {
+			clearTimeout(timeoutId);
+			window.removeEventListener("resize", handleResize);
+		};
+	}, [text, maxLines]);
 
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [text, maxLines]);
-
-  return {
-    isTruncated,
-    textRef,
-    measureRef,
-  };
+	return {
+		isTruncated,
+		textRef,
+		measureRef,
+	};
 };

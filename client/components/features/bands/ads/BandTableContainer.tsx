@@ -4,7 +4,7 @@ import {
 	BandTableTop,
 	BandTable,
 	BandTableFooter,
-} from "@/components/features/bands/ads/components/index";
+} from "@/components/features/bands/ads/index";
 
 import { useState } from "react";
 

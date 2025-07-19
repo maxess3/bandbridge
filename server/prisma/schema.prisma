@@ -64,6 +64,13 @@ enum PracticeType {
   ACTIVE
 }
 
+enum InstrumentLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  PROFESSIONAL
+}
+
 enum InstrumentCategory {
   STRINGS
   WIND
@@ -124,13 +131,13 @@ model InstrumentType {
 }
 
 model Instrument {
-  id                String         @id @default(uuid())
-  experienceYears   Int
-  order             Int             @default(0) // Ordre d'utilisation (0 = principal, 1 = secondaire, etc.)
+  id                String           @id @default(uuid())
+  level             InstrumentLevel  @default(BEGINNER)
+  order             Int              @default(0) // Ordre d'utilisation (0 = principal, 1 = secondaire, etc.)
   profileId         String
   instrumentTypeId  String
-  profile           Profile        @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  instrumentType    InstrumentType @relation(fields: [instrumentTypeId], references: [id], onDelete: Cascade)
+  profile           Profile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  instrumentType    InstrumentType   @relation(fields: [instrumentTypeId], references: [id], onDelete: Cascade)
   
   @@unique([profileId, instrumentTypeId])
 }

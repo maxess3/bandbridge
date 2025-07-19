@@ -11,7 +11,7 @@ import {
 	HoverCardContent,
 } from "@/components/ui/hover-card";
 import { Profile } from "@/types/Profile";
-import { ProfileMusicianInfos } from "@/components/features/profile/components/aside/ProfileMusicianInfos";
+import { ProfileMusicianInfos } from "@/components/features/profile/aside/ProfileMusicianInfos";
 
 export const ProfileAside = ({
 	profile,

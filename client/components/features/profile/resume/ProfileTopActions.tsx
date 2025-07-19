@@ -1,8 +1,8 @@
 "use client";
 
 import { Profile } from "@/types/Profile";
-import { FollowButton } from "@/components/features/profile/components/buttons/FollowButton";
-import { EditProfileButton } from "@/components/features/profile/components/buttons/EditProfileButton";
+import { FollowButton } from "@/components/features/profile/buttons/FollowButton";
+import { EditProfileButton } from "@/components/features/profile/buttons/EditProfileButton";
 import { useSession } from "next-auth/react";
 
 interface ProfileTopActionsProps {
@@ -21,7 +21,7 @@ export const ProfileTopActions = ({
 	return (
 		<div className="flex items-center gap-x-2">
 			{isOwner ? (
-				<EditProfileButton username={session.user.username} />
+				<EditProfileButton username={session?.user?.username} />
 			) : (
 				<FollowButton profile={profile} />
 			)}

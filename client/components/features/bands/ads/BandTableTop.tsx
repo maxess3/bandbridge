@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { IoChevronDown } from "react-icons/io5";
 
-import LayoutView from "@/components/features/bands/ads/components/LayoutView";
+import LayoutView from "@/components/features/bands/ads/LayoutView";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 

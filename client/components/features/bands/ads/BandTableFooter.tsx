@@ -1,4 +1,4 @@
-import Pagination from "@/components/features/bands/ads/components/Pagination";
+import Pagination from "@/components/features/bands/ads/Pagination";
 
 function BandTableFooter() {
 	return <Pagination />;

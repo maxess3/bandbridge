@@ -1,9 +1,9 @@
-import { ProfilePicture } from "@/components/features/profile/components/header/ProfilePicture";
-import { ProfileHeader } from "@/components/features/profile/components/header/ProfileHeader";
-import { ProfileFollowStats } from "@/components/features/profile/components/header/ProfileFollowStats";
-import { ProfileBasicInfo } from "@/components/features/profile/components/header/ProfileBasicInfo";
+import { ProfilePicture } from "@/components/features/profile/resume/ProfilePicture";
+import { ProfileHeader } from "@/components/features/profile/resume/ProfileHeader";
+import { ProfileStatLinks } from "@/components/features/profile/resume/ProfileStatLinks";
+import { ProfileBasicInfo } from "@/components/features/profile/resume/ProfileBasicInfo";
 import { ProfileMusicInterests } from "@/components/features/profile/components/ProfileMusicInterests";
-import { ProfileAside } from "@/components/features/profile/components/aside/ProfileAside";
+import { ProfileAside } from "@/components/features/profile/aside/ProfileAside";
 import { Profile } from "@/types/Profile";
 
 interface ProfileLayoutProps {
@@ -29,7 +29,7 @@ export function ProfileLayout({
 					<div className="flex w-full gap-x-6 px-6 pt-16 pb-6">
 						<div className="flex flex-col w-full space-y-6">
 							<ProfileHeader isOwner={isOwner} profile={profile} />
-							<ProfileFollowStats
+							<ProfileStatLinks
 								followers={profile?.followers}
 								following={profile?.following}
 							/>
@@ -42,7 +42,6 @@ export function ProfileLayout({
 				<ProfileMusicInterests />
 			</div>
 			<ProfileAside profile={profile} isOwner={isOwner} />
-			{/* <ProfileMusicInterests /> */}
 		</div>
 	);
 }

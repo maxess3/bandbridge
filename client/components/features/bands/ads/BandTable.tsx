@@ -1,6 +1,6 @@
 "use client";
 
-import { DATA } from "../../../../../app/data";
+import { DATA } from "../../../../app/data";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
