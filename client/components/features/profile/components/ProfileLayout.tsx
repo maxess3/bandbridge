@@ -2,7 +2,7 @@ import { ProfilePicture } from "@/components/features/profile/resume/ProfilePict
 import { ProfileHeader } from "@/components/features/profile/resume/ProfileHeader";
 import { ProfileStatLinks } from "@/components/features/profile/resume/ProfileStatLinks";
 import { ProfileBasicInfo } from "@/components/features/profile/resume/ProfileBasicInfo";
-import { ProfileMusicInterests } from "@/components/features/profile/components/ProfileMusicInterests";
+// import { ProfileMusicInterests } from "@/components/features/profile/components/ProfileMusicInterests";
 import { ProfileAside } from "@/components/features/profile/aside/ProfileAside";
 import { Profile } from "@/types/Profile";
 
@@ -39,7 +39,7 @@ export function ProfileLayout({
 						</div>
 					</div>
 				</div>
-				<ProfileMusicInterests />
+				{/* <ProfileMusicInterests /> */}
 			</div>
 			<ProfileAside profile={profile} isOwner={isOwner} />
 		</div>
