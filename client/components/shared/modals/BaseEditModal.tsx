@@ -31,6 +31,7 @@ import { Button } from "../../ui/button";
 import { Loader2 } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";
 import { useAutocompleteState } from "@/contexts/AutocompleteContext";
+import { useFocusManager } from "@/contexts/FocusManagerContext";
 
 interface BaseModalProps<T extends FieldValues> {
 	children: React.ReactNode;
@@ -59,6 +60,7 @@ export function BaseEditModal<T extends FieldValues>({
 }: BaseModalProps<T>) {
 	const [showExitConfirmation, setShowExitConfirmation] = useState(false);
 	const { isAnyAutocompleteOpen } = useAutocompleteState();
+	const { restoreFocus } = useFocusManager();
 
 	const methods = useForm<T>({
 		mode: "onChange",
@@ -104,6 +106,10 @@ export function BaseEditModal<T extends FieldValues>({
 		<div>
 			<Dialog open={open} onOpenChange={handleOpenChange}>
 				<DialogContent
+					onCloseAutoFocus={(e) => {
+						e.preventDefault();
+						restoreFocus();
+					}}
 					showOverlay={showOverlay}
 					className="md:max-w-2xl sm:max-w-2xl max-w-full sm:max-h-[85%] max-h-full p-0"
 					onEscapeKeyDown={(e) => {

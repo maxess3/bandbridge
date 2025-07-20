@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { saveLastFocusedElement } from "@/utils/utils";
+import { useFocusManager } from "@/contexts/FocusManagerContext";
 
 export const EditProfileButton = ({ username }: { username: string }) => {
-  return (
-    <Link
-      href={`/${username}/edit/profile/general`}
-      onClick={saveLastFocusedElement}
-      className={buttonVariants({ variant: "outline" })}
-    >
-      Modifier le résumé
-    </Link>
-  );
+	const { captureFocus } = useFocusManager();
+
+	return (
+		<Link
+			href={`/${username}/edit/profile/general`}
+			onClick={captureFocus}
+			className={buttonVariants({ variant: "outline" })}
+		>
+			Modifier le résumé
+		</Link>
+	);
 };

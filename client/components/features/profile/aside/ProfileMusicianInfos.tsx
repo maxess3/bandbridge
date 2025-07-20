@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { saveLastFocusedElement, formatDateToMonthYear } from "@/utils/utils";
+import { formatDateToMonthYear } from "@/utils/utils";
 import { Pencil } from "lucide-react";
 import { Profile } from "@/types/Profile";
 import { AiOutlineYoutube } from "react-icons/ai";
@@ -10,6 +10,7 @@ import { RiSoundcloudFill } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { CollapsibleText } from "@/components/shared/buttons/CollapsibleText";
+import { useFocusManager } from "@/contexts/FocusManagerContext";
 
 const SOCIAL_PLATFORMS = [
 	{
@@ -40,6 +41,8 @@ const SOCIAL_PLATFORMS = [
 ];
 
 export const ProfileMusicianInfos = ({ profile }: { profile: Profile }) => {
+	const { captureFocus } = useFocusManager();
+
 	// Filtrer les liens sociaux qui ont une URL
 	const activeSocialLinks = SOCIAL_PLATFORMS.filter(
 		(platform) =>
@@ -55,7 +58,7 @@ export const ProfileMusicianInfos = ({ profile }: { profile: Profile }) => {
 					<h2 className="text-lg font-bold">Infos</h2>
 					<Link
 						href={`/${profile?.username}/edit/profile/info`}
-						onClick={saveLastFocusedElement}
+						onClick={captureFocus}
 						className="relative group flex justify-center items-center rounded-full w-12 h-12 hover:bg-hover"
 					>
 						<Pencil
