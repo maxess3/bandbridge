@@ -55,7 +55,8 @@ export default async function RootLayout({
 										},
 									}}
 									position="bottom-left"
-									duration={4000}
+									offset={10}
+									duration={3000}
 								/>
 								<TooltipProvider>
 									<SidebarProvider>

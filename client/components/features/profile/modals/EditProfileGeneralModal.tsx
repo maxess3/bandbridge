@@ -1,6 +1,6 @@
 "use client";
 
-import { EditModalWithNavigation } from "@/components/shared/modals/EditModalWithNavigation";
+import { EditModal } from "@/components/shared/modals/EditModal";
 import { UpdateProfileGeneralForm } from "@/components/features/profile/forms/UpdateProfileGeneralForm";
 import { formGeneralProfile } from "@/lib/schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -64,13 +64,13 @@ export function EditProfileGeneralModal() {
 	return (
 		<AutocompleteProvider>
 			{profile && (
-				<EditModalWithNavigation
+				<EditModal<z.infer<typeof formGeneralProfile>>
 					open={!loadingProfile}
 					onSubmit={async (values) => {
 						return withDelay(() => updateProfileMutation.mutateAsync(values));
 					}}
 					formSchema={formGeneralProfile}
-					route={`/${profile?.username}`}
+					navigationRoute={`/${profile?.username}`}
 					defaultValues={{
 						firstname: profile?.firstName ?? "",
 						lastname: profile?.lastName ?? "",
@@ -116,7 +116,7 @@ export function EditProfileGeneralModal() {
 					isSubmitting={updateProfileMutation.isPending || isDelaying}
 				>
 					<UpdateProfileGeneralForm />
-				</EditModalWithNavigation>
+				</EditModal>
 			)}
 		</AutocompleteProvider>
 	);
