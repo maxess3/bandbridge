@@ -74,12 +74,12 @@ export function NavUser() {
 									<DefaultProfilePicture className="mt-7 mr-1 w-[50px] h-[50px] text-background" />
 								</AvatarFallback>
 							</Avatar>
-							<div className="grid flex-1 text-left text-sm leading-tight">
+							<div className="grid flex-1 text-left text-sm">
 								<span className="truncate font-bold">
-									{session?.user.firstName}
+									{session?.user.firstName} {session?.user.lastName}
 								</span>
 								<span className="text-muted-foreground truncate text-xs">
-									{session?.user.email}
+									@{session?.user.username}
 								</span>
 							</div>
 							<MoreVertical className="ml-auto size-4" />
@@ -113,11 +113,12 @@ export function NavUser() {
 										</AvatarFallback>
 									</Avatar>
 									<div className="flex flex-col ml-0.5">
-										<span className="text-md font-medium">
-											{session?.user.username}
-										</span>
-										<span className="text-xs opacity-80">
+										<span className="text-md font-bold">
 											{session?.user.firstName} {session?.user.lastName}
+										</span>
+										<span className="text-sm opacity-80">
+											<span className="text-xs">@</span>
+											{session?.user.username}
 										</span>
 									</div>
 								</div>

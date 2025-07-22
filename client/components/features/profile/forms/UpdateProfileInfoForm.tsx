@@ -261,7 +261,9 @@ export const UpdateProfileInfoForm = () => {
 				/>
 				<div className="flex justify-between items-center">
 					{errors.description && (
-						<p className="text-red-500 text-sm">{errors.description.message}</p>
+						<p className="text-red-500 text-sm">
+							{errors.description?.message?.toString()}
+						</p>
 					)}
 					<p
 						className={`text-sm ml-auto ${
@@ -302,7 +304,7 @@ export const UpdateProfileInfoForm = () => {
 					/>
 					{errors.concertsPlayed && (
 						<p className="text-red-500 text-sm">
-							{errors.concertsPlayed.message}
+							{errors.concertsPlayed?.message?.toString()}
 						</p>
 					)}
 				</div>
@@ -338,7 +340,7 @@ export const UpdateProfileInfoForm = () => {
 					/>
 					{errors.rehearsalsPerWeek && (
 						<p className="text-red-500 text-sm">
-							{errors.rehearsalsPerWeek.message}
+							{errors.rehearsalsPerWeek?.message?.toString()}
 						</p>
 					)}
 				</div>
@@ -368,7 +370,7 @@ export const UpdateProfileInfoForm = () => {
 					/>
 					{errors.practiceType && (
 						<p className="text-red-500 text-sm">
-							{errors.practiceType.message}
+							{errors.practiceType?.message?.toString()}
 						</p>
 					)}
 				</div>

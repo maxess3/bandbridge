@@ -75,6 +75,7 @@ export const formGeneralProfile = z.object({
 	firstname: z
 		.string()
 		.min(1, "Le prénom est requis")
+		.max(25, "Le prénom ne doit pas dépasser 25 caractères")
 		.regex(
 			/^[a-zA-ZÀ-ÿ\-]+$/,
 			"Le prénom ne doit contenir que des lettres et tirets"
@@ -82,6 +83,7 @@ export const formGeneralProfile = z.object({
 	lastname: z
 		.string()
 		.min(1, "Le nom est requis")
+		.max(30, "Le nom ne doit pas dépasser 30 caractères")
 		.regex(
 			/^[a-zA-ZÀ-ÿ\-]+$/,
 			"Le nom ne doit contenir que des lettres et tirets"
@@ -89,6 +91,7 @@ export const formGeneralProfile = z.object({
 	username: z
 		.string()
 		.min(5, "Le nom d'utilisateur doit contenir au moins 5 caractères")
+		.max(20, "Le nom d'utilisateur ne doit pas dépasser 20 caractères")
 		.regex(
 			/^[a-zA-Z0-9]+$/,
 			"Le nom d'utilisateur ne doit contenir que des lettres et des chiffres"
@@ -151,8 +154,9 @@ export const formGeneralProfile = z.object({
 	city: z
 		.string()
 		.min(1, "La ville est requise")
+		.max(50, "La ville ne doit pas dépasser 50 caractères")
 		.regex(
-			/^[a-zA-ZÀ-ÿ\-]+$/,
+			/^[a-zA-ZÀ-ÿ\-']+$/,
 			"La ville ne doit contenir que des lettres et tirets"
 		),
 	instruments: z
@@ -263,8 +267,16 @@ export const formProfilePicture = z.object({
 		.refine((file) => file.type.startsWith("image/"), {
 			message: "Le fichier doit être une image",
 		})
+		.refine((file) => file.size <= 5 * 1024 * 1024, {
+			message: "L'image ne doit pas dépasser 5 Mo",
+		})
 		.refine(
-			(file) => file.size <= 5 * 1024 * 1024, // 5 Mo
-			{ message: "L'image ne doit pas dépasser 5 Mo" }
+			(file) => {
+				const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+				return allowedTypes.includes(file.type);
+			},
+			{
+				message: "Format d'image non supporté (JPEG, PNG, WebP uniquement)",
+			}
 		),
 });
