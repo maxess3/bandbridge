@@ -1,7 +1,6 @@
 import { FaStar } from "react-icons/fa";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { saveLastFocusedElement } from "@/utils/utils";
 import { Pencil, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 
@@ -57,7 +56,6 @@ const Category = ({ title, items, isSkill, className }: CategoryProps) => {
         <div>
           <Link
             href={`/edit/profile/info`}
-            onClick={saveLastFocusedElement}
             className="relative group flex justify-center items-center rounded-full w-12 h-12 hover:bg-hover"
           >
             <Pencil

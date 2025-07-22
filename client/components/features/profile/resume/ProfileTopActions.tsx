@@ -2,29 +2,20 @@
 
 import { Profile } from "@/types/Profile";
 import { FollowButton } from "@/components/features/profile/buttons/FollowButton";
-import { EditProfileButton } from "@/components/features/profile/buttons/EditProfileButton";
 import { useSession } from "next-auth/react";
 
 interface ProfileTopActionsProps {
-	profile: Profile;
-	isOwner: boolean;
+  profile: Profile;
 }
 
-export const ProfileTopActions = ({
-	profile,
-	isOwner,
-}: ProfileTopActionsProps) => {
-	const { data: session } = useSession();
+export const ProfileTopActions = ({ profile }: ProfileTopActionsProps) => {
+  const { data: session } = useSession();
 
-	if (!session?.user) return null;
+  if (!session?.user) return null;
 
-	return (
-		<div className="flex items-center gap-x-2">
-			{isOwner ? (
-				<EditProfileButton username={session?.user?.username} />
-			) : (
-				<FollowButton profile={profile} />
-			)}
-		</div>
-	);
+  return (
+    <div className="flex items-center gap-x-2">
+      <FollowButton profile={profile} />
+    </div>
+  );
 };
