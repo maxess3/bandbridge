@@ -22,7 +22,7 @@ export const EditProfileButton = ({
         href={url}
         onClick={captureFocus}
         className={cn(
-          "absolute top-3 right-6 group flex justify-center items-center rounded-full w-12 h-12 hover:bg-hover",
+          "absolute top-3 right-4 group flex justify-center items-center rounded-full w-12 h-12 hover:bg-hover",
           className
         )}
       >

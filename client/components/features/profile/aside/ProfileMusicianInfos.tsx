@@ -55,10 +55,10 @@ export const ProfileMusicianInfos = ({
   const description = profile?.description || "";
 
   return (
-    <div className="flex flex-col bg-[#111111] rounded-xl border relative">
-      <div className="p-6">
+    <div className="flex flex-col rounded-xl border relative bg-[#111111]">
+      <div className="p-6 space-y-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Infos</h2>
+          <h2 className="text-xl font-bold">Infos</h2>
           <EditProfileButton
             isOwner={isOwner}
             url={`/${profile?.username}/edit/profile/info`}
@@ -67,10 +67,10 @@ export const ProfileMusicianInfos = ({
         <CollapsibleText
           text={description}
           maxLines={4}
-          className={`opacity-90 text-sm ${description ? "my-4" : "my-0"}`}
+          className="opacity-90"
           alignButton="right"
         />
-        <div className="mt-4 flex justify-center flex-col gap-1.5 text-sm">
+        <div className="flex justify-center flex-col gap-3 text-sm">
           <div className="flex gap-x-2">
             <span className="font-semibold">Membre depuis : </span>
             <span>
@@ -111,37 +111,33 @@ export const ProfileMusicianInfos = ({
           </div>
         </div>
         {activeSocialLinks.length > 0 && (
-          <div className="mt-6 flex flex-col gap-y-2">
-            <div className="">
-              <div className="flex gap-2 flex-wrap">
-                {activeSocialLinks.map((platform) => {
-                  const PlatformIcon = platform.icon;
-                  const url =
-                    profile.socialLinks[
-                      platform.key as keyof typeof profile.socialLinks
-                    ];
+          <div className="flex flex-col">
+            <div className="flex gap-3 flex-wrap">
+              {activeSocialLinks.map((platform) => {
+                const PlatformIcon = platform.icon;
+                const url =
+                  profile.socialLinks[
+                    platform.key as keyof typeof profile.socialLinks
+                  ];
 
-                  return (
-                    <Link
-                      key={platform.key}
-                      href={url || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        buttonVariants({ variant: "outline", size: "sm" }),
-                        "flex items-center gap-2 rounded-full text-sm"
-                      )}
-                    >
-                      <PlatformIcon
-                        style={{ width: "1.3em", height: "1.3em" }}
-                      />
-                      <span className="font-semibold text-sm">
-                        {platform.label}
-                      </span>
-                    </Link>
-                  );
-                })}
-              </div>
+                return (
+                  <Link
+                    key={platform.key}
+                    href={url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      buttonVariants({ variant: "outline", size: "sm" }),
+                      "flex items-center gap-2 rounded-full text-sm"
+                    )}
+                  >
+                    <PlatformIcon style={{ width: "1.3em", height: "1.3em" }} />
+                    <span className="font-semibold text-sm">
+                      {platform.label}
+                    </span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         )}
