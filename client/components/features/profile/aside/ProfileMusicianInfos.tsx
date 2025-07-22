@@ -52,13 +52,13 @@ export const ProfileMusicianInfos = ({
       profile?.socialLinks?.[platform.key as keyof typeof profile.socialLinks]
   );
 
-  const description = profile?.description || "Aucune description du profil";
+  const description = profile?.description || "";
 
   return (
     <div className="flex flex-col bg-[#111111] rounded-xl border relative">
       <div className="p-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-bold">Infos</h2>
+          <h2 className="text-xl font-semibold">Infos</h2>
           <EditProfileButton
             isOwner={isOwner}
             url={`/${profile?.username}/edit/profile/info`}
@@ -67,7 +67,7 @@ export const ProfileMusicianInfos = ({
         <CollapsibleText
           text={description}
           maxLines={4}
-          className="opacity-90 text-sm my-4"
+          className={`opacity-90 text-sm ${description ? "my-4" : "my-0"}`}
           alignButton="right"
         />
         <div className="mt-4 flex justify-center flex-col gap-1.5 text-sm">
@@ -135,7 +135,7 @@ export const ProfileMusicianInfos = ({
                       <PlatformIcon
                         style={{ width: "1.3em", height: "1.3em" }}
                       />
-                      <span className="font-bold text-sm">
+                      <span className="font-semibold text-sm">
                         {platform.label}
                       </span>
                     </Link>

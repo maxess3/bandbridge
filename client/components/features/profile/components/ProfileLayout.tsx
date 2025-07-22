@@ -20,7 +20,7 @@ export function ProfileLayout({
     <div className="flex gap-3 p-3 w-full h-fit">
       <div className="w-2/3 flex flex-col">
         <div className="bg-[#111111] rounded-xl w-full border">
-          <div className="w-full h-48 bg-gradient-to-r from-violet-600 to-indigo-600 relative rounded-t-xl">
+          <div className="w-full h-52 bg-gradient-to-r from-violet-600 to-indigo-600 relative rounded-t-xl">
             <ProfilePicture
               isOwner={isOwner}
               src={profile?.profilePictureKey}
