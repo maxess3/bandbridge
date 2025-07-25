@@ -10,8 +10,11 @@ export const validateSchema =
 			next();
 		} catch (error) {
 			if (error instanceof ZodError) {
-				// [BUG] error.errors is an array of objects, not a string
-				res.status(400).json({ message: error.errors });
+				const errorMessages = error.errors
+					.map((err) => `${err.path.join(".")}: ${err.message}`)
+					.join(", ");
+
+				res.status(400).json({ message: errorMessages });
 			} else {
 				res.status(500).json({ message: "Erreur interne du serveur" });
 			}
