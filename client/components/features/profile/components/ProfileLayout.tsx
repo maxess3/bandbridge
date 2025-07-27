@@ -16,8 +16,8 @@ export function ProfileLayout({
 	profile,
 }: ProfileLayoutProps) {
 	return (
-		<div className="flex gap-6 p-6 w-full h-fit">
-			<div className="w-2/3 flex flex-col">
+		<div className="flex md:flex-row sm:flex-col flex-col gap-6 p-6 w-full h-fit">
+			<div className="lg:w-2/3 md:w-1/2 sm:w-full">
 				<div className="bg-[#111111] rounded-xl w-full border">
 					<div className="w-full h-52 bg-gradient-to-r from-violet-600 to-indigo-600 relative rounded-t-xl">
 						<ProfilePicture

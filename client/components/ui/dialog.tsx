@@ -23,7 +23,7 @@ const DialogOverlay = React.forwardRef<
 	<DialogPrimitive.Overlay
 		ref={ref}
 		className={cn(
-			"fixed grid place-items-center overflow-auto inset-0 z-50 bg-black/30 dark:bg-black/30",
+			"fixed grid place-items-center overflow-auto inset-0 z-50 bg-black/70 dark:bg-black/70",
 			className
 		)}
 		{...props}

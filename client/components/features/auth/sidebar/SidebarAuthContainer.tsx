@@ -9,8 +9,7 @@ import {
 	Settings,
 	Users,
 } from "lucide-react";
-import { NavMain } from "@/components/features/auth/sidebar/NavMain";
-import { NavUser } from "@/components/features/auth/sidebar/NavUser";
+import { SidebarNavMain } from "@/components/features/auth/sidebar/SidebarNavMain";
 import {
 	Sidebar,
 	SidebarContent,
@@ -19,7 +18,7 @@ import {
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-	SidebarTrigger,
+	useSidebar,
 } from "@/components/ui/sidebar";
 
 const data = {
@@ -106,36 +105,38 @@ const data = {
 	],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function SidebarAuthContainer({
+	...props
+}: React.ComponentProps<typeof Sidebar>) {
+	const { state } = useSidebar();
+	const isCollapsed = state === "collapsed";
+
 	return (
 		<Sidebar collapsible="icon" {...props}>
-			<SidebarHeader className="pt-6">
-				<SidebarMenu>
-					<SidebarMenuItem className="flex items-center relative">
-						<SidebarMenuButton
-							asChild
-							className="group-data-[collapsible=icon]:justify-center gap-x-3 hover:bg-transparent cursor-default w-fit"
-						>
-							<Link
-								href="/home"
-								className="cursor-pointer hover:bg-transparent px-3"
-							>
-								<Layers className="!size-6 group-data-[collapsible=icon]:!size-8 group-data-[state=collapsed]:group-hover:hidden" />
-								<span className="text-xl font-extrabold group-data-[collapsible=icon]:hidden uppercase">
+			<SidebarHeader className="h-16">
+				<SidebarMenu className="h-full">
+					<SidebarMenuItem className="flex items-center relative h-full">
+						<SidebarMenuButton asChild className="hover:bg-transparent">
+							<Link href="/home" className="cursor-pointer">
+								<Layers className="!size-6 mr-1" />
+								<span
+									className={`text-xl font-extrabold uppercase transition-all duration-200 ease-in-out whitespace-nowrap ${
+										isCollapsed
+											? "opacity-0 scale-0 max-w-0"
+											: "opacity-100 scale-100 max-w-none"
+									}`}
+								>
 									chordeus
 								</span>
 							</Link>
 						</SidebarMenuButton>
-						<SidebarTrigger className="rounded-full group-data-[collapsible=icon]:justify-center group-data-[state=expanded]:absolute group-data-[state=expanded]:right-0 group-data-[state=collapsed]:absolute group-data-[state=collapsed]:inset-0 group-data-[state=collapsed]:h-full group-data-[state=collapsed]:w-full h-9 w-9 [&>svg]:!size-5 opacity-0 group-data-[state=expanded]:group-hover:opacity-100 group-data-[state=collapsed]:group-hover:opacity-100 transition-opacity" />
 					</SidebarMenuItem>
 				</SidebarMenu>
 			</SidebarHeader>
 			<SidebarContent>
-				<NavMain items={data.navMain} />
+				<SidebarNavMain items={data.navMain} />
 			</SidebarContent>
-			<SidebarFooter className="pb-6">
-				<NavUser />
-			</SidebarFooter>
+			<SidebarFooter></SidebarFooter>
 		</Sidebar>
 	);
 }

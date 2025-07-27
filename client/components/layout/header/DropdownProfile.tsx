@@ -64,17 +64,13 @@ export const DropdownProfile = () => {
 					</Avatar>
 				</button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-60 mt-[3px] border">
+			<DropdownMenuContent className="w-60 mt-[8px] border">
 				<DropdownMenuGroup>
 					<DropdownMenuItem
-						onClick={() => {
-							const trigger = document.activeElement as HTMLElement;
-							if (trigger) trigger.blur();
-							router.push(`/${session?.user.username}`);
-						}}
+						onClick={() => router.push(`/${session?.user.username}`)}
 					>
 						<div className="w-full space-y-3">
-							<div className="flex space-x-2">
+							<div className="flex items-center space-x-3">
 								<Avatar className="cursor-pointer">
 									<AvatarImage
 										src={getProfileImageUrl(
@@ -90,11 +86,11 @@ export const DropdownProfile = () => {
 									</AvatarFallback>
 								</Avatar>
 								<div className="flex flex-col ml-0.5">
-									<span className="text-md font-medium">
-										{session?.user.username}
-									</span>
-									<span className="text-xs opacity-80">
+									<span className="text-base font-bold">
 										{session?.user.firstName} {session?.user.lastName}
+									</span>
+									<span className="text-xs opacity-80 font-medium">
+										@{session?.user.username}
 									</span>
 								</div>
 							</div>

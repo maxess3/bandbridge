@@ -6,9 +6,9 @@ import AuthSessionProviders from "@/providers/AuthSessionProviders";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
 import { Toaster } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
-import { AuthenticatedSidebar } from "@/components/features/auth/sidebar/AuthenticatedSidebar";
+import { SidebarAuth } from "@/components/features/auth/sidebar/SidebarAuth";
 import { FocusManagerProvider } from "@/contexts/FocusManagerContext";
 
 const montserrat = Montserrat({
@@ -60,8 +60,10 @@ export default async function RootLayout({
 								/>
 								<TooltipProvider>
 									<SidebarProvider>
-										<AuthenticatedSidebar />
-										<ConditionalLayout>{children}</ConditionalLayout>
+										<SidebarAuth />
+										<SidebarInset>
+											<ConditionalLayout>{children}</ConditionalLayout>
+										</SidebarInset>
 									</SidebarProvider>
 								</TooltipProvider>
 							</FocusManagerProvider>

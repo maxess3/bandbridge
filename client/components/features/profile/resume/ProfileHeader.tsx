@@ -9,16 +9,18 @@ interface ProfileHeaderProps {
 
 export const ProfileHeader = ({ profile, isOwner }: ProfileHeaderProps) => {
 	return (
-		<div className="flex justify-between">
-			<div className="flex flex-col">
-				<span className="text-2xl gap-x-1.5 font-bold inline-flex items-center">
-					{profile?.firstName} {profile?.lastName}
-					<RiVerifiedBadgeFill size={"0.8em"} color="#4476ff" />
-				</span>
-				<span className="text-lg font-medium opacity-80">
+		<div className="flex flex-wrap justify-between items-start gap-3">
+			<div>
+				<div className="text-2xl font-bold">
+					<span className="inline-flex items-center gap-x-1 flex-wrap">
+						{profile?.firstName} {profile?.lastName}
+						<RiVerifiedBadgeFill className="size-6" color="#4476ff" />
+					</span>
+				</div>
+				<div className="text-lg font-medium opacity-80 w-fit">
 					<span className="text-sm">@</span>
 					{profile?.username}
-				</span>
+				</div>
 			</div>
 			{!isOwner && <ProfileTopActions profile={profile} />}
 		</div>

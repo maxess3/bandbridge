@@ -10,6 +10,7 @@ import {
 	SidebarMenuSub,
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
+	useSidebar,
 } from "@/components/ui/sidebar";
 import {
 	Collapsible,
@@ -17,7 +18,7 @@ import {
 	CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 
-export function NavMain({
+export function SidebarNavMain({
 	items,
 }: {
 	items: {
@@ -30,9 +31,12 @@ export function NavMain({
 		}[];
 	}[];
 }) {
+	const { state } = useSidebar();
+	const isCollapsed = state === "collapsed";
+
 	return (
 		<SidebarGroup>
-			<SidebarGroupContent className="flex flex-col">
+			<SidebarGroupContent>
 				<SidebarMenu>
 					{items.map((item) => (
 						<Collapsible key={item.title} asChild className="group/collapsible">
@@ -41,17 +45,26 @@ export function NavMain({
 									<>
 										<CollapsibleTrigger asChild>
 											<SidebarMenuButton
-												size="lg"
+												className="h-12 p-3"
 												tooltip={item.title}
-												className="group-data-[collapsible=icon]:justify-center px-3 mb-0.5 gap-x-3"
 											>
-												{item.icon && (
-													<item.icon className="group-data-[collapsible=icon]:size-6" />
-												)}
-												<span className="group-data-[collapsible=icon]:hidden">
+												{item.icon && <item.icon className="mr-1.5" />}
+												<span
+													className={`transition-all duration-200 ease-in-out whitespace-nowrap ${
+														isCollapsed
+															? "opacity-0 scale-0 max-w-0"
+															: "opacity-100 scale-100 max-w-none"
+													}`}
+												>
 													{item.title}
 												</span>
-												<ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 group-data-[collapsible=icon]:hidden" />
+												<ChevronRight
+													className={`ml-auto transition-all duration-200 ease-in-out group-data-[state=open]/collapsible:rotate-90 ${
+														isCollapsed
+															? "opacity-0 scale-0"
+															: "opacity-100 scale-100"
+													}`}
+												/>
 											</SidebarMenuButton>
 										</CollapsibleTrigger>
 										<CollapsibleContent>
@@ -60,9 +73,15 @@ export function NavMain({
 													<SidebarMenuSubItem key={subItem.title}>
 														<SidebarMenuSubButton
 															href={subItem.url}
-															className="h-12 px-3"
+															className="h-12 p-3"
 														>
-															<span className="group-data-[collapsible=icon]:hidden">
+															<span
+																className={`transition-all duration-200 ease-in-out whitespace-nowrap ${
+																	isCollapsed
+																		? "opacity-0 scale-0 max-w-0"
+																		: "opacity-100 scale-100 max-w-none"
+																}`}
+															>
 																{subItem.title}
 															</span>
 														</SidebarMenuSubButton>
@@ -72,15 +91,15 @@ export function NavMain({
 										</CollapsibleContent>
 									</>
 								) : (
-									<SidebarMenuButton
-										tooltip={item.title}
-										className="group-data-[collapsible=icon]:justify-center px-3 gap-x-3"
-										size="lg"
-									>
-										{item.icon && (
-											<item.icon className="group-data-[collapsible=icon]:size-6" />
-										)}
-										<span className="group-data-[collapsible=icon]:hidden">
+									<SidebarMenuButton className="h-12 p-3" tooltip={item.title}>
+										{item.icon && <item.icon className="mr-1.5" />}
+										<span
+											className={`transition-all duration-200 ease-in-out whitespace-nowrap ${
+												isCollapsed
+													? "opacity-0 scale-0 max-w-0"
+													: "opacity-100 scale-100 max-w-none"
+											}`}
+										>
 											{item.title}
 										</span>
 									</SidebarMenuButton>
