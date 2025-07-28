@@ -7,39 +7,41 @@ import { useSidebar } from "@/components/ui/sidebar";
 import { DropdownProfile } from "@/components/layout/header/DropdownProfile";
 
 export const NavbarAuthContainer = () => {
-	const { setOpenMobile } = useSidebar();
+  const { setOpenMobile } = useSidebar();
 
-	const handleBurgerClick = () => {
-		setOpenMobile(true);
-	};
+  const handleBurgerClick = () => {
+    setOpenMobile(true);
+  };
 
-	return (
-		<nav className="h-16 bg-[#111111] items-center flex px-6 sticky top-0 z-50 w-full border-b">
-			<div className="container flex h-14 max-w-screen-2xl items-center">
-				{/* Burger Menu - Mobile */}
-				<Button
-					variant="ghost"
-					size="icon"
-					className="mr-2 md:hidden"
-					onClick={handleBurgerClick}
-					aria-label="Ouvrir le menu"
-				>
-					<Menu />
-				</Button>
+  return (
+    <nav className="h-16 bg-[#111111] items-center flex px-6 sticky top-0 z-50 w-full border-b">
+      <div className="flex justify-between items-center w-full">
+        <div className="flex items-center">
+          {/* Burger Menu - Mobile */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="mr-2 md:hidden"
+            onClick={handleBurgerClick}
+            aria-label="Ouvrir le menu"
+          >
+            <Menu />
+          </Button>
 
-				{/* Logo */}
-				<div className="flex items-center gap-x-3 md:hidden">
-					<Link href="/home" className="font-medium flex items-center gap-x-3">
-						<span className="text-xl font-extrabold uppercase">Chordeus</span>
-					</Link>
-				</div>
+          {/* Logo */}
+          <div className="flex items-center gap-x-3 md:hidden">
+            <Link
+              href="/home"
+              className="font-medium flex items-center gap-x-3"
+            >
+              <span className="text-xl font-extrabold uppercase">Chordeus</span>
+            </Link>
+          </div>
+        </div>
 
-				{/* Spacer */}
-				<div className="flex-1" />
-
-				{/* Profile Dropdown */}
-				<DropdownProfile />
-			</div>
-		</nav>
-	);
+        {/* Profile Dropdown */}
+        <DropdownProfile />
+      </div>
+    </nav>
+  );
 };

@@ -35,6 +35,11 @@ export const CollapsibleText = ({
     maxLines,
   });
 
+  // Si le texte est vide, null ou undefined, ne rien afficher
+  if (!text || text.trim() === "") {
+    return null;
+  }
+
   const buttonContainerClasses = {
     left: "flex justify-start",
     right: "flex justify-end",
