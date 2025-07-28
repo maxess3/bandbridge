@@ -244,7 +244,7 @@ export const UpdateProfileInfoForm = () => {
 
 	return (
 		<div className="space-y-6">
-			<div className="space-y-2">
+			<div className="space-y-1">
 				<Label
 					htmlFor="description"
 					className="opacity-80 flex items-center text-sm"
@@ -275,10 +275,10 @@ export const UpdateProfileInfoForm = () => {
 				</div>
 			</div>
 
-			<div className="space-y-4">
+			<div className="space-y-6">
 				<h4 className="font-semibold text-xl">Expérience musicale</h4>
-				<div className="space-y-1.5">
-					<Label htmlFor="concertsPlayed" className="opacity-80">
+				<div className="space-y-1">
+					<Label htmlFor="concertsPlayed" className="opacity-80 text-sm">
 						Concerts joués
 					</Label>
 					<Controller
@@ -308,8 +308,8 @@ export const UpdateProfileInfoForm = () => {
 						</p>
 					)}
 				</div>
-				<div className="space-y-1.5">
-					<Label htmlFor="rehearsalsPerWeek" className="opacity-80">
+				<div className="space-y-1">
+					<Label htmlFor="rehearsalsPerWeek" className="opacity-80 text-sm">
 						Répétitions par semaine
 					</Label>
 					<Controller
@@ -344,8 +344,8 @@ export const UpdateProfileInfoForm = () => {
 						</p>
 					)}
 				</div>
-				<div className="space-y-1.5">
-					<Label htmlFor="practiceType" className="opacity-80">
+				<div className="space-y-1">
+					<Label htmlFor="practiceType" className="opacity-80 text-sm">
 						Type de pratique musicale
 					</Label>
 					<Controller
@@ -376,14 +376,24 @@ export const UpdateProfileInfoForm = () => {
 				</div>
 			</div>
 
-			<div className="space-y-4">
+			<div className="space-y-6">
 				<h4 className="font-semibold text-xl">Liens sociaux</h4>
 				<div className="space-y-3">
 					{socialLinks.map((link) => {
 						const linkError = getSocialLinkError(link.platform);
 						return (
 							<div key={link.id} className="space-y-2" data-link-id={link.id}>
-								<div className="flex items-center gap-3 p-3 border rounded-lg">
+								<div className="flex items-center gap-3 rounded-lg">
+									<Button
+										onClick={() => removeSocialLink(link.id)}
+										variant="ghost"
+										size="sm"
+										className="text-foreground rounded-full"
+										type="button"
+									>
+										<X className="!size-5" />
+									</Button>
+
 									<div className="w-[170px]">
 										<NativeSelect
 											value={link.platform}
@@ -432,16 +442,6 @@ export const UpdateProfileInfoForm = () => {
 											/>
 										)}
 									</div>
-
-									<Button
-										onClick={() => removeSocialLink(link.id)}
-										variant="ghost"
-										size="sm"
-										className="text-red-500"
-										type="button"
-									>
-										<X />
-									</Button>
 								</div>
 								{linkError && (
 									<p className="text-red-500 text-sm px-3">{linkError}</p>

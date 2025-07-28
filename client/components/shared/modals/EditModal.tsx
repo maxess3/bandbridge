@@ -126,7 +126,7 @@ export function EditModal<T extends FieldValues>({
 						restoreFocus();
 					}}
 					showOverlay={showOverlay}
-					className="md:max-w-2xl sm:max-w-2xl max-w-full sm:max-h-[85%] max-h-full p-0"
+					className="sm:max-w-2xl max-w-full sm:max-h-[85%] max-h-full p-0"
 					onEscapeKeyDown={(e) => {
 						// Empêcher la fermeture de la modale si une autocomplétion est ouverte
 						if (isAnyAutocompleteOpen) {
