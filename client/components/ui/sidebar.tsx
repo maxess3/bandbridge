@@ -35,9 +35,13 @@ const SIDEBAR_BREAKPOINT = 1294;
 
 // Hook for detecting if the sidebar should be in collapsed mode according to the width
 function useSidebarCollapsed() {
-  const [isCollapsed, setIsCollapsed] = React.useState<boolean | undefined>(
-    undefined
-  );
+  const [isCollapsed, setIsCollapsed] = React.useState<boolean>(() => {
+    // Initialize with the correct value immediately if window is available
+    if (typeof window !== "undefined") {
+      return window.innerWidth < SIDEBAR_BREAKPOINT;
+    }
+    return false; // Default fallback
+  });
 
   React.useEffect(() => {
     const mql = window.matchMedia(`(max-width: ${SIDEBAR_BREAKPOINT - 1}px)`);
@@ -45,11 +49,15 @@ function useSidebarCollapsed() {
       setIsCollapsed(window.innerWidth < SIDEBAR_BREAKPOINT);
     };
     mql.addEventListener("change", onChange);
-    setIsCollapsed(window.innerWidth < SIDEBAR_BREAKPOINT);
+    // Only update if the initial value was wrong
+    const currentCollapsed = window.innerWidth < SIDEBAR_BREAKPOINT;
+    if (currentCollapsed !== isCollapsed) {
+      setIsCollapsed(currentCollapsed);
+    }
     return () => mql.removeEventListener("change", onChange);
-  }, []);
+  }, [isCollapsed]);
 
-  return !!isCollapsed;
+  return isCollapsed;
 }
 
 type SidebarContextProps = {
@@ -617,7 +625,7 @@ const SidebarMenuButton = React.forwardRef<
     }
 
     return (
-      <Tooltip>
+      <Tooltip delayDuration={500}>
         <TooltipTrigger asChild>{button}</TooltipTrigger>
         <TooltipContent
           side="right"

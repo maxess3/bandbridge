@@ -10,6 +10,10 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        newKansas: ["var(--font-new-kansas)"],
+        inter: ["var(--font-inter)"],
+      },
       keyframes: {
         "loader-animation": {
           "0%": {

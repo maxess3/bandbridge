@@ -123,13 +123,13 @@ export function SidebarAuthContainer({
               <Link href="/home" className="cursor-pointer">
                 <Layers className="!size-5 mr-1" />
                 <span
-                  className={`text-xl font-extrabold uppercase transition-all duration-200 ease-in-out whitespace-nowrap ${
+                  className={`font-newKansas font-semibold text-2xl transition-all duration-200 ease-in-out whitespace-nowrap ${
                     isCollapsed
                       ? "opacity-0 scale-0 max-w-0"
                       : "opacity-100 scale-100 max-w-none"
                   }`}
                 >
-                  chordeus
+                  Chordeus
                 </span>
               </Link>
             </SidebarMenuButton>

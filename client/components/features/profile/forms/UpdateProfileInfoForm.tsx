@@ -10,6 +10,11 @@ import { Radio } from "@/components/shared/buttons/Radio";
 import { Input } from "@/components/ui/input";
 import { NativeSelect } from "@/components/shared/forms/NativeSelect";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { AiOutlineYoutube } from "react-icons/ai";
 import { FaInstagram } from "react-icons/fa6";
 import { FaTiktok } from "react-icons/fa6";
@@ -414,23 +419,33 @@ export const UpdateProfileInfoForm = () => {
               const hasError = getSocialLinkError(platform.value);
 
               return (
-                <Button
-                  key={platform.value}
-                  onClick={() => handleSocialButtonClick(platform.value)}
-                  variant={isActive ? "secondary" : "outline"}
-                  size="sm"
-                  className={`flex items-center gap-2 rounded-full w-12 h-12 ${
-                    hasError ? "border-red-500" : ""
-                  }`}
-                  type="button"
-                  aria-label={`${isActive ? "Supprimer" : "Ajouter"} le lien ${
-                    platform.label
-                  }`}
-                  aria-pressed={isActive}
-                  ref={(el) => setButtonRef(platform.value, el)}
-                >
-                  <IconComponent className="!size-5" />
-                </Button>
+                <Tooltip key={platform.value} delayDuration={500}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={() => handleSocialButtonClick(platform.value)}
+                      variant="outline"
+                      size="sm"
+                      className={`flex items-center gap-2 rounded-full w-12 h-12 ${
+                        isActive ? "border-foreground" : ""
+                      } ${hasError ? "border-red-500" : ""}`}
+                      type="button"
+                      aria-label={`${
+                        isActive ? "Supprimer" : "Ajouter"
+                      } le lien ${platform.label}`}
+                      aria-pressed={isActive}
+                      ref={(el) => setButtonRef(platform.value, el)}
+                    >
+                      <IconComponent className="!size-5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      {isActive
+                        ? `Supprimer le lien ${platform.label}`
+                        : `Ajouter le lien ${platform.label}`}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
               );
             })}
           </div>
@@ -450,7 +465,7 @@ export const UpdateProfileInfoForm = () => {
               <div key={platformValue}>
                 <div className="flex items-center gap-x-3 space-y-1">
                   <div className="flex items-center relative w-full">
-                    <div className="rounded-l-md flex items-center absolute inset-y-0 left-0 opacity-80 w-12 px-3 border-r">
+                    <div className="justify-center rounded-l-md flex items-center absolute inset-y-0 left-0 opacity-80 w-12 px-3 border-r">
                       <platform.icon className="!size-5" />
                       {/* <span className="text-sm font-medium">
                         {platform.label}
@@ -482,17 +497,24 @@ export const UpdateProfileInfoForm = () => {
                     />
                   </div>
 
-                  <Button
-                    onClick={() => handleSocialButtonClick(platformValue)}
-                    variant="outline"
-                    size="sm"
-                    className="text-foreground rounded-full w-10 h-10"
-                    type="button"
-                    aria-label={`Supprimer le lien ${platform.label}`}
-                    ref={(el) => setCloseButtonRef(platformValue, el)}
-                  >
-                    <Trash className="!size-4" />
-                  </Button>
+                  <Tooltip delayDuration={500}>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={() => handleSocialButtonClick(platformValue)}
+                        variant="outline"
+                        size="sm"
+                        className="text-foreground rounded-full w-10 h-10"
+                        type="button"
+                        aria-label={`Supprimer le lien ${platform.label}`}
+                        ref={(el) => setCloseButtonRef(platformValue, el)}
+                      >
+                        <Trash className="!size-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Supprimer le lien {platform.label}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
                 {linkError && (
                   <p className="text-red-500 text-sm">{linkError}</p>

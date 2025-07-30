@@ -34,7 +34,9 @@ export const NavbarAuthContainer = () => {
               href="/home"
               className="font-medium flex items-center gap-x-3"
             >
-              <span className="text-xl font-extrabold uppercase">Chordeus</span>
+              <span className="text-xl font-semibold font-newKansas">
+                Chordeus
+              </span>
             </Link>
           </div>
         </div>

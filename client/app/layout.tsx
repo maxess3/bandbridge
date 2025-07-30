@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Nunito_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProviders } from "@/providers/ThemeProviders";
 import AuthSessionProviders from "@/providers/AuthSessionProviders";
@@ -11,10 +12,58 @@ import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 import { SidebarAuth } from "@/components/features/auth/sidebar/SidebarAuth";
 import { FocusManagerProvider } from "@/contexts/FocusManagerContext";
 
-const poppins = Poppins({
-  weight: ["400", "500", "600", "700", "800", "900"],
+const newKansas = localFont({
+  src: [
+    {
+      path: "../public/fonts/NewKansas/NewKansas-Thin.otf",
+      weight: "100",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/NewKansas-Light.otf",
+      weight: "300",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/NewKansas.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/NewKansas-Medium.otf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/NewKansas-SemiBold.otf",
+      weight: "600",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/NewKansas-Bold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/NewKansas-Heavy.otf",
+      weight: "800",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/NewKansas/NewKansas-Black.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-new-kansas",
+  display: "swap",
+});
+
+const nunitoSans = Nunito_Sans({
   subsets: ["latin"],
-  variable: "--font-montserrat",
+  variable: "--font-nunito-sans",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -31,7 +80,7 @@ export default async function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body
-        className={`${poppins.className} antialiased min-h-screen flex flex-col bg-[#040404]`}
+        className={`${nunitoSans.className} nunito-adjusted ${newKansas.variable} antialiased min-h-screen flex flex-col bg-[#040404]`}
       >
         <ThemeProviders>
           <AuthSessionProviders>
