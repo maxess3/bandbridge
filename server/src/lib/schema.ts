@@ -99,44 +99,78 @@ export const formGeneralProfile = z.object({
 		.transform((username) => username.trim().toLowerCase()),
 	birthdate: z
 		.object({
-			day: z.string().regex(/^(0?[1-9]|[12][0-9]|3[01])$/, "Jour invalide"),
-			month: z.string().regex(/^(0?[1-9]|1[012])$/, "Mois invalide"),
-			year: z
-				.string()
-				.regex(/^\d{4}$/, "Année invalide")
-				.refine((year) => {
-					const currentYear = new Date().getFullYear();
-					const yearNum = parseInt(year);
-					return yearNum <= currentYear - 18 && yearNum >= currentYear - 120;
-				}, "L'âge doit être compris entre 18 et 120 ans"),
+			day: z.string().min(1, "Le jour est requis"),
+			month: z.string().min(1, "Le mois est requis"),
+			year: z.string().min(1, "L'année est requise"),
 		})
-		.strip(),
-	formattedBirthdate: z
-		.string()
-		.regex(/^\d{4}-\d{2}-\d{2}$/, "Merci d'entrer une date de naissance valide")
-		.refine((date) => {
-			const [year, month, day] = date.split("-").map(Number);
-			const isValidDate =
-				new Date(year, month - 1, day).getFullYear() === year &&
-				new Date(year, month - 1, day).getMonth() === month - 1 &&
-				new Date(year, month - 1, day).getDate() === day;
-			return isValidDate;
-		}, "Merci d'entrer une date de naissance valide")
-		.refine((date) => {
-			const birthDate = new Date(date);
+		.refine((data) => {
+			const { day, month, year } = data;
+			if (!day || !month || !year) return false;
+
+			const dayNum = parseInt(day);
+			const monthNum = parseInt(month);
+			const yearNum = parseInt(year);
+
+			// Vérifier que c'est une date valide
+			const date = new Date(yearNum, monthNum - 1, dayNum);
+			return (
+				date.getFullYear() === yearNum &&
+				date.getMonth() === monthNum - 1 &&
+				date.getDate() === dayNum
+			);
+		}, "Date de naissance invalide")
+		.refine((data) => {
+			const { day, month, year } = data;
+			if (!day || !month || !year) return false;
+
+			const birthDate = new Date(
+				parseInt(year),
+				parseInt(month) - 1,
+				parseInt(day)
+			);
 			const today = new Date();
 			return birthDate <= today;
-		}, "Merci d'entrer une date de naissance valide")
-		.refine((date) => {
-			const birthYear = parseInt(date.split("-")[0]);
-			const currentYear = new Date().getFullYear();
-			return currentYear - birthYear >= 18;
+		}, "La date de naissance ne peut pas être dans le futur")
+		.refine((data) => {
+			const { day, month, year } = data;
+			if (!day || !month || !year) return false;
+
+			const birthDate = new Date(
+				parseInt(year),
+				parseInt(month) - 1,
+				parseInt(day)
+			);
+			const today = new Date();
+			const age = today.getFullYear() - birthDate.getFullYear();
+			const monthDiff = today.getMonth() - birthDate.getMonth();
+			const dayDiff = today.getDate() - birthDate.getDate();
+
+			// Ajuster l'âge si l'anniversaire n'est pas encore passé cette année
+			const actualAge =
+				monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
+
+			return actualAge >= 18;
 		}, "Vous devez avoir au moins 18 ans")
-		.refine((date) => {
-			const birthYear = parseInt(date.split("-")[0]);
-			const currentYear = new Date().getFullYear();
-			return currentYear - birthYear <= 120;
-		}, "Merci d'entrer une date de naissance valide"),
+		.refine((data) => {
+			const { day, month, year } = data;
+			if (!day || !month || !year) return false;
+
+			const birthDate = new Date(
+				parseInt(year),
+				parseInt(month) - 1,
+				parseInt(day)
+			);
+			const today = new Date();
+			const age = today.getFullYear() - birthDate.getFullYear();
+			const monthDiff = today.getMonth() - birthDate.getMonth();
+			const dayDiff = today.getDate() - birthDate.getDate();
+
+			// Ajuster l'âge si l'anniversaire n'est pas encore passé cette année
+			const actualAge =
+				monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
+
+			return actualAge <= 120;
+		}, "L'âge maximum autorisé est de 120 ans"),
 	gender: z.enum(["OTHER", "MALE", "FEMALE"], {
 		errorMap: () => ({
 			message: "Merci de sélectionner un genre",

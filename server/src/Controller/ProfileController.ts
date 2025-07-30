@@ -280,6 +280,18 @@ export const updateGeneralProfileOwner = async (
 			return;
 		}
 
+		// Convert birthdate from { day, month, year } to Date object
+		let birthDate: Date | null = null;
+		if (
+			req.body.birthdate &&
+			req.body.birthdate.day &&
+			req.body.birthdate.month &&
+			req.body.birthdate.year
+		) {
+			const { day, month, year } = req.body.birthdate;
+			birthDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+		}
+
 		// Update profile information
 		const updatedUser = await prisma.profile.update({
 			where: { userId: userId },
@@ -287,7 +299,7 @@ export const updateGeneralProfileOwner = async (
 				firstName: req.body.firstname,
 				lastName: req.body.lastname,
 				username: req.body.username,
-				birthDate: new Date(req.body.formattedBirthdate),
+				birthDate: birthDate,
 				gender: req.body.gender,
 				country: req.body.country,
 				zipCode: req.body.zipcode,

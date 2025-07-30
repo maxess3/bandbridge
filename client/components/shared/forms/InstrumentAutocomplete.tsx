@@ -12,15 +12,11 @@ import { Input } from "@/components/ui/input";
 import {
 	Command,
 	CommandEmpty,
-	CommandGroup,
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command";
 import { useAutocompleteState } from "@/contexts/AutocompleteContext";
-import {
-	translateInstrument,
-	translateCategory,
-} from "@/lib/instrumentTranslations";
+import { translateInstrument } from "@/lib/instrumentTranslations";
 
 interface InstrumentType {
 	id: string;
@@ -88,10 +84,16 @@ export const InstrumentAutocomplete = React.forwardRef<
 
 		// Filtrer les instruments basé sur la recherche (en français et en anglais)
 		const filteredInstruments = useMemo(() => {
-			if (!searchValue) return instrumentTypes;
+			if (!searchValue) {
+				// Si pas de recherche, retourner tous les instruments
+				const allInstruments: InstrumentType[] = [];
+				for (const category in instrumentTypes) {
+					allInstruments.push(...instrumentTypes[category]);
+				}
+				return allInstruments;
+			}
 
-			const filtered: GroupedInstruments = {};
-
+			const allInstruments: InstrumentType[] = [];
 			for (const category in instrumentTypes) {
 				const filteredInCategory = instrumentTypes[category].filter(
 					(instrument) => {
@@ -104,13 +106,10 @@ export const InstrumentAutocomplete = React.forwardRef<
 						);
 					}
 				);
-
-				if (filteredInCategory.length > 0) {
-					filtered[category] = filteredInCategory;
-				}
+				allInstruments.push(...filteredInCategory);
 			}
 
-			return filtered;
+			return allInstruments;
 		}, [instrumentTypes, searchValue]);
 
 		// Gérer le focus et la fermeture
@@ -182,30 +181,21 @@ export const InstrumentAutocomplete = React.forwardRef<
 						<Command>
 							<CommandList className="max-h-60">
 								<CommandEmpty>Aucun instrument trouvé.</CommandEmpty>
-								{Object.entries(filteredInstruments).map(
-									([category, instruments]) => (
-										<CommandGroup
-											key={category}
-											heading={translateCategory(category)}
-										>
-											{instruments.map((instrument) => (
-												<CommandItem
-													key={instrument.id}
-													value={instrument.name}
-													onSelect={() =>
-														handleSelectInstrument(
-															instrument.id,
-															translateInstrument(instrument.name)
-														)
-													}
-													className="cursor-pointer"
-												>
-													{translateInstrument(instrument.name)}
-												</CommandItem>
-											))}
-										</CommandGroup>
-									)
-								)}
+								{filteredInstruments.map((instrument) => (
+									<CommandItem
+										key={instrument.id}
+										value={instrument.name}
+										onSelect={() =>
+											handleSelectInstrument(
+												instrument.id,
+												translateInstrument(instrument.name)
+											)
+										}
+										className="cursor-pointer text-sm"
+									>
+										{translateInstrument(instrument.name)}
+									</CommandItem>
+								))}
 							</CommandList>
 						</Command>
 					</div>

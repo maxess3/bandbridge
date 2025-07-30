@@ -95,7 +95,6 @@ export function EditProfileGeneralModal() {
 						country: profile?.country || "France",
 						zipcode: profile?.zipCode ?? "",
 						city: profile?.city ?? "",
-						formattedBirthdate: profile?.birthDate ?? "",
 						instruments:
 							profile?.instruments?.map(
 								(
