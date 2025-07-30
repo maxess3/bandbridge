@@ -15,7 +15,9 @@ async function Navbar() {
               className="font-medium flex items-center gap-x-2.5"
             >
               <Image src={Logo} alt="Logo" width={36} height={36} />
-              <span className="text-xl font-semibold">Chordeus</span>
+              <span className="text-xl font-semibold font-newKansas">
+                Chordeus
+              </span>
             </Link>
           </div>
           <MenuLinks />
