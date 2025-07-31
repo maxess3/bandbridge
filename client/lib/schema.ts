@@ -61,11 +61,14 @@ export const formResetPwdSchema = z
 
 export const instrumentSchema = z.object({
 	instrumentTypeId: z.string().min(1, "L'instrument est requis"),
-	level: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "PROFESSIONAL"], {
-		errorMap: () => ({
-			message: "Merci de sélectionner un niveau",
-		}),
-	}),
+	level: z.enum(
+		["NOT_SPECIFIED", "BEGINNER", "INTERMEDIATE", "ADVANCED", "PROFESSIONAL"],
+		{
+			errorMap: () => ({
+				message: "Merci de sélectionner un niveau",
+			}),
+		}
+	),
 	order: z.number().min(0, "L'ordre doit être d'au moins 0").optional(),
 });
 

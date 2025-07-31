@@ -1,310 +1,352 @@
 "use client";
 
 import React, {
-  useState,
-  useRef,
-  useImperativeHandle,
-  useEffect,
-  useMemo,
+	useState,
+	useRef,
+	useImperativeHandle,
+	useEffect,
+	useMemo,
 } from "react";
 import { cn } from "@/lib/utils";
 import { FormInput } from "@/components/shared/forms/FormInput";
 import { useAutocompleteState } from "@/contexts/AutocompleteContext";
 import { translateInstrument } from "@/lib/instrumentTranslations";
+import { useDebounce } from "@/hooks/useDebounce";
 
 interface InstrumentType {
-  id: string;
-  name: string;
-  category: string;
+	id: string;
+	name: string;
+	category: string;
 }
 
 interface GroupedInstruments {
-  [key: string]: InstrumentType[];
+	[key: string]: InstrumentType[];
 }
 
 interface InstrumentAutocompleteProps {
-  value?: string;
-  onValueChange: (value: string) => void;
-  instrumentTypes: GroupedInstruments;
-  isLoading?: boolean;
-  placeholder?: string;
-  className?: string;
-  error?: boolean;
-  onDropdownStateChange?: (isOpen: boolean) => void;
+	value?: string;
+	onValueChange: (value: string) => void;
+	instrumentTypes: GroupedInstruments;
+	isLoading?: boolean;
+	placeholder?: string;
+	className?: string;
+	error?: boolean;
+	onDropdownStateChange?: (isOpen: boolean) => void;
 }
 
 export const InstrumentAutocomplete = React.forwardRef<
-  HTMLInputElement,
-  InstrumentAutocompleteProps
+	HTMLInputElement,
+	InstrumentAutocompleteProps
 >(
-  (
-    {
-      value,
-      onValueChange,
-      instrumentTypes,
-      isLoading = false,
-      placeholder = "Tapez pour rechercher un instrument...",
-      className,
-      error = false,
-    },
-    ref
-  ) => {
-    const [searchValue, setSearchValue] = useState("");
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedIndex, setSelectedIndex] = useState(-1);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const listRef = useRef<HTMLDivElement>(null);
-    const { setAutocompleteOpen } = useAutocompleteState();
+	(
+		{
+			value,
+			onValueChange,
+			instrumentTypes,
+			isLoading = false,
+			placeholder = "Tapez pour rechercher un instrument...",
+			className,
+			error = false,
+		},
+		ref
+	) => {
+		const [searchValue, setSearchValue] = useState("");
+		const [isOpen, setIsOpen] = useState(false);
+		const [selectedIndex, setSelectedIndex] = useState(-1);
+		const inputRef = useRef<HTMLInputElement>(null);
+		const containerRef = useRef<HTMLDivElement>(null);
+		const listRef = useRef<HTMLDivElement>(null);
+		const { setAutocompleteOpen } = useAutocompleteState();
 
-    // Exposer la référence pour React Hook Form
-    useImperativeHandle(ref, () => inputRef.current!, []);
+		// Ajouter un debounce sur la valeur de recherche
+		const debouncedSearchValue = useDebounce(searchValue, 300);
 
-    // Mettre à jour searchValue quand value change (pour l'affichage initial)
-    useEffect(() => {
-      if (value) {
-        // Trouver l'instrument sélectionné pour afficher son nom traduit
-        for (const category in instrumentTypes) {
-          const instrument = instrumentTypes[category].find(
-            (inst) => inst.id === value
-          );
-          if (instrument) {
-            setSearchValue(translateInstrument(instrument.name));
-            break;
-          }
-        }
-      } else {
-        setSearchValue("");
-      }
-    }, [value, instrumentTypes]);
+		// Exposer la référence pour React Hook Form
+		useImperativeHandle(ref, () => inputRef.current!, []);
 
-    // Filtrer les instruments basé sur la recherche (en français et en anglais)
-    const filteredInstruments = useMemo(() => {
-      if (!searchValue) {
-        // Si pas de recherche, retourner tous les instruments
-        const allInstruments: InstrumentType[] = [];
-        for (const category in instrumentTypes) {
-          allInstruments.push(...instrumentTypes[category]);
-        }
-        return allInstruments;
-      }
+		// Mettre à jour searchValue quand value change (pour l'affichage initial)
+		useEffect(() => {
+			if (value) {
+				// Trouver l'instrument sélectionné pour afficher son nom traduit
+				for (const category in instrumentTypes) {
+					const instrument = instrumentTypes[category].find(
+						(inst) => inst.id === value
+					);
+					if (instrument) {
+						setSearchValue(translateInstrument(instrument.name));
+						break;
+					}
+				}
+			} else {
+				setSearchValue("");
+			}
+		}, [value, instrumentTypes]);
 
-      const allInstruments: InstrumentType[] = [];
-      for (const category in instrumentTypes) {
-        const filteredInCategory = instrumentTypes[category].filter(
-          (instrument) => {
-            const translatedName = translateInstrument(instrument.name);
-            return (
-              instrument.name
-                .toLowerCase()
-                .includes(searchValue.toLowerCase()) ||
-              translatedName.toLowerCase().includes(searchValue.toLowerCase())
-            );
-          }
-        );
-        allInstruments.push(...filteredInCategory);
-      }
+		// Filtrer les instruments basé sur la recherche debounced (en français et en anglais)
+		const filteredInstruments = useMemo(() => {
+			if (!debouncedSearchValue) {
+				// Si pas de recherche, retourner tous les instruments
+				const allInstruments: InstrumentType[] = [];
+				for (const category in instrumentTypes) {
+					allInstruments.push(...instrumentTypes[category]);
+				}
+				return allInstruments;
+			}
 
-      return allInstruments;
-    }, [instrumentTypes, searchValue]);
+			const allInstruments: InstrumentType[] = [];
+			for (const category in instrumentTypes) {
+				const filteredInCategory = instrumentTypes[category].filter(
+					(instrument) => {
+						const translatedName = translateInstrument(instrument.name);
+						const searchValue = debouncedSearchValue.toLowerCase();
+						return (
+							instrument.name.toLowerCase().startsWith(searchValue) ||
+							translatedName.toLowerCase().startsWith(searchValue)
+						);
+					}
+				);
+				allInstruments.push(...filteredInCategory);
+			}
 
-    // Réinitialiser l'index sélectionné quand la liste change
-    useEffect(() => {
-      setSelectedIndex(-1);
-    }, [filteredInstruments]);
+			return allInstruments;
+		}, [instrumentTypes, debouncedSearchValue]);
 
-    // Faire défiler la fenêtre dialog vers le bas quand la liste s'ouvre
-    useEffect(() => {
-      if (isOpen) {
-        // Utiliser requestAnimationFrame plusieurs fois pour s'assurer que le DOM est mis à jour
-        const scrollToBottom = () => {
-          const scrollableDiv = document.querySelector(
-            '[role="dialog"] .overflow-y-auto'
-          ) as HTMLElement;
-          if (scrollableDiv) {
-            scrollableDiv.scrollTop = scrollableDiv.scrollHeight;
-          }
-        };
+		// Réinitialiser l'index sélectionné quand la liste change
+		useEffect(() => {
+			setSelectedIndex(-1);
+		}, [filteredInstruments]);
 
-        // Premier frame pour attendre le rendu initial
-        requestAnimationFrame(() => {
-          // Deuxième frame pour s'assurer que la liste est complètement rendue
-          requestAnimationFrame(() => {
-            // Troisième frame pour être sûr que tout est prêt
-            requestAnimationFrame(scrollToBottom);
-          });
-        });
-      }
-    }, [isOpen]);
+		// Faire défiler la fenêtre dialog vers le bas quand la liste s'ouvre avec scroll smooth
+		useEffect(() => {
+			if (isOpen && debouncedSearchValue) {
+				// Utiliser requestAnimationFrame plusieurs fois pour s'assurer que le DOM est mis à jour
+				const scrollToBottom = () => {
+					const scrollableDiv = document.querySelector(
+						'[role="dialog"] .overflow-y-auto'
+					) as HTMLElement;
+					if (scrollableDiv) {
+						scrollableDiv.scrollTo({
+							top: scrollableDiv.scrollHeight,
+							behavior: "smooth",
+						});
+					}
+				};
 
-    // Faire défiler la liste d'autosuggestion pour garder l'élément sélectionné visible
-    useEffect(() => {
-      if (isOpen && selectedIndex >= 0 && listRef.current) {
-        const listElement = listRef.current;
-        const selectedElement = listElement.children[
-          selectedIndex
-        ] as HTMLElement;
+				// Premier frame pour attendre le rendu initial
+				requestAnimationFrame(() => {
+					// Deuxième frame pour s'assurer que la liste est complètement rendue
+					requestAnimationFrame(() => {
+						// Troisième frame pour être sûr que tout est prêt
+						requestAnimationFrame(scrollToBottom);
+					});
+				});
+			}
+		}, [isOpen, debouncedSearchValue]);
 
-        if (selectedElement) {
-          const listRect = listElement.getBoundingClientRect();
-          const elementRect = selectedElement.getBoundingClientRect();
+		// Faire défiler la liste d'autosuggestion pour garder l'élément sélectionné visible avec scroll smooth
+		useEffect(() => {
+			if (isOpen && selectedIndex >= 0 && listRef.current) {
+				const listElement = listRef.current;
+				const selectedElement = listElement.children[
+					selectedIndex
+				] as HTMLElement;
 
-          // Vérifier si l'élément est en dehors de la zone visible
-          if (elementRect.bottom > listRect.bottom) {
-            // L'élément est en dessous de la zone visible, faire défiler vers le bas
-            listElement.scrollTop += elementRect.bottom - listRect.bottom;
-          } else if (elementRect.top < listRect.top) {
-            // L'élément est au-dessus de la zone visible, faire défiler vers le haut
-            listElement.scrollTop -= listRect.top - elementRect.top;
-          }
-        }
-      }
-    }, [selectedIndex, isOpen]);
+				if (selectedElement) {
+					const listRect = listElement.getBoundingClientRect();
+					const elementRect = selectedElement.getBoundingClientRect();
 
-    // Gérer le focus et la fermeture
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          containerRef.current &&
-          !containerRef.current.contains(event.target as Node)
-        ) {
-          setIsOpen(false);
-          setSelectedIndex(-1);
-        }
-      };
+					// Vérifier si l'élément est en dehors de la zone visible
+					if (elementRect.bottom > listRect.bottom) {
+						// L'élément est en dessous de la zone visible, faire défiler vers le bas
+						const scrollDistance = elementRect.bottom - listRect.bottom;
+						listElement.scrollBy({
+							top: scrollDistance,
+							behavior: "smooth",
+						});
+					} else if (elementRect.top < listRect.top) {
+						// L'élément est au-dessus de la zone visible, faire défiler vers le haut
+						const scrollDistance = listRect.top - elementRect.top;
+						listElement.scrollBy({
+							top: -scrollDistance,
+							behavior: "smooth",
+						});
+					}
+				}
+			}
+		}, [selectedIndex, isOpen]);
 
-      document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+		// Gérer le focus et la fermeture
+		useEffect(() => {
+			const handleClickOutside = (event: MouseEvent) => {
+				if (
+					containerRef.current &&
+					!containerRef.current.contains(event.target as Node)
+				) {
+					setIsOpen(false);
+					setSelectedIndex(-1);
+				}
+			};
 
-    // Notifier le contexte du changement d'état
-    useEffect(() => {
-      setAutocompleteOpen(isOpen);
-    }, [isOpen, setAutocompleteOpen]);
+			document.addEventListener("mousedown", handleClickOutside);
+			return () =>
+				document.removeEventListener("mousedown", handleClickOutside);
+		}, []);
 
-    // Gérer les touches clavier
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-      if (!isOpen || filteredInstruments.length === 0) return;
+		// Notifier le contexte du changement d'état
+		useEffect(() => {
+			setAutocompleteOpen(isOpen);
+		}, [isOpen, setAutocompleteOpen]);
 
-      switch (e.key) {
-        case "ArrowDown":
-          e.preventDefault();
-          setSelectedIndex((prev) => {
-            // Si aucun élément n'est sélectionné, sélectionner le premier
-            if (prev === -1) return 0;
-            // Sinon, passer au suivant ou revenir au premier
-            return prev < filteredInstruments.length - 1 ? prev + 1 : 0;
-          });
-          break;
-        case "ArrowUp":
-          e.preventDefault();
-          setSelectedIndex((prev) => {
-            // Si aucun élément n'est sélectionné, sélectionner le dernier
-            if (prev === -1) return filteredInstruments.length - 1;
-            // Sinon, passer au précédent ou aller au dernier
-            return prev > 0 ? prev - 1 : filteredInstruments.length - 1;
-          });
-          break;
-        case "Enter":
-          e.preventDefault();
-          if (
-            selectedIndex >= 0 &&
-            selectedIndex < filteredInstruments.length
-          ) {
-            const instrument = filteredInstruments[selectedIndex];
-            handleSelectInstrument(
-              instrument.id,
-              translateInstrument(instrument.name)
-            );
-          }
-          break;
-        case "Escape":
-          setIsOpen(false);
-          setSelectedIndex(-1);
-          break;
-      }
-    };
+		// Gérer les touches clavier
+		const handleKeyDown = (e: React.KeyboardEvent) => {
+			if (!isOpen || filteredInstruments.length === 0) return;
 
-    // Gérer la sélection d'un instrument
-    const handleSelectInstrument = (
-      instrumentId: string,
-      instrumentName: string
-    ) => {
-      onValueChange(instrumentId);
-      setSearchValue(instrumentName);
-      setIsOpen(false);
-      setSelectedIndex(-1);
-      inputRef.current?.blur();
-    };
+			switch (e.key) {
+				case "Tab":
+					// Fermer la liste et laisser le focus passer au prochain élément
+					setIsOpen(false);
+					setSelectedIndex(-1);
+					// Ne pas preventDefault pour permettre au focus de passer naturellement
+					break;
+				case "ArrowDown":
+					e.preventDefault();
+					e.stopPropagation();
+					setSelectedIndex((prev) => {
+						// Si aucun élément n'est sélectionné, sélectionner le premier
+						if (prev === -1) return 0;
+						// Sinon, passer au suivant ou revenir au premier
+						return prev < filteredInstruments.length - 1 ? prev + 1 : 0;
+					});
+					break;
+				case "ArrowUp":
+					e.preventDefault();
+					e.stopPropagation();
+					setSelectedIndex((prev) => {
+						// Si aucun élément n'est sélectionné, sélectionner le dernier
+						if (prev === -1) return filteredInstruments.length - 1;
+						// Sinon, passer au précédent ou aller au dernier
+						return prev > 0 ? prev - 1 : filteredInstruments.length - 1;
+					});
+					break;
+				case "Enter":
+					e.preventDefault();
+					e.stopPropagation();
+					if (
+						selectedIndex >= 0 &&
+						selectedIndex < filteredInstruments.length
+					) {
+						const instrument = filteredInstruments[selectedIndex];
+						handleSelectInstrument(
+							instrument.id,
+							translateInstrument(instrument.name)
+						);
+					}
+					break;
+				case "Escape":
+					e.preventDefault();
+					e.stopPropagation();
+					setIsOpen(false);
+					setSelectedIndex(-1);
+					break;
+			}
+		};
 
-    // Gérer le changement de l'input
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value;
-      setSearchValue(newValue);
+		// Gérer la sélection d'un instrument
+		const handleSelectInstrument = (
+			instrumentId: string,
+			instrumentName: string
+		) => {
+			onValueChange(instrumentId);
+			setSearchValue(instrumentName);
+			setIsOpen(false);
+			setSelectedIndex(-1);
+			inputRef.current?.blur();
+		};
 
-      // Ouvrir la liste si on tape quelque chose
-      if (newValue.length > 0) {
-        setIsOpen(true);
-        // Réinitialiser la sélection quand on tape
-        setSelectedIndex(-1);
-      } else {
-        setIsOpen(false);
-        setSelectedIndex(-1);
-      }
-    };
+		// Gérer le changement de l'input
+		const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+			const newValue = e.target.value;
+			setSearchValue(newValue);
 
-    return (
-      <div ref={containerRef} className="relative">
-        <FormInput
-          ref={inputRef}
-          value={searchValue}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          onFocus={() => {
-            if (searchValue.length > 0) {
-              setIsOpen(true);
-            }
-          }}
-          placeholder={placeholder}
-          className={cn("w-full", error && "border-red-500", className)}
-          disabled={isLoading}
-        />
+			// Ouvrir la liste si on tape quelque chose
+			if (newValue.length > 0) {
+				setIsOpen(true);
+				// Réinitialiser la sélection quand on tape
+				setSelectedIndex(-1);
+			} else {
+				setIsOpen(false);
+				setSelectedIndex(-1);
+			}
+		};
 
-        {isOpen && (
-          <div className="absolute top-full left-0 right-0 z-50 mt-1 border rounded-md bg-popover shadow-lg">
-            <div ref={listRef} className="max-h-60 overflow-y-auto">
-              {filteredInstruments.length === 0 ? (
-                <div className="py-6 text-center text-sm text-muted-foreground">
-                  Aucun instrument trouvé.
-                </div>
-              ) : (
-                filteredInstruments.map((instrument, index) => (
-                  <button
-                    key={instrument.id}
-                    type="button"
-                    onClick={() =>
-                      handleSelectInstrument(
-                        instrument.id,
-                        translateInstrument(instrument.name)
-                      )
-                    }
-                    className={cn(
-                      "w-full text-left px-2 py-1.5 text-sm cursor-pointer hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground outline-none",
-                      index === selectedIndex &&
-                        "bg-accent text-accent-foreground"
-                    )}
-                  >
-                    {translateInstrument(instrument.name)}
-                  </button>
-                ))
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  }
+		return (
+			<div ref={containerRef} className="relative">
+				<FormInput
+					ref={inputRef}
+					value={searchValue}
+					onChange={handleInputChange}
+					onKeyDown={handleKeyDown}
+					onFocus={() => {
+						if (searchValue.length > 0) {
+							setIsOpen(true);
+						}
+					}}
+					placeholder={placeholder}
+					className={cn("w-full", error && "border-red-500", className)}
+					disabled={isLoading}
+				/>
+
+				{isOpen && (
+					<div className="bg-popover absolute top-full left-0 right-0 z-50 mt-1 border rounded-md shadow-lg">
+						<div
+							ref={listRef}
+							className="max-h-72 overflow-y-auto"
+							onKeyDown={handleKeyDown}
+							tabIndex={-1}
+						>
+							{filteredInstruments.length === 0 ? (
+								<div className="py-6 text-center text-sm text-muted-foreground">
+									Aucun instrument trouvé.
+								</div>
+							) : (
+								filteredInstruments.map((instrument, index) => (
+									<button
+										key={instrument.id}
+										type="button"
+										tabIndex={-1}
+										onClick={() =>
+											handleSelectInstrument(
+												instrument.id,
+												translateInstrument(instrument.name)
+											)
+										}
+										onKeyDown={(e) => {
+											// Empêcher la propagation des événements clavier sur les boutons
+											if (
+												["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(
+													e.key
+												)
+											) {
+												e.preventDefault();
+												e.stopPropagation();
+											}
+										}}
+										className={cn(
+											"font-medium w-full text-left px-4 py-2.5 text-sm cursor-pointer hover:bg-foreground/10 hover:text-foreground focus:bg-foreground/10 focus:text-foreground outline-none",
+											index === selectedIndex &&
+												"bg-foreground/10 border-[red] border-2"
+										)}
+									>
+										{translateInstrument(instrument.name)}
+									</button>
+								))
+							)}
+						</div>
+					</div>
+				)}
+			</div>
+		);
+	}
 );
 
 InstrumentAutocomplete.displayName = "InstrumentAutocomplete";

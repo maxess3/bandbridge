@@ -65,6 +65,7 @@ enum PracticeType {
 }
 
 enum InstrumentLevel {
+  NOT_SPECIFIED
   BEGINNER
   INTERMEDIATE
   ADVANCED
@@ -133,7 +134,7 @@ model InstrumentType {
 
 model Instrument {
   id               String          @id @default(uuid())
-  level            InstrumentLevel @default(BEGINNER)
+  level            InstrumentLevel @default(NOT_SPECIFIED)
   order            Int             @default(0) // Ordre d'utilisation (0 = principal, 1 = secondaire, etc.)
   profileId        String
   instrumentTypeId String
