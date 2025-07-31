@@ -4,14 +4,21 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 
-interface NativeSelectProps
+interface FormSelectProps
   extends React.SelectHTMLAttributes<HTMLSelectElement> {
   options: { value: string; label: string }[];
   placeholder?: string;
 }
 
-const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(
-  ({ className, options, placeholder, ...props }, ref) => {
+const FormSelect = React.forwardRef<HTMLSelectElement, FormSelectProps>(
+  ({ className, options, placeholder, onKeyDown, ...props }, ref) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLSelectElement>) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+      }
+      onKeyDown?.(e);
+    };
+
     return (
       <div className="relative">
         <select
@@ -20,6 +27,7 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(
             "h-10 w-full rounded-md border border-input bg-transparent px-2 text-base ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none leading-10 pr-8",
             className
           )}
+          onKeyDown={handleKeyDown}
           {...props}
         >
           {placeholder && (
@@ -43,6 +51,6 @@ const NativeSelect = React.forwardRef<HTMLSelectElement, NativeSelectProps>(
   }
 );
 
-NativeSelect.displayName = "NativeSelect";
+FormSelect.displayName = "FormSelect";
 
-export { NativeSelect };
+export { FormSelect };

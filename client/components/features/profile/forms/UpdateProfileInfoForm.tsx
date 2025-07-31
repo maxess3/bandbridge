@@ -7,8 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Radio } from "@/components/shared/buttons/Radio";
-import { Input } from "@/components/ui/input";
-import { NativeSelect } from "@/components/shared/forms/NativeSelect";
+import { FormInput } from "@/components/shared/forms/FormInput";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -22,6 +21,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { RiSoundcloudFill } from "react-icons/ri";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Trash } from "lucide-react";
+import { FormSelect } from "@/components/shared/forms/FormSelect";
 
 type FormValues = z.infer<typeof formInfoProfile>;
 
@@ -316,7 +316,7 @@ export const UpdateProfileInfoForm = () => {
             name="concertsPlayed"
             control={control}
             render={({ field }) => (
-              <NativeSelect
+              <FormSelect
                 {...field}
                 id="concertsPlayed"
                 options={[
@@ -347,7 +347,7 @@ export const UpdateProfileInfoForm = () => {
             name="rehearsalsPerWeek"
             control={control}
             render={({ field }) => (
-              <NativeSelect
+              <FormSelect
                 {...field}
                 id="rehearsalsPerWeek"
                 options={[
@@ -471,7 +471,7 @@ export const UpdateProfileInfoForm = () => {
                         {platform.label}
                       </span> */}
                     </div>
-                    <Input
+                    <FormInput
                       id={platformValue}
                       name={platformValue}
                       placeholder={platform.placeholder}
