@@ -32,6 +32,7 @@ interface InstrumentAutocompleteProps {
 	className?: string;
 	error?: boolean;
 	onDropdownStateChange?: (isOpen: boolean) => void;
+	excludedInstruments?: string[]; // Nouvelle prop
 }
 
 export const InstrumentAutocomplete = React.forwardRef<
@@ -47,6 +48,7 @@ export const InstrumentAutocomplete = React.forwardRef<
 			placeholder = "Tapez pour rechercher un instrument...",
 			className,
 			error = false,
+			excludedInstruments = [], // Nouvelle prop avec valeur par défaut
 		},
 		ref
 	) => {
@@ -85,18 +87,25 @@ export const InstrumentAutocomplete = React.forwardRef<
 		// Filtrer les instruments basé sur la recherche debounced (en français et en anglais)
 		const filteredInstruments = useMemo(() => {
 			if (!debouncedSearchValue) {
-				// Si pas de recherche, retourner tous les instruments
+				// Si pas de recherche, retourner tous les instruments sauf ceux exclus
 				const allInstruments: InstrumentType[] = [];
 				for (const category in instrumentTypes) {
 					allInstruments.push(...instrumentTypes[category]);
 				}
-				return allInstruments;
+				return allInstruments.filter(
+					(instrument) => !excludedInstruments.includes(instrument.id)
+				);
 			}
 
 			const allInstruments: InstrumentType[] = [];
 			for (const category in instrumentTypes) {
 				const filteredInCategory = instrumentTypes[category].filter(
 					(instrument) => {
+						// Exclure les instruments déjà sélectionnés
+						if (excludedInstruments.includes(instrument.id)) {
+							return false;
+						}
+
 						const translatedName = translateInstrument(instrument.name);
 						const searchValue = debouncedSearchValue.toLowerCase();
 						return (
@@ -109,7 +118,7 @@ export const InstrumentAutocomplete = React.forwardRef<
 			}
 
 			return allInstruments;
-		}, [instrumentTypes, debouncedSearchValue]);
+		}, [instrumentTypes, debouncedSearchValue, excludedInstruments]);
 
 		// Réinitialiser l'index sélectionné quand la liste change
 		useEffect(() => {

@@ -42,7 +42,11 @@ export interface Profile {
 	followers: number;
 	following: number;
 	lastFollowers: LastFollowers[];
-	instruments: string[];
+	instruments: {
+		instrumentTypeId: string;
+		level: string | null;
+		order: number;
+	}[];
 	styles: string[];
 	lastSeen: string;
 	createdAt?: string;

@@ -100,13 +100,13 @@ export function EditProfileGeneralModal() {
 								(
 									instrument: {
 										instrumentTypeId: string;
-										level: string;
+										level: string | null;
 										order?: number;
 									},
 									index: string
 								) => ({
 									instrumentTypeId: instrument.instrumentTypeId || "",
-									level: instrument.level || "BEGINNER",
+									level: instrument.level,
 									order: instrument.order ?? index,
 								})
 							) || [],
