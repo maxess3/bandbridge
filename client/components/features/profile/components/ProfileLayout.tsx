@@ -18,7 +18,7 @@ export function ProfileLayout({
   return (
     <div className="flex md:flex-row sm:flex-col flex-col w-full h-fit lg:gap-6 md:gap-4 gap-2">
       <main className="lg:w-[calc(100%-350px)] md:w-[calc(100%-300px)]">
-        <div className="bg-[#111111] rounded-xl w-full border">
+        <div className="rounded-xl w-full border">
           <div className="w-full lg:h-52 h-36 bg-gradient-to-r from-violet-600 to-indigo-600 relative rounded-t-xl">
             <ProfilePicture
               isOwner={isOwner}
