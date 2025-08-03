@@ -6,8 +6,8 @@ import { MenuLinks } from "@/components/layout/header/MenuLinks";
 
 async function Navbar() {
 	return (
-		<nav className="lg:px-6 px-4 py-3 flex items-center justify-center w-full bg-transparent border-b">
-			<div className="mx-auto flex justify-between items-center w-full">
+		<nav className="py-3 flex items-center justify-center w-full border-b">
+			<div className="max-w-7xl lg:px-6 md:px-4 px-2 mx-auto flex justify-between items-center w-full">
 				<div className="flex items-center gap-x-6">
 					<div className="flex items-center gap-x-2.5">
 						<Link
