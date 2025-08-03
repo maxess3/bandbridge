@@ -3,7 +3,7 @@ import Logo from "@/public/logo/chordeus_logo.png";
 
 export const LoadingSession = () => {
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center gap-4">
+		<div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-background">
 			<div className="flex items-center gap-x-2.5">
 				<Image src={Logo} alt="Logo" width={46} height={46} />
 				<span className="text-4xl ml-0.5 relative">
