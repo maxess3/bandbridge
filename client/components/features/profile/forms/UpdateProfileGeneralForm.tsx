@@ -126,65 +126,63 @@ export const UpdateProfileGeneralForm = () => {
 
 	// Initialiser les instruments avec les valeurs par défaut du formulaire
 	useEffect(() => {
-		if (
-			formInstruments &&
-			formInstruments.length > 0 &&
-			selectedInstruments.length === 0 &&
-			!isInitialized
-		) {
-			// Si instrumentTypes n'est pas encore chargé, on attend
-			if (!instrumentTypes) {
-				return;
-			}
+		// Si instrumentTypes n'est pas encore chargé, on attend
+		if (!instrumentTypes) {
+			return;
+		}
 
-			const initializedInstruments: SelectedInstrument[] = formInstruments.map(
-				(formInst: {
-					instrumentTypeId: string;
-					level: string | null;
-					order?: number;
-				}) => {
-					// Trouver le nom de l'instrument
-					let instrumentName = "";
-					for (const category in instrumentTypes) {
-						const instrument = instrumentTypes[category].find(
-							(inst) => inst.id === formInst.instrumentTypeId
-						);
-						if (instrument) {
-							instrumentName = translateInstrument(instrument.name);
-							break;
+		// Si on n'est pas encore initialisé
+		if (!isInitialized) {
+			// Si on a des instruments existants, les initialiser
+			if (formInstruments && formInstruments.length > 0) {
+				const initializedInstruments: SelectedInstrument[] =
+					formInstruments.map(
+						(formInst: {
+							instrumentTypeId: string;
+							level: string | null;
+							order?: number;
+						}) => {
+							// Trouver le nom de l'instrument
+							let instrumentName = "";
+							for (const category in instrumentTypes) {
+								const instrument = instrumentTypes[category].find(
+									(inst) => inst.id === formInst.instrumentTypeId
+								);
+								if (instrument) {
+									instrumentName = translateInstrument(instrument.name);
+									break;
+								}
+							}
+
+							// Valider et typer le niveau
+							const validLevels = [
+								"BEGINNER",
+								"INTERMEDIATE",
+								"ADVANCED",
+								"PROFESSIONAL",
+							] as const;
+							const level =
+								formInst.level &&
+								validLevels.includes(
+									formInst.level as (typeof validLevels)[number]
+								)
+									? (formInst.level as (typeof validLevels)[number])
+									: null;
+
+							return {
+								id: formInst.instrumentTypeId,
+								name: instrumentName,
+								level,
+							};
 						}
-					}
+					);
 
-					// Valider et typer le niveau
-					const validLevels = [
-						"BEGINNER",
-						"INTERMEDIATE",
-						"ADVANCED",
-						"PROFESSIONAL",
-					] as const;
-					const level =
-						formInst.level &&
-						validLevels.includes(formInst.level as (typeof validLevels)[number])
-							? (formInst.level as (typeof validLevels)[number])
-							: null;
-
-					return {
-						id: formInst.instrumentTypeId,
-						name: instrumentName,
-						level,
-					};
-				}
-			);
-
-			setSelectedInstruments(initializedInstruments);
+				setSelectedInstruments(initializedInstruments);
+			}
+			// Dans tous les cas, marquer comme initialisé
 			setIsInitialized(true);
 		}
-	}, [
-		formInstruments,
-		instrumentTypes,
-		selectedInstruments.length,
-		isInitialized,
-	]);
+	}, [formInstruments, instrumentTypes, isInitialized]);
 
 	// Options pour les mois
 	const monthOptions = Array.from({ length: 12 }, (_, i) => ({
@@ -392,6 +390,139 @@ export const UpdateProfileGeneralForm = () => {
 							</p>
 						)}
 					</div>
+					<div className="space-y-3">
+						<div>
+							<h4 className="font-semibold text-xl mb-1.5">
+								Instruments pratiqués
+							</h4>
+							<p className="text-sm text-muted-foreground">
+								Ajoutez vos instruments de musique et votre niveau d'expérience
+							</p>
+						</div>
+						<div>
+							{/* Instruments sélectionnés */}
+							{selectedInstruments.map((instrument, index) => (
+								<div
+									key={`${instrument.id}-${index}`}
+									className="flex items-center justify-between gap-3"
+								>
+									<Button
+										type="button"
+										variant="ghost"
+										size="sm"
+										onClick={() => handleRemoveInstrument(index)}
+										className="text-muted-foreground hover:text-destructive rounded-full w-8 h-8"
+										aria-label={`Supprimer ${instrument.name}`}
+									>
+										<X className="!size-5" />
+									</Button>
+									<div
+										className={`flex justify-between items-center w-full ${
+											index < selectedInstruments.length - 1 ? "border-b" : ""
+										}`}
+									>
+										<div className="font-semibold h-full py-6">
+											{instrument.name}
+										</div>
+										<div className="flex items-center gap-2">
+											<FormSelect
+												value={instrument.level || ""}
+												onChange={(e) =>
+													handleLevelChange(
+														index,
+														e.target.value === ""
+															? null
+															: (e.target.value as
+																	| "BEGINNER"
+																	| "INTERMEDIATE"
+																	| "ADVANCED"
+																	| "PROFESSIONAL")
+													)
+												}
+												options={[
+													{ value: "BEGINNER", label: "Débutant" },
+													{ value: "INTERMEDIATE", label: "Intermédiaire" },
+													{ value: "ADVANCED", label: "Avancé" },
+													{ value: "PROFESSIONAL", label: "Professionnel" },
+												]}
+												placeholder="Niveau"
+												className="w-40"
+											/>
+										</div>
+									</div>
+								</div>
+							))}
+
+							{/* Interface d'ajout d'instrument */}
+							{isAddingInstrument ? (
+								<div>
+									<InstrumentAutocomplete
+										ref={instrumentInputRef}
+										value={tempInstrumentId}
+										onValueChange={handleInstrumentSelect}
+										instrumentTypes={instrumentTypes || {}}
+										isLoading={isLoadingInstruments}
+										placeholder="Rechercher un instrument..."
+										excludedInstruments={selectedInstruments.map(
+											(inst) => inst.id
+										)}
+									/>
+								</div>
+							) : (
+								<div className="space-y-2">
+									{/* Div invisible pour l'accessibilité - focus après suppression d'instrument */}
+									<div
+										ref={accessibilityFocusRef}
+										tabIndex={-1}
+										aria-hidden="true"
+										className="sr-only"
+									/>
+
+									{selectedInstruments.length >= 10 && (
+										<p className="text-sm text-amber-600 rounded-md flex items-center gap-1.5">
+											<Info className="!size-4" />
+											Vous avez atteint le maximum de 10 instruments.
+										</p>
+									)}
+									<Button
+										ref={addInstrumentButtonRef}
+										type="button"
+										variant="outline"
+										onClick={handleAddInstrument}
+										onKeyDown={(e) => {
+											// Empêcher le scroll avec les touches fléchées
+											if (
+												[
+													"ArrowUp",
+													"ArrowDown",
+													"ArrowLeft",
+													"ArrowRight",
+												].includes(e.key)
+											) {
+												e.preventDefault();
+											}
+										}}
+										disabled={
+											isLoadingInstruments || selectedInstruments.length >= 10
+										}
+										className="rounded-md"
+									>
+										<Plus className="!size-5" />
+										Ajouter un instrument
+									</Button>
+								</div>
+							)}
+
+							{/* Affichage des erreurs */}
+							{(errors.instruments?.root?.message ||
+								errors.instruments?.message) && (
+								<p className="text-red-500 text-sm mt-1">
+									{errors.instruments?.root?.message ||
+										errors.instruments?.message}
+								</p>
+							)}
+						</div>
+					</div>
 					<div className="space-y-1">
 						<h4 className="font-semibold text-xl mb-2">Localisation</h4>
 						<Label htmlFor="country" className="opacity-80 text-sm">
@@ -465,134 +596,6 @@ export const UpdateProfileGeneralForm = () => {
 			</div>
 
 			{/* Section Instruments Simplifiée */}
-			<div className="space-y-3">
-				<div>
-					<h4 className="font-semibold text-xl mb-2">Instruments pratiqués</h4>
-					<p className="text-sm text-muted-foreground">
-						Ajoutez vos instruments de musique et votre niveau d'expérience
-					</p>
-				</div>
-				<div>
-					{/* Instruments sélectionnés */}
-					{selectedInstruments.map((instrument, index) => (
-						<div
-							key={`${instrument.id}-${index}`}
-							className="flex items-center justify-between gap-3"
-						>
-							<Button
-								type="button"
-								variant="ghost"
-								size="sm"
-								onClick={() => handleRemoveInstrument(index)}
-								className="text-muted-foreground hover:text-destructive rounded-full w-8 h-8"
-								aria-label={`Supprimer ${instrument.name}`}
-							>
-								<X className="!size-5" />
-							</Button>
-							<div
-								className={`flex justify-between items-center w-full ${
-									index < selectedInstruments.length - 1 ? "border-b" : ""
-								}`}
-							>
-								<div className="font-semibold h-full py-6">
-									{instrument.name}
-								</div>
-								<div className="flex items-center gap-2">
-									<FormSelect
-										value={instrument.level || ""}
-										onChange={(e) =>
-											handleLevelChange(
-												index,
-												e.target.value === ""
-													? null
-													: (e.target.value as
-															| "BEGINNER"
-															| "INTERMEDIATE"
-															| "ADVANCED"
-															| "PROFESSIONAL")
-											)
-										}
-										options={[
-											{ value: "BEGINNER", label: "Débutant" },
-											{ value: "INTERMEDIATE", label: "Intermédiaire" },
-											{ value: "ADVANCED", label: "Avancé" },
-											{ value: "PROFESSIONAL", label: "Professionnel" },
-										]}
-										placeholder="Niveau"
-										className="w-40"
-									/>
-								</div>
-							</div>
-						</div>
-					))}
-
-					{/* Interface d'ajout d'instrument */}
-					{isAddingInstrument ? (
-						<div>
-							<InstrumentAutocomplete
-								ref={instrumentInputRef}
-								value={tempInstrumentId}
-								onValueChange={handleInstrumentSelect}
-								instrumentTypes={instrumentTypes || {}}
-								isLoading={isLoadingInstruments}
-								placeholder="Rechercher un instrument..."
-								excludedInstruments={selectedInstruments.map((inst) => inst.id)}
-							/>
-						</div>
-					) : (
-						<div className="space-y-2">
-							{/* Div invisible pour l'accessibilité - focus après suppression d'instrument */}
-							<div
-								ref={accessibilityFocusRef}
-								tabIndex={-1}
-								aria-hidden="true"
-								className="sr-only"
-							/>
-
-							{selectedInstruments.length >= 10 && (
-								<p className="text-sm text-amber-600 rounded-md flex items-center gap-1.5">
-									<Info className="!size-4" />
-									Vous avez atteint le maximum de 10 instruments.
-								</p>
-							)}
-							<Button
-								ref={addInstrumentButtonRef}
-								type="button"
-								variant="outline"
-								onClick={handleAddInstrument}
-								onKeyDown={(e) => {
-									// Empêcher le scroll avec les touches fléchées
-									if (
-										[
-											"ArrowUp",
-											"ArrowDown",
-											"ArrowLeft",
-											"ArrowRight",
-										].includes(e.key)
-									) {
-										e.preventDefault();
-									}
-								}}
-								disabled={
-									isLoadingInstruments || selectedInstruments.length >= 10
-								}
-								className="rounded-md"
-							>
-								<Plus className="!size-5" />
-								Ajouter un instrument
-							</Button>
-						</div>
-					)}
-
-					{/* Affichage des erreurs */}
-					{(errors.instruments?.root?.message ||
-						errors.instruments?.message) && (
-						<p className="text-red-500 text-sm mt-1">
-							{errors.instruments?.root?.message || errors.instruments?.message}
-						</p>
-					)}
-				</div>
-			</div>
 		</div>
 	);
 };

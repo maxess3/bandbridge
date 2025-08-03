@@ -16,7 +16,7 @@ function Footer() {
 		console.log(res.data);
 	};
 	return (
-		<footer className="bg-transparent p-6">
+		<footer className="bg-transparent lg:px-6 px-4 pt-6">
 			<div className="flex justify-center">
 				<div className="w-full">
 					<div className="flex justify-between w-full border-b pb-6 text-sm">
