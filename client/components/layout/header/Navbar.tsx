@@ -18,9 +18,11 @@ async function Navbar() {
 							<span className="text-2xl font-semibold">chordeus</span>
 						</Link>
 					</div>
-					<MenuLinks />
 				</div>
-				<NavbarAuthBtn />
+				<MenuLinks />
+				<div className="flex gap-x-2 justify-center items-center">
+					<NavbarAuthBtn />
+				</div>
 			</div>
 		</nav>
 	);

@@ -32,6 +32,7 @@ export const ProfileResumeCard = ({
 						firstName={profile?.firstName}
 						lastName={profile?.lastName}
 						username={profile?.username}
+						instruments={profile?.instruments}
 					/>
 					<ProfileBasicInfo
 						city={profile?.city}

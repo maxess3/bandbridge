@@ -1,4 +1,5 @@
 import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { ProfileInstruments } from "@/components/features/profile/resume/ProfileInstruments";
 import { ProfileTopActions } from "@/components/features/profile/resume/ProfileTopActions";
 
 export const ProfileHeader = ({
@@ -6,11 +7,21 @@ export const ProfileHeader = ({
 	lastName,
 	username,
 	isOwner,
+	instruments,
 }: {
 	firstName?: string;
 	lastName?: string;
 	username?: string;
 	isOwner: boolean;
+	instruments?: {
+		instrumentTypeId: string;
+		level: string | null;
+		order: number;
+		instrumentType: {
+			name: string;
+			profession: string | null;
+		};
+	}[];
 }) => {
 	return (
 		<div className="flex flex-wrap justify-between items-start gap-3">
@@ -21,10 +32,7 @@ export const ProfileHeader = ({
 						<RiVerifiedBadgeFill className="size-6" color="#4476ff" />
 					</span>
 				</div>
-				<div className="w-fit text-base font-medium opacity-80">
-					<span>@</span>
-					{username}
-				</div>
+				<ProfileInstruments instruments={instruments} />
 			</div>
 			{/* Actions Buttons Profile (Follow, Message, etc.) */}
 			{!isOwner && username && <ProfileTopActions username={username} />}

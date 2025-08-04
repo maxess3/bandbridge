@@ -48,6 +48,12 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 						instrumentTypeId: true,
 						level: true,
 						order: true,
+						instrumentType: {
+							select: {
+								name: true,
+								profession: true,
+							},
+						},
 					},
 					orderBy: {
 						order: "asc",
@@ -168,6 +174,12 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 						instrumentTypeId: true,
 						level: true,
 						order: true,
+						instrumentType: {
+							select: {
+								name: true,
+								profession: true,
+							},
+						},
 					},
 					orderBy: {
 						order: "asc",

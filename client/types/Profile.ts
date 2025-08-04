@@ -46,6 +46,10 @@ export interface Profile {
 		instrumentTypeId: string;
 		level: string | null;
 		order: number;
+		instrumentType: {
+			name: string;
+			profession: string | null;
+		};
 	}[];
 	styles: string[];
 	lastSeen: string;

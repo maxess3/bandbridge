@@ -8,7 +8,7 @@ export const MenuLinks = () => {
 
 	return (
 		<div>
-			<ul className="flex justify-center items-center font-medium space-x-6">
+			<ul className="flex justify-center items-center font-medium space-x-9">
 				<Link
 					href={"/"}
 					className={`inline-flex flex-col items-center ${
