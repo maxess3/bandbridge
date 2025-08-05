@@ -1,83 +1,107 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { translateProfession } from "@/lib/instrumentTranslations";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  translateInstrument,
+  translateProfession,
+} from "@/lib/instrumentTranslations";
 
 interface ProfileInstrumentsProps {
-	instruments?: {
-		instrumentTypeId: string;
-		level: string | null;
-		order: number;
-		instrumentType: {
-			name: string;
-			profession: string | null;
-		};
-	}[];
+  instruments?: {
+    instrumentTypeId: string;
+    level: string | null;
+    order: number;
+    instrumentType: {
+      name: string;
+      profession: string | null;
+    };
+  }[];
 }
 
-const getLevelProgress = (level: string) => {
-	switch (level) {
-		case "BEGINNER":
-			return 25;
-		case "INTERMEDIATE":
-			return 50;
-		case "ADVANCED":
-			return 75;
-		case "PROFESSIONAL":
-			return 100;
-		default:
-			return 0;
-	}
-};
-
-const getLevelColor = (level: string) => {
-	switch (level) {
-		case "BEGINNER":
-			return "bg-blue-500";
-		case "INTERMEDIATE":
-			return "bg-green-500";
-		case "ADVANCED":
-			return "bg-orange-500";
-		case "PROFESSIONAL":
-			return "bg-purple-500";
-		default:
-			return "bg-gray-300";
-	}
+const getLevelText = (level: string | null) => {
+  switch (level) {
+    case "BEGINNER":
+      return "Débutant";
+    case "INTERMEDIATE":
+      return "Intermédiaire";
+    case "ADVANCED":
+      return "Avancé";
+    case "EXPERT":
+      return "Expert";
+    default:
+      return null;
+  }
 };
 
 export const ProfileInstruments = ({
-	instruments,
+  instruments,
 }: ProfileInstrumentsProps) => {
-	if (!instruments || instruments.length === 0) {
-		return null;
-	}
+  if (!instruments || instruments.length === 0) {
+    return null;
+  }
 
-	// Récupérer les professions uniques des instruments principaux (ordre 0, 1, 2)
-	const mainProfessions = instruments
-		.sort((a, b) => a.order - b.order)
-		.slice(0, 6)
-		.map((instrument) => instrument.instrumentType.profession)
-		.filter(Boolean)
-		.filter(
-			(profession, index, array) => array.indexOf(profession) === index
-		) as string[];
+  // Filtrer les instruments avec une profession et les trier par ordre
+  const instrumentsWithProfession = instruments
+    .filter((instrument) => instrument.instrumentType.profession)
+    .sort((a, b) => a.order - b.order);
 
-	if (mainProfessions.length === 0) {
-		return null;
-	}
+  if (instrumentsWithProfession.length === 0) {
+    return null;
+  }
 
-	return (
-		<div className="flex flex-wrap gap-2 mt-2">
-			{mainProfessions.map((profession, index) => (
-				<Badge
-					key={index}
-					variant="outline"
-					className="font-medium text-sm gap-x-2 inline-flex"
-				>
-					{translateProfession(profession)}
-					<div className="w-3 h-3 rounded-full border border-gray-300 relative"></div>
-				</Badge>
-			))}
-		</div>
-	);
+  // Grouper les instruments par profession
+  const instrumentsByProfession = instrumentsWithProfession.reduce(
+    (acc, instrument) => {
+      const profession = instrument.instrumentType.profession!;
+      if (!acc[profession]) {
+        acc[profession] = [];
+      }
+      acc[profession].push(instrument);
+      return acc;
+    },
+    {} as Record<string, typeof instrumentsWithProfession>
+  );
+
+  // Convertir en tableau et limiter à 3 professions maximum
+  const professionGroups = Object.entries(instrumentsByProfession)
+    .slice(0, 3)
+    .map(([profession, instruments]) => ({
+      profession,
+      instruments,
+    }));
+
+  return (
+    <div className="flex flex-wrap gap-2 mt-2">
+      {professionGroups.map(({ profession, instruments }, index) => (
+        <Tooltip delayDuration={500} key={index}>
+          <TooltipTrigger asChild>
+            <Badge variant="outline" className="font-medium text-sm">
+              {translateProfession(profession)}
+            </Badge>
+          </TooltipTrigger>
+          <TooltipContent>
+            <div className="space-y-1">
+              {instruments.map((instrument, instrumentIndex) => (
+                <p key={instrumentIndex}>
+                  <span className="font-medium">
+                    {translateInstrument(instrument.instrumentType.name)}
+                  </span>
+                  {instrument.level && (
+                    <span className="font-normal">
+                      {`: ${getLevelText(instrument.level)}`}
+                    </span>
+                  )}
+                </p>
+              ))}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      ))}
+    </div>
+  );
 };
