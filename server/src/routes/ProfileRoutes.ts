@@ -4,6 +4,7 @@ import { validateSchema } from "../middleware/validateSchema";
 import upload, { handleMulterError } from "../middleware/multerUpload";
 import { formGeneralProfile, formInfoProfile } from "../lib/schema";
 import * as ProfileController from "../Controller/ProfileController";
+
 const router = Router();
 
 router.get("/me", authenticateToken, ProfileController.getProfileOwner);
@@ -55,6 +56,8 @@ router.get(
 );
 
 router.get("/instruments", ProfileController.getInstrumentTypes);
+
+router.get("/genres", ProfileController.getMusicGenres);
 
 router.get("/:username", ProfileController.getProfilePublic);
 

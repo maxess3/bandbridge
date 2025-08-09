@@ -1,5 +1,0 @@
--- CreateEnum
-CREATE TYPE "ConcertCount" AS ENUM ('NOT_SPECIFIED', 'LESS_THAN_10', 'TEN_TO_FIFTY', 'FIFTY_TO_HUNDRED', 'MORE_THAN_HUNDRED');
-
--- AlterTable
-ALTER TABLE "Profile" ADD COLUMN     "concertsPlayed" "ConcertCount" NOT NULL DEFAULT 'NOT_SPECIFIED';

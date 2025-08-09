@@ -32,6 +32,7 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 				concertsPlayed: true,
 				rehearsalsPerWeek: true,
 				practiceType: true,
+				genres: true, // Ajouter cette ligne
 				user: {
 					select: {
 						created_at: true,
@@ -158,6 +159,7 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 				concertsPlayed: true,
 				rehearsalsPerWeek: true,
 				practiceType: true,
+				genres: true, // Ajouter cette ligne
 				user: {
 					select: {
 						created_at: true,
@@ -305,7 +307,7 @@ export const updateGeneralProfileOwner = async (
 		}
 
 		// Update profile information
-		const updatedUser = await prisma.profile.update({
+		await prisma.profile.update({
 			where: { userId: userId },
 			data: {
 				firstName: req.body.firstname,
@@ -316,16 +318,7 @@ export const updateGeneralProfileOwner = async (
 				country: req.body.country,
 				zipCode: req.body.zipcode,
 				city: req.body.city,
-			},
-			select: {
-				firstName: true,
-				lastName: true,
-				username: true,
-				birthDate: true,
-				gender: true,
-				country: true,
-				zipCode: true,
-				city: true,
+				genres: req.body.genres, // Update genres if provided
 			},
 		});
 
@@ -353,9 +346,40 @@ export const updateGeneralProfileOwner = async (
 			}
 		}
 
+		// Fetch the final updated profile with instruments included
+		const updatedProfile = await prisma.profile.findUnique({
+			where: { userId: userId },
+			select: {
+				firstName: true,
+				lastName: true,
+				username: true,
+				birthDate: true,
+				gender: true,
+				country: true,
+				zipCode: true,
+				city: true,
+				genres: true,
+				instruments: {
+					select: {
+						id: true,
+						level: true,
+						order: true,
+						instrumentType: {
+							select: {
+								id: true,
+								name: true,
+								category: true,
+							},
+						},
+					},
+					orderBy: { order: "asc" },
+				},
+			},
+		});
+
 		res.status(200).json({
 			message: "Votre profil a bien été mis à jour",
-			user: updatedUser,
+			user: updatedProfile,
 		});
 	} catch (error) {
 		console.error("Error updating general profile:", error);
@@ -798,6 +822,20 @@ export const getInstrumentTypes = async (req: Request, res: Response) => {
 		console.error("Error fetching instrument types:", error);
 		res.status(500).json({
 			message: "[Erreur] Impossible de récupérer les types d'instruments",
+		});
+	}
+};
+
+export const getMusicGenres = async (req: Request, res: Response) => {
+	try {
+		// Récupérer tous les genres musicaux depuis l'enum
+		const genres = Object.values(require("@prisma/client").MusicGenre);
+
+		res.status(200).json(genres);
+	} catch (error) {
+		console.error("Error fetching music genres:", error);
+		res.status(500).json({
+			message: "[Erreur] Impossible de récupérer les genres musicaux",
 		});
 	}
 };

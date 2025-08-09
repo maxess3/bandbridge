@@ -10,45 +10,35 @@ import React, {
 import { cn } from "@/lib/utils";
 import { FormInput } from "@/components/shared/forms/FormInput";
 import { useAutocompleteState } from "@/contexts/AutocompleteContext";
-import { translateInstrument } from "@/utils/translations/instrumentTranslations";
+import { translateGenre } from "@/utils/translations/genreTranslations";
 import { useDebounce } from "@/hooks/useDebounce";
 
-interface InstrumentType {
-	id: string;
-	name: string;
-	category: string;
-}
-
-interface GroupedInstruments {
-	[key: string]: InstrumentType[];
-}
-
-interface InstrumentAutocompleteProps {
+interface GenreAutocompleteProps {
 	value?: string;
 	onValueChange: (value: string) => void;
-	instrumentTypes: GroupedInstruments;
+	genres: string[];
 	isLoading?: boolean;
 	placeholder?: string;
 	className?: string;
 	error?: boolean;
 	onDropdownStateChange?: (isOpen: boolean) => void;
-	excludedInstruments?: string[]; // Nouvelle prop
+	excludedGenres?: string[];
 }
 
-export const InstrumentAutocomplete = React.forwardRef<
+export const GenreAutocomplete = React.forwardRef<
 	HTMLInputElement,
-	InstrumentAutocompleteProps
+	GenreAutocompleteProps
 >(
 	(
 		{
 			value,
 			onValueChange,
-			instrumentTypes,
+			genres,
 			isLoading = false,
-			placeholder = "Tapez pour rechercher un instrument...",
+			placeholder = "Tapez pour rechercher un genre...",
 			className,
 			error = false,
-			excludedInstruments = [], // Nouvelle prop avec valeur par défaut
+			excludedGenres = [],
 		},
 		ref
 	) => {
@@ -69,63 +59,41 @@ export const InstrumentAutocomplete = React.forwardRef<
 		// Mettre à jour searchValue quand value change (pour l'affichage initial)
 		useEffect(() => {
 			if (value) {
-				// Trouver l'instrument sélectionné pour afficher son nom traduit
-				for (const category in instrumentTypes) {
-					const instrument = instrumentTypes[category].find(
-						(inst) => inst.id === value
-					);
-					if (instrument) {
-						setSearchValue(translateInstrument(instrument.name));
-						break;
-					}
-				}
+				setSearchValue(translateGenre(value));
 			} else {
 				setSearchValue("");
 			}
-		}, [value, instrumentTypes]);
+		}, [value]);
 
-		// Filtrer les instruments basé sur la recherche debounced (en français et en anglais)
-		const filteredInstruments = useMemo(() => {
+		// Filtrer les genres basé sur la recherche debounced
+		const filteredGenres = useMemo(() => {
 			if (!debouncedSearchValue) {
-				// Si pas de recherche, retourner tous les instruments sauf ceux exclus
-				const allInstruments: InstrumentType[] = [];
-				for (const category in instrumentTypes) {
-					allInstruments.push(...instrumentTypes[category]);
+				// Si pas de recherche, retourner tous les genres sauf ceux exclus
+				return genres.filter((genre) => !excludedGenres.includes(genre));
+			}
+
+			const searchValue = debouncedSearchValue.toLowerCase();
+
+			return genres.filter((genre) => {
+				// Exclure les genres déjà sélectionnés
+				if (excludedGenres.includes(genre)) {
+					return false;
 				}
-				return allInstruments.filter(
-					(instrument) => !excludedInstruments.includes(instrument.id)
+
+				const translatedName = translateGenre(genre);
+
+				// Recherche plus flexible : inclut, pas seulement startsWith
+				return (
+					genre.toLowerCase().includes(searchValue) ||
+					translatedName.toLowerCase().includes(searchValue)
 				);
-			}
-
-			const allInstruments: InstrumentType[] = [];
-			for (const category in instrumentTypes) {
-				const filteredInCategory = instrumentTypes[category].filter(
-					(instrument) => {
-						// Exclure les instruments déjà sélectionnés
-						if (excludedInstruments.includes(instrument.id)) {
-							return false;
-						}
-
-						const translatedName = translateInstrument(instrument.name);
-						const searchValue = debouncedSearchValue.toLowerCase();
-
-						// Recherche plus flexible : inclut, pas seulement startsWith
-						return (
-							instrument.name.toLowerCase().includes(searchValue) ||
-							translatedName.toLowerCase().includes(searchValue)
-						);
-					}
-				);
-				allInstruments.push(...filteredInCategory);
-			}
-
-			return allInstruments;
-		}, [instrumentTypes, debouncedSearchValue, excludedInstruments]);
+			});
+		}, [genres, debouncedSearchValue, excludedGenres]);
 
 		// Réinitialiser l'index sélectionné quand la liste change
 		useEffect(() => {
 			setSelectedIndex(-1);
-		}, [filteredInstruments]);
+		}, [filteredGenres]);
 
 		// Faire défiler la fenêtre dialog vers le bas quand la liste s'ouvre avec scroll smooth
 		useEffect(() => {
@@ -174,7 +142,7 @@ export const InstrumentAutocomplete = React.forwardRef<
 			}
 		}, [isOpen, debouncedSearchValue]);
 
-		// Faire défiler la liste d'autosuggestion pour garder l'élément sélectionné visible avec scroll smooth
+		// Faire défiler la liste d'autosuggestion pour garder l'élément sélectionné visible
 		useEffect(() => {
 			if (isOpen && selectedIndex >= 0 && listRef.current) {
 				const listElement = listRef.current;
@@ -186,16 +154,13 @@ export const InstrumentAutocomplete = React.forwardRef<
 					const listRect = listElement.getBoundingClientRect();
 					const elementRect = selectedElement.getBoundingClientRect();
 
-					// Vérifier si l'élément est en dehors de la zone visible
 					if (elementRect.bottom > listRect.bottom) {
-						// L'élément est en dessous de la zone visible, faire défiler vers le bas
 						const scrollDistance = elementRect.bottom - listRect.bottom;
 						listElement.scrollBy({
 							top: scrollDistance,
 							behavior: "smooth",
 						});
 					} else if (elementRect.top < listRect.top) {
-						// L'élément est au-dessus de la zone visible, faire défiler vers le haut
 						const scrollDistance = listRect.top - elementRect.top;
 						listElement.scrollBy({
 							top: -scrollDistance,
@@ -230,47 +195,35 @@ export const InstrumentAutocomplete = React.forwardRef<
 
 		// Gérer les touches clavier
 		const handleKeyDown = (e: React.KeyboardEvent) => {
-			if (!isOpen || filteredInstruments.length === 0) return;
+			if (!isOpen || filteredGenres.length === 0) return;
 
 			switch (e.key) {
 				case "Tab":
-					// Fermer la liste et laisser le focus passer au prochain élément
 					setIsOpen(false);
 					setSelectedIndex(-1);
-					// Ne pas preventDefault pour permettre au focus de passer naturellement
 					break;
 				case "ArrowDown":
 					e.preventDefault();
 					e.stopPropagation();
 					setSelectedIndex((prev) => {
-						// Si aucun élément n'est sélectionné, sélectionner le premier
 						if (prev === -1) return 0;
-						// Sinon, passer au suivant ou revenir au premier
-						return prev < filteredInstruments.length - 1 ? prev + 1 : 0;
+						return prev < filteredGenres.length - 1 ? prev + 1 : 0;
 					});
 					break;
 				case "ArrowUp":
 					e.preventDefault();
 					e.stopPropagation();
 					setSelectedIndex((prev) => {
-						// Si aucun élément n'est sélectionné, sélectionner le dernier
-						if (prev === -1) return filteredInstruments.length - 1;
-						// Sinon, passer au précédent ou aller au dernier
-						return prev > 0 ? prev - 1 : filteredInstruments.length - 1;
+						if (prev === -1) return filteredGenres.length - 1;
+						return prev > 0 ? prev - 1 : filteredGenres.length - 1;
 					});
 					break;
 				case "Enter":
 					e.preventDefault();
 					e.stopPropagation();
-					if (
-						selectedIndex >= 0 &&
-						selectedIndex < filteredInstruments.length
-					) {
-						const instrument = filteredInstruments[selectedIndex];
-						handleSelectInstrument(
-							instrument.id,
-							translateInstrument(instrument.name)
-						);
+					if (selectedIndex >= 0 && selectedIndex < filteredGenres.length) {
+						const genre = filteredGenres[selectedIndex];
+						handleSelectGenre(genre);
 					}
 					break;
 				case "Escape":
@@ -282,13 +235,10 @@ export const InstrumentAutocomplete = React.forwardRef<
 			}
 		};
 
-		// Gérer la sélection d'un instrument
-		const handleSelectInstrument = (
-			instrumentId: string,
-			instrumentName: string
-		) => {
-			onValueChange(instrumentId);
-			setSearchValue(instrumentName);
+		// Gérer la sélection d'un genre
+		const handleSelectGenre = (genre: string) => {
+			onValueChange(genre);
+			setSearchValue(translateGenre(genre));
 			setIsOpen(false);
 			setSelectedIndex(-1);
 			inputRef.current?.blur();
@@ -299,10 +249,8 @@ export const InstrumentAutocomplete = React.forwardRef<
 			const newValue = e.target.value;
 			setSearchValue(newValue);
 
-			// Ouvrir la liste si on tape quelque chose
 			if (newValue.length > 0) {
 				setIsOpen(true);
-				// Réinitialiser la sélection quand on tape
 				setSelectedIndex(-1);
 			} else {
 				setIsOpen(false);
@@ -335,24 +283,18 @@ export const InstrumentAutocomplete = React.forwardRef<
 							onKeyDown={handleKeyDown}
 							tabIndex={-1}
 						>
-							{filteredInstruments.length === 0 ? (
+							{filteredGenres.length === 0 ? (
 								<div className="py-6 text-center text-sm text-muted-foreground">
-									Aucun instrument trouvé.
+									Aucun genre trouvé.
 								</div>
 							) : (
-								filteredInstruments.map((instrument, index) => (
+								filteredGenres.map((genre, index) => (
 									<button
-										key={instrument.id}
+										key={genre}
 										type="button"
 										tabIndex={-1}
-										onClick={() =>
-											handleSelectInstrument(
-												instrument.id,
-												translateInstrument(instrument.name)
-											)
-										}
+										onClick={() => handleSelectGenre(genre)}
 										onKeyDown={(e) => {
-											// Empêcher la propagation des événements clavier sur les boutons
 											if (
 												["ArrowDown", "ArrowUp", "Enter", "Escape"].includes(
 													e.key
@@ -368,7 +310,7 @@ export const InstrumentAutocomplete = React.forwardRef<
 												"bg-foreground/10 border-[red] border-2"
 										)}
 									>
-										{translateInstrument(instrument.name)}
+										{translateGenre(genre)}
 									</button>
 								))
 							)}
@@ -380,4 +322,4 @@ export const InstrumentAutocomplete = React.forwardRef<
 	}
 );
 
-InstrumentAutocomplete.displayName = "InstrumentAutocomplete";
+GenreAutocomplete.displayName = "GenreAutocomplete";

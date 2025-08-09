@@ -29,6 +29,7 @@ export function EditProfileGeneralModal() {
 			return data;
 		},
 		onSuccess: async (data) => {
+			console.log("data", data);
 			await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
 
 			const usernameChanged =
@@ -110,6 +111,7 @@ export function EditProfileGeneralModal() {
 									order: instrument.order ?? index,
 								})
 							) || [],
+						genres: profile?.genres || [],
 					}}
 					title="Modifier le résumé"
 					isSubmitting={updateProfileMutation.isPending || isDelaying}

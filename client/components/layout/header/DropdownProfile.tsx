@@ -87,10 +87,8 @@ export const DropdownProfile = () => {
 								</Avatar>
 								<div className="flex flex-col ml-0.5">
 									<span className="text-base font-semibold">
-										{session?.user.firstName} {session?.user.lastName}
-									</span>
-									<span className="text-xs opacity-80 font-medium">
-										@{session?.user.username}
+										{session?.user.firstName}
+										{session?.user.lastName}
 									</span>
 								</div>
 							</div>
@@ -114,7 +112,7 @@ export const DropdownProfile = () => {
 						<RiBugLine style={{ width: "1.4em", height: "1.4em" }} />
 						Signaler un bug
 					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => router.push("/me")}>
+					<DropdownMenuItem onClick={() => router.push("/settings")}>
 						<LuSettings style={{ width: "1.35em", height: "1.35em" }} />
 						Paramètres
 					</DropdownMenuItem>

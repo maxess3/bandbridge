@@ -33,6 +33,28 @@ enum MusicGenre {
   ROCK
   JAZZ
   ELECTRO
+  POP
+  FOLK
+  BLUES
+  HIP_HOP
+  RAP
+  R_AND_B
+  METAL
+  PUNK
+  COUNTRY
+  REGGAE
+  FUNK
+  SOUL
+  ALTERNATIVE
+  INDIE
+  ACOUSTIC
+  LATINO
+  CLASSICAL
+  CELTIC
+  SKA
+  LOUNGE
+  RELIGIOUS
+  OTHER
 }
 
 enum Platform {
@@ -107,7 +129,7 @@ model Profile {
   zipCode           String?
   role              ProfileRole        @default(MUSICIAN)
   instruments       Instrument[]
-  genre             MusicGenre?
+  genres            MusicGenre[]
   socialLinks       SocialLink[]
   band              Band[]
   lastActiveAt      DateTime?

@@ -51,6 +51,7 @@ export interface Profile {
 			profession: string | null;
 		};
 	}[];
+	genres: string[];
 	styles: string[];
 	lastSeen: string;
 	createdAt?: string;

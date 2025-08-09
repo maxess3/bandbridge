@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Instrument" ALTER COLUMN "level" SET DEFAULT 'NOT_SPECIFIED';

@@ -22,7 +22,7 @@ export const ProfileStatLinks = ({
 	followers: number;
 	following: number;
 }) => (
-	<div className="flex gap-x-4">
+	<div className="flex gap-x-4 pt-3">
 		<ProfileStatLink href={`/followers/`} count={followers} label="Abonnés" />
 		<ProfileStatLink href={`/following/`} count={following} label="Suivi(e)s" />
 	</div>
