@@ -25,21 +25,21 @@ export const signup = async (req: Request, res: Response) => {
 
 	try {
 		await prisma.$transaction(async (prisma) => {
+			const username = await generateUniqueUsername(formatFirstName, prisma);
+
 			const user = await prisma.user.create({
 				data: {
 					email,
 					password: hashSync(password, 10),
 					provider: "MANUAL",
-				},
-			});
-
-			const username = await generateUniqueUsername(formatFirstName, prisma);
-
-			const profile = await prisma.profile.create({
-				data: {
 					firstName: formatFirstName,
 					lastName: formatLastName,
 					username,
+				},
+			});
+
+			await prisma.profile.create({
+				data: {
 					userId: user.id,
 				},
 			});
@@ -77,9 +77,9 @@ export const login = async (req: Request, res: Response) => {
 
 	const userId = user.id;
 	const userEmail = user.email;
-	const userFirstName = user.Profile?.firstName;
-	const userLastName = user.Profile?.lastName;
-	const username = user.Profile?.username;
+	const userFirstName = user.firstName;
+	const userLastName = user.lastName;
+	const username = user.username;
 	const profilePictureKey = user.Profile?.profilePictureKey;
 
 	const { backendTokens } = createAuthTokens(userId);
@@ -113,20 +113,20 @@ export const google = async (req: Request, res: Response) => {
 			});
 
 			if (!findUser) {
+				const username = await generateUniqueUsername(firstName, prisma);
+
 				const newUser = await prisma.user.create({
 					data: {
 						email,
 						provider: "GOOGLE",
-					},
-				});
-
-				const username = await generateUniqueUsername(firstName, prisma);
-
-				const profile = await prisma.profile.create({
-					data: {
 						firstName: firstName,
 						lastName: lastName,
 						username,
+					},
+				});
+
+				await prisma.profile.create({
+					data: {
 						userId: newUser.id,
 					},
 				});
@@ -142,9 +142,9 @@ export const google = async (req: Request, res: Response) => {
 
 		const userId = result.id;
 		const userEmail = result.email;
-		const userFirstName = result.Profile?.firstName;
-		const userLastName = result.Profile?.lastName;
-		const username = result.Profile?.username;
+		const userFirstName = result.firstName;
+		const userLastName = result.lastName;
+		const username = result.username;
 		const profilePictureKey = result.Profile?.profilePictureKey;
 
 		const { backendTokens } = createAuthTokens(userId);

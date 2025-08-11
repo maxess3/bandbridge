@@ -111,6 +111,11 @@ model User {
   role                UserRole  @default(USER)
   verified            Boolean   @default(false)
   password_changed_at DateTime?
+  firstName           String    @db.VarChar(60)
+  lastName            String    @db.VarChar(60)
+  username            String?   @unique
+  gender              Gender    @default(OTHER)
+  birthDate           DateTime? @db.Date
   Profile             Profile?  @relation
   Post                Post[]
 }
@@ -119,14 +124,6 @@ model Profile {
   id                String             @id @default(uuid())
   followers         Profile[]          @relation("UserFollows")
   following         Profile[]          @relation("UserFollows")
-  gender            Gender             @default(OTHER)
-  username          String?            @unique
-  firstName         String             @db.VarChar(60)
-  lastName          String             @db.VarChar(60)
-  birthDate         DateTime?          @db.Date
-  country           String?
-  city              String?
-  zipCode           String?
   role              ProfileRole        @default(MUSICIAN)
   instruments       Instrument[]
   genres            MusicGenre[]
@@ -138,6 +135,9 @@ model Profile {
   concertsPlayed    ConcertCount       @default(NOT_SPECIFIED)
   rehearsalsPerWeek RehearsalFrequency @default(NOT_SPECIFIED)
   practiceType      PracticeType       @default(NOT_SPECIFIED)
+  country           String?
+  city              String?
+  zipCode           String?
   userId            String             @unique
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

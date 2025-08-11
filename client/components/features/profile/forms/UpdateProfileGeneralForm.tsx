@@ -5,11 +5,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useEffect, useRef, useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import { RadioGroup } from "@/components/ui/radio-group";
 import { FormInput } from "@/components/shared/forms/FormInput";
-import { Radio } from "@/components/shared/buttons/Radio";
-import { formGeneralProfile } from "@/lib/schema";
-import { z } from "zod";
 import { InstrumentAutocomplete } from "@/components/shared/forms/InstrumentAutocomplete";
 import { GenreAutocomplete } from "@/components/shared/forms/GenreAutocomplete";
 import { Button } from "@/components/ui/button";
@@ -18,7 +14,17 @@ import { translateInstrument } from "@/utils/translations/instrumentTranslations
 import { translateGenre } from "@/utils/translations/genreTranslations";
 import { FormSelect } from "@/components/shared/forms/FormSelect";
 
-type FormValues = z.input<typeof formGeneralProfile>;
+type FormValues = {
+	instruments: Array<{
+		instrumentTypeId: string;
+		level: string | null;
+		order?: number;
+	}>;
+	genres: string[];
+	country: string;
+	zipcode: string;
+	city: string;
+};
 
 interface InstrumentType {
 	id: string;
@@ -58,7 +64,7 @@ export const UpdateProfileGeneralForm = () => {
 	>([]);
 	const [isAddingInstrument, setIsAddingInstrument] = useState(false);
 	const [tempInstrumentId, setTempInstrumentId] = useState("");
-	const [isInitialized, setIsInitialized] = useState(false); // Nouvel état
+	const [isInitialized, setIsInitialized] = useState(false);
 
 	// État local pour gérer les genres sélectionnés
 	const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
@@ -239,19 +245,6 @@ export const UpdateProfileGeneralForm = () => {
 		isInitialized,
 	]);
 
-	// Options pour les mois
-	const monthOptions = Array.from({ length: 12 }, (_, i) => ({
-		value: String(i + 1).padStart(2, "0"),
-		label: new Date(0, i).toLocaleString("fr-FR", { month: "long" }),
-	}));
-
-	// Options pour les villes
-	const cityOptions =
-		cities?.map((city: string) => ({
-			value: city,
-			label: city,
-		})) || [];
-
 	const handleAddInstrument = () => {
 		setIsAddingInstrument(true);
 		setTempInstrumentId("");
@@ -352,132 +345,8 @@ export const UpdateProfileGeneralForm = () => {
 	return (
 		<div className="space-y-6 pb-16">
 			<div className="space-y-1">
-				<h4 className="font-semibold text-2xl mb-2">Informations de base</h4>
+				<h4 className="font-semibold text-2xl mb-2">Profil musical</h4>
 				<div className="space-y-6">
-					<div className="space-y-1.5">
-						<Label htmlFor="firstname" className="opacity-80 text-sm">
-							Prénom*
-						</Label>
-						<FormInput
-							id="firstname"
-							{...register("firstname")}
-							className={`${errors.firstname && "border-red-500"}`}
-						/>
-						{errors.firstname && (
-							<p className="text-red-500 text-sm">
-								{errors.firstname?.message?.toString()}
-							</p>
-						)}
-					</div>
-					<div className="space-y-1">
-						<Label htmlFor="lastname" className="opacity-80 text-sm">
-							Nom*
-						</Label>
-						<FormInput
-							id="lastname"
-							{...register("lastname")}
-							className={`${errors.lastname && "border-red-500"}`}
-						/>
-						{errors.lastname && (
-							<p className="text-red-500 text-sm">
-								{errors.lastname?.message?.toString()}
-							</p>
-						)}
-					</div>
-					<div className="space-y-1">
-						<Label htmlFor="username" className="opacity-80 text-sm">
-							Nom d'utilisateur*
-						</Label>
-						<FormInput
-							id="username"
-							{...register("username")}
-							className={`${errors.username && "border-red-500"}`}
-						/>
-						{errors.username && (
-							<p className="text-red-500 text-sm">
-								{errors.username?.message?.toString()}
-							</p>
-						)}
-					</div>
-					<div className="space-y-1">
-						<Label className="opacity-80 text-sm">Date de naissance*</Label>
-						<div className="flex items-center gap-2">
-							<FormInput
-								{...register("birthdate.day")}
-								placeholder="Jour"
-								className={`w-14 ${errors.birthdate?.day && "border-red-500"}`}
-								maxLength={2}
-							/>
-							<span className="w-1 flex justify-center">-</span>
-							<Controller
-								name="birthdate.month"
-								control={control}
-								render={({ field }) => (
-									<FormSelect
-										{...field}
-										options={monthOptions}
-										placeholder="Mois"
-										className={`w-32 ${
-											errors.birthdate?.month && "border-red-500"
-										}`}
-									/>
-								)}
-							/>
-							<span className="w-1 flex justify-center">-</span>
-							<FormInput
-								{...register("birthdate.year")}
-								placeholder="Année"
-								className={`w-20 ${errors.birthdate?.year && "border-red-500"}`}
-								maxLength={4}
-							/>
-						</div>
-						{errors.birthdate?.day && (
-							<p className="text-red-500 text-sm mt-1">
-								{errors.birthdate.day.message?.toString()}
-							</p>
-						)}
-						{errors.birthdate?.month && (
-							<p className="text-red-500 text-sm mt-1">
-								{errors.birthdate.month.message?.toString()}
-							</p>
-						)}
-						{errors.birthdate?.year && (
-							<p className="text-red-500 text-sm mt-1">
-								{errors.birthdate.year.message?.toString()}
-							</p>
-						)}
-						{errors.birthdate?.root?.message && (
-							<p className="text-red-500 text-sm mt-1">
-								{errors.birthdate.root.message?.toString()}
-							</p>
-						)}
-					</div>
-					<div className="space-y-1">
-						<Label htmlFor="gender" className="opacity-80 text-sm">
-							Genre
-						</Label>
-						<Controller
-							name="gender"
-							control={control}
-							render={({ field }) => (
-								<RadioGroup
-									{...field}
-									onValueChange={field.onChange}
-									value={field.value}
-									className="flex space-x-0.5"
-								>
-									<Radio title="Non défini" id="other" value="OTHER" />
-									<Radio title="Homme" id="male" value="MALE" />
-									<Radio title="Femme" id="female" value="FEMALE" />
-								</RadioGroup>
-							)}
-						/>
-						{errors.gender && (
-							<p className="text-red-500 text-sm">
-								{errors.gender?.message?.toString()}
-							</p>
-						)}
-					</div>
 					<div className="space-y-3">
 						<div>
 							<h4 className="font-semibold text-xl mb-1.5">
@@ -713,79 +582,97 @@ export const UpdateProfileGeneralForm = () => {
 							)}
 						</div>
 					</div>
+
 					<div className="space-y-1">
 						<h4 className="font-semibold text-xl mb-2">Localisation</h4>
-						<Label htmlFor="country" className="opacity-80 text-sm">
-							Pays
-						</Label>
-						<Controller
-							name="country"
-							control={control}
-							render={({ field }) => (
-								<RadioGroup
-									{...field}
-									onValueChange={field.onChange}
-									value={field.value}
-									className="flex space-x-0.5"
-								>
-									<Radio title="France" id="france" value="France" />
-								</RadioGroup>
+						<div className="space-y-1">
+							<Label htmlFor="country" className="opacity-80 text-sm">
+								Pays
+							</Label>
+							<Controller
+								name="country"
+								control={control}
+								render={({ field }) => (
+									<div className="flex space-x-0.5">
+										<input
+											type="radio"
+											id="france"
+											value="France"
+											checked={field.value === "France"}
+											onChange={(e) => field.onChange(e.target.value)}
+											className="sr-only"
+										/>
+										<label
+											htmlFor="france"
+											className={`px-3 py-2 text-sm rounded-md cursor-pointer transition-colors ${
+												field.value === "France"
+													? "bg-primary text-primary-foreground"
+													: "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+											}`}
+										>
+											France
+										</label>
+									</div>
+								)}
+							/>
+							{errors.country && (
+								<p className="text-red-500 text-sm">
+									{errors.country?.message?.toString()}
+								</p>
 							)}
-						/>
-						{errors.country && (
-							<p className="text-red-500 text-sm">
-								{errors.country?.message?.toString()}
-							</p>
-						)}
-					</div>
-					<div className="space-y-1">
-						<Label htmlFor="zipcode" className="opacity-80 text-sm">
-							Code Postal*
-						</Label>
-						<FormInput
-							id="zipcode"
-							{...register("zipcode")}
-							className={`${errors.zipcode && "border-red-500"}`}
-						/>
-						{errors.zipcode && (
-							<p className="text-red-500 text-sm">
-								{errors.zipcode?.message?.toString()}
-							</p>
-						)}
-					</div>
-					<div className="space-y-1">
-						<Label htmlFor="city" className="opacity-80 text-sm">
-							Ville*
-						</Label>
-						<Controller
-							name="city"
-							control={control}
-							render={({ field }) => (
-								<FormSelect
-									{...field}
-									options={cityOptions}
-									placeholder={
-										isLoading
-											? "Chargement..."
-											: isSuccess && cities?.length
-											? "Sélectionner une ville"
-											: "Aucune ville trouvée"
-									}
-									className={`w-full ${errors.city && "border-red-500"}`}
-									disabled={isLoading || !cities?.length}
-								/>
+						</div>
+						<div className="space-y-1">
+							<Label htmlFor="zipcode" className="opacity-80 text-sm">
+								Code Postal*
+							</Label>
+							<FormInput
+								id="zipcode"
+								{...register("zipcode")}
+								className={`${errors.zipcode && "border-red-500"}`}
+							/>
+							{errors.zipcode && (
+								<p className="text-red-500 text-sm">
+									{errors.zipcode?.message?.toString()}
+								</p>
 							)}
-						/>
-						{errors.city && (
-							<p className="text-red-500 text-sm">
-								{errors.city?.message?.toString()}
-							</p>
-						)}
+						</div>
+						<div className="space-y-1">
+							<Label htmlFor="city" className="opacity-80 text-sm">
+								Ville*
+							</Label>
+							<Controller
+								name="city"
+								control={control}
+								render={({ field }) => (
+									<FormSelect
+										{...field}
+										options={
+											cities?.map((city: string) => ({
+												value: city,
+												label: city,
+											})) || []
+										}
+										placeholder={
+											isLoading
+												? "Chargement..."
+												: isSuccess && cities?.length
+												? "Sélectionner une ville"
+												: "Aucune ville trouvée"
+										}
+										className={`w-full ${errors.city && "border-red-500"}`}
+										disabled={isLoading || !cities?.length}
+									/>
+								)}
+							/>
+							{errors.city && (
+								<p className="text-red-500 text-sm">
+									{errors.city?.message?.toString()}
+								</p>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
-
-			{/* Section Instruments Simplifiée */}
 		</div>
 	);
 };

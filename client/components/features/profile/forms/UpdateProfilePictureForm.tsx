@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
-import { formProfilePicture } from "@/lib/schema";
+import { formProfilePicture } from "@/lib/zod";
 import { z } from "zod";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { Button } from "@/components/ui/button";

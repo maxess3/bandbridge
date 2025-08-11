@@ -12,73 +12,72 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 	try {
 		const { username } = req.params;
 
-		const profile = await prisma.profile.findUnique({
+		const user = await prisma.user.findUnique({
 			where: {
 				username: username,
 			},
-			select: {
-				userId: true,
-				firstName: true,
-				lastName: true,
-				username: true,
-				birthDate: true,
-				gender: true,
-				country: true,
-				zipCode: true,
-				profilePictureKey: true,
-				role: true,
-				city: true,
-				description: true,
-				concertsPlayed: true,
-				rehearsalsPerWeek: true,
-				practiceType: true,
-				genres: true, // Ajouter cette ligne
-				user: {
+			include: {
+				Profile: {
 					select: {
-						created_at: true,
-					},
-				},
-				socialLinks: {
-					select: {
-						platform: true,
-						url: true,
-					},
-				},
-				instruments: {
-					select: {
-						instrumentTypeId: true,
-						level: true,
-						order: true,
-						instrumentType: {
+						id: true,
+						userId: true,
+						role: true,
+						description: true,
+						concertsPlayed: true,
+						rehearsalsPerWeek: true,
+						practiceType: true,
+						genres: true,
+						profilePictureKey: true,
+						lastActiveAt: true,
+						country: true,
+						city: true,
+						zipCode: true,
+						socialLinks: {
 							select: {
-								name: true,
-								profession: true,
+								platform: true,
+								url: true,
 							},
 						},
-					},
-					orderBy: {
-						order: "asc",
-					},
-				},
-				_count: {
-					select: {
-						followers: true,
-						following: true,
-					},
-				},
-				followers: {
-					take: 7,
-					orderBy: {
-						lastActiveAt: "desc",
-					},
-					select: {
-						username: true,
-						firstName: true,
-						lastName: true,
-						city: true,
+						instruments: {
+							select: {
+								instrumentTypeId: true,
+								level: true,
+								order: true,
+								instrumentType: {
+									select: {
+										name: true,
+										profession: true,
+									},
+								},
+							},
+							orderBy: {
+								order: "asc",
+							},
+						},
 						_count: {
 							select: {
 								followers: true,
+								following: true,
+							},
+						},
+						followers: {
+							take: 7,
+							orderBy: {
+								lastActiveAt: "desc",
+							},
+							select: {
+								user: {
+									select: {
+										username: true,
+										firstName: true,
+										lastName: true,
+									},
+								},
+								_count: {
+									select: {
+										followers: true,
+									},
+								},
 							},
 						},
 					},
@@ -86,10 +85,12 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 			},
 		});
 
-		if (!profile) {
+		if (!user || !user.Profile) {
 			res.status(404).json({ message: "Profil introuvable" });
 			return;
 		}
+
+		const profile = user.Profile;
 
 		const formattedSocialLinks = Object.fromEntries(
 			(profile.socialLinks || []).map(
@@ -101,23 +102,40 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 		);
 
 		const responseProfile = {
-			...profile,
-			createdAt: profile.user?.created_at,
+			userId: profile.userId,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			username: user.username,
+			birthDate: user.birthDate,
+			gender: user.gender,
+			country: profile.country,
+			zipCode: profile.zipCode,
+			city: profile.city,
+			role: profile.role,
+			description: profile.description,
+			concertsPlayed: profile.concertsPlayed,
+			rehearsalsPerWeek: profile.rehearsalsPerWeek,
+			practiceType: profile.practiceType,
+			genres: profile.genres,
+			profilePictureKey: profile.profilePictureKey,
+			lastActiveAt: profile.lastActiveAt,
+			createdAt: user.created_at,
 			socialLinks: formattedSocialLinks,
 			followers: profile._count?.followers || 0,
 			following: profile._count?.following || 0,
 			lastFollowers: (profile.followers || []).map(
 				(follower: {
-					username: string;
-					firstName: string;
-					lastName: string;
-					city: string;
+					user: {
+						username: string;
+						firstName: string;
+						lastName: string;
+					};
 					_count: { followers: number };
 				}) => ({
-					username: follower.username,
-					firstName: follower.firstName,
-					lastName: follower.lastName,
-					city: follower.city,
+					username: follower.user.username,
+					firstName: follower.user.firstName,
+					lastName: follower.user.lastName,
+					city: profile.city,
 					followersCount: follower._count.followers,
 				})
 			),
@@ -139,73 +157,72 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 			return;
 		}
 
-		const profile = await prisma.profile.findUnique({
+		const user = await prisma.user.findUnique({
 			where: {
-				userId: userId,
+				id: userId,
 			},
-			select: {
-				userId: true,
-				firstName: true,
-				lastName: true,
-				username: true,
-				birthDate: true,
-				gender: true,
-				country: true,
-				zipCode: true,
-				profilePictureKey: true,
-				role: true,
-				city: true,
-				description: true,
-				concertsPlayed: true,
-				rehearsalsPerWeek: true,
-				practiceType: true,
-				genres: true, // Ajouter cette ligne
-				user: {
+			include: {
+				Profile: {
 					select: {
-						created_at: true,
-					},
-				},
-				socialLinks: {
-					select: {
-						platform: true,
-						url: true,
-					},
-				},
-				instruments: {
-					select: {
-						instrumentTypeId: true,
-						level: true,
-						order: true,
-						instrumentType: {
+						id: true,
+						userId: true,
+						role: true,
+						description: true,
+						concertsPlayed: true,
+						rehearsalsPerWeek: true,
+						practiceType: true,
+						genres: true,
+						profilePictureKey: true,
+						lastActiveAt: true,
+						country: true,
+						city: true,
+						zipCode: true,
+						socialLinks: {
 							select: {
-								name: true,
-								profession: true,
+								platform: true,
+								url: true,
 							},
 						},
-					},
-					orderBy: {
-						order: "asc",
-					},
-				},
-				_count: {
-					select: {
-						followers: true,
-						following: true,
-					},
-				},
-				followers: {
-					take: 7,
-					orderBy: {
-						lastActiveAt: "desc",
-					},
-					select: {
-						username: true,
-						firstName: true,
-						lastName: true,
-						city: true,
+						instruments: {
+							select: {
+								instrumentTypeId: true,
+								level: true,
+								order: true,
+								instrumentType: {
+									select: {
+										name: true,
+										profession: true,
+									},
+								},
+							},
+							orderBy: {
+								order: "asc",
+							},
+						},
 						_count: {
 							select: {
 								followers: true,
+								following: true,
+							},
+						},
+						followers: {
+							take: 7,
+							orderBy: {
+								lastActiveAt: "desc",
+							},
+							select: {
+								user: {
+									select: {
+										username: true,
+										firstName: true,
+										lastName: true,
+									},
+								},
+								_count: {
+									select: {
+										followers: true,
+									},
+								},
 							},
 						},
 					},
@@ -213,10 +230,12 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 			},
 		});
 
-		if (!profile) {
+		if (!user || !user.Profile) {
 			res.status(404).json({ message: "Profil introuvable" });
 			return;
 		}
+
+		const profile = user.Profile;
 
 		const formattedSocialLinks = Object.fromEntries(
 			(profile.socialLinks || []).map(
@@ -228,23 +247,40 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 		);
 
 		const responseProfile = {
-			...profile,
-			createdAt: profile.user?.created_at,
+			userId: profile.userId,
+			firstName: user.firstName,
+			lastName: user.lastName,
+			username: user.username,
+			birthDate: user.birthDate,
+			gender: user.gender,
+			country: profile.country,
+			zipCode: profile.zipCode,
+			city: profile.city,
+			role: profile.role,
+			description: profile.description,
+			concertsPlayed: profile.concertsPlayed,
+			rehearsalsPerWeek: profile.rehearsalsPerWeek,
+			practiceType: profile.practiceType,
+			genres: profile.genres,
+			profilePictureKey: profile.profilePictureKey,
+			lastActiveAt: profile.lastActiveAt,
+			createdAt: user.created_at,
 			socialLinks: formattedSocialLinks,
 			followers: profile._count?.followers || 0,
 			following: profile._count?.following || 0,
 			lastFollowers: (profile.followers || []).map(
 				(follower: {
-					username: string;
-					firstName: string;
-					lastName: string;
-					city: string;
+					user: {
+						username: string;
+						firstName: string;
+						lastName: string;
+					};
 					_count: { followers: number };
 				}) => ({
-					username: follower.username,
-					firstName: follower.firstName,
-					lastName: follower.lastName,
-					city: follower.city,
+					username: follower.user.username,
+					firstName: follower.user.firstName,
+					lastName: follower.user.lastName,
+					city: profile.city,
 					followersCount: follower._count.followers,
 				})
 			),
@@ -271,7 +307,7 @@ export const updateGeneralProfileOwner = async (
 
 		const currentProfile = await prisma.profile.findUnique({
 			where: { userId: userId },
-			select: { id: true, username: true },
+			select: { id: true },
 		});
 
 		if (!currentProfile) {
@@ -279,46 +315,11 @@ export const updateGeneralProfileOwner = async (
 			return;
 		}
 
-		// Check if the username is already taken by another user
-		const existingProfile = await prisma.profile.findFirst({
-			where: {
-				username: req.body.username,
-				userId: { not: userId },
-			},
-		});
-
-		if (existingProfile) {
-			res.status(400).json({
-				message: "Le nom d'utilisateur est déjà pris",
-			});
-			return;
-		}
-
-		// Convert birthdate from { day, month, year } to Date object
-		let birthDate: Date | null = null;
-		if (
-			req.body.birthdate &&
-			req.body.birthdate.day &&
-			req.body.birthdate.month &&
-			req.body.birthdate.year
-		) {
-			const { day, month, year } = req.body.birthdate;
-			birthDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
-		}
-
-		// Update profile information
+		// Update profile genres
 		await prisma.profile.update({
 			where: { userId: userId },
 			data: {
-				firstName: req.body.firstname,
-				lastName: req.body.lastname,
-				username: req.body.username,
-				birthDate: birthDate,
-				gender: req.body.gender,
-				country: req.body.country,
-				zipCode: req.body.zipcode,
-				city: req.body.city,
-				genres: req.body.genres, // Update genres if provided
+				genres: req.body.genres,
 			},
 		});
 
@@ -346,15 +347,20 @@ export const updateGeneralProfileOwner = async (
 			}
 		}
 
-		// Fetch the final updated profile with instruments included
+		// Update profile location information
+		await prisma.profile.update({
+			where: { userId: userId },
+			data: {
+				country: req.body.country,
+				zipCode: req.body.zipcode,
+				city: req.body.city,
+			},
+		});
+
+		// Fetch the final updated data
 		const updatedProfile = await prisma.profile.findUnique({
 			where: { userId: userId },
 			select: {
-				firstName: true,
-				lastName: true,
-				username: true,
-				birthDate: true,
-				gender: true,
 				country: true,
 				zipCode: true,
 				city: true,
@@ -379,7 +385,13 @@ export const updateGeneralProfileOwner = async (
 
 		res.status(200).json({
 			message: "Votre profil a bien été mis à jour",
-			user: updatedProfile,
+			user: {
+				country: updatedProfile?.country,
+				zipCode: updatedProfile?.zipCode,
+				city: updatedProfile?.city,
+				genres: updatedProfile?.genres,
+				instruments: updatedProfile?.instruments,
+			},
 		});
 	} catch (error) {
 		console.error("Error updating general profile:", error);
@@ -447,10 +459,16 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
 		});
 
 		// Get updated profile data
+		const updatedUser = await prisma.user.findUnique({
+			where: { id: userId },
+			select: {
+				username: true,
+			},
+		});
+
 		const updatedProfile = await prisma.profile.findUnique({
 			where: { userId },
 			select: {
-				username: true,
 				description: true,
 				concertsPlayed: true,
 				rehearsalsPerWeek: true,
@@ -460,7 +478,10 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
 
 		res.status(200).json({
 			message: "Vos informations ont bien été mises à jour",
-			user: updatedProfile,
+			user: {
+				...updatedUser,
+				...updatedProfile,
+			},
 			links: updatedLinks,
 		});
 	} catch (error) {
@@ -669,15 +690,18 @@ export const follow = async (req: Request, res: Response) => {
 			return;
 		}
 
-		// Get the target user profle
-		const targetProfile = await prisma.profile.findUnique({
+		// Get the target user profile via User model
+		const targetUser = await prisma.user.findUnique({
 			where: { username: targetUsername },
+			include: { Profile: true },
 		});
 
-		if (!targetProfile) {
+		if (!targetUser?.Profile) {
 			res.status(404).json({ message: "[Erreur] Profil cible non trouvé" });
 			return;
 		}
+
+		const targetProfile = targetUser.Profile;
 
 		// Check if user profile is not the target profile
 		if (currentUserProfile.id === targetProfile.id) {
@@ -725,15 +749,18 @@ export const unfollow = async (req: Request, res: Response) => {
 			return;
 		}
 
-		// Get the target user profle
-		const targetProfile = await prisma.profile.findUnique({
+		// Get the target user profile via User model
+		const targetUser = await prisma.user.findUnique({
 			where: { username: targetUsername },
+			include: { Profile: true },
 		});
 
-		if (!targetProfile) {
+		if (!targetUser?.Profile) {
 			res.status(404).json({ message: "[Erreur] Profil cible non trouvé" });
 			return;
 		}
+
+		const targetProfile = targetUser.Profile;
 
 		// Delete profile relation
 		await prisma.profile.update({
@@ -769,7 +796,9 @@ export const isFollowing = async (req: Request, res: Response) => {
 			select: {
 				id: true,
 				following: {
-					where: { username: targetUsername },
+					where: {
+						user: { username: targetUsername },
+					},
 					select: { id: true },
 				},
 			},

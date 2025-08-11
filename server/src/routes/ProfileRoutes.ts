@@ -2,7 +2,7 @@ import { Router } from "express";
 import authenticateToken from "../middleware/authenticateToken";
 import { validateSchema } from "../middleware/validateSchema";
 import upload, { handleMulterError } from "../middleware/multerUpload";
-import { formGeneralProfile, formInfoProfile } from "../lib/schema";
+import { formGeneralProfile, formInfoProfile } from "../lib/zod";
 import * as ProfileController from "../Controller/ProfileController";
 
 const router = Router();

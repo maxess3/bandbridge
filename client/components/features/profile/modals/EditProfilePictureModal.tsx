@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { ProfilePictureForm } from "@/components/features/profile/forms/ProfilePictureForm";
 import { UpdateProfilePictureForm } from "@/components/features/profile/forms/UpdateProfilePictureForm";
-import { formProfilePicture } from "@/lib/schema";
+import { formProfilePicture } from "@/lib/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/useProfile";
 import { PROFILE_QUERY_KEY } from "@/hooks/useProfile";

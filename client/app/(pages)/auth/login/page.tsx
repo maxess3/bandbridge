@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { formLoginSchema } from "@/lib/schema";
+import { formLoginSchema } from "@/lib/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

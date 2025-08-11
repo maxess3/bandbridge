@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
-import { formSignUpSchema } from "@/lib/schema";
+import { formSignUpSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
