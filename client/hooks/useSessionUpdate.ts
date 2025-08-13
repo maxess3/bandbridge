@@ -27,6 +27,7 @@ export function useSessionUpdate() {
 				firstName: string;
 				lastName: string;
 				username: string;
+				pseudonyme: string;
 				profilePictureKey?: string;
 			}>
 		) => {

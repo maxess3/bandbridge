@@ -17,6 +17,14 @@ export const instrumentSchema = z.object({
 /* EDIT PROFILE SCHEMA */
 
 export const formGeneralProfile = z.object({
+	pseudonyme: z
+		.string()
+		.min(1, "Le pseudonyme est requis")
+		.max(60, "Le pseudonyme ne doit pas dépasser 60 caractères")
+		.regex(
+			/^[a-zA-ZÀ-ÿ0-9\-' ]+$/,
+			"Le pseudonyme ne doit contenir que des lettres, chiffres, tirets et espaces"
+		),
 	country: z.enum(["France"], {
 		errorMap: () => ({
 			message: "L'application est disponible en france uniquement",
@@ -108,6 +116,7 @@ export const formInfoProfile = z.object({
 			message: "Merci de sélectionner une option",
 		}),
 	}),
+	isLookingForBand: z.boolean(),
 	youtube: z
 		.string()
 		.trim()

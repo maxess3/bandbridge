@@ -7,12 +7,27 @@ export function getProfileImageUrl(
 	profilePictureKey: string,
 	size: "thumbnail" | "small" | "medium" | "large"
 ) {
-	// Get the base key of the profile picture
-	const oldKey = profilePictureKey;
-	const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
+	// Early return si pas de clé
+	if (!profilePictureKey) return "";
 
-	// Return the profile picture url
-	return `${process.env.NEXT_PUBLIC_R2_URL}/${oldKeyBase}-${size}.webp`;
+	// Validation de l'URL de base
+	const baseUrl = process.env.NEXT_PUBLIC_R2_URL;
+	if (!baseUrl) {
+		console.warn("NEXT_PUBLIC_R2_URL is not defined");
+		return "";
+	}
+
+	try {
+		// Get the base key of the profile picture
+		const oldKey = profilePictureKey;
+		const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
+
+		// Return the profile picture url
+		return `${baseUrl}/${oldKeyBase}-${size}.webp`;
+	} catch (error) {
+		console.error("Error parsing profilePictureKey:", error);
+		return "";
+	}
 }
 
 export function getAgeFromTimestamp(timestamp: string): number {

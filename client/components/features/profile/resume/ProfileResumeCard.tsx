@@ -29,8 +29,7 @@ export const ProfileResumeCard = ({
 				<div className="space-y-6">
 					<ProfileHeader
 						isOwner={isOwner}
-						firstName={profile?.firstName}
-						lastName={profile?.lastName}
+						pseudonyme={profile?.pseudonyme}
 						username={profile?.username}
 						instruments={profile?.instruments}
 						genres={profile?.genres}
@@ -44,6 +43,7 @@ export const ProfileResumeCard = ({
 					<ProfileStatLinks
 						followers={profile?.followers}
 						following={profile?.following}
+						username={profile?.username}
 					/>
 				</div>
 			</div>

@@ -122,6 +122,7 @@ model User {
 
 model Profile {
   id                String             @id @default(uuid())
+  pseudonyme        String             @db.VarChar(60)
   followers         Profile[]          @relation("UserFollows")
   following         Profile[]          @relation("UserFollows")
   role              ProfileRole        @default(MUSICIAN)
@@ -135,6 +136,7 @@ model Profile {
   concertsPlayed    ConcertCount       @default(NOT_SPECIFIED)
   rehearsalsPerWeek RehearsalFrequency @default(NOT_SPECIFIED)
   practiceType      PracticeType       @default(NOT_SPECIFIED)
+  isLookingForBand  Boolean            @default(false)
   country           String?
   city              String?
   zipCode           String?

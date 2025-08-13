@@ -4,15 +4,13 @@ import { ProfileMusicGenres } from "@/components/features/profile/resume/Profile
 import { ProfileTopActions } from "@/components/features/profile/resume/ProfileTopActions";
 
 export const ProfileHeader = ({
-	firstName,
-	lastName,
+	pseudonyme,
 	username,
 	isOwner,
 	instruments,
 	genres,
 }: {
-	firstName?: string;
-	lastName?: string;
+	pseudonyme?: string;
 	username?: string;
 	isOwner: boolean;
 	instruments?: {
@@ -31,7 +29,7 @@ export const ProfileHeader = ({
 			<div>
 				<div className="text-2xl font-semibold">
 					<span className="inline-flex items-center gap-x-1 flex-wrap">
-						{firstName} {lastName}
+						{pseudonyme}
 						<RiVerifiedBadgeFill className="size-6" color="#4476ff" />
 					</span>
 				</div>

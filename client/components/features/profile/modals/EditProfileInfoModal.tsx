@@ -50,6 +50,7 @@ export function EditProfileInfoModal() {
 						concertsPlayed: profile?.concertsPlayed || "NOT_SPECIFIED",
 						rehearsalsPerWeek: profile?.rehearsalsPerWeek || "NOT_SPECIFIED",
 						practiceType: profile?.practiceType || "NOT_SPECIFIED",
+						isLookingForBand: profile?.isLookingForBand ?? false,
 						youtube: profile?.socialLinks.youtube || "",
 						instagram: profile?.socialLinks.instagram || "",
 						tiktok: profile?.socialLinks.tiktok || "",

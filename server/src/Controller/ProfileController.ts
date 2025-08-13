@@ -21,11 +21,13 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 					select: {
 						id: true,
 						userId: true,
+						pseudonyme: true,
 						role: true,
 						description: true,
 						concertsPlayed: true,
 						rehearsalsPerWeek: true,
 						practiceType: true,
+						isLookingForBand: true,
 						genres: true,
 						profilePictureKey: true,
 						lastActiveAt: true,
@@ -106,6 +108,7 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 			firstName: user.firstName,
 			lastName: user.lastName,
 			username: user.username,
+			pseudonyme: profile.pseudonyme,
 			birthDate: user.birthDate,
 			gender: user.gender,
 			country: profile.country,
@@ -116,7 +119,9 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 			concertsPlayed: profile.concertsPlayed,
 			rehearsalsPerWeek: profile.rehearsalsPerWeek,
 			practiceType: profile.practiceType,
+			isLookingForBand: profile.isLookingForBand,
 			genres: profile.genres,
+			instruments: profile.instruments,
 			profilePictureKey: profile.profilePictureKey,
 			lastActiveAt: profile.lastActiveAt,
 			createdAt: user.created_at,
@@ -166,11 +171,13 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 					select: {
 						id: true,
 						userId: true,
+						pseudonyme: true,
 						role: true,
 						description: true,
 						concertsPlayed: true,
 						rehearsalsPerWeek: true,
 						practiceType: true,
+						isLookingForBand: true,
 						genres: true,
 						profilePictureKey: true,
 						lastActiveAt: true,
@@ -251,6 +258,7 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 			firstName: user.firstName,
 			lastName: user.lastName,
 			username: user.username,
+			pseudonyme: profile.pseudonyme,
 			birthDate: user.birthDate,
 			gender: user.gender,
 			country: profile.country,
@@ -261,7 +269,9 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 			concertsPlayed: profile.concertsPlayed,
 			rehearsalsPerWeek: profile.rehearsalsPerWeek,
 			practiceType: profile.practiceType,
+			isLookingForBand: profile.isLookingForBand,
 			genres: profile.genres,
+			instruments: profile.instruments,
 			profilePictureKey: profile.profilePictureKey,
 			lastActiveAt: profile.lastActiveAt,
 			createdAt: user.created_at,
@@ -351,6 +361,7 @@ export const updateGeneralProfileOwner = async (
 		await prisma.profile.update({
 			where: { userId: userId },
 			data: {
+				pseudonyme: req.body.pseudonyme,
 				country: req.body.country,
 				zipCode: req.body.zipcode,
 				city: req.body.city,
@@ -361,6 +372,7 @@ export const updateGeneralProfileOwner = async (
 		const updatedProfile = await prisma.profile.findUnique({
 			where: { userId: userId },
 			select: {
+				pseudonyme: true,
 				country: true,
 				zipCode: true,
 				city: true,
@@ -386,6 +398,7 @@ export const updateGeneralProfileOwner = async (
 		res.status(200).json({
 			message: "Votre profil a bien été mis à jour",
 			user: {
+				pseudonyme: updatedProfile?.pseudonyme,
 				country: updatedProfile?.country,
 				zipCode: updatedProfile?.zipCode,
 				city: updatedProfile?.city,
@@ -427,6 +440,7 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
 				concertsPlayed: req.body.concertsPlayed || "NOT_SPECIFIED",
 				rehearsalsPerWeek: req.body.rehearsalsPerWeek || "NOT_SPECIFIED",
 				practiceType: req.body.practiceType || "NOT_SPECIFIED",
+				isLookingForBand: req.body.isLookingForBand ?? false,
 			},
 		});
 
@@ -473,6 +487,7 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
 				concertsPlayed: true,
 				rehearsalsPerWeek: true,
 				practiceType: true,
+				isLookingForBand: true,
 			},
 		});
 
@@ -865,6 +880,140 @@ export const getMusicGenres = async (req: Request, res: Response) => {
 		console.error("Error fetching music genres:", error);
 		res.status(500).json({
 			message: "[Erreur] Impossible de récupérer les genres musicaux",
+		});
+	}
+};
+
+export const getFollowersList = async (req: Request, res: Response) => {
+	try {
+		const { username } = req.params;
+		const { limit = 50, cursor } = req.query;
+
+		// Validation des paramètres
+		const LIMIT = Math.min(Number(limit), 100); // Maximum 100 profils par requête
+
+		// Vérifier que l'utilisateur existe
+		const user = await prisma.user.findUnique({
+			where: { username: username as string },
+			select: { id: true, Profile: { select: { id: true } } },
+		});
+
+		if (!user || !user.Profile) {
+			res.status(404).json({ message: "Profil introuvable" });
+			return;
+		}
+
+		// Construire la clause where avec cursor si fourni
+		const whereClause = {
+			following: {
+				some: {
+					id: user.Profile.id,
+				},
+			},
+			...(cursor && { id: { gt: cursor as string } }),
+		};
+
+		// Récupérer les followers avec +1 pour savoir s'il y en a plus
+		const followers = await prisma.profile.findMany({
+			where: whereClause,
+			take: LIMIT + 1,
+			orderBy: { id: "asc" },
+			select: {
+				id: true,
+				pseudonyme: true,
+				profilePictureKey: true,
+				lastActiveAt: true,
+				user: {
+					select: {
+						username: true,
+						firstName: true,
+						lastName: true,
+					},
+				},
+			},
+		});
+
+		// Déterminer s'il y a plus de profils et préparer la réponse
+		const hasMore = followers.length > LIMIT;
+		const result = hasMore ? followers.slice(0, LIMIT) : followers;
+		const nextCursor = hasMore ? result[result.length - 1]?.id : null;
+
+		res.status(200).json({
+			followers: result,
+			nextCursor,
+			hasMore,
+		});
+	} catch (error) {
+		console.error("Error fetching followers:", error);
+		res.status(500).json({
+			message: "[Erreur] Impossible de récupérer la liste des followers",
+		});
+	}
+};
+
+export const getFollowingList = async (req: Request, res: Response) => {
+	try {
+		const { username } = req.params;
+		const { limit = 50, cursor } = req.query;
+
+		// Validation des paramètres
+		const LIMIT = Math.min(Number(limit), 100); // Maximum 100 profils par requête
+
+		// Vérifier que l'utilisateur existe
+		const user = await prisma.user.findUnique({
+			where: { username: username as string },
+			select: { id: true, Profile: { select: { id: true } } },
+		});
+
+		if (!user || !user.Profile) {
+			res.status(404).json({ message: "Profil introuvable" });
+			return;
+		}
+
+		// Construire la clause where avec cursor si fourni
+		const whereClause = {
+			followers: {
+				some: {
+					id: user.Profile.id,
+				},
+			},
+			...(cursor && { id: { gt: cursor as string } }),
+		};
+
+		// Récupérer les profils suivis avec +1 pour savoir s'il y en a plus
+		const following = await prisma.profile.findMany({
+			where: whereClause,
+			take: LIMIT + 1,
+			orderBy: { id: "asc" },
+			select: {
+				id: true,
+				pseudonyme: true,
+				profilePictureKey: true,
+				lastActiveAt: true,
+				user: {
+					select: {
+						username: true,
+						firstName: true,
+						lastName: true,
+					},
+				},
+			},
+		});
+
+		// Déterminer s'il y a plus de profils et préparer la réponse
+		const hasMore = following.length > LIMIT;
+		const result = hasMore ? following.slice(0, LIMIT) : following;
+		const nextCursor = hasMore ? result[result.length - 1]?.id : null;
+
+		res.status(200).json({
+			following: result,
+			nextCursor,
+			hasMore,
+		});
+	} catch (error) {
+		console.error("Error fetching following:", error);
+		res.status(500).json({
+			message: "[Erreur] Impossible de récupérer la liste des profils suivis",
 		});
 	}
 };

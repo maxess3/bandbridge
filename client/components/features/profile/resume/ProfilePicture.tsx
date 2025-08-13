@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DefaultProfilePicture } from "@/components/features/profile/icons/DefaultProfilePicture";
 import { EditProfilePictureModal } from "@/components/features/profile/modals/EditProfilePictureModal";
 import { useFocusManager } from "@/contexts/FocusManagerContext";
+import { getProfileImageUrl } from "@/utils/utils";
 
 export const ProfilePicture = ({
 	isOwner,
@@ -13,14 +14,13 @@ export const ProfilePicture = ({
 	alt,
 }: {
 	isOwner: boolean;
-	src: string;
+	src: string | null;
 	alt: string;
 }) => {
 	const { captureFocus } = useFocusManager();
 	const { data: session } = useSession();
 	const [isModalOpen, setIsModalOpen] = useState(false);
-
-	const imageURL = process.env.NEXT_PUBLIC_R2_URL + "/" + src;
+	const imageURL = getProfileImageUrl(src ?? "", "medium");
 
 	const handleImageClick = () => {
 		captureFocus();

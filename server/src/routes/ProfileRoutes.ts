@@ -61,4 +61,8 @@ router.get("/genres", ProfileController.getMusicGenres);
 
 router.get("/:username", ProfileController.getProfilePublic);
 
+router.get("/:username/followers", ProfileController.getFollowersList);
+
+router.get("/:username/following", ProfileController.getFollowingList);
+
 export default router;

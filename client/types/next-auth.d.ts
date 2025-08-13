@@ -9,6 +9,7 @@ declare module "next-auth" {
 			firstName: string;
 			lastName: string;
 			username: string;
+			pseudonyme: string;
 			profilePictureKey?: string;
 		};
 		backendTokens: {
@@ -29,6 +30,7 @@ declare module "next-auth" {
 			firstName: string;
 			lastName: string;
 			username: string;
+			pseudonyme: string;
 			profilePictureKey?: string;
 		};
 	}
@@ -44,6 +46,7 @@ declare module "next-auth/jwt" {
 			firstName: string;
 			lastName: string;
 			username: string;
+			pseudonyme: string;
 			profilePictureKey?: string;
 		};
 		backendTokens: {

@@ -41,6 +41,7 @@ export const signup = async (req: Request, res: Response) => {
 			await prisma.profile.create({
 				data: {
 					userId: user.id,
+					pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
 				},
 			});
 		});
@@ -80,6 +81,7 @@ export const login = async (req: Request, res: Response) => {
 	const userFirstName = user.firstName;
 	const userLastName = user.lastName;
 	const username = user.username;
+	const pseudonyme = user.Profile?.pseudonyme;
 	const profilePictureKey = user.Profile?.profilePictureKey;
 
 	const { backendTokens } = createAuthTokens(userId);
@@ -90,6 +92,7 @@ export const login = async (req: Request, res: Response) => {
 		firstName: userFirstName,
 		lastName: userLastName,
 		username,
+		pseudonyme,
 		profilePictureKey,
 	};
 
@@ -128,6 +131,7 @@ export const google = async (req: Request, res: Response) => {
 				await prisma.profile.create({
 					data: {
 						userId: newUser.id,
+						pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
 					},
 				});
 
@@ -145,6 +149,7 @@ export const google = async (req: Request, res: Response) => {
 		const userFirstName = result.firstName;
 		const userLastName = result.lastName;
 		const username = result.username;
+		const pseudonyme = result.Profile?.pseudonyme;
 		const profilePictureKey = result.Profile?.profilePictureKey;
 
 		const { backendTokens } = createAuthTokens(userId);
@@ -155,6 +160,7 @@ export const google = async (req: Request, res: Response) => {
 			firstName: userFirstName,
 			lastName: userLastName,
 			username,
+			pseudonyme,
 			profilePictureKey,
 		};
 

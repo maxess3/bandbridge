@@ -9,6 +9,7 @@ import { RadioGroup } from "@/components/ui/radio-group";
 import { Radio } from "@/components/shared/buttons/Radio";
 import { FormInput } from "@/components/shared/forms/FormInput";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import {
 	Tooltip,
 	TooltipContent,
@@ -404,6 +405,30 @@ export const UpdateProfileInfoForm = () => {
 							{errors.practiceType?.message?.toString()}
 						</p>
 					)}
+				</div>
+				<div className="space-y-6">
+					<h4 className="font-semibold text-xl">Recherche de groupe</h4>
+					<div className="space-x-3 flex items-center">
+						<Label htmlFor="isLookingForBand" className="opacity-80 text-sm">
+							Activer la recherche pour rejoindre un groupe
+						</Label>
+						<Controller
+							name="isLookingForBand"
+							control={control}
+							render={({ field }) => (
+								<Switch
+									id="isLookingForBand"
+									onCheckedChange={field.onChange}
+									checked={field.value}
+								/>
+							)}
+						/>
+						{errors.isLookingForBand && (
+							<p className="text-red-500 text-sm">
+								{errors.isLookingForBand?.message?.toString()}
+							</p>
+						)}
+					</div>
 				</div>
 			</div>
 

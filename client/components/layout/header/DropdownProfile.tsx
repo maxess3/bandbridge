@@ -20,16 +20,20 @@ import { FiMoon } from "react-icons/fi";
 import { LuLogOut } from "react-icons/lu";
 import { LuSettings } from "react-icons/lu";
 import { RiBugLine } from "react-icons/ri";
+import { LuPencil } from "react-icons/lu";
+import { LuUser } from "react-icons/lu";
 import { DefaultProfilePicture } from "@/components/features/profile/icons/DefaultProfilePicture";
 
 export const DropdownProfile = () => {
 	const router = useRouter();
-
 	const { data: session } = useSession();
-
 	const { resolvedTheme, setTheme } = useTheme();
 	const [isChecked, setChecked] = useState(
 		resolvedTheme === "light" ? false : true
+	);
+	const imageURL = getProfileImageUrl(
+		session?.user?.profilePictureKey ?? "",
+		"thumbnail"
 	);
 
 	function handleClick(e: React.MouseEvent) {
@@ -47,13 +51,16 @@ export const DropdownProfile = () => {
 	return (
 		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger asChild>
-				<button>
-					<Avatar className="cursor-pointer">
+				<button
+					className="flex items-center gap-x-2.5 w-44 cursor-pointer bg-transparent text-left rounded-md"
+					aria-label={`Menu profil de ${
+						session?.user.pseudonyme || "utilisateur"
+					}`}
+					type="button"
+				>
+					<Avatar>
 						<AvatarImage
-							src={getProfileImageUrl(
-								session?.user.profilePictureKey || "",
-								"thumbnail"
-							)}
+							src={imageURL}
 							alt="Profile picture"
 							className="rounded-full object-cover pointer-events-none"
 							sizes="36px"
@@ -62,21 +69,24 @@ export const DropdownProfile = () => {
 							<DefaultProfilePicture className="mt-7 mr-1 w-[50px] h-[50px] text-background" />
 						</AvatarFallback>
 					</Avatar>
+					<div className="flex flex-col min-w-0">
+						<span className="text-base font-semibold truncate">
+							{session?.user.pseudonyme}
+						</span>
+						<span className="text-xs opacity-80 truncate font-medium">
+							{session?.user.email}
+						</span>
+					</div>
 				</button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-60 mt-1">
-				<DropdownMenuGroup>
-					<DropdownMenuItem
-						onClick={() => router.push(`/${session?.user.username}`)}
-					>
+			<DropdownMenuContent className="w-60 mt-4">
+				<DropdownMenuGroup className="space-y-1">
+					<div className="p-2">
 						<div className="w-full space-y-3">
-							<div className="flex items-center space-x-3">
-								<Avatar className="cursor-pointer">
+							<div className="flex items-center space-x-2.5">
+								<Avatar>
 									<AvatarImage
-										src={getProfileImageUrl(
-											session?.user.profilePictureKey || "",
-											"thumbnail"
-										)}
+										src={imageURL}
 										alt="Profile picture"
 										className="rounded-full object-cover pointer-events-none"
 										sizes="36px"
@@ -85,17 +95,29 @@ export const DropdownProfile = () => {
 										<DefaultProfilePicture className="mt-7 mr-1 !w-[50px] !h-[50px] text-background" />
 									</AvatarFallback>
 								</Avatar>
-								<div className="flex flex-col ml-0.5">
-									<span className="text-base font-semibold">
-										{session?.user.firstName}
-										{session?.user.lastName}
+								<div className="flex flex-col ml-0.5 min-w-0 flex-1">
+									<span className="text-base font-semibold truncate">
+										{session?.user.pseudonyme}
+									</span>
+									<span className="text-xs opacity-80 truncate font-medium">
+										{session?.user.email}
 									</span>
 								</div>
 							</div>
-							<span className="w-full border flex rounded-full justify-center py-1 font-medium">
-								Voir mon profil
-							</span>
 						</div>
+					</div>
+					<DropdownMenuSeparator className="bg-border" />
+					<DropdownMenuItem
+						onClick={() => router.push(`/${session?.user.username}`)}
+					>
+						<LuUser className="!size-6" />
+						Voir le profil
+					</DropdownMenuItem>
+					<DropdownMenuItem
+						onClick={() => router.push(`/${session?.user.username}`)}
+					>
+						<LuPencil className="!size-5" />
+						Éditer le profil
 					</DropdownMenuItem>
 					<DropdownMenuSeparator className="bg-border" />
 					<DropdownMenuItem
@@ -103,22 +125,22 @@ export const DropdownProfile = () => {
 						onClick={(e) => handleClick(e)}
 					>
 						<div className="flex gap-x-2.5 items-center">
-							<FiMoon style={{ width: "1.25em", height: "1.25em" }} />
+							<FiMoon className="!size-5" />
 							Mode sombre
 						</div>
 						<Switch checked={isChecked} />
 					</DropdownMenuItem>
-					<DropdownMenuItem onClick={() => router.push("/me")}>
-						<RiBugLine style={{ width: "1.4em", height: "1.4em" }} />
+					<DropdownMenuItem onClick={() => router.push("/")}>
+						<RiBugLine className="!size-5" />
 						Signaler un bug
 					</DropdownMenuItem>
 					<DropdownMenuItem onClick={() => router.push("/settings")}>
-						<LuSettings style={{ width: "1.35em", height: "1.35em" }} />
+						<LuSettings className="!size-5" />
 						Paramètres
 					</DropdownMenuItem>
 					<DropdownMenuSeparator className="bg-border" />
 					<DropdownMenuItem onClick={() => signOut()}>
-						<LuLogOut style={{ width: "1.25em", height: "1.25em" }} />
+						<LuLogOut className="!size-5" />
 						Se déconnecter
 					</DropdownMenuItem>
 				</DropdownMenuGroup>

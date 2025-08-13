@@ -13,8 +13,11 @@ import { Plus, X, Info } from "lucide-react";
 import { translateInstrument } from "@/utils/translations/instrumentTranslations";
 import { translateGenre } from "@/utils/translations/genreTranslations";
 import { FormSelect } from "@/components/shared/forms/FormSelect";
+import { RadioGroup } from "@/components/ui/radio-group";
+import { Radio } from "@/components/shared/buttons/Radio";
 
 type FormValues = {
+	pseudonyme: string;
 	instruments: Array<{
 		instrumentTypeId: string;
 		level: string | null;
@@ -36,13 +39,19 @@ interface GroupedInstruments {
 	[key: string]: InstrumentType[];
 }
 
-interface SelectedInstrument {
-	id: string;
-	name: string;
-	level: "BEGINNER" | "INTERMEDIATE" | "ADVANCED" | "EXPERT" | null;
+interface UpdateProfileGeneralFormProps {
+	instrumentTypes: GroupedInstruments;
+	musicGenres: string[];
+	isLoadingInstruments: boolean;
+	isLoadingGenres: boolean;
 }
 
-export const UpdateProfileGeneralForm = () => {
+export const UpdateProfileGeneralForm = ({
+	instrumentTypes,
+	musicGenres,
+	isLoadingInstruments,
+	isLoadingGenres,
+}: UpdateProfileGeneralFormProps) => {
 	const {
 		control,
 		register,
@@ -54,33 +63,22 @@ export const UpdateProfileGeneralForm = () => {
 	const zipcode = watch("zipcode");
 	const debouncedZipcode = useDebounce(zipcode || "", 500);
 
-	// Récupérer les instruments et genres depuis le formulaire
-	const formInstruments = watch("instruments");
-	const formGenres = watch("genres");
+	// Récupérer les instruments et genres directement depuis le formulaire
+	const formInstruments = watch("instruments") || [];
+	const formGenres = watch("genres") || [];
 
-	// État local pour gérer les instruments sélectionnés
-	const [selectedInstruments, setSelectedInstruments] = useState<
-		SelectedInstrument[]
-	>([]);
+	// État local simplifié pour l'interface utilisateur
 	const [isAddingInstrument, setIsAddingInstrument] = useState(false);
-	const [tempInstrumentId, setTempInstrumentId] = useState("");
-	const [isInitialized, setIsInitialized] = useState(false);
-
-	// État local pour gérer les genres sélectionnés
-	const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 	const [isAddingGenre, setIsAddingGenre] = useState(false);
-	const [tempGenreId, setTempGenreId] = useState("");
 
 	// Ref pour l'input d'autocomplétion
 	const instrumentInputRef = useRef<HTMLInputElement>(null);
 	const addInstrumentButtonRef = useRef<HTMLButtonElement>(null);
-	// Ref pour la div invisible d'accessibilité
 	const accessibilityFocusRef = useRef<HTMLDivElement>(null);
 
 	// Ref pour l'input d'autocomplétion des genres
 	const genreInputRef = useRef<HTMLInputElement>(null);
 	const addGenreButtonRef = useRef<HTMLButtonElement>(null);
-	// Ref pour la div invisible d'accessibilité des genres
 	const accessibilityGenreFocusRef = useRef<HTMLDivElement>(null);
 
 	const {
@@ -102,32 +100,8 @@ export const UpdateProfileGeneralForm = () => {
 		enabled: debouncedZipcode.length === 5,
 	});
 
-	const { data: instrumentTypes, isLoading: isLoadingInstruments } =
-		useQuery<GroupedInstruments>({
-			queryKey: ["instrumentTypes"],
-			queryFn: async () => {
-				const response = await fetch(
-					`${process.env.NEXT_PUBLIC_API_URL}/profile/instruments`
-				);
-				if (!response.ok) {
-					throw new Error("Impossible de récupérer les instruments");
-				}
-				return response.json();
-			},
-		});
-
-	const { data: musicGenres, isLoading: isLoadingGenres } = useQuery<string[]>({
-		queryKey: ["musicGenres"],
-		queryFn: async () => {
-			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/profile/genres`
-			);
-			if (!response.ok) {
-				throw new Error("Impossible de récupérer les genres musicaux");
-			}
-			return response.json();
-		},
-	});
+	// SUPPRIMER les queries pour instrumentTypes et musicGenres
+	// Utiliser directement les props passées
 
 	useEffect(() => {
 		if (debouncedZipcode !== zipcode) {
@@ -135,119 +109,23 @@ export const UpdateProfileGeneralForm = () => {
 		}
 	}, [debouncedZipcode, zipcode, setValue]);
 
-	// Synchroniser les instruments sélectionnés avec le formulaire
-	useEffect(() => {
-		// Ne synchroniser que si l'initialisation est terminée
-		if (!isInitialized) {
-			return;
-		}
+	// Fonction utilitaire pour obtenir le nom d'un instrument
+	const getInstrumentName = (instrumentId: string): string => {
+		if (!instrumentTypes) return "";
 
-		const instruments = selectedInstruments.map((inst, index) => ({
-			instrumentTypeId: inst.id,
-			level: inst.level,
-			order: index,
-		}));
-
-		// Comparer avec les valeurs actuelles avant de setValue
-		const currentInstruments = watch("instruments");
-		if (JSON.stringify(instruments) !== JSON.stringify(currentInstruments)) {
-			setValue("instruments", instruments, {
-				shouldDirty: true,
-			});
-		}
-	}, [selectedInstruments, setValue, watch, isInitialized]);
-
-	// Synchroniser les genres sélectionnés avec le formulaire
-	useEffect(() => {
-		// Ne synchroniser que si l'initialisation est terminée
-		if (!isInitialized) {
-			return;
-		}
-
-		// Comparer avec les valeurs actuelles avant de setValue
-		const currentGenres = watch("genres");
-		if (JSON.stringify(selectedGenres) !== JSON.stringify(currentGenres)) {
-			setValue("genres", selectedGenres, {
-				shouldDirty: true,
-			});
-		}
-	}, [selectedGenres, setValue, watch, isInitialized]);
-
-	// Initialiser les instruments et genres avec les valeurs par défaut du formulaire
-	useEffect(() => {
-		// Si instrumentTypes ou musicGenres ne sont pas encore chargés, on attend
-		if (!instrumentTypes || !musicGenres) {
-			return;
-		}
-
-		// Si on n'est pas encore initialisé
-		if (!isInitialized) {
-			// Si on a des instruments existants, les initialiser
-			if (formInstruments && formInstruments.length > 0) {
-				const initializedInstruments: SelectedInstrument[] =
-					formInstruments.map(
-						(formInst: {
-							instrumentTypeId: string;
-							level: string | null;
-							order?: number;
-						}) => {
-							// Trouver le nom de l'instrument
-							let instrumentName = "";
-							for (const category in instrumentTypes) {
-								const instrument = instrumentTypes[category].find(
-									(inst) => inst.id === formInst.instrumentTypeId
-								);
-								if (instrument) {
-									instrumentName = translateInstrument(instrument.name);
-									break;
-								}
-							}
-
-							// Valider et typer le niveau
-							const validLevels = [
-								"BEGINNER",
-								"INTERMEDIATE",
-								"ADVANCED",
-								"EXPERT",
-							] as const;
-							const level =
-								formInst.level &&
-								validLevels.includes(
-									formInst.level as (typeof validLevels)[number]
-								)
-									? (formInst.level as (typeof validLevels)[number])
-									: null;
-
-							return {
-								id: formInst.instrumentTypeId,
-								name: instrumentName,
-								level,
-							};
-						}
-					);
-
-				setSelectedInstruments(initializedInstruments);
+		for (const category in instrumentTypes) {
+			const instrument = instrumentTypes[category].find(
+				(inst) => inst.id === instrumentId
+			);
+			if (instrument) {
+				return translateInstrument(instrument.name);
 			}
-
-			// Si on a des genres existants, les initialiser
-			if (formGenres && formGenres.length > 0) {
-				setSelectedGenres(formGenres);
-			}
-
-			// Dans tous les cas, marquer comme initialisé
-			setIsInitialized(true);
 		}
-	}, [
-		formInstruments,
-		formGenres,
-		instrumentTypes,
-		musicGenres,
-		isInitialized,
-	]);
+		return "";
+	};
 
 	const handleAddInstrument = () => {
 		setIsAddingInstrument(true);
-		setTempInstrumentId("");
 
 		// Focus sur l'input après le rendu
 		requestAnimationFrame(() => {
@@ -256,30 +134,28 @@ export const UpdateProfileGeneralForm = () => {
 	};
 
 	const handleInstrumentSelect = (instrumentId: string) => {
-		if (!instrumentTypes) return;
+		// Vérifier que l'instrument n'est pas déjà présent
+		const isAlreadyAdded = formInstruments.some(
+			(inst) => inst.instrumentTypeId === instrumentId
+		);
 
-		// Trouver le nom de l'instrument
-		let instrumentName = "";
-		for (const category in instrumentTypes) {
-			const instrument = instrumentTypes[category].find(
-				(inst) => inst.id === instrumentId
-			);
-			if (instrument) {
-				instrumentName = translateInstrument(instrument.name);
-				break;
-			}
+		if (isAlreadyAdded) {
+			console.warn("Cet instrument est déjà ajouté");
+			return;
 		}
 
-		// Ajouter directement l'instrument avec le niveau par défaut
-		const newInstrument: SelectedInstrument = {
-			id: instrumentId,
-			name: instrumentName,
+		// Ajouter l'instrument au formulaire
+		const newInstrument = {
+			instrumentTypeId: instrumentId,
 			level: null,
+			order: formInstruments.length,
 		};
 
-		setSelectedInstruments([...selectedInstruments, newInstrument]);
+		setValue("instruments", [...formInstruments, newInstrument], {
+			shouldDirty: true,
+		});
+
 		setIsAddingInstrument(false);
-		setTempInstrumentId("");
 
 		// Focus sur le bouton "Ajouter un instrument" après le rendu
 		requestAnimationFrame(() => {
@@ -288,10 +164,17 @@ export const UpdateProfileGeneralForm = () => {
 	};
 
 	const handleRemoveInstrument = (index: number) => {
-		const updatedInstruments = selectedInstruments.filter(
-			(_, i) => i !== index
-		);
-		setSelectedInstruments(updatedInstruments);
+		const updatedInstruments = formInstruments.filter((_, i) => i !== index);
+
+		// Mettre à jour l'ordre des instruments restants
+		const reorderedInstruments = updatedInstruments.map((inst, newIndex) => ({
+			...inst,
+			order: newIndex,
+		}));
+
+		setValue("instruments", reorderedInstruments, {
+			shouldDirty: true,
+		});
 
 		// Rediriger le focus vers la div invisible après la suppression
 		requestAnimationFrame(() => {
@@ -303,16 +186,18 @@ export const UpdateProfileGeneralForm = () => {
 		index: number,
 		level: "BEGINNER" | "INTERMEDIATE" | "ADVANCED" | "EXPERT" | null
 	) => {
-		const updatedInstruments = selectedInstruments.map((inst, i) =>
+		const updatedInstruments = formInstruments.map((inst, i) =>
 			i === index ? { ...inst, level } : inst
 		);
-		setSelectedInstruments(updatedInstruments);
+
+		setValue("instruments", updatedInstruments, {
+			shouldDirty: true,
+		});
 	};
 
 	// Gestionnaires pour les genres musicaux
 	const handleAddGenre = () => {
 		setIsAddingGenre(true);
-		setTempGenreId("");
 
 		// Focus sur l'input après le rendu
 		requestAnimationFrame(() => {
@@ -321,10 +206,20 @@ export const UpdateProfileGeneralForm = () => {
 	};
 
 	const handleGenreSelect = (genreId: string) => {
-		// Ajouter directement le genre
-		setSelectedGenres([...selectedGenres, genreId]);
+		// Vérifier que le genre n'est pas déjà présent
+		const isAlreadyAdded = formGenres.includes(genreId);
+
+		if (isAlreadyAdded) {
+			console.warn("Ce genre est déjà ajouté");
+			return;
+		}
+
+		// Ajouter le genre au formulaire
+		setValue("genres", [...formGenres, genreId], {
+			shouldDirty: true,
+		});
+
 		setIsAddingGenre(false);
-		setTempGenreId("");
 
 		// Focus sur le bouton "Ajouter un genre" après le rendu
 		requestAnimationFrame(() => {
@@ -333,8 +228,11 @@ export const UpdateProfileGeneralForm = () => {
 	};
 
 	const handleRemoveGenre = (index: number) => {
-		const updatedGenres = selectedGenres.filter((_, i) => i !== index);
-		setSelectedGenres(updatedGenres);
+		const updatedGenres = formGenres.filter((_, i) => i !== index);
+
+		setValue("genres", updatedGenres, {
+			shouldDirty: true,
+		});
 
 		// Rediriger le focus vers la div invisible après la suppression
 		requestAnimationFrame(() => {
@@ -345,7 +243,25 @@ export const UpdateProfileGeneralForm = () => {
 	return (
 		<div className="space-y-6 pb-16">
 			<div className="space-y-1">
-				<h4 className="font-semibold text-2xl mb-2">Profil musical</h4>
+				<div className="space-y-2">
+					<Label htmlFor="pseudonyme" className="opacity-80 text-sm">
+						Pseudonyme*
+					</Label>
+					<FormInput
+						id="pseudonyme"
+						{...register("pseudonyme")}
+						placeholder="Votre nom d'artiste"
+						className={`${errors.pseudonyme && "border-red-500"}`}
+					/>
+					{errors.pseudonyme && (
+						<p className="text-red-500 text-sm">
+							{errors.pseudonyme?.message?.toString()}
+						</p>
+					)}
+				</div>
+			</div>
+
+			<div className="space-y-1">
 				<div className="space-y-6">
 					<div className="space-y-3">
 						<div>
@@ -358,9 +274,9 @@ export const UpdateProfileGeneralForm = () => {
 						</div>
 						<div>
 							{/* Instruments sélectionnés */}
-							{selectedInstruments.map((instrument, index) => (
+							{formInstruments.map((instrument, index) => (
 								<div
-									key={`${instrument.id}-${index}`}
+									key={`${instrument.instrumentTypeId}-${index}`}
 									className="flex items-center justify-between gap-3"
 								>
 									<Button
@@ -369,17 +285,19 @@ export const UpdateProfileGeneralForm = () => {
 										size="sm"
 										onClick={() => handleRemoveInstrument(index)}
 										className="text-muted-foreground hover:text-destructive rounded-full w-8 h-8"
-										aria-label={`Supprimer ${instrument.name}`}
+										aria-label={`Supprimer ${getInstrumentName(
+											instrument.instrumentTypeId
+										)}`}
 									>
 										<X className="!size-5" />
 									</Button>
 									<div
 										className={`flex justify-between items-center w-full ${
-											index < selectedInstruments.length - 1 ? "border-b" : ""
+											index < formInstruments.length - 1 ? "border-b" : ""
 										}`}
 									>
 										<div className="font-semibold h-full py-6">
-											{instrument.name}
+											{getInstrumentName(instrument.instrumentTypeId)}
 										</div>
 										<div className="flex items-center gap-2">
 											<FormSelect
@@ -415,13 +333,13 @@ export const UpdateProfileGeneralForm = () => {
 								<div>
 									<InstrumentAutocomplete
 										ref={instrumentInputRef}
-										value={tempInstrumentId}
+										value=""
 										onValueChange={handleInstrumentSelect}
 										instrumentTypes={instrumentTypes || {}}
-										isLoading={isLoadingInstruments}
+										isLoading={isLoadingInstruments} // Vrai état de loading
 										placeholder="Rechercher un instrument..."
-										excludedInstruments={selectedInstruments.map(
-											(inst) => inst.id
+										excludedInstruments={formInstruments.map(
+											(inst) => inst.instrumentTypeId
 										)}
 									/>
 								</div>
@@ -435,7 +353,7 @@ export const UpdateProfileGeneralForm = () => {
 										className="sr-only"
 									/>
 
-									{selectedInstruments.length >= 10 && (
+									{formInstruments.length >= 10 && (
 										<p className="text-sm text-amber-600 rounded-md flex items-center gap-1.5">
 											<Info className="!size-4" />
 											Vous avez atteint le maximum de 10 instruments.
@@ -460,8 +378,8 @@ export const UpdateProfileGeneralForm = () => {
 											}
 										}}
 										disabled={
-											isLoadingInstruments || selectedInstruments.length >= 10
-										}
+											isLoadingInstruments || formInstruments.length >= 10
+										} // Vrai état de loading
 										className="rounded-md"
 									>
 										<Plus className="!size-5" />
@@ -491,7 +409,7 @@ export const UpdateProfileGeneralForm = () => {
 						</div>
 						<div>
 							{/* Genres sélectionnés */}
-							{selectedGenres.map((genre, index) => (
+							{formGenres.map((genre, index) => (
 								<div
 									key={`${genre}-${index}`}
 									className="flex items-center justify-between gap-3"
@@ -508,7 +426,7 @@ export const UpdateProfileGeneralForm = () => {
 									</Button>
 									<div
 										className={`flex justify-between items-center w-full ${
-											index < selectedGenres.length - 1 ? "border-b" : ""
+											index < formGenres.length - 1 ? "border-b" : ""
 										}`}
 									>
 										<div className="font-semibold h-full py-6">
@@ -523,12 +441,12 @@ export const UpdateProfileGeneralForm = () => {
 								<div>
 									<GenreAutocomplete
 										ref={genreInputRef}
-										value={tempGenreId}
+										value=""
 										onValueChange={handleGenreSelect}
 										genres={musicGenres || []}
-										isLoading={isLoadingGenres}
+										isLoading={isLoadingGenres} // Vrai état de loading
 										placeholder="Rechercher un genre..."
-										excludedGenres={selectedGenres}
+										excludedGenres={formGenres}
 									/>
 								</div>
 							) : (
@@ -541,7 +459,7 @@ export const UpdateProfileGeneralForm = () => {
 										className="sr-only"
 									/>
 
-									{selectedGenres.length >= 10 && (
+									{formGenres.length >= 10 && (
 										<p className="text-sm text-amber-600 rounded-md flex items-center gap-1.5">
 											<Info className="!size-4" />
 											Vous avez atteint le maximum de 10 genres.
@@ -565,7 +483,7 @@ export const UpdateProfileGeneralForm = () => {
 												e.preventDefault();
 											}
 										}}
-										disabled={isLoadingGenres || selectedGenres.length >= 10}
+										disabled={isLoadingGenres || formGenres.length >= 10} // Vrai état de loading
 										className="rounded-md"
 									>
 										<Plus className="!size-5" />
@@ -585,90 +503,80 @@ export const UpdateProfileGeneralForm = () => {
 
 					<div className="space-y-1">
 						<h4 className="font-semibold text-xl mb-2">Localisation</h4>
-						<div className="space-y-1">
-							<Label htmlFor="country" className="opacity-80 text-sm">
-								Pays
-							</Label>
-							<Controller
-								name="country"
-								control={control}
-								render={({ field }) => (
-									<div className="flex space-x-0.5">
-										<input
-											type="radio"
-											id="france"
-											value="France"
-											checked={field.value === "France"}
-											onChange={(e) => field.onChange(e.target.value)}
-											className="sr-only"
-										/>
-										<label
-											htmlFor="france"
-											className={`px-3 py-2 text-sm rounded-md cursor-pointer transition-colors ${
-												field.value === "France"
-													? "bg-primary text-primary-foreground"
-													: "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-											}`}
+						<div className="space-y-4">
+							<div className="space-y-2">
+								<Label htmlFor="country" className="opacity-80 text-sm">
+									Pays
+								</Label>
+								<Controller
+									name="country"
+									control={control}
+									render={({ field }) => (
+										<RadioGroup
+											{...field}
+											onValueChange={field.onChange}
+											value={field.value}
+											className="flex space-x-0.5"
 										>
-											France
-										</label>
-									</div>
+											<Radio title="France" id="france" value="France" />
+										</RadioGroup>
+									)}
+								/>
+								{errors.country && (
+									<p className="text-red-500 text-sm">
+										{errors.country?.message?.toString()}
+									</p>
 								)}
-							/>
-							{errors.country && (
-								<p className="text-red-500 text-sm">
-									{errors.country?.message?.toString()}
-								</p>
-							)}
-						</div>
-						<div className="space-y-1">
-							<Label htmlFor="zipcode" className="opacity-80 text-sm">
-								Code Postal*
-							</Label>
-							<FormInput
-								id="zipcode"
-								{...register("zipcode")}
-								className={`${errors.zipcode && "border-red-500"}`}
-							/>
-							{errors.zipcode && (
-								<p className="text-red-500 text-sm">
-									{errors.zipcode?.message?.toString()}
-								</p>
-							)}
-						</div>
-						<div className="space-y-1">
-							<Label htmlFor="city" className="opacity-80 text-sm">
-								Ville*
-							</Label>
-							<Controller
-								name="city"
-								control={control}
-								render={({ field }) => (
-									<FormSelect
-										{...field}
-										options={
-											cities?.map((city: string) => ({
-												value: city,
-												label: city,
-											})) || []
-										}
-										placeholder={
-											isLoading
-												? "Chargement..."
-												: isSuccess && cities?.length
-												? "Sélectionner une ville"
-												: "Aucune ville trouvée"
-										}
-										className={`w-full ${errors.city && "border-red-500"}`}
-										disabled={isLoading || !cities?.length}
-									/>
+							</div>
+							<div className="space-y-2">
+								<Label htmlFor="zipcode" className="opacity-80 text-sm">
+									Code Postal*
+								</Label>
+								<FormInput
+									id="zipcode"
+									{...register("zipcode")}
+									className={`${errors.zipcode && "border-red-500"}`}
+								/>
+								{errors.zipcode && (
+									<p className="text-red-500 text-sm">
+										{errors.zipcode?.message?.toString()}
+									</p>
 								)}
-							/>
-							{errors.city && (
-								<p className="text-red-500 text-sm">
-									{errors.city?.message?.toString()}
-								</p>
-							)}
+							</div>
+							<div className="space-y-2">
+								<Label htmlFor="city" className="opacity-80 text-sm">
+									Ville*
+								</Label>
+								<Controller
+									name="city"
+									control={control}
+									render={({ field }) => (
+										<FormSelect
+											{...field}
+											options={
+												cities?.map((city: string) => ({
+													value: city,
+													label: city,
+												})) || []
+											}
+											placeholder={
+												isLoading
+													? "Chargement..."
+													: isSuccess && cities?.length
+													? "Sélectionner une ville"
+													: "Aucune ville trouvée"
+											}
+											className={`w-full ${errors.city && "border-red-500"}`}
+											disabled={isLoading || !cities?.length}
+										/>
+									)}
+								/>
+								{errors.city && (
+									<p className="text-red-500 text-sm">
+										{errors.city?.message?.toString()}
+									</p>
+								)}
+							</div>
 						</div>
 					</div>
 				</div>

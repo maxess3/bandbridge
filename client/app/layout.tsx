@@ -10,6 +10,10 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 import { SidebarAuth } from "@/components/features/auth/sidebar/SidebarAuth";
 import { FocusManagerProvider } from "@/contexts/FocusManagerContext";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import { headers } from "next/headers";
+import { isPublicRoute } from "@/utils/utils";
 
 const poppins = Poppins({
 	subsets: ["latin"],
@@ -19,9 +23,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-	title: "Chordeus - La musique qui vous rassemble",
+	title: "Chordeus - La musique qui nous rassemble",
 	description:
-		"Faites de nouvelles rencontres, créez des groupes, et partagez vos musiques.",
+		"Faites de nouvelles rencontres, créez des groupes et jouez ensemble !",
 };
 
 export default async function RootLayout({
@@ -29,6 +33,11 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const session = await getServerSession(authOptions);
+	const headersList = await headers();
+	const pathname = headersList.get("x-current-path") || "";
+	const isPublic = !session?.user || isPublicRoute(pathname);
+
 	return (
 		<html lang="fr" suppressHydrationWarning>
 			<body
@@ -61,9 +70,11 @@ export default async function RootLayout({
 								/>
 								<TooltipProvider>
 									<SidebarProvider>
-										<SidebarAuth />
+										{!isPublic && <SidebarAuth />}
 										<SidebarInset>
-											<ConditionalLayout>{children}</ConditionalLayout>
+											<ConditionalLayout isPublic={isPublic}>
+												{children}
+											</ConditionalLayout>
 										</SidebarInset>
 									</SidebarProvider>
 								</TooltipProvider>

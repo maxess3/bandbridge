@@ -19,6 +19,7 @@ export interface Profile {
 	firstName: string;
 	lastName: string;
 	username: string;
+	pseudonyme: string;
 	birthDate: string;
 	gender: "MALE" | "FEMALE" | "OTHER";
 	country: string;
@@ -38,6 +39,7 @@ export interface Profile {
 		| "TWO_TO_THREE_PER_WEEK"
 		| "MORE_THAN_THREE_PER_WEEK";
 	practiceType: "NOT_SPECIFIED" | "HOBBY" | "ACTIVE";
+	isLookingForBand: boolean;
 	socialLinks: SocialLinks;
 	followers: number;
 	following: number;

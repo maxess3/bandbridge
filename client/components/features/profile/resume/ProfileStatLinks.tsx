@@ -18,12 +18,24 @@ const ProfileStatLink = ({ href, count, label }: StatLinkProps) => (
 export const ProfileStatLinks = ({
 	followers,
 	following,
+	username,
 }: {
 	followers: number;
 	following: number;
-}) => (
-	<div className="flex gap-x-4 pt-3">
-		<ProfileStatLink href={`/followers/`} count={followers} label="Abonnés" />
-		<ProfileStatLink href={`/following/`} count={following} label="Suivi(e)s" />
-	</div>
-);
+	username: string;
+}) => {
+	return (
+		<div className="flex gap-x-4 pt-3">
+			<ProfileStatLink
+				href={`/${username}/followers`}
+				count={followers}
+				label="Abonnés"
+			/>
+			<ProfileStatLink
+				href={`/${username}/following`}
+				count={following}
+				label="Suivi(e)s"
+			/>
+		</div>
+	);
+};
