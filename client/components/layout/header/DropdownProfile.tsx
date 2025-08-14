@@ -22,6 +22,7 @@ import { LuSettings } from "react-icons/lu";
 import { RiBugLine } from "react-icons/ri";
 import { LuPencil } from "react-icons/lu";
 import { LuUser } from "react-icons/lu";
+import { ChevronDown } from "lucide-react";
 import { DefaultProfilePicture } from "@/components/features/profile/icons/DefaultProfilePicture";
 
 export const DropdownProfile = () => {
@@ -31,6 +32,7 @@ export const DropdownProfile = () => {
 	const [isChecked, setChecked] = useState(
 		resolvedTheme === "light" ? false : true
 	);
+	const [isOpen, setIsOpen] = useState(false);
 	const imageURL = getProfileImageUrl(
 		session?.user?.profilePictureKey ?? "",
 		"thumbnail"
@@ -48,15 +50,18 @@ export const DropdownProfile = () => {
 		}
 	}
 
+	const handleOpenChange = (open: boolean) => {
+		setIsOpen(open);
+	};
+
 	return (
-		<DropdownMenu modal={false}>
+		<DropdownMenu modal={false} open={isOpen} onOpenChange={handleOpenChange}>
 			<DropdownMenuTrigger asChild>
 				<button
-					className="flex items-center gap-x-2.5 w-44 cursor-pointer bg-transparent text-left rounded-md"
+					className="flex items-center gap-x-2.5 w-52 cursor-pointer bg-transparent text-left rounded-md"
 					aria-label={`Menu profil de ${
 						session?.user.pseudonyme || "utilisateur"
 					}`}
-					type="button"
 				>
 					<Avatar>
 						<AvatarImage
@@ -69,17 +74,22 @@ export const DropdownProfile = () => {
 							<DefaultProfilePicture className="mt-7 mr-1 w-[50px] h-[50px] text-background" />
 						</AvatarFallback>
 					</Avatar>
-					<div className="flex flex-col min-w-0">
+					<span className="flex flex-col min-w-0 flex-1">
 						<span className="text-base font-semibold truncate">
 							{session?.user.pseudonyme}
 						</span>
 						<span className="text-xs opacity-80 truncate font-medium">
 							{session?.user.email}
 						</span>
-					</div>
+					</span>
+					<ChevronDown
+						className={`ml-auto transition-all duration-200 ease-in-out size-5 ${
+							isOpen ? "rotate-180" : "rotate-0"
+						}`}
+					/>
 				</button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-60 mt-4">
+			<DropdownMenuContent className="w-60 mt-4 mr-2">
 				<DropdownMenuGroup className="space-y-1">
 					<div className="p-2">
 						<div className="w-full space-y-3">

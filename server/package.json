@@ -6,7 +6,9 @@
 		"start": "nodemon",
 		"dev": "nodemon",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"seed": "ts-node prisma/seed.ts"
+		"seed:instruments": "ts-node prisma/seedInstruments.ts",
+		"seed:profiles": "ts-node prisma/seedProfiles.ts",
+		"seed:all": "ts-node prisma/seedAll.ts"
 	},
 	"author": "",
 	"license": "ISC",

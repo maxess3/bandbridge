@@ -887,10 +887,8 @@ export const getMusicGenres = async (req: Request, res: Response) => {
 export const getFollowersList = async (req: Request, res: Response) => {
 	try {
 		const { username } = req.params;
-		const { limit = 50, cursor } = req.query;
-
-		// Validation des paramètres
-		const LIMIT = Math.min(Number(limit), 100); // Maximum 100 profils par requête
+		const { cursor } = req.query;
+		const LIMIT = 20;
 
 		// Vérifier que l'utilisateur existe
 		const user = await prisma.user.findUnique({
@@ -954,10 +952,8 @@ export const getFollowersList = async (req: Request, res: Response) => {
 export const getFollowingList = async (req: Request, res: Response) => {
 	try {
 		const { username } = req.params;
-		const { limit = 50, cursor } = req.query;
-
-		// Validation des paramètres
-		const LIMIT = Math.min(Number(limit), 100); // Maximum 100 profils par requête
+		const { cursor } = req.query;
+		const LIMIT = 20;
 
 		// Vérifier que l'utilisateur existe
 		const user = await prisma.user.findUnique({

@@ -1,26 +1,55 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
 import { ProfileCard } from "./ProfileCard";
-import { LoadingSpinner } from "@/components/shared/loader/LoadingSpinner";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useProfileList } from "@/hooks/useProfileList";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useMemo } from "react";
+
+// Type pour les profils retournés par l'API
+type ApiProfile = {
+	id: string;
+	pseudonyme: string;
+	profilePictureKey?: string;
+	lastActiveAt?: string;
+	user: {
+		username: string;
+		firstName: string;
+		lastName: string;
+	};
+};
 
 interface ProfileListProps {
 	username: string;
 	type: "followers" | "following";
-	title: string;
 	emptyMessage: string;
 	variant: "follower" | "following";
 }
 
+const MESSAGES = {
+	loading: "Chargement de plus de profils...",
+	allLoaded: "Tous les profils ont été chargés",
+	error: "Une erreur est survenue",
+	retry: "Réessayer",
+} as const;
+
+const SkeletonProfileCard = () => (
+	<div className="animate-pulse bg-white rounded-lg p-4 shadow">
+		<div className="flex items-center space-x-4">
+			<div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+			<div className="flex-1 space-y-2">
+				<div className="h-4 bg-gray-200 rounded w-3/4"></div>
+				<div className="h-3 bg-gray-200 rounded w-1/2"></div>
+			</div>
+		</div>
+	</div>
+);
+
 export const ProfileList = ({
 	username,
 	type,
-	title,
 	emptyMessage,
 	variant,
 }: ProfileListProps) => {
-	// Query infinie pour la pagination
 	const {
 		data,
 		fetchNextPage,
@@ -29,76 +58,26 @@ export const ProfileList = ({
 		isLoading,
 		error,
 		refetch,
-	} = useInfiniteQuery({
-		queryKey: ["profile-list", username, type],
-		queryFn: async ({ pageParam }) => {
-			const endpoint = `/profile/${username}/${type}`;
-			const searchParams = new URLSearchParams();
-			searchParams.set("limit", "50");
-			if (pageParam) {
-				searchParams.set("cursor", pageParam);
-			}
+	} = useProfileList(username, type);
 
-			// Utiliser fetch directement car useInfiniteQuery ne supporte pas useAxiosAuth
-			const response = await fetch(
-				`${
-					process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"
-				}${endpoint}?${searchParams}`
-			);
-
-			if (!response.ok) {
-				throw new Error(`Impossible de récupérer les ${type}`);
-			}
-
-			return response.json();
-		},
-		initialPageParam: undefined,
-		getNextPageParam: (lastPage) => lastPage.nextCursor || undefined,
-		enabled: !!username,
-	});
-
-	const observerRef = useRef<IntersectionObserver | null>(null);
-	const loadMoreRef = useRef<HTMLDivElement>(null);
-
-	// Infinite scroll avec Intersection Observer
-	const handleObserver = useCallback(
-		(entries: IntersectionObserverEntry[]) => {
-			const target = entries[0];
-			if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
-				fetchNextPage();
-			}
-		},
-		[hasNextPage, isFetchingNextPage, fetchNextPage]
+	const { loadMoreRef } = useInfiniteScroll(
+		hasNextPage,
+		isFetchingNextPage,
+		fetchNextPage
 	);
 
-	useEffect(() => {
-		if (observerRef.current) {
-			observerRef.current.disconnect();
-		}
-
-		observerRef.current = new IntersectionObserver(handleObserver, {
-			threshold: 0.1,
-			rootMargin: "100px",
-		});
-
-		if (loadMoreRef.current) {
-			observerRef.current.observe(loadMoreRef.current);
-		}
-
-		return () => {
-			if (observerRef.current) {
-				observerRef.current.disconnect();
-			}
-		};
-	}, [handleObserver]);
-
-	// Extraire tous les profils de toutes les pages
-	const allProfiles = data?.pages.flatMap((page) => page[type] || []) || [];
+	const allProfiles = useMemo(
+		() =>
+			(data?.pages.flatMap((page) => page[type] || []) || []) as ApiProfile[],
+		[data, type]
+	);
 
 	if (isLoading) {
 		return (
-			<div className="flex justify-center items-center py-8">
-				<LoadingSpinner />
+			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+				{[...Array(6)].map((_, i) => (
+					<SkeletonProfileCard key={i} />
+				))}
 			</div>
 		);
 	}
@@ -107,13 +86,14 @@ export const ProfileList = ({
 		return (
 			<div className="text-center py-8">
 				<p className="text-red-500 mb-4">
-					{error instanceof Error ? error.message : "Une erreur est survenue"}
+					{error instanceof Error ? error.message : MESSAGES.error}
 				</p>
 				<button
 					onClick={() => refetch()}
 					className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+					aria-label="Réessayer de charger les profils"
 				>
-					Réessayer
+					{MESSAGES.retry}
 				</button>
 			</div>
 		);
@@ -129,25 +109,24 @@ export const ProfileList = ({
 
 	return (
 		<div className="space-y-4">
-			<h2 className="text-2xl font-bold mb-6">
-				{title} ({allProfiles.length})
-			</h2>
-
 			<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-				{allProfiles.map((profile) => (
-					<ProfileCard key={profile.id} profile={profile} variant={variant} />
+				{allProfiles.map((profile, index) => (
+					<ProfileCard
+						key={profile.id || `profile-${index}`}
+						profile={profile}
+						variant={variant}
+					/>
 				))}
 			</div>
 
-			{/* Élément de déclenchement pour l'infinite scroll */}
+			{/* Infinite scroll */}
 			{hasNextPage && (
 				<div ref={loadMoreRef} className="py-4 text-center">
 					{isFetchingNextPage ? (
-						<div className="flex items-center justify-center gap-2">
-							<LoadingSpinner />
-							<span className="text-gray-600">
-								Chargement de plus de profils...
-							</span>
+						<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+							{[...Array(6)].map((_, i) => (
+								<SkeletonProfileCard key={i} />
+							))}
 						</div>
 					) : (
 						<div className="h-4" />
@@ -155,12 +134,10 @@ export const ProfileList = ({
 				</div>
 			)}
 
-			{/* Message de fin */}
+			{/* End of infinite scroll */}
 			{!hasNextPage && allProfiles.length > 0 && (
 				<div className="text-center py-4">
-					<p className="text-gray-500 text-sm">
-						Tous les profils ont été chargés
-					</p>
+					<p className="text-gray-500 text-sm">{MESSAGES.allLoaded}</p>
 				</div>
 			)}
 		</div>
