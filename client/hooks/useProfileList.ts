@@ -1,11 +1,13 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "@/lib/axios";
 import { createDelayedFunction } from "@/helper/createDelayedFunction";
+import { ProfileListItem } from "@/types/Profile";
 
 type ProfileListResponse = {
-	[type: string]: unknown[];
+	[type: string]: ProfileListItem[];
 } & {
 	nextCursor?: string;
+	hasMore: boolean;
 };
 
 export const useProfileList = (

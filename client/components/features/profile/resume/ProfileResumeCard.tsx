@@ -37,7 +37,7 @@ export const ProfileResumeCard = ({
 					<ProfileBasicInfo
 						city={profile?.city}
 						zipCode={profile?.zipCode}
-						birthDate={profile?.birthDate}
+						age={profile?.age}
 					/>
 
 					<ProfileStatLinks

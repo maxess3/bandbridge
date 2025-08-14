@@ -3,6 +3,21 @@ export const formatName = (name: string) => {
 	return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 };
 
+export const calculateAge = (birthDate: Date | null): number | null => {
+	if (!birthDate) return null;
+
+	const today = new Date();
+	const birth = new Date(birthDate);
+	let age = today.getFullYear() - birth.getFullYear();
+	const monthDiff = today.getMonth() - birth.getMonth();
+
+	if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+		age--;
+	}
+
+	return age;
+};
+
 export async function generateUniqueUsername(
 	baseUsername: string,
 	prisma: any

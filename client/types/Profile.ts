@@ -7,21 +7,19 @@ export interface SocialLinks {
 }
 
 export interface LastFollowers {
-	city: string;
-	firstName: string;
-	followersCount: number;
+	city: string | null;
+	pseudonyme: string;
 	username: string;
+	followersCount: number;
+	profilePictureKey: string | null;
+	lastActiveAt: Date | null;
 }
-
 export interface Profile {
 	userId: string;
-	description: string;
-	firstName: string;
-	lastName: string;
 	username: string;
+	description: string;
 	pseudonyme: string;
-	birthDate: string;
-	gender: "MALE" | "FEMALE" | "OTHER";
+	age: number | null;
 	country: string;
 	zipCode: string;
 	profilePictureKey: string;
@@ -54,7 +52,23 @@ export interface Profile {
 		};
 	}[];
 	genres: string[];
-	styles: string[];
-	lastSeen: string;
+	styles?: string[];
+	lastSeen?: string;
+	lastActiveAt?: Date | null;
 	createdAt?: string;
+}
+
+//  Followers/following lists
+export interface ProfileListItem {
+	id: string;
+	pseudonyme: string;
+	profilePictureKey: string | null;
+	lastActiveAt: Date | null;
+	city: string | null;
+	user: {
+		username: string;
+	};
+	_count: {
+		followers: number;
+	};
 }

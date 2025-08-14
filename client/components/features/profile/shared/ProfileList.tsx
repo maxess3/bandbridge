@@ -4,19 +4,7 @@ import { ProfileCard } from "./ProfileCard";
 import { useProfileList } from "@/hooks/useProfileList";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useMemo } from "react";
-
-// Type pour les profils retournés par l'API
-type ApiProfile = {
-	id: string;
-	pseudonyme: string;
-	profilePictureKey?: string;
-	lastActiveAt?: string;
-	user: {
-		username: string;
-		firstName: string;
-		lastName: string;
-	};
-};
+import { ProfileListItem } from "@/types/Profile";
 
 interface ProfileListProps {
 	username: string;
@@ -68,7 +56,8 @@ export const ProfileList = ({
 
 	const allProfiles = useMemo(
 		() =>
-			(data?.pages.flatMap((page) => page[type] || []) || []) as ApiProfile[],
+			(data?.pages.flatMap((page) => page[type] || []) ||
+				[]) as ProfileListItem[],
 		[data, type]
 	);
 

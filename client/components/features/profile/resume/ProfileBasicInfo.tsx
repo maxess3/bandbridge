@@ -1,31 +1,30 @@
-import { getAgeFromTimestamp } from "@/utils/utils";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { AiOutlineUser } from "react-icons/ai";
 
-type InfoItemProps = {
+interface InfoItemProps {
 	icon: React.ReactNode;
 	children: React.ReactNode;
-};
+}
 
 const InfoItem = ({ icon, children }: InfoItemProps) => (
-	<li className="inline-flex items-center gap-x-1">
+	<li className="flex items-center gap-2 text-sm text-muted-foreground">
 		{icon}
-		{children}
+		<span>{children}</span>
 	</li>
 );
 
 export const ProfileBasicInfo = ({
 	city,
 	zipCode,
-	birthDate,
+	age,
 }: {
 	city?: string;
 	zipCode?: string;
-	birthDate?: string;
+	age?: number | null;
 }) => {
 	const hasLocation = city && zipCode;
 	const locationText = hasLocation ? `${city}, ${zipCode}` : null;
-	const ageText = birthDate ? `(${getAgeFromTimestamp(birthDate)} ans)` : "";
+	const ageText = age ? `(${age} ans)` : "";
 
 	return (
 		<div>

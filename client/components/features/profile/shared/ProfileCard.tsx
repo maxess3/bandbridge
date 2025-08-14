@@ -5,19 +5,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { DefaultProfilePicture } from "../icons/DefaultProfilePicture";
 import { getProfileImageUrl } from "@/utils/utils";
+import { ProfileListItem } from "@/types/Profile";
 
 interface ProfileCardProps {
-	profile: {
-		id: string;
-		pseudonyme: string;
-		profilePictureKey?: string;
-		lastActiveAt?: string;
-		user: {
-			username: string;
-			firstName: string;
-			lastName: string;
-		};
-	};
+	profile: ProfileListItem;
 	variant?: "follower" | "following" | "default";
 }
 
@@ -25,7 +16,7 @@ export const ProfileCard = ({
 	profile,
 	variant = "default",
 }: ProfileCardProps) => {
-	const { pseudonyme, profilePictureKey, user } = profile;
+	const { pseudonyme, profilePictureKey, user, _count } = profile;
 	const { username } = user;
 	const imageURL = getProfileImageUrl(profilePictureKey ?? "", "medium");
 
@@ -52,14 +43,18 @@ export const ProfileCard = ({
 							<h3 className="font-semibold truncate">{pseudonyme}</h3>
 							{variant === "follower" && (
 								<Badge variant="secondary" className="text-xs">
-									Abonné
+									Follower
 								</Badge>
 							)}
 							{variant === "following" && (
 								<Badge variant="outline" className="text-xs">
-									Suivi
+									Following
 								</Badge>
 							)}
+						</div>
+						{/* Afficher le nombre d'abonnés */}
+						<div className="text-sm text-muted-foreground">
+							{_count.followers} followers
 						</div>
 					</div>
 				</div>

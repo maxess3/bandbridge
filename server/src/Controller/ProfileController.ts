@@ -8,6 +8,8 @@ import {
 } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
+import { calculateAge } from "../utils/utils";
+
 export const getProfilePublic = async (req: Request, res: Response) => {
 	try {
 		const { username } = req.params;
@@ -68,11 +70,13 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 								lastActiveAt: "desc",
 							},
 							select: {
+								pseudonyme: true,
+								profilePictureKey: true,
+								lastActiveAt: true,
+								city: true,
 								user: {
 									select: {
 										username: true,
-										firstName: true,
-										lastName: true,
 									},
 								},
 								_count: {
@@ -94,6 +98,8 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 
 		const profile = user.Profile;
 
+		const age = calculateAge(user.birthDate);
+
 		const formattedSocialLinks = Object.fromEntries(
 			(profile.socialLinks || []).map(
 				(link: { platform: string; url: string }) => [
@@ -105,12 +111,9 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 
 		const responseProfile = {
 			userId: profile.userId,
-			firstName: user.firstName,
-			lastName: user.lastName,
 			username: user.username,
 			pseudonyme: profile.pseudonyme,
-			birthDate: user.birthDate,
-			gender: user.gender,
+			age: age,
 			country: profile.country,
 			zipCode: profile.zipCode,
 			city: profile.city,
@@ -130,17 +133,20 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 			following: profile._count?.following || 0,
 			lastFollowers: (profile.followers || []).map(
 				(follower: {
+					pseudonyme: string;
+					profilePictureKey: string | null;
+					lastActiveAt: Date | null;
+					city: string | null;
 					user: {
 						username: string;
-						firstName: string;
-						lastName: string;
 					};
 					_count: { followers: number };
 				}) => ({
+					pseudonyme: follower.pseudonyme,
 					username: follower.user.username,
-					firstName: follower.user.firstName,
-					lastName: follower.user.lastName,
-					city: profile.city,
+					profilePictureKey: follower.profilePictureKey,
+					lastActiveAt: follower.lastActiveAt,
+					city: follower.city,
 					followersCount: follower._count.followers,
 				})
 			),
@@ -218,11 +224,13 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 								lastActiveAt: "desc",
 							},
 							select: {
+								pseudonyme: true,
+								profilePictureKey: true,
+								lastActiveAt: true,
+								city: true,
 								user: {
 									select: {
 										username: true,
-										firstName: true,
-										lastName: true,
 									},
 								},
 								_count: {
@@ -244,6 +252,8 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 
 		const profile = user.Profile;
 
+		const age = calculateAge(user.birthDate);
+
 		const formattedSocialLinks = Object.fromEntries(
 			(profile.socialLinks || []).map(
 				(link: { platform: string; url: string }) => [
@@ -255,12 +265,9 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 
 		const responseProfile = {
 			userId: profile.userId,
-			firstName: user.firstName,
-			lastName: user.lastName,
 			username: user.username,
 			pseudonyme: profile.pseudonyme,
-			birthDate: user.birthDate,
-			gender: user.gender,
+			age: age,
 			country: profile.country,
 			zipCode: profile.zipCode,
 			city: profile.city,
@@ -280,17 +287,20 @@ export const getProfileOwner = async (req: Request, res: Response) => {
 			following: profile._count?.following || 0,
 			lastFollowers: (profile.followers || []).map(
 				(follower: {
+					pseudonyme: string;
+					profilePictureKey: string | null;
+					lastActiveAt: Date | null;
+					city: string | null;
 					user: {
 						username: string;
-						firstName: string;
-						lastName: string;
 					};
 					_count: { followers: number };
 				}) => ({
+					pseudonyme: follower.pseudonyme,
 					username: follower.user.username,
-					firstName: follower.user.firstName,
-					lastName: follower.user.lastName,
-					city: profile.city,
+					profilePictureKey: follower.profilePictureKey,
+					lastActiveAt: follower.lastActiveAt,
+					city: follower.city,
 					followersCount: follower._count.followers,
 				})
 			),
@@ -921,11 +931,15 @@ export const getFollowersList = async (req: Request, res: Response) => {
 				pseudonyme: true,
 				profilePictureKey: true,
 				lastActiveAt: true,
+				city: true,
 				user: {
 					select: {
 						username: true,
-						firstName: true,
-						lastName: true,
+					},
+				},
+				_count: {
+					select: {
+						followers: true,
 					},
 				},
 			},
@@ -986,11 +1000,15 @@ export const getFollowingList = async (req: Request, res: Response) => {
 				pseudonyme: true,
 				profilePictureKey: true,
 				lastActiveAt: true,
+				city: true,
 				user: {
 					select: {
 						username: true,
-						firstName: true,
-						lastName: true,
+					},
+				},
+				_count: {
+					select: {
+						followers: true,
 					},
 				},
 			},

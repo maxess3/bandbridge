@@ -29,12 +29,12 @@ export const ProfileStatLinks = ({
 			<ProfileStatLink
 				href={`/${username}/followers`}
 				count={followers}
-				label="Abonnés"
+				label="Followers"
 			/>
 			<ProfileStatLink
 				href={`/${username}/following`}
 				count={following}
-				label="Suivi(e)s"
+				label="Following"
 			/>
 		</div>
 	);
