@@ -21,8 +21,8 @@ export async function generateMetadata({
 	const profile = await getProfile(slug);
 
 	return {
-		title: `${profile.firstName} (@${profile.username}) | Chordeus`,
-		description: `Découvrez le profil de ${profile.firstName} sur Chordeus`,
+		title: `${profile.pseudonyme} (@${profile.username}) | Chordeus`,
+		description: `Découvrez le profil de ${profile.pseudonyme} sur Chordeus`,
 	};
 }
 
