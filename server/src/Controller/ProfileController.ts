@@ -327,7 +327,13 @@ export const updateGeneralProfileOwner = async (
 
 		const currentProfile = await prisma.profile.findUnique({
 			where: { userId: userId },
-			select: { id: true },
+			select: {
+				id: true,
+				country: true,
+				zipCode: true,
+				city: true,
+				departmentName: true,
+			},
 		});
 
 		if (!currentProfile) {
@@ -367,6 +373,45 @@ export const updateGeneralProfileOwner = async (
 			}
 		}
 
+		const hasLocationChanged =
+			currentProfile.country !== req.body.country ||
+			currentProfile.zipCode !== req.body.zipcode ||
+			currentProfile.city !== req.body.city;
+
+		let departmentName = currentProfile.departmentName;
+
+		if (req.body.country === "France" && req.body.zipcode && req.body.city) {
+			if (hasLocationChanged) {
+				try {
+					const response = await fetch(
+						`https://geo.api.gouv.fr/communes?codePostal=${req.body.zipcode}&fields=departement`
+					);
+
+					if (response.ok) {
+						const data = await response.json();
+
+						// Vérifier que la ville existe pour ce code postal
+						const validCities = data.map((c: any) => c.nom);
+						if (!validCities.includes(req.body.city)) {
+							res.status(400).json({
+								message: "La ville ne correspond pas au code postal saisi",
+							});
+							return;
+						}
+
+						// Récupérer le nom du département
+						departmentName = data[0]?.departement?.nom;
+					} else {
+						console.error(
+							`Erreur API: ${response.status} ${response.statusText}`
+						);
+					}
+				} catch (error) {
+					console.error("Erreur lors de la validation de l'adresse:", error);
+				}
+			}
+		}
+
 		// Update profile location information
 		await prisma.profile.update({
 			where: { userId: userId },
@@ -375,6 +420,7 @@ export const updateGeneralProfileOwner = async (
 				country: req.body.country,
 				zipCode: req.body.zipcode,
 				city: req.body.city,
+				departmentName: departmentName,
 			},
 		});
 

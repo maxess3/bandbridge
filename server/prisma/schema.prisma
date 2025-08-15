@@ -140,6 +140,7 @@ model Profile {
   country           String?
   city              String?
   zipCode           String?
+  departmentName    String?            @db.VarChar(100)
   userId            String             @unique
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

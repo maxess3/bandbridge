@@ -90,14 +90,24 @@ export const UpdateProfileGeneralForm = ({
 		queryFn: async () => {
 			if (!debouncedZipcode || debouncedZipcode.length !== 5) return [];
 
-			const response = await fetch(
-				`https://geo.api.gouv.fr/communes?codePostal=${debouncedZipcode}&fields=nom`
-			);
-			const data = await response.json();
+			try {
+				const response = await fetch(
+					`https://geo.api.gouv.fr/communes?codePostal=${debouncedZipcode}&fields=nom`
+				);
 
-			return data.map((item: { nom: string }) => item.nom);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
+				}
+
+				const data = await response.json();
+				return data.map((item: { nom: string }) => item.nom);
+			} catch (error) {
+				console.error("Erreur API géolocalisation:", error);
+				return [];
+			}
 		},
 		enabled: debouncedZipcode.length === 5,
+		retry: 2,
 	});
 
 	// SUPPRIMER les queries pour instrumentTypes et musicGenres
