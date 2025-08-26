@@ -9,7 +9,6 @@ import {
 	translateInstrument,
 	translateProfession,
 } from "@/utils/translations/instrumentTranslations";
-import { Badge } from "@/components/ui/badge";
 
 interface ProfileInstrumentsProps {
 	instruments?: {
@@ -80,12 +79,10 @@ export const ProfileInstruments = ({
 			{professionGroups.map(({ profession, instruments }, index) => (
 				<Tooltip delayDuration={500} key={index}>
 					<TooltipTrigger asChild>
-						<Badge
-							className="font-medium text-base rounded-md"
-							variant="outline"
-						>
+						<span className="px-0 font-medium text-lg border-none">
 							{translateProfession(profession)}
-						</Badge>
+							{index < professionGroups.length - 1 && ","}
+						</span>
 					</TooltipTrigger>
 					<TooltipContent>
 						<div className="space-y-1">

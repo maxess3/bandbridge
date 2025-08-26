@@ -14,14 +14,12 @@ export const ProfileResumeCard = ({
 }) => {
 	return (
 		<div className="w-full border rounded-xl">
-			<div className="relative w-full lg:h-52 h-36 bg-gradient-to-r from-violet-600 to-indigo-600 rounded-t-xl">
-				<ProfilePicture
-					isOwner={isOwner}
-					src={profile?.profilePictureKey}
-					alt="Photo de profil"
-				/>
-			</div>
-			<div className="relative pt-16 px-6 pb-6">
+			<ProfilePicture
+				isOwner={isOwner}
+				src={profile?.profilePictureKey}
+				alt="Photo de profil"
+			/>
+			<div className="relative p-6">
 				<EditProfileButton
 					isOwner={isOwner}
 					url={`/${profile?.username}/edit/profile/general`}

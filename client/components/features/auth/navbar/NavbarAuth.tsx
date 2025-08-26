@@ -39,7 +39,6 @@ export const NavbarAuth = () => {
 					</div>
 				</div>
 
-				{/* Profile Dropdown */}
 				<DropdownProfile />
 			</div>
 		</nav>

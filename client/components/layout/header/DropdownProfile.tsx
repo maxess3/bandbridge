@@ -89,7 +89,7 @@ export const DropdownProfile = () => {
 					/>
 				</button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-60 mt-4 mr-2">
+			<DropdownMenuContent className="w-60 mt-4 mr-1">
 				<DropdownMenuGroup className="space-y-1">
 					<div className="p-2">
 						<div className="w-full space-y-3">

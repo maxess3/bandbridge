@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { translateGenre } from "@/utils/translations/genreTranslations";
 
 export const ProfileMusicGenres = ({ genres }: { genres?: string[] }) => {
@@ -7,15 +6,16 @@ export const ProfileMusicGenres = ({ genres }: { genres?: string[] }) => {
 	const translatedGenres = genres.map((genre) => translateGenre(genre));
 
 	return (
-		<div className="flex flex-wrap gap-2">
-			{translatedGenres.map((genre) => (
-				<Badge
+		<div className="flex flex-wrap gap-2 font-medium opacity-80 uppercase">
+			{translatedGenres.map((genre, index) => (
+				<span
 					key={genre}
-					className="border-primary text-primary"
-					variant="outline"
+					className={`${
+						index < translatedGenres.length - 1 ? "border-r" : ""
+					}  ${index < translatedGenres.length - 1 ? "pr-2" : ""}`}
 				>
 					{genre}
-				</Badge>
+				</span>
 			))}
 		</div>
 	);

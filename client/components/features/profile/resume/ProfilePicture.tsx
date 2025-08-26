@@ -2,8 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DefaultProfilePicture } from "@/components/features/profile/icons/DefaultProfilePicture";
+import Image from "next/image";
 import { EditProfilePictureModal } from "@/components/features/profile/modals/EditProfilePictureModal";
 import { useFocusManager } from "@/contexts/FocusManagerContext";
 import { getProfileImageUrl } from "@/utils/utils";
@@ -28,31 +27,31 @@ export const ProfilePicture = ({
 	};
 
 	const IMG_PROFILE = (
-		<div className="relative group overflow-hidden rounded-full">
-			<Avatar className="lg:w-40 lg:h-40 w-36 h-36 border-4 border-background">
-				<AvatarImage src={imageURL} alt={alt} />
-				<AvatarFallback className="bg-secondary pointer-events-none">
-					<DefaultProfilePicture className="mr-4 mt-24 text-background w-[220px] h-[220px]" />
-				</AvatarFallback>
-			</Avatar>
-		</div>
+		<span className="rounded-full">
+			{imageURL ? (
+				<Image
+					src={imageURL}
+					alt={alt}
+					width={260}
+					height={260}
+					className="rounded-full border"
+				/>
+			) : null}
+		</span>
 	);
 
 	return (
-		<div className="absolute -bottom-12 left-6 z-[5]">
-			<div className="lg:w-40 lg:h-40 w-36 h-36 flex rounded-full relative bg-background">
-				{isOwner && session?.user?.username ? (
-					<button
-						onClick={handleImageClick}
-						className="rounded-full"
-						aria-label="Modifier la photo de profil"
-					>
-						{IMG_PROFILE}
-					</button>
-				) : (
-					IMG_PROFILE
-				)}
-			</div>
+		<div className="flex">
+			{isOwner && session?.user?.username ? (
+				<button
+					onClick={handleImageClick}
+					aria-label="Modifier la photo de profil"
+				>
+					{IMG_PROFILE}
+				</button>
+			) : (
+				IMG_PROFILE
+			)}
 			{isModalOpen && (
 				<EditProfilePictureModal
 					onClose={() => setIsModalOpen(false)}
