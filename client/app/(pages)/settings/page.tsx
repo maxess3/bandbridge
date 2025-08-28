@@ -10,7 +10,7 @@ export default function SettingsPage() {
 
 	if (isLoading) {
 		return (
-			<div className="animate-pulse space-y-6">
+			<div className="animate-pulse space-y-6 py-6">
 				<div className="h-8 bg-gray-200 rounded w-1/3"></div>
 				<div className="space-y-4">
 					<div className="h-4 bg-gray-200 rounded w-1/4"></div>
@@ -21,7 +21,7 @@ export default function SettingsPage() {
 	}
 
 	return (
-		<div className="space-y-6">
+		<div className="space-y-6 py-6">
 			<div>
 				<h1 className="text-3xl font-semibold">Paramètres</h1>
 				<p className="mt-2 opacity-80">

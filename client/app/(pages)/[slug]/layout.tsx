@@ -5,11 +5,9 @@ interface LayoutProps {
 
 export default async function Layout({ modal, children }: LayoutProps) {
 	return (
-		<div>
-			<main>
-				{modal}
-				{children}
-			</main>
-		</div>
+		<>
+			{modal}
+			{children}
+		</>
 	);
 }

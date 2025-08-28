@@ -12,9 +12,7 @@ export const ProfileAside = ({
 }) => {
 	return (
 		<aside>
-			<div className="md:space-y-3 space-y-2">
-				<ProfileMusicianInfos profile={profile} isOwner={isOwner} />
-			</div>
+			<ProfileMusicianInfos profile={profile} isOwner={isOwner} />
 		</aside>
 	);
 };

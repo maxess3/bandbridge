@@ -16,7 +16,7 @@ export async function ConditionalLayout({
 		return (
 			<div className="w-full mx-auto">
 				<Navbar />
-				<main className="max-w-7xl mx-auto">{children}</main>
+				<div className="max-w-7xl mx-auto px-6">{children}</div>
 				<Footer />
 			</div>
 		);
@@ -26,7 +26,7 @@ export async function ConditionalLayout({
 	return (
 		<div className="w-full mx-auto">
 			<NavbarAuth />
-			<main className="max-w-7xl mx-auto">{children}</main>
+			<div className="max-w-7xl mx-auto px-6">{children}</div>
 		</div>
 	);
 }
