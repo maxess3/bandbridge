@@ -39,12 +39,19 @@ export const FollowButton = ({ username }: { username: string }) => {
 
 	return (
 		<Button
+			className="rounded-full w-28"
 			onClick={() => toggleFollow()}
 			disabled={isPending}
-			icon={followData?.isFollowing ? <FaUserCheck /> : <LucideUserRoundPlus />}
+			icon={
+				followData?.isFollowing ? (
+					<FaUserCheck className="!size-5" />
+				) : (
+					<LucideUserRoundPlus className="!size-5" />
+				)
+			}
 			variant={followData?.isFollowing ? "outline" : "default"}
 		>
-			{followData?.isFollowing ? "Abonné(e)" : "Suivre"}
+			{followData?.isFollowing ? "Suivi" : "Follow"}
 		</Button>
 	);
 };

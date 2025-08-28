@@ -4,6 +4,7 @@ import { useProfile } from "@/hooks/useProfile";
 import { ProfileLayout } from "@/components/features/profile/ProfileLayout";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+
 export function Profile({ isOwner, slug }: { isOwner: boolean; slug: string }) {
 	const { data: profile } = useProfile(isOwner ? undefined : slug);
 	const router = useRouter();

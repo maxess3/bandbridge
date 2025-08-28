@@ -11,7 +11,7 @@ export const ProfileAside = ({
 	isOwner: boolean;
 }) => {
 	return (
-		<aside className="rounded-xl xl:w-[380px] lg:w-[350px] md:w-[300px] w-full">
+		<aside>
 			<div className="md:space-y-3 space-y-2">
 				<ProfileMusicianInfos profile={profile} isOwner={isOwner} />
 			</div>
