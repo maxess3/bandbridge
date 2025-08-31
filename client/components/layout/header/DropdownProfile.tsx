@@ -34,7 +34,7 @@ export const DropdownProfile = () => {
   );
   const [isOpen, setIsOpen] = useState(false);
   const imageURL = getProfileImageUrl(
-    session?.user?.profilePictureKey ?? "",
+    session?.user?.profilePictureKey || "",
     "thumbnail"
   );
 
@@ -65,7 +65,7 @@ export const DropdownProfile = () => {
         >
           <Avatar>
             <AvatarImage
-              src={imageURL}
+              src={imageURL || undefined}
               alt="Profile picture"
               className="rounded-full object-cover pointer-events-none"
               sizes="36px"
@@ -96,7 +96,7 @@ export const DropdownProfile = () => {
               <div className="flex items-center space-x-2.5">
                 <Avatar>
                   <AvatarImage
-                    src={imageURL}
+                    src={imageURL || undefined}
                     alt="Profile picture"
                     className="rounded-full object-cover pointer-events-none"
                     sizes="36px"

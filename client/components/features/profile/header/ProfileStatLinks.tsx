@@ -7,11 +7,12 @@ interface StatLinkProps {
 }
 
 const ProfileStatLink = ({ href, count, label }: StatLinkProps) => (
-  <Link href={href} className="hover:underline">
-    <div className="flex items-end gap-x-1.5">
+  <Link href={href} className="group relative">
+    <span className="flex items-end gap-x-1.5">
       <span className="font-bold">{count}</span>
       <span className="opacity-80 font-medium"> {label}</span>
-    </div>
+    </span>
+    <span className="absolute bottom-1 left-0 w-full h-px bg-current opacity-0 group-hover:opacity-80"></span>
   </Link>
 );
 

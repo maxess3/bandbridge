@@ -18,7 +18,7 @@ export const ProfileCard = ({
 }: ProfileCardProps) => {
   const { pseudonyme, profilePictureKey, user, _count } = profile;
   const { username } = user;
-  const imageURL = getProfileImageUrl(profilePictureKey ?? "", "medium");
+  const imageURL = getProfileImageUrl(profilePictureKey, "medium");
 
   return (
     <Link
@@ -30,7 +30,7 @@ export const ProfileCard = ({
         <div className="flex items-center space-x-3">
           <Avatar className="h-12 w-12">
             <AvatarImage
-              src={imageURL}
+              src={imageURL || undefined}
               alt={`Photo de profil de ${pseudonyme}`}
             />
             <AvatarFallback>
