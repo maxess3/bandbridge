@@ -1,107 +1,107 @@
 "use client";
 
 import {
-	Tooltip,
-	TooltipContent,
-	TooltipTrigger,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-	translateInstrument,
-	translateProfession,
+  translateInstrument,
+  translateProfession,
 } from "@/utils/translations/instrumentTranslations";
 
 interface ProfileInstrumentsProps {
-	instruments?: {
-		instrumentTypeId: string;
-		level: string | null;
-		order: number;
-		instrumentType: {
-			name: string;
-			profession: string | null;
-		};
-	}[];
+  instruments?: {
+    instrumentTypeId: string;
+    level: string | null;
+    order: number;
+    instrumentType: {
+      name: string;
+      profession: string | null;
+    };
+  }[];
 }
 
 const getLevelText = (level: string | null) => {
-	switch (level) {
-		case "BEGINNER":
-			return "Débutant";
-		case "INTERMEDIATE":
-			return "Intermédiaire";
-		case "ADVANCED":
-			return "Avancé";
-		case "EXPERT":
-			return "Expert";
-		default:
-			return null;
-	}
+  switch (level) {
+    case "BEGINNER":
+      return "Débutant";
+    case "INTERMEDIATE":
+      return "Intermédiaire";
+    case "ADVANCED":
+      return "Avancé";
+    case "EXPERT":
+      return "Expert";
+    default:
+      return null;
+  }
 };
 
 export const ProfileInstruments = ({
-	instruments,
+  instruments,
 }: ProfileInstrumentsProps) => {
-	if (!instruments || instruments.length === 0) {
-		return null;
-	}
+  if (!instruments || instruments.length === 0) {
+    return null;
+  }
 
-	// Filtrer les instruments avec une profession et les trier par ordre
-	const instrumentsWithProfession = instruments
-		.filter((instrument) => instrument.instrumentType.profession)
-		.sort((a, b) => a.order - b.order);
+  // Filtrer les instruments avec une profession et les trier par ordre
+  const instrumentsWithProfession = instruments
+    .filter((instrument) => instrument.instrumentType.profession)
+    .sort((a, b) => a.order - b.order);
 
-	if (instrumentsWithProfession.length === 0) {
-		return null;
-	}
+  if (instrumentsWithProfession.length === 0) {
+    return null;
+  }
 
-	// Grouper les instruments par profession
-	const instrumentsByProfession = instrumentsWithProfession.reduce(
-		(acc, instrument) => {
-			const profession = instrument.instrumentType.profession!;
-			if (!acc[profession]) {
-				acc[profession] = [];
-			}
-			acc[profession].push(instrument);
-			return acc;
-		},
-		{} as Record<string, typeof instrumentsWithProfession>
-	);
+  // Grouper les instruments par profession
+  const instrumentsByProfession = instrumentsWithProfession.reduce(
+    (acc, instrument) => {
+      const profession = instrument.instrumentType.profession!;
+      if (!acc[profession]) {
+        acc[profession] = [];
+      }
+      acc[profession].push(instrument);
+      return acc;
+    },
+    {} as Record<string, typeof instrumentsWithProfession>
+  );
 
-	// Convertir en tableau et limiter à 3 professions maximum
-	const professionGroups = Object.entries(instrumentsByProfession)
-		.slice(0, 3)
-		.map(([profession, instruments]) => ({
-			profession,
-			instruments,
-		}));
+  // Convertir en tableau et limiter à 3 professions maximum
+  const professionGroups = Object.entries(instrumentsByProfession)
+    .slice(0, 3)
+    .map(([profession, instruments]) => ({
+      profession,
+      instruments,
+    }));
 
-	return (
-		<div className="flex flex-wrap gap-2 mt-1.5">
-			{professionGroups.map(({ profession, instruments }, index) => (
-				<Tooltip delayDuration={500} key={index}>
-					<TooltipTrigger asChild>
-						<span className="px-0 font-medium text-lg border-none">
-							{translateProfession(profession)}
-							{index < professionGroups.length - 1 && ","}
-						</span>
-					</TooltipTrigger>
-					<TooltipContent>
-						<div className="space-y-1">
-							{instruments.map((instrument, instrumentIndex) => (
-								<p key={instrumentIndex}>
-									<span className="font-medium">
-										{translateInstrument(instrument.instrumentType.name)}
-									</span>
-									{instrument.level && (
-										<span className="font-normal">
-											{`: ${getLevelText(instrument.level)}`}
-										</span>
-									)}
-								</p>
-							))}
-						</div>
-					</TooltipContent>
-				</Tooltip>
-			))}
-		</div>
-	);
+  return (
+    <div className="flex flex-wrap gap-2 mt-1.5">
+      {professionGroups.map(({ profession, instruments }, index) => (
+        <Tooltip delayDuration={500} key={index}>
+          <TooltipTrigger asChild>
+            <span className="px-0 font-medium text-xl border-none">
+              {translateProfession(profession)}
+              {index < professionGroups.length - 1 && ","}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <div className="space-y-1">
+              {instruments.map((instrument, instrumentIndex) => (
+                <p key={instrumentIndex}>
+                  <span className="font-medium">
+                    {translateInstrument(instrument.instrumentType.name)}
+                  </span>
+                  {instrument.level && (
+                    <span className="font-normal">
+                      {`: ${getLevelText(instrument.level)}`}
+                    </span>
+                  )}
+                </p>
+              ))}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      ))}
+    </div>
+  );
 };

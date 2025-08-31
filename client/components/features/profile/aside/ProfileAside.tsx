@@ -4,15 +4,15 @@ import { Profile } from "@/types/Profile";
 import { ProfileMusicianInfos } from "@/components/features/profile/aside/ProfileMusicianInfos";
 
 export const ProfileAside = ({
-	profile,
-	isOwner,
+  profile,
+  isOwner,
 }: {
-	profile: Profile;
-	isOwner: boolean;
+  profile: Profile;
+  isOwner: boolean;
 }) => {
-	return (
-		<aside>
-			<ProfileMusicianInfos profile={profile} isOwner={isOwner} />
-		</aside>
-	);
+  return (
+    <aside className="flex flex-col gap-2">
+      <ProfileMusicianInfos profile={profile} isOwner={isOwner} />
+    </aside>
+  );
 };

@@ -5,6 +5,7 @@ import { ProfileMusicGenres } from "@/components/features/profile/header/Profile
 import { ProfileBasicInfo } from "@/components/features/profile/header/ProfileBasicInfo";
 import { ProfileActions } from "@/components/features/profile/header/ProfileActions";
 import { AiFillSafetyCertificate } from "react-icons/ai";
+import { ProfileStatLinks } from "@/components/features/profile/header/ProfileStatLinks";
 
 export const ProfileHeader = ({
   profile,
@@ -14,7 +15,7 @@ export const ProfileHeader = ({
   isOwner: boolean;
 }) => {
   return (
-    <div className="flex gap-6">
+    <div className="flex items-start gap-6">
       <ProfilePicture
         isOwner={isOwner}
         src={profile?.profilePictureKey}
@@ -22,7 +23,7 @@ export const ProfileHeader = ({
       />
       <div className="flex flex-col justify-between gap-6 w-3/4">
         <div className="flex flex-col">
-          <div className="text-4xl font-medium inline-flex items-center gap-2">
+          <div className="text-3xl font-semibold inline-flex items-center gap-2">
             {profile?.pseudonyme}
             <AiFillSafetyCertificate className="!size-7 text-blue-500" />
           </div>
@@ -38,6 +39,11 @@ export const ProfileHeader = ({
           city={profile?.city}
           zipCode={profile?.zipCode}
           age={profile?.age}
+        />
+        <ProfileStatLinks
+          followers={profile?.followers}
+          following={profile?.following}
+          username={profile?.username}
         />
         <ProfileActions username={profile?.username} isOwner={isOwner} />
       </div>
