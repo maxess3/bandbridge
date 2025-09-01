@@ -72,3 +72,30 @@ export interface ProfileListItem {
     followers: number;
   };
 }
+
+export interface SearchResult {
+  id: string;
+  pseudonyme: string;
+  profilePictureKey: string | null;
+  lastActiveAt: Date | null;
+  city: string | null;
+  user: {
+    username: string;
+  };
+  _count: {
+    followers: number;
+  };
+}
+
+export interface AutocompleteResponse {
+  profiles: SearchResult[];
+  hasMore: boolean;
+  totalFound: number;
+}
+
+export interface SearchResponse {
+  profiles: SearchResult[];
+  nextCursor: string | null;
+  hasMore: boolean;
+  totalFound: number;
+}
