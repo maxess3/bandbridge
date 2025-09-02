@@ -5,13 +5,17 @@ export const ProfileBasicInfo = ({
   city,
   zipCode,
   age,
+  departmentName,
 }: {
   city?: string;
   zipCode?: string;
+  departmentName?: string | null;
   age?: number | null;
 }) => {
-  const hasLocation = city && zipCode;
-  const locationText = hasLocation ? `${city}, ${zipCode}` : null;
+  const hasLocation = city && zipCode && departmentName;
+  const locationText = hasLocation
+    ? `${city}, ${departmentName}, ${zipCode}`
+    : null;
   const ageText = age ? ` (${age} ans)` : "";
 
   return (

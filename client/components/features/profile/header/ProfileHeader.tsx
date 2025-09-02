@@ -39,6 +39,7 @@ export const ProfileHeader = ({
           city={profile?.city}
           zipCode={profile?.zipCode}
           age={profile?.age}
+          departmentName={profile?.departmentName}
         />
         <ProfileStatLinks
           followers={profile?.followers}

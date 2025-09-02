@@ -35,6 +35,7 @@ export const getProfilePublic = async (req: Request, res: Response) => {
             lastActiveAt: true,
             country: true,
             city: true,
+            departmentName: true,
             zipCode: true,
             socialLinks: {
               select: {
@@ -117,6 +118,7 @@ export const getProfilePublic = async (req: Request, res: Response) => {
       country: profile.country,
       zipCode: profile.zipCode,
       city: profile.city,
+      departmentName: profile.departmentName,
       role: profile.role,
       description: profile.description,
       concertsPlayed: profile.concertsPlayed,
@@ -190,6 +192,7 @@ export const getProfileOwner = async (req: Request, res: Response) => {
             country: true,
             city: true,
             zipCode: true,
+            departmentName: true,
             socialLinks: {
               select: {
                 platform: true,
@@ -271,6 +274,7 @@ export const getProfileOwner = async (req: Request, res: Response) => {
       country: profile.country,
       zipCode: profile.zipCode,
       city: profile.city,
+      departmentName: profile.departmentName,
       role: profile.role,
       description: profile.description,
       concertsPlayed: profile.concertsPlayed,
@@ -432,6 +436,7 @@ export const updateGeneralProfileOwner = async (
         country: true,
         zipCode: true,
         city: true,
+        departmentName: true,
         genres: true,
         instruments: {
           select: {
@@ -458,6 +463,7 @@ export const updateGeneralProfileOwner = async (
         country: updatedProfile?.country,
         zipCode: updatedProfile?.zipCode,
         city: updatedProfile?.city,
+        departmentName: updatedProfile?.departmentName,
         genres: updatedProfile?.genres,
         instruments: updatedProfile?.instruments,
       },
@@ -978,6 +984,7 @@ export const getFollowersList = async (req: Request, res: Response) => {
         profilePictureKey: true,
         lastActiveAt: true,
         city: true,
+        departmentName: true,
         user: {
           select: {
             username: true,
@@ -1047,6 +1054,7 @@ export const getFollowingList = async (req: Request, res: Response) => {
         profilePictureKey: true,
         lastActiveAt: true,
         city: true,
+        departmentName: true,
         user: {
           select: {
             username: true,
@@ -1138,6 +1146,7 @@ export const searchProfilesAutocomplete = async (
         profilePictureKey: true,
         lastActiveAt: true,
         city: true,
+        departmentName: true,
         user: {
           select: {
             username: true,
@@ -1230,6 +1239,7 @@ export const searchProfiles = async (req: Request, res: Response) => {
         profilePictureKey: true,
         lastActiveAt: true,
         city: true,
+        departmentName: true,
         user: {
           select: {
             username: true,

@@ -8,6 +8,7 @@ export interface SocialLinks {
 
 export interface LastFollowers {
   city: string | null;
+  departmentName: string | null;
   pseudonyme: string;
   username: string;
   followersCount: number;
@@ -21,10 +22,11 @@ export interface Profile {
   pseudonyme: string;
   age: number | null;
   country: string;
+  city: string;
   zipCode: string;
+  departmentName: string | null;
   profilePictureKey: string;
   role: "MUSICIAN" | string;
-  city: string;
   concertsPlayed:
     | "NOT_SPECIFIED"
     | "LESS_THAN_10"
@@ -65,6 +67,7 @@ export interface ProfileListItem {
   profilePictureKey: string;
   lastActiveAt: Date | null;
   city: string | null;
+  departmentName: string | null;
   user: {
     username: string;
   };
@@ -79,6 +82,7 @@ export interface SearchResult {
   profilePictureKey: string | null;
   lastActiveAt: Date | null;
   city: string | null;
+  departmentName: string | null;
   user: {
     username: string;
   };
