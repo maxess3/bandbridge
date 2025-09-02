@@ -13,17 +13,17 @@ export const ProfileBasicInfo = ({
   age?: number | null;
 }) => {
   const hasLocation = city && zipCode && departmentName;
-  const locationText = hasLocation
-    ? `${city}, ${departmentName}, ${zipCode}`
-    : null;
+  const locationText = `${city}, ${departmentName}, ${zipCode}`;
   const ageText = age ? ` (${age} ans)` : "";
 
   return (
     <div className="flex flex-col font-medium text-base space-y-2">
-      <span className="flex items-center gap-2 opacity-80">
-        {hasLocation && <IoLocationOutline className="!size-5" />}
-        {locationText}
-      </span>
+      {hasLocation && (
+        <span className="flex items-center gap-2 opacity-80">
+          <IoLocationOutline className="!size-5" />
+          {locationText}
+        </span>
+      )}
       <span className="flex items-center gap-2 opacity-80">
         <FiUser className="!size-5" />
         Musicien{ageText}

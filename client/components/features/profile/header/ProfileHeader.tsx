@@ -31,10 +31,12 @@ export const ProfileHeader = ({
             @{profile?.username}
           </div>
         </div>
-        <div className="flex flex-col space-y-1">
-          <ProfileInstruments instruments={profile?.instruments} />
-          <ProfileMusicGenres genres={profile?.genres} />
-        </div>
+        {(profile?.instruments.length > 0 || profile?.genres.length > 0) && (
+          <div className="flex flex-col space-y-1">
+            <ProfileInstruments instruments={profile?.instruments} />
+            <ProfileMusicGenres genres={profile?.genres} />
+          </div>
+        )}
         <ProfileBasicInfo
           city={profile?.city}
           zipCode={profile?.zipCode}
