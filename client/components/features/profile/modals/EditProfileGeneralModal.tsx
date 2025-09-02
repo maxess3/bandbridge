@@ -104,7 +104,7 @@ export function EditProfileGeneralModal() {
           navigationRoute={`/${profile?.username}`}
           defaultValues={{
             pseudonyme: profile?.pseudonyme || "",
-            country: profile?.country || "France",
+            country: (profile?.country || "France") as "France",
             zipcode: profile?.zipCode ?? "",
             city: profile?.city ?? "",
             instruments:
@@ -118,7 +118,12 @@ export function EditProfileGeneralModal() {
                   index: number
                 ) => ({
                   instrumentTypeId: instrument.instrumentTypeId || "",
-                  level: instrument.level,
+                  level: instrument.level as
+                    | "BEGINNER"
+                    | "INTERMEDIATE"
+                    | "ADVANCED"
+                    | "EXPERT"
+                    | null,
                   order: instrument.order ?? index,
                 })
               ) || [],

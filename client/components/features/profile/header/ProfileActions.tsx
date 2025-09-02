@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useFocusManager } from "@/contexts/FocusManagerContext";
 import { Button } from "@/components/ui/button";
 import { FollowButton } from "@/components/features/profile/buttons/FollowButton";
 import { FiMessageSquare, FiShare } from "react-icons/fi";
@@ -15,6 +16,7 @@ export const ProfileActions = ({
   isOwner: boolean;
 }) => {
   const { data: session } = useSession();
+  const { captureFocus } = useFocusManager();
 
   if (!session?.user) return null;
 
@@ -23,6 +25,7 @@ export const ProfileActions = ({
       <div className="flex gap-2">
         <Link
           href={`/${username}/edit/profile/general`}
+          onClick={captureFocus}
           className="border font-semibold px-4 flex gap-2 justify-center items-center rounded-full hover:bg-hover"
         >
           <Pencil className="!size-4" />

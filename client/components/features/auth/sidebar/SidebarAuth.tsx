@@ -1,18 +1,12 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
-import { LayoutDashboard, Layers, Newspaper, Users } from "lucide-react";
+import { LayoutDashboard, Newspaper, Users } from "lucide-react";
 import { SidebarNavMain } from "@/components/features/auth/sidebar/SidebarNavMain";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
 
 const data = {
@@ -53,34 +47,8 @@ const data = {
 export function SidebarAuth({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
-  const { state, isMobile, openMobile } = useSidebar();
-  const isCollapsed = isMobile ? !openMobile : state === "collapsed";
-
   return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="h-16">
-        <SidebarMenu className="h-full">
-          <SidebarMenuItem className="flex items-center relative h-full">
-            <SidebarMenuButton
-              asChild
-              className="hover:bg-transparent !pl-[0.75rem] h-12"
-            >
-              <Link href="/home" className="cursor-pointer">
-                <Layers className="!size-5 mr-1" />
-                <span
-                  className={`font-poppins font-semibold text-2xl transition-all duration-200 ease-in-out whitespace-nowrap ${
-                    isCollapsed
-                      ? "opacity-0 scale-0 max-w-0"
-                      : "opacity-100 scale-100 max-w-none"
-                  }`}
-                >
-                  chordeus
-                </span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
+    <Sidebar className="top-14" collapsible="icon" {...props}>
       <SidebarContent>
         <SidebarNavMain items={data.navMain} />
       </SidebarContent>

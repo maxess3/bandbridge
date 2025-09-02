@@ -25,7 +25,7 @@ export interface Profile {
   city: string;
   zipCode: string;
   departmentName: string | null;
-  profilePictureKey: string;
+  profilePictureKey: string | null;
   role: "MUSICIAN" | string;
   concertsPlayed:
     | "NOT_SPECIFIED"
@@ -64,7 +64,7 @@ export interface Profile {
 export interface ProfileListItem {
   id: string;
   pseudonyme: string;
-  profilePictureKey: string;
+  profilePictureKey: string | null;
   lastActiveAt: Date | null;
   city: string | null;
   departmentName: string | null;

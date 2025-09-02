@@ -1,6 +1,9 @@
 import { Router } from "express";
 import authenticateToken from "../middleware/authenticateToken";
-import { validateSchema } from "../middleware/validateSchema";
+import {
+  validateBodySchema,
+  validateQuerySchema,
+} from "../middleware/validateSchema";
 import upload, { handleMulterError } from "../middleware/multerUpload";
 import {
   formGeneralProfile,
@@ -17,14 +20,14 @@ router.get("/me", authenticateToken, ProfileController.getProfileOwner);
 router.put(
   "/me",
   authenticateToken,
-  validateSchema(formGeneralProfile),
+  validateBodySchema(formGeneralProfile),
   ProfileController.updateGeneralProfileOwner
 );
 
 router.put(
   "/me/info",
   authenticateToken,
-  validateSchema(formInfoProfile),
+  validateBodySchema(formInfoProfile),
   ProfileController.updateInfoProfileOwner
 );
 
@@ -67,14 +70,14 @@ router.get("/genres", ProfileController.getMusicGenres);
 router.get(
   "/autocomplete",
   authenticateToken,
-  validateSchema(searchAutocompleteSchema),
+  validateQuerySchema(searchAutocompleteSchema),
   ProfileController.searchProfilesAutocomplete
 );
 
 router.get(
   "/search",
   authenticateToken,
-  validateSchema(searchQuerySchema),
+  validateQuerySchema(searchQuerySchema),
   ProfileController.searchProfiles
 );
 

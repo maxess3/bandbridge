@@ -45,7 +45,7 @@ export function SidebarNavMain({
                   <>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
-                        className="h-12 py-3 pl-[0.825rem] pr-3 text-lg font-medium"
+                        className="h-12 py-3 pl-[0.825rem] pr-3 text-lg"
                         tooltip={item.title}
                       >
                         {item.icon && <item.icon className="mr-1.5 !size-5" />}
@@ -73,7 +73,7 @@ export function SidebarNavMain({
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton
                               href={subItem.url}
-                              className="h-12 py-3 pl-[0.825rem] pr-3 text-lg font-medium"
+                              className="h-12 py-3 pl-[0.825rem] pr-3 text-lg"
                             >
                               <span
                                 className={`transition-all duration-200 ease-in-out whitespace-nowrap ${
@@ -92,7 +92,7 @@ export function SidebarNavMain({
                   </>
                 ) : (
                   <SidebarMenuButton
-                    className="h-12 pl-[0.825rem] pr-3 text-base font-medium"
+                    className="h-14 pl-[0.825rem] pr-3 text-lg"
                     tooltip={item.title}
                   >
                     {item.icon && <item.icon className="mr-1.5 !size-5" />}

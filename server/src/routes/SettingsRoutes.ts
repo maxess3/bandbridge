@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validateSchema } from "../middleware/validateSchema";
+import { validateBodySchema } from "../middleware/validateSchema";
 import { formUserSettings } from "../lib/zod";
 import * as SettingsController from "../Controller/SettingsController";
 
@@ -10,9 +10,9 @@ router.get("/user-settings", SettingsController.getUserSettings);
 
 // Route pour mettre à jour les paramètres utilisateur
 router.put(
-	"/user-settings",
-	validateSchema(formUserSettings),
-	SettingsController.updateUserSettings
+  "/user-settings",
+  validateBodySchema(formUserSettings),
+  SettingsController.updateUserSettings
 );
 
 export default router;

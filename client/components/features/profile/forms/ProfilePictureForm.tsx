@@ -8,7 +8,10 @@ import { getProfileImageUrl } from "@/utils/utils";
 export const ProfilePictureForm = () => {
   const { data: profile } = useProfile();
 
-  const imageURL = getProfileImageUrl(profile?.profilePictureKey, "medium");
+  const imageURL = getProfileImageUrl(
+    profile?.profilePictureKey || "",
+    "medium"
+  );
 
   return (
     <div className="space-y-6 py-6">

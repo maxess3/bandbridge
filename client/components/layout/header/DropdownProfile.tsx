@@ -22,7 +22,6 @@ import { LuSettings } from "react-icons/lu";
 import { RiBugLine } from "react-icons/ri";
 import { LuPencil } from "react-icons/lu";
 import { LuUser } from "react-icons/lu";
-import { ChevronDown } from "lucide-react";
 import { DefaultProfilePicture } from "@/components/features/profile/icons/DefaultProfilePicture";
 
 export const DropdownProfile = () => {
@@ -56,14 +55,14 @@ export const DropdownProfile = () => {
 
   return (
     <DropdownMenu modal={false} open={isOpen} onOpenChange={handleOpenChange}>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger className="h-full" asChild>
         <button
-          className="flex items-center gap-x-2.5 w-52 cursor-pointer bg-transparent text-left rounded-md"
+          className="flex items-center justify-center bg-transparent w-16 hover:bg-hover cursor-pointer"
           aria-label={`Menu profil de ${
             session?.user.pseudonyme || "utilisateur"
           }`}
         >
-          <Avatar>
+          <Avatar className="w-9 h-9">
             <AvatarImage
               src={imageURL || undefined}
               alt="Profile picture"
@@ -71,25 +70,13 @@ export const DropdownProfile = () => {
               sizes="36px"
             />
             <AvatarFallback className="bg-secondary pointer-events-none">
-              <DefaultProfilePicture className="mt-7 mr-1 w-[50px] h-[50px] text-background" />
+              <DefaultProfilePicture className="mt-6 mr-1 w-[45px] h-[45px] text-background" />
             </AvatarFallback>
           </Avatar>
-          <span className="flex flex-col min-w-0 flex-1">
-            <span className="text-base font-semibold truncate">
-              {session?.user.pseudonyme}
-            </span>
-            <span className="text-xs opacity-80 truncate font-medium">
-              {session?.user.email}
-            </span>
-          </span>
-          <ChevronDown
-            className={`ml-auto transition-all duration-200 ease-in-out size-5 ${
-              isOpen ? "rotate-180" : "rotate-0"
-            }`}
-          />
+          <span className="absolute flex w-3 h-3 bg-green-600 rounded-full bottom-1.5 right-3.5 border-2 border-background"></span>
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-60 mt-3.5 mr-1">
+      <DropdownMenuContent className="w-60 mt-1 mr-2">
         <DropdownMenuGroup className="space-y-1">
           <div className="p-2">
             <div className="w-full space-y-3">

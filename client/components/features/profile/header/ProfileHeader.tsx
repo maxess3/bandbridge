@@ -18,7 +18,7 @@ export const ProfileHeader = ({
     <div className="flex items-start gap-6">
       <ProfilePicture
         isOwner={isOwner}
-        src={profile?.profilePictureKey}
+        src={profile?.profilePictureKey || ""}
         alt="Photo de profil"
       />
       <div className="flex flex-col justify-between gap-6 w-3/4">
