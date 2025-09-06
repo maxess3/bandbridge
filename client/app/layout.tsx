@@ -1,6 +1,6 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "./globals.css";
 import { ThemeProviders } from "@/providers/ThemeProviders";
 import AuthSessionProviders from "@/providers/AuthSessionProviders";
 import { ReactQueryClientProvider } from "@/providers/ReactQueryClientProvider";
@@ -49,7 +49,7 @@ export default async function RootLayout({
                   toastOptions={{
                     classNames: {
                       toast:
-                        "bg-background border border-border text-foreground text-sm shadow-xl [&>div>[data-title]]:opacity-90 [&>div>[data-title]]:font-normal",
+                        "bg-background border border-border text-foreground text-sm shadow-xl [&>div>[data-title]]:opacity-90 [&>div>[data-title]]:font-normal right-0",
                       error:
                         "[&>div>svg]:text-red-700 dark:[&>div>svg]:text-red-600",
                       success:
@@ -62,8 +62,8 @@ export default async function RootLayout({
                       icon: "[&>svg]:w-6 [&>svg]:h-6 mr-2",
                     },
                   }}
-                  position="bottom-left"
-                  offset={10}
+                  position="top-right"
+                  offset={80}
                   duration={3000}
                 />
                 <TooltipProvider>

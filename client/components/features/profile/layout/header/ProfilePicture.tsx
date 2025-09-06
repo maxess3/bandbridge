@@ -6,7 +6,7 @@ import { EditProfilePictureModal } from "@/components/features/profile/modals/Ed
 import { useFocusManager } from "@/contexts/FocusManagerContext";
 import { getProfileImageUrl } from "@/utils/utils";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { DefaultProfilePicture } from "@/components/features/profile/icons/DefaultProfilePicture";
+import { DefaultProfilePicture } from "@/components/features/profile/avatar/DefaultProfilePicture";
 
 export const ProfilePicture = ({
   isOwner,

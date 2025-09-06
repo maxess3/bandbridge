@@ -2,10 +2,10 @@
 
 import { useProfile } from "@/hooks/useProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { DefaultProfilePicture } from "@/components/features/profile/icons/DefaultProfilePicture";
+import { DefaultProfilePicture } from "@/components/features/profile/avatar/DefaultProfilePicture";
 import { getProfileImageUrl } from "@/utils/utils";
 
-export const ProfilePictureForm = () => {
+export const ProfilePictureMain = () => {
   const { data: profile } = useProfile();
 
   const imageURL = getProfileImageUrl(

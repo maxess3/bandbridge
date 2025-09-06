@@ -13,14 +13,7 @@ import { z } from "zod";
 import { AutocompleteProvider } from "@/contexts/AutocompleteContext";
 import { useSession } from "next-auth/react";
 import { useSessionUpdate } from "@/hooks/useSessionUpdate";
-
-interface GroupedInstruments {
-  [key: string]: Array<{
-    id: string;
-    name: string;
-    category: string;
-  }>;
-}
+import { GroupedInstruments } from "@/types/Instrument";
 
 export function EditProfileGeneralModal() {
   const router = useRouter();

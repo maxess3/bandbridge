@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSidebarGlobal } from "@/contexts/SidebarGlobalContext";
-import { DropdownProfile } from "@/components/layout/header/DropdownProfile";
+import { DropdownProfile } from "@/components/layout/header/navbar/DropdownProfile";
 import SearchBar from "@/components/features/search/SearchBar";
 import { LuMessageCircle } from "react-icons/lu";
 import { IoNotificationsOutline } from "react-icons/io5";
@@ -45,10 +45,10 @@ export const NavbarAuth = () => {
         <SearchBar />
         <div className="flex items-center h-full">
           <div className="flex items-center h-full">
-            <button className="border-l border-t w-16 h-full flex items-center justify-center  hover:bg-hover cursor-pointer rounded-none">
+            <button className="border-l border-t w-14 h-full flex items-center justify-center  hover:bg-hover cursor-pointer rounded-none">
               <IoNotificationsOutline className="!size-6 opacity-80" />
             </button>
-            <button className="border-l border-t border-r w-16 h-full flex items-center justify-center  hover:bg-hover cursor-pointer rounded-none">
+            <button className="border-l border-t border-r w-14 h-full flex items-center justify-center  hover:bg-hover cursor-pointer rounded-none">
               <LuMessageCircle className="!size-6 opacity-80" />
             </button>
           </div>

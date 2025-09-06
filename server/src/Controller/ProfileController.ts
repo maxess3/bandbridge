@@ -1108,9 +1108,9 @@ export const searchProfilesAutocomplete = async (
     }
 
     const searchQuery = query.trim();
-    if (searchQuery.length < 2) {
+    if (searchQuery.length < 1) {
       res.status(400).json({
-        message: "La recherche doit contenir au moins 2 caractères",
+        message: "La recherche doit contenir au moins 1 caractère",
       });
       return;
     }
@@ -1150,6 +1150,23 @@ export const searchProfilesAutocomplete = async (
         user: {
           select: {
             username: true,
+          },
+        },
+        instruments: {
+          select: {
+            instrumentTypeId: true,
+            level: true,
+            order: true,
+            instrumentType: {
+              select: {
+                name: true,
+                profession: true,
+                category: true,
+              },
+            },
+          },
+          orderBy: {
+            order: "asc",
           },
         },
         _count: {
@@ -1196,9 +1213,9 @@ export const searchProfiles = async (req: Request, res: Response) => {
     }
 
     const searchQuery = query.trim();
-    if (searchQuery.length < 2) {
+    if (searchQuery.length < 1) {
       res.status(400).json({
-        message: "La recherche doit contenir au moins 2 caractères",
+        message: "La recherche doit contenir au moins 1 caractère",
       });
       return;
     }

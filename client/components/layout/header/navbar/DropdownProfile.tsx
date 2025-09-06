@@ -22,7 +22,7 @@ import { LuSettings } from "react-icons/lu";
 import { RiBugLine } from "react-icons/ri";
 import { LuPencil } from "react-icons/lu";
 import { LuUser } from "react-icons/lu";
-import { DefaultProfilePicture } from "@/components/features/profile/icons/DefaultProfilePicture";
+import { DefaultProfilePicture } from "@/components/features/profile/avatar/DefaultProfilePicture";
 
 export const DropdownProfile = () => {
   const router = useRouter();
@@ -57,7 +57,7 @@ export const DropdownProfile = () => {
     <DropdownMenu modal={false} open={isOpen} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger className="h-full" asChild>
         <button
-          className="flex items-center justify-center bg-transparent w-16 hover:bg-hover cursor-pointer"
+          className="flex items-center justify-center bg-transparent w-14 hover:bg-hover cursor-pointer"
           aria-label={`Menu profil de ${
             session?.user.pseudonyme || "utilisateur"
           }`}

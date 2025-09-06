@@ -1,20 +1,5 @@
-export interface SocialLinks {
-  youtube?: string;
-  instagram?: string;
-  tiktok?: string;
-  twitter?: string;
-  soundcloud?: string;
-}
+import { Instrument } from "@/types/Instrument";
 
-export interface LastFollowers {
-  city: string | null;
-  departmentName: string | null;
-  pseudonyme: string;
-  username: string;
-  followersCount: number;
-  profilePictureKey: string | null;
-  lastActiveAt: Date | null;
-}
 export interface Profile {
   userId: string;
   username: string;
@@ -44,20 +29,36 @@ export interface Profile {
   followers: number;
   following: number;
   lastFollowers: LastFollowers[];
-  instruments: {
-    instrumentTypeId: string;
-    level: string | null;
-    order: number;
-    instrumentType: {
-      name: string;
-      profession: string | null;
-    };
-  }[];
+  instruments: Instrument[];
   genres: string[];
   styles?: string[];
   lastSeen?: string;
   lastActiveAt?: Date | null;
   createdAt?: string;
+}
+
+export interface SocialLink {
+  id: string;
+  platform: string;
+  url: string;
+}
+
+export interface SocialLinks {
+  youtube?: string;
+  instagram?: string;
+  tiktok?: string;
+  twitter?: string;
+  soundcloud?: string;
+}
+
+export interface LastFollowers {
+  city: string | null;
+  departmentName: string | null;
+  pseudonyme: string;
+  username: string;
+  followersCount: number;
+  profilePictureKey: string | null;
+  lastActiveAt: Date | null;
 }
 
 //  Followers/following lists
@@ -74,32 +75,4 @@ export interface ProfileListItem {
   _count: {
     followers: number;
   };
-}
-
-export interface SearchResult {
-  id: string;
-  pseudonyme: string;
-  profilePictureKey: string | null;
-  lastActiveAt: Date | null;
-  city: string | null;
-  departmentName: string | null;
-  user: {
-    username: string;
-  };
-  _count: {
-    followers: number;
-  };
-}
-
-export interface AutocompleteResponse {
-  profiles: SearchResult[];
-  hasMore: boolean;
-  totalFound: number;
-}
-
-export interface SearchResponse {
-  profiles: SearchResult[];
-  nextCursor: string | null;
-  hasMore: boolean;
-  totalFound: number;
 }

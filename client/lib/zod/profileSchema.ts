@@ -182,7 +182,7 @@ export const formProfilePicture = z.object({
 export const searchAutocompleteSchema = z.object({
   q: z
     .string()
-    .min(2, "La recherche doit contenir au moins 2 caractères")
+    .min(1, "La recherche doit contenir au moins 1 caractère")
     .max(100, "La recherche ne doit pas dépasser 100 caractères")
     .trim(),
 });
@@ -190,7 +190,7 @@ export const searchAutocompleteSchema = z.object({
 export const searchQuerySchema = z.object({
   q: z
     .string()
-    .min(2, "La recherche doit contenir au moins 2 caractères")
+    .min(1, "La recherche doit contenir au moins 1 caractère")
     .max(100, "La recherche ne doit pas dépasser 100 caractères")
     .trim(),
   limit: z

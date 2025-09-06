@@ -1,13 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { LayoutDashboard, Newspaper, Users } from "lucide-react";
-import { SidebarNavMain } from "@/components/features/auth/sidebar/SidebarNavMain";
+import { SidebarNavMain } from "@/components/layout/sidebar/SidebarNavMain";
+import { SidebarNavHeader } from "@/components/layout/sidebar/SidebarNavHeader";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarHeader,
 } from "@/components/ui/sidebar";
+import { LayoutDashboard, Newspaper, Users, User, MapPin } from "lucide-react";
 
 const data = {
   user: {
@@ -34,12 +36,12 @@ const data = {
     {
       title: "Artistes",
       url: "/lokzefzef",
-      icon: Users,
+      icon: User,
     },
     {
       title: "Concerts",
       url: "/concerts",
-      icon: Users,
+      icon: MapPin,
     },
   ],
 };
@@ -49,6 +51,9 @@ export function SidebarAuth({
 }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar className="top-14" collapsible="icon" {...props}>
+      <SidebarHeader className="md:hidden sm:block">
+        <SidebarNavHeader />
+      </SidebarHeader>
       <SidebarContent>
         <SidebarNavMain items={data.navMain} />
       </SidebarContent>

@@ -37,7 +37,7 @@ export function SidebarNavMain({
   return (
     <SidebarGroup>
       <SidebarGroupContent>
-        <SidebarMenu>
+        <SidebarMenu className="py-2">
           {items.map((item) => (
             <Collapsible key={item.title} asChild className="group/collapsible">
               <SidebarMenuItem key={item.title}>
@@ -45,7 +45,7 @@ export function SidebarNavMain({
                   <>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuButton
-                        className="h-12 py-3 pl-[0.825rem] pr-3 text-lg"
+                        className="h-12 py-3 pl-[0.825rem] pr-3 text-base bg-[red]"
                         tooltip={item.title}
                       >
                         {item.icon && <item.icon className="mr-1.5 !size-5" />}
@@ -73,7 +73,7 @@ export function SidebarNavMain({
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton
                               href={subItem.url}
-                              className="h-12 py-3 pl-[0.825rem] pr-3 text-lg"
+                              className="h-12 py-3 pl-[0.825rem] pr-3 text-base bg-[blue]"
                             >
                               <span
                                 className={`transition-all duration-200 ease-in-out whitespace-nowrap ${
@@ -92,12 +92,12 @@ export function SidebarNavMain({
                   </>
                 ) : (
                   <SidebarMenuButton
-                    className="h-14 pl-[0.825rem] pr-3 text-lg"
+                    className="h-10 pl-[0.825rem] pr-3 text-sm"
                     tooltip={item.title}
                   >
-                    {item.icon && <item.icon className="mr-1.5 !size-5" />}
+                    {item.icon && <item.icon className="mr-1 !size-5" />}
                     <span
-                      className={`transition-all duration-200 ease-in-out whitespace-nowrap ${
+                      className={`transition-all duration-200 ease-in-out whitespace-nowrap hover:bg-hover ${
                         isCollapsed
                           ? "opacity-0 scale-0 max-w-0"
                           : "opacity-100 scale-100 max-w-none"

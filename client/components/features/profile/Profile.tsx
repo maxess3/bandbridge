@@ -1,7 +1,7 @@
 "use client";
 
 import { useProfile } from "@/hooks/useProfile";
-import { ProfileLayout } from "@/components/features/profile/ProfileLayout";
+import { ProfileLayout } from "@/components/features/profile/layout/ProfileLayout";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

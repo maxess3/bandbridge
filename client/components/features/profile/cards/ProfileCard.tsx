@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { DefaultProfilePicture } from "../icons/DefaultProfilePicture";
+import { DefaultProfilePicture } from "../avatar/DefaultProfilePicture";
 import { getProfileImageUrl } from "@/utils/utils";
 import { ProfileListItem } from "@/types/Profile";
 
@@ -18,7 +18,7 @@ export const ProfileCard = ({
 }: ProfileCardProps) => {
   const { pseudonyme, profilePictureKey, user, _count } = profile;
   const { username } = user;
-  const imageURL = getProfileImageUrl(profilePictureKey, "medium");
+  const imageURL = getProfileImageUrl(profilePictureKey || "", "medium");
 
   return (
     <Link

@@ -1,11 +1,11 @@
 import { Profile } from "@/types/Profile";
-import { ProfilePicture } from "@/components/features/profile/header/ProfilePicture";
-import { ProfileInstruments } from "@/components/features/profile/header/ProfileInstruments";
-import { ProfileMusicGenres } from "@/components/features/profile/header/ProfileMusicGenres";
-import { ProfileBasicInfo } from "@/components/features/profile/header/ProfileBasicInfo";
-import { ProfileActions } from "@/components/features/profile/header/ProfileActions";
+import { ProfilePicture } from "@/components/features/profile/layout/header/ProfilePicture";
+import { ProfileInstruments } from "@/components/features/profile/layout/header/ProfileInstruments";
+import { ProfileMusicGenres } from "@/components/features/profile/layout/header/ProfileMusicGenres";
+import { ProfileBasicInfo } from "@/components/features/profile/layout/header/ProfileBasicInfo";
+import { ProfileActions } from "@/components/features/profile/layout/header/ProfileActions";
+import { ProfileStatLinks } from "@/components/features/profile/layout/header/ProfileStatLinks";
 import { AiFillSafetyCertificate } from "react-icons/ai";
-import { ProfileStatLinks } from "@/components/features/profile/header/ProfileStatLinks";
 
 export const ProfileHeader = ({
   profile,

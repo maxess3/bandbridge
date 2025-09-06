@@ -1,9 +1,9 @@
-import Navbar from "@/components/layout/header/Navbar";
-import { NavbarAuth } from "@/components/features/auth/navbar/NavbarAuth";
+import DefaultNavbar from "@/components/layout/header/navbar/default/DefaultNavbar";
+import { NavbarAuth } from "@/components/layout/header/navbar/auth/NavbarAuth";
 import Footer from "@/components/layout/footer/Footer";
 import { SidebarGlobalProvider } from "@/contexts/SidebarGlobalContext";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { SidebarAuth } from "@/components/features/auth/sidebar/SidebarAuth";
+import { SidebarAuth } from "@/components/layout/sidebar/SidebarAuth";
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ export async function ConditionalLayout({
   if (isPublic) {
     return (
       <div className="w-full mx-auto">
-        <Navbar />
+        <DefaultNavbar />
         <div className="max-w-7xl mx-auto px-6">{children}</div>
         <Footer />
       </div>
