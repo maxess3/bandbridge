@@ -12,6 +12,12 @@ import { FiMessageSquare, FiShare } from "react-icons/fi";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 
+interface FollowData {
+  isFollowing: boolean;
+  targetUsername: string;
+  timestamp: string;
+}
+
 export const ProfileActions = ({
   username,
   isOwner,
@@ -29,11 +35,7 @@ export const ProfileActions = ({
     return data;
   }, 400);
 
-  const {
-    data: followData,
-    refetch: refetchFollowStatus,
-    isLoading: isFollowLoading,
-  } = useQuery({
+  const { data: followData, isLoading: isFollowLoading } = useQuery({
     queryKey: ["isFollowing", username],
     queryFn: delayedQueryFn,
     enabled: !!username && !isOwner && !!session?.user,
@@ -56,10 +58,13 @@ export const ProfileActions = ({
       ]);
 
       // Mise à jour optimiste immédiate
-      queryClient.setQueryData(["isFollowing", username], (old: any) => ({
-        ...old,
-        isFollowing: !old?.isFollowing,
-      }));
+      queryClient.setQueryData<FollowData>(
+        ["isFollowing", username],
+        (old: FollowData | undefined) => ({
+          ...old!,
+          isFollowing: !old?.isFollowing,
+        })
+      );
 
       // Retourner le contexte pour une éventuelle restauration en cas d'erreur
       return { previousFollowData };
