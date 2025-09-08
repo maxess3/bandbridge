@@ -11,7 +11,7 @@ export const ProfileVideos = ({
   return (
     <div className="flex flex-col border py-6 px-6 rounded-2xl h-fit relative">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-medium">Vidéos</h2>
+        <h2 className="text-xl font-medium">Vidéos</h2>
         <EditSectionButton
           isOwner={isOwner}
           url={`/${profile?.username}/edit/profile/general`}

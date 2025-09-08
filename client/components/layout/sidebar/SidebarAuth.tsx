@@ -50,7 +50,11 @@ export function SidebarAuth({
   ...props
 }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar className="top-14" collapsible="icon" {...props}>
+    <Sidebar
+      className="top-14 h-[calc(100vh-2.5rem)]"
+      collapsible="icon"
+      {...props}
+    >
       <SidebarHeader className="md:hidden sm:block">
         <SidebarNavHeader />
       </SidebarHeader>

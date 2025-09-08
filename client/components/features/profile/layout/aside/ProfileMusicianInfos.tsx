@@ -62,7 +62,7 @@ export const ProfileMusicianInfos = ({
   return (
     <div className="flex flex-col rounded-xl border relative p-6 space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-medium">Infos</h2>
+        <h2 className="text-xl font-medium">Infos</h2>
         <EditSectionButton
           isOwner={isOwner}
           url={`/${profile?.username}/edit/profile/info`}
