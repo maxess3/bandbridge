@@ -5,6 +5,7 @@ import AutocompleteDropdown from "@/components/features/search/AutocompleteDropd
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearchAutocomplete } from "@/hooks/useSearchAutocomplete";
 import { useSearchCache } from "@/hooks/useSearchCache";
+import { useClickOutside } from "@/hooks/useClickOutside";
 import { IoIosSearch } from "react-icons/io";
 import { SEARCH_CONSTANTS, AutocompleteSearchResult } from "@/types/Search";
 
@@ -13,6 +14,7 @@ const { MIN_SEARCH_LENGTH, DEBOUNCE_DELAY } = SEARCH_CONSTANTS;
 export default function SearchBar() {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [displayedProfiles, setDisplayedProfiles] = useState<
     AutocompleteSearchResult[]
   >([]);
@@ -27,32 +29,26 @@ export default function SearchBar() {
   const debouncedSearch = useDebounce(trimmedSearch, DEBOUNCE_DELAY);
 
   const shouldSearch = debouncedSearch.length >= MIN_SEARCH_LENGTH;
-  const shouldShowAutocomplete = trimmedSearch.length >= MIN_SEARCH_LENGTH;
+  const shouldShowAutocomplete =
+    trimmedSearch.length >= MIN_SEARCH_LENGTH && isFocused;
 
   const { data, isSuccess, isLoading } = useSearchAutocomplete(
     shouldSearch ? debouncedSearch : ""
   );
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        inputRef.current &&
-        !inputRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  useClickOutside({
+    ref: dropdownRef,
+    onOutsideClick: () => {
+      setIsOpen(false);
+    },
+    enabled: isOpen,
+  });
 
   // Gérer le cache et l'affichage des profils
   useEffect(() => {
     if (!shouldShowAutocomplete) {
       setIsOpen(false);
+      console.log("shouldShowAutocomplete false");
       return;
     }
 
@@ -80,11 +76,8 @@ export default function SearchBar() {
     shouldShowAutocomplete,
     trimmedSearch,
     debouncedSearch,
-    data?.profiles,
     isSuccess,
     isLoading,
-    getFromCache,
-    addToCache,
   ]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -93,7 +86,16 @@ export default function SearchBar() {
 
     if (value.length < MIN_SEARCH_LENGTH) {
       setIsOpen(false);
+      console.log("value.length < MIN_SEARCH_LENGTH");
     }
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -118,6 +120,8 @@ export default function SearchBar() {
         value={search}
         onChange={handleSearchChange}
         onKeyDown={handleKeyDown}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
       <IoIosSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-6 opacity-60" />
       {isOpen && (
