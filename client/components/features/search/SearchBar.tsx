@@ -78,6 +78,9 @@ export default function SearchBar() {
     debouncedSearch,
     isSuccess,
     isLoading,
+    addToCache,
+    data?.profiles,
+    getFromCache,
   ]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

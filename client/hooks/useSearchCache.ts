@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { AutocompleteSearchResult } from "@/types/Search";
 
 export const useSearchCache = () => {
@@ -6,11 +6,14 @@ export const useSearchCache = () => {
     Record<string, AutocompleteSearchResult[]>
   >({});
 
-  const addToCache = (query: string, profiles: AutocompleteSearchResult[]) => {
-    setCache((prev) => ({ ...prev, [query]: profiles }));
-  };
+  const addToCache = useCallback(
+    (query: string, profiles: AutocompleteSearchResult[]) => {
+      setCache((prev) => ({ ...prev, [query]: profiles }));
+    },
+    []
+  );
 
-  const getFromCache = (query: string) => cache[query];
+  const getFromCache = useCallback((query: string) => cache[query], [cache]);
 
   return { addToCache, getFromCache };
 };
