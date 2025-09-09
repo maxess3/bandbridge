@@ -36,7 +36,10 @@ const AutocompleteDropdown = forwardRef<
             <div
               key={profile.id}
               className="last:border-b flex items-center gap-2 px-4 py-2.5 cursor-pointer hover:bg-secondary transition-colors"
-              onClick={() => onProfileSelect(profile)}
+              onMouseDown={(e) => {
+                e.preventDefault(); // Empêcher le focus de l'input
+                onProfileSelect(profile);
+              }}
             >
               <Avatar className="h-10 w-10">
                 <AvatarImage
