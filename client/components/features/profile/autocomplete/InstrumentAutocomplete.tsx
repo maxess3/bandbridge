@@ -253,8 +253,9 @@ export const InstrumentAutocomplete = React.forwardRef<
 					e.stopPropagation();
 
 					// Si le dropdown est fermé, l'ouvrir et sélectionner le premier élément
+					// Seulement si on a au moins 1 caractère dans la recherche
 					if (!isOpen) {
-						if (filteredInstruments.length > 0) {
+						if (filteredInstruments.length > 0 && searchValue.length >= 1) {
 							setIsOpen(true);
 							setSelectedIndex(0);
 						}
@@ -275,8 +276,9 @@ export const InstrumentAutocomplete = React.forwardRef<
 					e.stopPropagation();
 
 					// Si le dropdown est fermé, l'ouvrir et sélectionner le dernier élément
+					// Seulement si on a au moins 1 caractère dans la recherche
 					if (!isOpen) {
-						if (filteredInstruments.length > 0) {
+						if (filteredInstruments.length > 0 && searchValue.length >= 1) {
 							setIsOpen(true);
 							setSelectedIndex(filteredInstruments.length - 1);
 						}
@@ -332,8 +334,8 @@ export const InstrumentAutocomplete = React.forwardRef<
 			const newValue = e.target.value;
 			setSearchValue(newValue);
 
-			// Ouvrir la liste si on tape quelque chose
-			if (newValue.length > 0) {
+			// Ouvrir la liste si on tape au moins 1 caractère
+			if (newValue.length >= 1) {
 				setIsOpen(true);
 				// Réinitialiser la sélection quand on tape
 				setSelectedIndex(-1);
@@ -351,7 +353,7 @@ export const InstrumentAutocomplete = React.forwardRef<
 					onChange={handleInputChange}
 					onKeyDown={handleKeyDown}
 					onFocus={() => {
-						if (searchValue.length > 0) {
+						if (searchValue.length >= 1) {
 							setIsOpen(true);
 						}
 					}}

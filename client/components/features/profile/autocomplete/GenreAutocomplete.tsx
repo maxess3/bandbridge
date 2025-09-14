@@ -216,8 +216,9 @@ export const GenreAutocomplete = React.forwardRef<
 					e.stopPropagation();
 
 					// Si le dropdown est fermé, l'ouvrir et sélectionner le premier élément
+					// Seulement si on a au moins 1 caractère dans la recherche
 					if (!isOpen) {
-						if (filteredGenres.length > 0) {
+						if (filteredGenres.length > 0 && searchValue.length >= 1) {
 							setIsOpen(true);
 							setSelectedIndex(0);
 						}
@@ -236,8 +237,9 @@ export const GenreAutocomplete = React.forwardRef<
 					e.stopPropagation();
 
 					// Si le dropdown est fermé, l'ouvrir et sélectionner le dernier élément
+					// Seulement si on a au moins 1 caractère dans la recherche
 					if (!isOpen) {
-						if (filteredGenres.length > 0) {
+						if (filteredGenres.length > 0 && searchValue.length >= 1) {
 							setIsOpen(true);
 							setSelectedIndex(filteredGenres.length - 1);
 						}
@@ -282,7 +284,7 @@ export const GenreAutocomplete = React.forwardRef<
 			const newValue = e.target.value;
 			setSearchValue(newValue);
 
-			if (newValue.length > 0) {
+			if (newValue.length >= 1) {
 				setIsOpen(true);
 				setSelectedIndex(-1);
 			} else {
@@ -299,7 +301,7 @@ export const GenreAutocomplete = React.forwardRef<
 					onChange={handleInputChange}
 					onKeyDown={handleKeyDown}
 					onFocus={() => {
-						if (searchValue.length > 0) {
+						if (searchValue.length >= 1) {
 							setIsOpen(true);
 						}
 					}}
