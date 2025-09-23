@@ -2,7 +2,7 @@
 
 import { ProfileCard } from "@/components/features/profile/cards/ProfileCard";
 import { useProfileList } from "@/hooks/useProfileList";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useInfiniteScroll } from "@/hooks/data/useInfiniteScroll";
 import { useMemo } from "react";
 import { ProfileListItem } from "@/types/Profile";
 

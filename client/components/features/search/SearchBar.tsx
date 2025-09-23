@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import SearchAutocomplete from "@/components/features/search/SearchAutocomplete";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearchAutocomplete } from "@/hooks/useSearchAutocomplete";
-import { useSearchCache } from "@/hooks/useSearchCache";
+import { useSearchCache } from "@/hooks/data/useSearchCache";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { IoIosSearch } from "react-icons/io";
 import { SEARCH_CONSTANTS, AutocompleteSearchResult } from "@/types/Search";

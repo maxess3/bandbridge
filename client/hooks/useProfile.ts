@@ -2,7 +2,7 @@
 
 import { Profile } from "@/types/Profile";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
-import { useDelayedQuery } from "@/hooks/useDelayedQuery";
+import { useDelayedQuery } from "@/hooks/data/useDelayedQuery";
 
 export const PROFILE_QUERY_KEY = ["profile"];
 
