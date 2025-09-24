@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import { useTextCollapse } from "@/hooks/useTextCollapse";
-import { useTextTruncated } from "@/hooks/useTextTruncated";
+import { useTextCollapse } from "@/hooks/ui/useTextCollapse";
+import { useTextTruncated } from "@/hooks/ui/useTextTruncated";
 
 interface CollapsibleTextProps {
   text: string;

@@ -5,7 +5,7 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { createDelayedFunction } from "@/helper/createDelayedFunction";
+import { createDelayedFunction } from "@/utils";
 
 export const useDelayedQuery = <T, Error = unknown>(
   queryKey: QueryKey,

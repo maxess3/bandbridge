@@ -10,8 +10,8 @@ import { InstrumentAutocomplete } from "@/components/features/profile/autocomple
 import { GenreAutocomplete } from "@/components/features/profile/autocomplete/GenreAutocomplete";
 import { Button } from "@/components/ui/button";
 import { Plus, X, Info } from "lucide-react";
-import { translateInstrument } from "@/utils/translations/instrumentTranslations";
-import { translateGenre } from "@/utils/translations/genreTranslations";
+import { translateInstrument } from "@/utils";
+import { translateGenre } from "@/utils";
 import { FormSelect } from "@/components/shared/forms/FormSelect";
 import { RadioGroup } from "@/components/ui/radio-group";
 import { Radio } from "@/components/shared/buttons/Radio";

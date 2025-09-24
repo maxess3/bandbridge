@@ -17,6 +17,6 @@ export function useSearchAutocomplete(query: string) {
       return data;
     },
     enabled: query.length >= 1,
-    staleTime: 5 * 60 * 1000, // 5 Minutes
+    staleTime: 5 * 60 * 1000, // 5 min
   });
 }

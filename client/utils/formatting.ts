@@ -1,35 +1,3 @@
-export function isPublicRoute(pathname: string): boolean {
-  const PUBLIC_LAYOUT_ROUTES = ["/articles"];
-  return PUBLIC_LAYOUT_ROUTES.some((route) => pathname.startsWith(route));
-}
-
-export function getProfileImageUrl(
-  profilePictureKey: string,
-  size: "thumbnail" | "small" | "medium" | "large"
-) {
-  // Early return si pas de clé
-  if (!profilePictureKey) return null;
-
-  // Validation de l'URL de base
-  const baseUrl = process.env.NEXT_PUBLIC_R2_URL;
-  if (!baseUrl) {
-    console.warn("NEXT_PUBLIC_R2_URL is not defined");
-    return null;
-  }
-
-  try {
-    // Get the base key of the profile picture
-    const oldKey = profilePictureKey;
-    const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
-
-    // Return the profile picture url
-    return `${baseUrl}/${oldKeyBase}-${size}.webp`;
-  } catch (error) {
-    console.error("Error parsing profilePictureKey:", error);
-    return null;
-  }
-}
-
 export function getAgeFromTimestamp(timestamp: string): number {
   const birthDate = new Date(timestamp);
   const today = new Date();
@@ -49,14 +17,6 @@ export function getAgeFromTimestamp(timestamp: string): number {
 export function capitalizeFirstLetterOnly(text: string): string {
   if (!text) return "";
   return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
-}
-
-const profileRoleTranslations: Record<string, string> = {
-  musician: "musicien",
-};
-
-export function translateProfileRole(role: string): string {
-  return profileRoleTranslations[role.toLowerCase()] || role;
 }
 
 export function formatDateToMonthYear(dateString: string): string {

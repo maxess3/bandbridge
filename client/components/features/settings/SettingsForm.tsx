@@ -12,11 +12,11 @@ import { RadioGroup } from "@/components/ui/radio-group";
 import { Radio } from "@/components/shared/buttons/Radio";
 import React from "react";
 import { formUserSettings } from "@/lib/zod";
-import { SETTINGS_QUERY_KEY } from "@/hooks/useSettings";
+import { SETTINGS_QUERY_KEY } from "@/hooks/features/settings/useSettings";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useSession } from "next-auth/react";
 import { useSessionUpdate } from "@/hooks/useSessionUpdate";
-import { useTransitionDelay } from "@/hooks/useTransitionDelay";
+import { useTransitionDelay } from "@/hooks/ui/useTransitionDelay";
 
 type SettingsFormValues = z.infer<typeof formUserSettings>;
 

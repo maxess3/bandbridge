@@ -6,7 +6,7 @@ import {
   UseMutationResult,
 } from "@tanstack/react-query";
 
-import { createDelayedFunction } from "@/helper/createDelayedFunction";
+import { createDelayedFunction } from "@/utils";
 
 export const useDelayedMutation = <
   TData = unknown,

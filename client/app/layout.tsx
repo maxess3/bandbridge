@@ -11,7 +11,7 @@ import { FocusManagerProvider } from "@/contexts/FocusManagerContext";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { headers } from "next/headers";
-import { isPublicRoute } from "@/utils/utils";
+import { isPublicRoute } from "@/utils";
 
 const poppins = Poppins({
   subsets: ["latin"],

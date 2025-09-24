@@ -1,9 +1,9 @@
 "use client";
 
-import { useProfile } from "@/hooks/useProfile";
+import { useProfile } from "@/hooks/features/profile/useProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DefaultProfilePicture } from "@/components/features/profile/avatar/DefaultProfilePicture";
-import { getProfileImageUrl } from "@/utils/utils";
+import { getProfileImageUrl } from "@/utils";
 
 export const ProfilePictureMain = () => {
   const { data: profile } = useProfile();

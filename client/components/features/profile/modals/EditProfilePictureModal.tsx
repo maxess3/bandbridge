@@ -12,13 +12,13 @@ import { ProfilePictureMain } from "@/components/features/profile/avatar/Profile
 import { UpdateProfilePictureForm } from "@/components/features/profile/forms/UpdateProfilePictureForm";
 import { formProfilePicture } from "@/lib/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useProfile } from "@/hooks/useProfile";
-import { PROFILE_QUERY_KEY } from "@/hooks/useProfile";
+import { useProfile } from "@/hooks/features/profile/useProfile";
+import { PROFILE_QUERY_KEY } from "@/hooks/features/profile/useProfile";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { Button } from "../../../ui/button";
 import { Loader2, Trash2, Upload, ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import { useTransitionDelay } from "@/hooks/useTransitionDelay";
+import { useTransitionDelay } from "@/hooks/ui/useTransitionDelay";
 import { useSession } from "next-auth/react";
 import { useSessionLoader } from "@/contexts/SessionLoaderContext";
 import { z } from "zod";

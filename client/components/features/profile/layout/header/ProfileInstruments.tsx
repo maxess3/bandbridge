@@ -5,10 +5,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  translateInstrument,
-  translateProfession,
-} from "@/utils/translations/instrumentTranslations";
+import { translateInstrument, translateProfession } from "@/utils";
 
 interface ProfileInstrumentsProps {
   instruments?: {

@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import { BaseAutocomplete } from "@/components/shared/autocomplete/BaseAutocomplete";
 import { BaseAutocompleteItem } from "@/components/shared/autocomplete/types/autocomplete";
-import { translateInstrument } from "@/utils/translations/instrumentTranslations";
+import { translateInstrument } from "@/utils";
 
 interface InstrumentType {
   id: string;

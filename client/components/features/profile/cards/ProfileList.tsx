@@ -1,7 +1,7 @@
 "use client";
 
 import { ProfileCard } from "@/components/features/profile/cards/ProfileCard";
-import { useProfileList } from "@/hooks/useProfileList";
+import { useProfileList } from "@/hooks/features/profile/useProfileList";
 import { useInfiniteScroll } from "@/hooks/data/useInfiniteScroll";
 import { useMemo } from "react";
 import { ProfileListItem } from "@/types/Profile";

@@ -3,9 +3,9 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import SearchAutocomplete from "@/components/features/search/SearchAutocomplete";
 import { useDebounce } from "@/hooks/useDebounce";
-import { useSearchAutocomplete } from "@/hooks/useSearchAutocomplete";
+import { useSearchAutocomplete } from "@/hooks/features/search/useSearchAutocomplete";
 import { useSearchCache } from "@/hooks/data/useSearchCache";
-import { useClickOutside } from "@/hooks/useClickOutside";
+import { useClickOutside } from "@/hooks/ui/useClickOutside";
 import { IoIosSearch } from "react-icons/io";
 import { SEARCH_CONSTANTS, AutocompleteSearchResult } from "@/types/Search";
 

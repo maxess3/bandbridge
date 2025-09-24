@@ -1,4 +1,4 @@
-import { translateGenre } from "@/utils/translations/genreTranslations";
+import { translateGenre } from "@/utils";
 
 export const ProfileMusicGenres = ({ genres }: { genres?: string[] }) => {
   if (!genres || genres.length === 0) return null;

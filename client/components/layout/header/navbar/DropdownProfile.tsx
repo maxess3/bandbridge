@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
-import { getProfileImageUrl } from "@/utils/utils";
+import { getProfileImageUrl } from "@/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";

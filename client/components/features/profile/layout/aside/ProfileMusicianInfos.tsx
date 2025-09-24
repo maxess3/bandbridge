@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { EditSectionButton } from "@/components/features/profile/buttons/EditSectionButton";
-import { formatDateToMonthYear } from "@/utils/utils";
+import { formatDateToMonthYear } from "@/utils";
 import { Profile } from "@/types/Profile";
 import { AiOutlineYoutube } from "react-icons/ai";
 import { FaInstagram } from "react-icons/fa6";

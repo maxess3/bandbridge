@@ -2,10 +2,10 @@
 
 import { useSession } from "next-auth/react";
 import { useFocusManager } from "@/contexts/FocusManagerContext";
-import { createDelayedFunction } from "@/helper/createDelayedFunction";
+import { createDelayedFunction } from "@/utils";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
-import { PROFILE_QUERY_KEY } from "@/hooks/useProfile";
+import { PROFILE_QUERY_KEY } from "@/hooks/features/profile/useProfile";
 import { Button } from "@/components/ui/button";
 import { FollowButton } from "@/components/features/profile/buttons/FollowButton";
 import { FiMessageSquare, FiShare } from "react-icons/fi";

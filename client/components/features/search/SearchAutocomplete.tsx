@@ -1,8 +1,8 @@
 import { forwardRef, useEffect, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { getProfileImageUrl } from "@/utils/utils";
-import { translateProfession } from "@/utils/translations/instrumentTranslations";
+import { getProfileImageUrl } from "@/utils";
+import { translateProfession } from "@/utils";
 import { AiFillSafetyCertificate } from "react-icons/ai";
 import {
   AutocompleteDropdownProps,
