@@ -4,7 +4,7 @@ import Logo from "@/public/logo/chordeus_logo.png";
 import { NavbarAuthBtn } from "@/components/layout/header/navbar/default/NavbarAuthBtn";
 import { MenuLinks } from "@/components/layout/header/navbar/default/MenuLinks";
 
-async function DefaultNavbar() {
+export const DefaultNavbar = () => {
   return (
     <nav className="py-3 flex items-center justify-center w-full border-b">
       <div className="max-w-7xl lg:px-6 md:px-4 px-2 mx-auto flex justify-between items-center w-full">
@@ -26,6 +26,6 @@ async function DefaultNavbar() {
       </div>
     </nav>
   );
-}
+};
 
 export default DefaultNavbar;
