@@ -7,316 +7,316 @@ import { createAuthTokens } from "../utils/token";
 import nodemailer from "nodemailer";
 
 export const signup = async (req: Request, res: Response) => {
-	const { email, password, firstName, lastName } = req.body;
+  const { email, password, firstName, lastName } = req.body;
 
-	const findUser = await prisma.user.findFirst({
-		where: {
-			email,
-		},
-	});
+  const findUser = await prisma.user.findFirst({
+    where: {
+      email,
+    },
+  });
 
-	if (findUser) {
-		res.status(400).json({ message: "L'adresse email est déjà utilisée" });
-		return;
-	}
+  if (findUser) {
+    res.status(400).json({ message: "L'adresse email est déjà utilisée" });
+    return;
+  }
 
-	const formatFirstName = formatName(firstName);
-	const formatLastName = formatName(lastName);
+  const formatFirstName = formatName(firstName);
+  const formatLastName = formatName(lastName);
 
-	try {
-		await prisma.$transaction(async (prisma) => {
-			const username = await generateUniqueUsername(formatFirstName, prisma);
+  try {
+    await prisma.$transaction(async (prisma) => {
+      const username = await generateUniqueUsername(formatFirstName, prisma);
 
-			const user = await prisma.user.create({
-				data: {
-					email,
-					password: hashSync(password, 10),
-					provider: "MANUAL",
-					firstName: formatFirstName,
-					lastName: formatLastName,
-					username,
-				},
-			});
+      const user = await prisma.user.create({
+        data: {
+          email,
+          password: hashSync(password, 10),
+          provider: "MANUAL",
+          firstName: formatFirstName,
+          lastName: formatLastName,
+          username,
+        },
+      });
 
-			await prisma.profile.create({
-				data: {
-					userId: user.id,
-					pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
-				},
-			});
-		});
-	} catch (error) {
-		res.status(500).json({ error: "Signup failed." });
-		return;
-	}
+      await prisma.profile.create({
+        data: {
+          userId: user.id,
+          pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
+        },
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Signup failed." });
+    return;
+  }
 
-	res.status(200).json({ message: "User created." });
+  res.status(200).json({ message: "User created." });
 };
 
 export const login = async (req: Request, res: Response) => {
-	const { email, password } = req.body;
+  const { email, password } = req.body;
 
-	const user = await prisma.user.findFirst({
-		where: {
-			email,
-			provider: "MANUAL",
-		},
-		include: {
-			Profile: true,
-		},
-	});
+  const user = await prisma.user.findFirst({
+    where: {
+      email,
+      provider: "MANUAL",
+    },
+    include: {
+      Profile: true,
+    },
+  });
 
-	if (!user) {
-		res.status(400).json({ message: "Email ou mot de passe incorrect" });
-		return;
-	}
+  if (!user) {
+    res.status(400).json({ message: "Email ou mot de passe incorrect" });
+    return;
+  }
 
-	if (!compareSync(password, user.password)) {
-		res.status(400).json({ message: "Email ou mot de passe incorrect" });
-		return;
-	}
+  if (!compareSync(password, user.password)) {
+    res.status(400).json({ message: "Email ou mot de passe incorrect" });
+    return;
+  }
 
-	const userId = user.id;
-	const userEmail = user.email;
-	const userFirstName = user.firstName;
-	const userLastName = user.lastName;
-	const username = user.username;
-	const pseudonyme = user.Profile?.pseudonyme;
-	const profilePictureKey = user.Profile?.profilePictureKey;
+  const userId = user.id;
+  const userEmail = user.email;
+  const userFirstName = user.firstName;
+  const userLastName = user.lastName;
+  const username = user.username;
+  const pseudonyme = user.Profile?.pseudonyme;
+  const profilePictureKey = user.Profile?.profilePictureKey;
 
-	const { backendTokens } = createAuthTokens(userId);
+  const { backendTokens } = createAuthTokens(userId);
 
-	const currentUser = {
-		id: userId,
-		email: userEmail,
-		firstName: userFirstName,
-		lastName: userLastName,
-		username,
-		pseudonyme,
-		profilePictureKey,
-	};
+  const currentUser = {
+    id: userId,
+    email: userEmail,
+    firstName: userFirstName,
+    lastName: userLastName,
+    username,
+    pseudonyme,
+    profilePictureKey,
+  };
 
-	res.status(200).json({
-		user: currentUser,
-		backendTokens,
-	});
+  res.status(200).json({
+    user: currentUser,
+    backendTokens,
+  });
 };
 
 export const google = async (req: Request, res: Response) => {
-	try {
-		const { email, name } = req.body;
+  try {
+    const { email, name } = req.body;
 
-		const firstName = formatName(name.split(" ")[0]);
-		const lastName = formatName(name.split(" ").slice(1).join(" "));
+    const firstName = formatName(name.split(" ")[0]);
+    const lastName = formatName(name.split(" ").slice(1).join(" "));
 
-		const result = await prisma.$transaction(async (prisma) => {
-			let findUser = await prisma.user.findFirst({
-				where: { email },
-				include: { Profile: true },
-			});
+    const result = await prisma.$transaction(async (prisma) => {
+      let findUser = await prisma.user.findFirst({
+        where: { email },
+        include: { Profile: true },
+      });
 
-			if (!findUser) {
-				const username = await generateUniqueUsername(firstName, prisma);
+      if (!findUser) {
+        const username = await generateUniqueUsername(firstName, prisma);
 
-				const newUser = await prisma.user.create({
-					data: {
-						email,
-						provider: "GOOGLE",
-						firstName: firstName,
-						lastName: lastName,
-						username,
-					},
-				});
+        const newUser = await prisma.user.create({
+          data: {
+            email,
+            provider: "GOOGLE",
+            firstName: firstName,
+            lastName: lastName,
+            username,
+          },
+        });
 
-				await prisma.profile.create({
-					data: {
-						userId: newUser.id,
-						pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
-					},
-				});
+        await prisma.profile.create({
+          data: {
+            userId: newUser.id,
+            pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
+          },
+        });
 
-				findUser = await prisma.user.findFirst({
-					where: { email },
-					include: { Profile: true },
-				});
-			}
+        findUser = await prisma.user.findFirst({
+          where: { email },
+          include: { Profile: true },
+        });
+      }
 
-			return findUser;
-		});
+      return findUser;
+    });
 
-		const userId = result.id;
-		const userEmail = result.email;
-		const userFirstName = result.firstName;
-		const userLastName = result.lastName;
-		const username = result.username;
-		const pseudonyme = result.Profile?.pseudonyme;
-		const profilePictureKey = result.Profile?.profilePictureKey;
+    const userId = result.id;
+    const userEmail = result.email;
+    const userFirstName = result.firstName;
+    const userLastName = result.lastName;
+    const username = result.username;
+    const pseudonyme = result.Profile?.pseudonyme;
+    const profilePictureKey = result.Profile?.profilePictureKey;
 
-		const { backendTokens } = createAuthTokens(userId);
+    const { backendTokens } = createAuthTokens(userId);
 
-		const currentUser = {
-			id: userId,
-			email: userEmail,
-			firstName: userFirstName,
-			lastName: userLastName,
-			username,
-			pseudonyme,
-			profilePictureKey,
-		};
+    const currentUser = {
+      id: userId,
+      email: userEmail,
+      firstName: userFirstName,
+      lastName: userLastName,
+      username,
+      pseudonyme,
+      profilePictureKey,
+    };
 
-		res.status(200).json({
-			user: currentUser,
-			backendTokens,
-		});
-	} catch (error) {
-		res.status(500).json({ error: "Internal Server Error" });
-	}
+    res.status(200).json({
+      user: currentUser,
+      backendTokens,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 export const refreshToken = (req: Request, res: Response) => {
-	const { refreshToken } = req.body;
+  const { refreshToken } = req.body;
 
-	if (!refreshToken) {
-		res.sendStatus(401);
-		return;
-	}
+  if (!refreshToken) {
+    res.sendStatus(401);
+    return;
+  }
 
-	jwt.verify(
-		refreshToken,
-		process.env.REFRESH_TOKEN_SECRET as string,
-		(err: Error | null, user: any) => {
-			if (err) return res.sendStatus(403);
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET as string,
+    (err: Error | null, user: any) => {
+      if (err) return res.sendStatus(403);
 
-			const userId = user.userId;
-			const { backendTokens } = createAuthTokens(userId);
+      const userId = user.userId;
+      const { backendTokens } = createAuthTokens(userId);
 
-			console.log(backendTokens.accessToken);
+      console.log(backendTokens.accessToken);
 
-			res.status(200).json({ backendTokens });
-		}
-	);
+      res.status(200).json({ backendTokens });
+    }
+  );
 };
 
 export const forgotPassword = async (req: Request, res: Response) => {
-	const { email } = req.body;
+  const { email } = req.body;
 
-	const user = await prisma.user.findFirst({
-		where: {
-			email,
-			provider: "MANUAL",
-		},
-	});
+  const user = await prisma.user.findFirst({
+    where: {
+      email,
+      provider: "MANUAL",
+    },
+  });
 
-	// Send no errors (for security), but don't send email.
-	if (!user) {
-		res.status(200).json({ message: "Email de réinitialisation envoyé" });
-		return;
-	}
+  // Send no errors (for security), but don't send email.
+  if (!user) {
+    res.status(200).json({ message: "Email de réinitialisation envoyé" });
+    return;
+  }
 
-	const forgotToken = jwt.sign(
-		{ id: user.id },
-		process.env.FORGOT_TOKEN_SECRET,
-		{
-			expiresIn: "15m",
-		}
-	);
+  const forgotToken = jwt.sign(
+    { id: user.id },
+    process.env.FORGOT_TOKEN_SECRET,
+    {
+      expiresIn: "15m",
+    }
+  );
 
-	const link = `${process.env.CLIENT_URL}/auth/reset/${user.id}/${forgotToken}`;
+  const link = `${process.env.CLIENT_URL}/auth/reset/${user.id}/${forgotToken}`;
 
-	// Nodemailer config
-	const transporter = nodemailer.createTransport({
-		host: "smtp.hostinger.com",
-		port: 465,
-		secure: true,
-		auth: {
-			user: process.env.EMAIL_USER,
-			pass: process.env.EMAIL_PWD,
-		},
-	});
+  // Nodemailer config
+  const transporter = nodemailer.createTransport({
+    host: "smtp.hostinger.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PWD,
+    },
+  });
 
-	const mailOptions = {
-		from: process.env.EMAIL_USER,
-		to: email,
-		subject: "Réinitialisation du mot de passe",
-		text: `Bonjour, \n\nCliquez sur le lien ci-dessous pour réinitialiser votre mot de passe: \n${link}. \n\nLe lien est valable pendant 15 minutes. \n\nSi vous n'êtes pas à l'origine de cette demande, merci de l'ignorer.`,
-	};
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Réinitialisation du mot de passe",
+    text: `Bonjour, \n\nCliquez sur le lien ci-dessous pour réinitialiser votre mot de passe: \n${link}. \n\nLe lien est valable pendant 15 minutes. \n\nSi vous n'êtes pas à l'origine de cette demande, merci de l'ignorer.`,
+  };
 
-	transporter.sendMail(mailOptions, (error, info) => {
-		if (error) {
-			res.status(500).json({ message: "Erreur lors de l'envoi de l'email" });
-			return;
-		}
-		res.status(200).json({ message: "Email de réinitialisation envoyé" });
-	});
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      res.status(500).json({ message: "Erreur lors de l'envoi de l'email" });
+      return;
+    }
+    res.status(200).json({ message: "Email de réinitialisation envoyé" });
+  });
 };
 
 export const resetPassword = async (req: Request, res: Response) => {
-	const { id, token, password } = req.body;
+  const { id, token, password } = req.body;
 
-	jwt.verify(
-		token,
-		process.env.FORGOT_TOKEN_SECRET,
-		async (err: Error | null) => {
-			// Invalid token
-			if (err) return res.sendStatus(403);
+  jwt.verify(
+    token,
+    process.env.FORGOT_TOKEN_SECRET,
+    async (err: Error | null) => {
+      // Invalid token
+      if (err) return res.sendStatus(403);
 
-			const user = await prisma.user.findFirst({
-				where: {
-					id,
-				},
-			});
+      const user = await prisma.user.findFirst({
+        where: {
+          id,
+        },
+      });
 
-			if (!user) return res.sendStatus(403);
+      if (!user) return res.sendStatus(403);
 
-			// Update the password
-			await prisma.user.update({
-				where: { id },
-				data: {
-					password: hashSync(password, 10),
-					password_changed_at: new Date(),
-				},
-			});
+      // Update the password
+      await prisma.user.update({
+        where: { id },
+        data: {
+          password: hashSync(password, 10),
+          password_changed_at: new Date(),
+        },
+      });
 
-			res
-				.status(200)
-				.json({ message: "Mot de passe réinitialisé avec succès" });
-		}
-	);
+      res
+        .status(200)
+        .json({ message: "Mot de passe réinitialisé avec succès" });
+    }
+  );
 };
 
 export const validateResetToken = async (req: Request, res: Response) => {
-	const { token } = req.query;
+  const { token } = req.query;
 
-	if (typeof token !== "string") {
-		res.status(400).json({ valid: false, error: "Invalid token" });
-		return;
-	}
+  if (typeof token !== "string") {
+    res.status(400).json({ valid: false, error: "Invalid token" });
+    return;
+  }
 
-	try {
-		const decoded = jwt.verify(token, process.env.FORGOT_TOKEN_SECRET);
-		if (typeof decoded === "object" && decoded !== null && "id" in decoded) {
-			const userId = decoded.id;
-			const user = await prisma.user.findUnique({
-				where: { id: userId },
-			});
+  try {
+    const decoded = jwt.verify(token, process.env.FORGOT_TOKEN_SECRET);
+    if (typeof decoded === "object" && decoded !== null && "id" in decoded) {
+      const userId = decoded.id;
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+      });
 
-			if (!user) {
-				throw new Error("User not found");
-			}
+      if (!user) {
+        throw new Error("User not found");
+      }
 
-			// Check if password has changed after token creation
-			if (user.password_changed_at) {
-				const passwordChangedTimestamp = Math.floor(
-					user.password_changed_at.getTime() / 1000
-				);
-				if (decoded.iat < passwordChangedTimestamp) {
-					console.log("Token invalid due to password change");
-					throw new Error("Token invalid due to password change");
-				}
-			}
-		}
-		res.status(200).json({ valid: true });
-	} catch (error) {
-		res.status(400).json({ valid: false });
-	}
+      // Check if password has changed after token creation
+      if (user.password_changed_at) {
+        const passwordChangedTimestamp = Math.floor(
+          user.password_changed_at.getTime() / 1000
+        );
+        if (decoded.iat < passwordChangedTimestamp) {
+          console.log("Token invalid due to password change");
+          throw new Error("Token invalid due to password change");
+        }
+      }
+    }
+    res.status(200).json({ valid: true });
+  } catch (error) {
+    res.status(400).json({ valid: false });
+  }
 };

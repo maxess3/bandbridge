@@ -80,16 +80,22 @@ export const useAutocompleteFocus = ({
     setIsOpen(false);
     setSelectedIndex(-1);
     inputRef.current?.blur();
+    // Forcer la mise à jour du contexte global
+    setAutocompleteOpen(false);
   };
 
   const handleEscape = () => {
     setIsOpen(false);
     setSelectedIndex(-1);
+    // Forcer la mise à jour du contexte global
+    setAutocompleteOpen(false);
   };
 
   const handleTab = () => {
     setIsOpen(false);
     setSelectedIndex(-1);
+    // Forcer la mise à jour du contexte global
+    setAutocompleteOpen(false);
   };
 
   const forceOpen = () => {

@@ -62,7 +62,6 @@ export function EditProfileGeneralModal() {
       return data;
     },
     onSuccess: async (data) => {
-      console.log("data", data);
       await queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY });
 
       const pseudonymeChanged =
