@@ -6,8 +6,10 @@ import { useEffect, useRef, useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { FormInput } from "@/components/shared/forms/FormInput";
-import { InstrumentAutocomplete } from "@/components/features/profile/autocomplete/InstrumentAutocomplete";
-import { GenreAutocomplete } from "@/components/features/profile/autocomplete/GenreAutocomplete";
+import {
+  InstrumentAutocomplete,
+  GenreAutocomplete,
+} from "@/components/features/profile/autocomplete";
 import { Button } from "@/components/ui/button";
 import { Plus, X, Info } from "lucide-react";
 import { translateInstrument } from "@/utils";

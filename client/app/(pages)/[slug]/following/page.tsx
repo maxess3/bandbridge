@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProfileList } from "@/components/features/profile/cards/ProfileList";
+import { ProfileList } from "@/components/features/profile/cards";
 import { profileServices } from "@/services/profileServices";
 
 async function getProfile(slug: string) {

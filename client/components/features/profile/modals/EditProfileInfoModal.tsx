@@ -1,13 +1,13 @@
 "use client";
 
 import { EditModal } from "@/components/shared/modals/EditModal";
-import { UpdateProfileInfoForm } from "@/components/features/profile/forms/UpdateProfileInfoForm";
+import { UpdateProfileInfoForm } from "@/components/features/profile/forms";
 import { formInfoProfile } from "@/lib/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useProfile } from "@/hooks/features/profile/useProfile";
+import { useProfile } from "@/hooks/features/profile";
 import { PROFILE_QUERY_KEY } from "@/hooks/features/profile/useProfile";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
-import { useTransitionDelay } from "@/hooks/ui/useTransitionDelay";
+import { useTransitionDelay } from "@/hooks/ui";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { AutocompleteProvider } from "@/contexts/AutocompleteContext";

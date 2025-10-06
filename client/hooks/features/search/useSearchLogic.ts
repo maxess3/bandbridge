@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSearchAutocomplete } from "./useSearchAutocomplete";
-import { useSearchCache } from "@/hooks/data/useSearchCache";
+import { useSearchCache } from "@/hooks/data";
 import { AutocompleteSearchResult } from "@/types/Search";
 import { SEARCH_CONSTANTS } from "@/types/Search";
 

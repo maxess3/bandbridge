@@ -16,7 +16,7 @@ import { SETTINGS_QUERY_KEY } from "@/hooks/features/settings/useSettings";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useSession } from "next-auth/react";
 import { useSessionUpdate } from "@/hooks/useSessionUpdate";
-import { useTransitionDelay } from "@/hooks/ui/useTransitionDelay";
+import { useTransitionDelay } from "@/hooks/ui";
 
 type SettingsFormValues = z.infer<typeof formUserSettings>;
 
