@@ -55,14 +55,14 @@ export const DropdownProfile = () => {
 
   return (
     <DropdownMenu modal={false} open={isOpen} onOpenChange={handleOpenChange}>
-      <DropdownMenuTrigger className="h-full" asChild>
+      <DropdownMenuTrigger asChild>
         <button
-          className="flex items-center justify-center bg-transparent w-14 hover:bg-hover cursor-pointer"
+          className="flex items-center justify-center bg-transparent rounded-full hover:bg-secondary cursor-pointer p-1"
           aria-label={`Menu profil de ${
             session?.user.pseudonyme || "utilisateur"
           }`}
         >
-          <Avatar className="w-9 h-9">
+          <Avatar className="w-8 h-8">
             <AvatarImage
               src={imageURL || undefined}
               alt="Profile picture"

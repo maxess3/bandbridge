@@ -19,9 +19,9 @@ export const NavbarAuth = () => {
   };
 
   return (
-    <nav className="h-14 bg-background items-center flex sticky top-0 z-50 w-full border-b">
+    <nav className="h-14 bg-background items-center flex sticky top-0 z-50 w-full border-b px-3">
       <div className="flex justify-between items-center gap-x-6 w-full h-full">
-        <div className="flex items-center pl-4">
+        <div className="flex items-center">
           {/* Burger Menu - Mobile */}
           <Button
             variant="ghost"
@@ -34,24 +34,25 @@ export const NavbarAuth = () => {
           </Button>
           <Link
             href={"/home"}
-            className="font-medium flex items-center gap-x-2.5 w-full min-w-40"
+            className="font-medium flex items-center gap-x-2 w-full"
           >
-            <Image src={Logo} alt="Logo" width={36} height={36} />
-            <span className="text-2xl font-semibold md:block sm:hidden">
+            <Image src={Logo} alt="Logo" width={34} height={34} />
+            <span className="text-2xl font-medium md:block sm:hidden">
               chordeus
             </span>
           </Link>
         </div>
         <SearchBar />
-        <div className="flex items-center h-full">
-          <div className="flex items-center h-full">
-            <button className="border-l border-t w-14 h-full flex items-center justify-center  hover:bg-hover cursor-pointer rounded-none">
-              <IoNotificationsOutline className="!size-6 opacity-80" />
+        <div className="flex items-center h-full gap-x-2">
+          <div className="flex items-center">
+            <button className="w-10 h-10 flex items-center justify-center  hover:bg-hover cursor-pointer rounded-full">
+              <IoNotificationsOutline className="!size-5 opacity-80" />
             </button>
-            <button className="border-l border-t border-r w-14 h-full flex items-center justify-center  hover:bg-hover cursor-pointer rounded-none">
-              <LuMessageCircle className="!size-6 opacity-80" />
+            <button className="w-10 h-10 flex items-center justify-center  hover:bg-hover cursor-pointer rounded-full">
+              <LuMessageCircle className="!size-5 opacity-80" />
             </button>
           </div>
+
           <DropdownProfile />
         </div>
       </div>

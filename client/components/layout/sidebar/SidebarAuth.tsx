@@ -19,7 +19,7 @@ const data = {
   },
   navMain: [
     {
-      title: "Synthèse",
+      title: "Accueil",
       url: "/home",
       icon: LayoutDashboard,
     },

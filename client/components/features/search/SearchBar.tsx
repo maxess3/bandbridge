@@ -113,14 +113,14 @@ export default function SearchBar() {
         ref={inputRef}
         type="text"
         placeholder="Rechercher un musicien..."
-        className="h-full pl-11 pr-6 rounded-full relative"
+        className="h-10 pl-10 pr-6 rounded-full relative"
         value={search}
         onChange={handleSearchChange}
         onKeyDown={handleKeyDown}
         onFocus={handleFocusEvent}
         onBlur={handleBlurEvent}
       />
-      <IoIosSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-6 opacity-60" />
+      <IoIosSearch className="absolute left-3 top-1/2 -translate-y-1/2 size-5 opacity-60" />
       {isOpen && (
         <SearchAutocomplete
           ref={dropdownRef}
