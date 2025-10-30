@@ -3,11 +3,13 @@ import { Input } from "@/components/ui/input";
 import SearchAutocomplete from "@/components/features/search/SearchAutocomplete";
 import { IoIosSearch } from "react-icons/io";
 import { SEARCH_CONSTANTS, AutocompleteSearchResult } from "@/types/Search";
-import { useSearchState } from "@/hooks/features/search/useSearchState";
-import { useSearchKeyboard } from "@/hooks/features/search/useSearchKeyboard";
-import { useSearchFocus } from "@/hooks/features/search/useSearchFocus";
-import { useSearchScroll } from "@/hooks/features/search/useSearchScroll";
-import { useSearchLogic } from "@/hooks/features/search/useSearchLogic";
+import {
+  useSearchState,
+  useSearchKeyboard,
+  useSearchFocus,
+  useSearchScroll,
+  useSearchLogic,
+} from "@/hooks/features/search";
 
 const { MIN_SEARCH_LENGTH } = SEARCH_CONSTANTS;
 

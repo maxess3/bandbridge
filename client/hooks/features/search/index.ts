@@ -1,6 +1,6 @@
-export { useSearchState } from "./useSearchState";
-export { useSearchKeyboard } from "./useSearchKeyboard";
-export { useSearchFocus } from "./useSearchFocus";
-export { useSearchScroll } from "./useSearchScroll";
-export { useSearchLogic } from "./useSearchLogic";
-export { useSearchAutocomplete } from "./useSearchAutocomplete";
+export { useSearchState } from "./searchbar/useSearchState";
+export { useSearchKeyboard } from "./searchbar/useSearchKeyboard";
+export { useSearchFocus } from "./searchbar/useSearchFocus";
+export { useSearchScroll } from "./searchbar/useSearchScroll";
+export { useSearchLogic } from "./searchbar/useSearchLogic";
+export { useSearchAutocomplete } from "./searchbar/useSearchAutocomplete";
