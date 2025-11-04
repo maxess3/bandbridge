@@ -48,7 +48,11 @@ export const ProfileHeader = ({
           following={profile?.following}
           username={profile?.username}
         />
-        <ProfileActions username={profile?.username} isOwner={isOwner} />
+        <ProfileActions
+          username={profile?.username}
+          pseudonyme={profile?.pseudonyme}
+          isOwner={isOwner}
+        />
       </div>
     </div>
   );

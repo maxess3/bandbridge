@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import SearchAutocomplete from "@/components/features/search/SearchAutocomplete";
+import SearchAutocomplete from "./SearchAutocomplete";
 import { IoIosSearch } from "react-icons/io";
 import { SEARCH_CONSTANTS, AutocompleteSearchResult } from "@/types/Search";
 import {
@@ -13,7 +13,7 @@ import {
 
 const { MIN_SEARCH_LENGTH } = SEARCH_CONSTANTS;
 
-export default function SearchBar() {
+export const SearchBar = () => {
   const router = useRouter();
 
   // Hooks pour la gestion des états
@@ -64,14 +64,12 @@ export default function SearchBar() {
 
   const handleSearchSubmit = (searchTerm: string) => {
     closeDropdown();
-    setSearch("");
     blurInput();
     router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
   };
 
   const handleViewAllResults = () => {
     closeDropdown();
-    setSearch("");
     blurInput();
     router.push(`/search?q=${encodeURIComponent(search)}`);
   };
@@ -135,4 +133,4 @@ export default function SearchBar() {
       )}
     </div>
   );
-}
+};

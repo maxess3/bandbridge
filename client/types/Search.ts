@@ -39,7 +39,7 @@ export interface AutocompleteDropdownProps {
 
 export interface SearchResponse {
   profiles: AutocompleteSearchResult[];
-  nextCursor: string | null;
-  hasMore: boolean;
+  page: number;
+  totalPages: number;
   totalFound: number;
 }

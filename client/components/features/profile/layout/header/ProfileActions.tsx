@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useFocusManager } from "@/contexts/FocusManagerContext";
 import { createDelayedFunction } from "@/utils";
@@ -8,6 +9,7 @@ import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { PROFILE_QUERY_KEY } from "@/hooks/features/profile/useProfile";
 import { Button } from "@/components/ui/button";
 import { FollowButton } from "@/components/features/profile/buttons/FollowButton";
+import { ShareProfileModal } from "@/components/features/profile/modals/ShareProfileModal";
 import { FiMessageSquare, FiShare } from "react-icons/fi";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
@@ -20,15 +22,18 @@ interface FollowData {
 
 export const ProfileActions = ({
   username,
+  pseudonyme,
   isOwner,
 }: {
   username: string;
+  pseudonyme: string;
   isOwner: boolean;
 }) => {
   const { data: session } = useSession();
   const { captureFocus } = useFocusManager();
   const axiosAuth = useAxiosAuth();
   const queryClient = useQueryClient();
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   const delayedQueryFn = createDelayedFunction(async () => {
     const { data } = await axiosAuth.get(`/profile/following/${username}`);
@@ -89,20 +94,35 @@ export const ProfileActions = ({
 
   if (isOwner) {
     return (
-      <div className="flex gap-2">
-        <Link
-          href={`/${username}/edit/profile/general`}
-          onClick={captureFocus}
-          className="border font-semibold px-4 flex gap-2 justify-center items-center rounded-full hover:bg-hover"
-        >
-          <Pencil className="!size-4" />
-          Modifier le résumé
-        </Link>
-        <Button variant="outline" className="rounded-full">
-          <FiShare className="!size-4" />
-          Partager
-        </Button>
-      </div>
+      <>
+        <div className="flex gap-2">
+          <Link
+            href={`/${username}/edit/profile/general`}
+            onClick={captureFocus}
+            className="border font-semibold px-4 flex gap-2 justify-center items-center rounded-full hover:bg-hover"
+          >
+            <Pencil className="!size-4" />
+            Modifier le résumé
+          </Link>
+          <Button
+            variant="outline"
+            className="rounded-full"
+            onClick={() => {
+              captureFocus();
+              setIsShareModalOpen(true);
+            }}
+          >
+            <FiShare className="!size-4" />
+            Partager
+          </Button>
+        </div>
+        <ShareProfileModal
+          open={isShareModalOpen}
+          onOpenChange={setIsShareModalOpen}
+          username={username}
+          pseudonyme={pseudonyme}
+        />
+      </>
     );
   }
 
@@ -118,20 +138,35 @@ export const ProfileActions = ({
   }
 
   return (
-    <div className="flex gap-2">
-      <FollowButton
-        isFollowing={followData.isFollowing}
-        onToggleFollow={toggleFollow}
-        isPending={isFollowPending}
+    <>
+      <div className="flex gap-2">
+        <FollowButton
+          isFollowing={followData.isFollowing}
+          onToggleFollow={toggleFollow}
+          isPending={isFollowPending}
+        />
+        <Button variant="outline" className="rounded-full">
+          <FiMessageSquare className="!size-4" />
+          Message
+        </Button>
+        <Button
+          variant="outline"
+          className="rounded-full"
+          onClick={() => {
+            captureFocus();
+            setIsShareModalOpen(true);
+          }}
+        >
+          <FiShare className="!size-4" />
+          Partager
+        </Button>
+      </div>
+      <ShareProfileModal
+        open={isShareModalOpen}
+        onOpenChange={setIsShareModalOpen}
+        username={username}
+        pseudonyme={pseudonyme}
       />
-      <Button variant="outline" className="rounded-full">
-        <FiMessageSquare className="!size-4" />
-        Message
-      </Button>
-      <Button variant="outline" className="rounded-full">
-        <FiShare className="!size-4" />
-        Partager
-      </Button>
-    </div>
+    </>
   );
 };

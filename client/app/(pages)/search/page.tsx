@@ -1,70 +1,54 @@
-import Link from "next/link";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+"use client";
+
 import { ProfileCard } from "@/components/features/profile/cards";
-import { SearchResponse } from "@/types/Search";
+import {
+  useSearchProfiles,
+  useSearchParamsValidation,
+  useSearchPageNavigation,
+} from "@/hooks/features/search";
+import {
+  SearchPagination,
+  SearchLoadingState,
+  SearchErrorState,
+  SearchEmptyState,
+} from "@/components/features/search";
 
-interface SearchPageProps {
-  searchParams: Promise<{ q?: string; cursor?: string }>;
-}
+export default function Page() {
+  const validatedParams = useSearchParamsValidation();
+  const { handlePageChange } = useSearchPageNavigation(
+    validatedParams.query,
+    validatedParams.limit
+  );
 
-export default async function Page({ searchParams }: SearchPageProps) {
-  const params = await searchParams;
-  const query = typeof params.q === "string" ? params.q.trim() : "";
-  const cursor = typeof params.cursor === "string" ? params.cursor : undefined;
+  const { data, isLoading, isError } = useSearchProfiles(
+    validatedParams.query,
+    validatedParams.page,
+    validatedParams.limit
+  );
 
-  if (!query) {
-    return <div className="p-4">Aucune recherche fournie.</div>;
+  if (!validatedParams.query) {
+    return <SearchEmptyState message="Aucune recherche fournie." />;
   }
 
-  const session = await getServerSession(authOptions);
-
-  if (!session?.backendTokens?.accessToken) {
-    return (
-      <div className="p-4">
-        Vous devez être connecté pour effectuer une recherche.
-      </div>
-    );
+  if (isLoading) {
+    return <SearchLoadingState query={validatedParams.query} />;
   }
 
-  const url = `${
-    process.env.NEXT_PUBLIC_API_URL
-  }/profile/search?q=${encodeURIComponent(query)}&limit=10${
-    cursor ? `&cursor=${encodeURIComponent(cursor)}` : ""
-  }`;
-
-  const res = await fetch(url, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session.backendTokens.accessToken}`,
-    },
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    return (
-      <div className="p-4">Une erreur est survenue lors de la recherche.</div>
-    );
+  if (isError || !data) {
+    return <SearchErrorState />;
   }
 
-  const data = (await res.json()) as SearchResponse;
-  const { profiles, hasMore, nextCursor, totalFound } = data;
+  const { profiles, totalFound, totalPages, page: currentPage } = data;
 
   if (!profiles || profiles.length === 0) {
-    return (
-      <div className="p-4">
-        <div className="mb-4 text-sm text-muted-foreground">
-          Résultats pour "{query}"
-        </div>
-        <div>Aucun profil trouvé.</div>
-      </div>
-    );
+    return <SearchEmptyState query={validatedParams.query} />;
   }
 
   return (
     <div className="p-4 space-y-4">
       <div className="text-sm text-muted-foreground">
-        Résultats pour "{query}" · {totalFound} affichés
+        Résultats pour "{validatedParams.query}" · {totalFound} trouvé
+        {totalFound > 1 ? "s" : ""}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -73,35 +57,15 @@ export default async function Page({ searchParams }: SearchPageProps) {
         ))}
       </div>
 
-      <div className="flex items-center justify-between pt-2">
-        {cursor ? (
-          <Link
-            href={`/search?q=${encodeURIComponent(query)}`}
-            className="text-sm text-blue-600 hover:underline"
-            aria-label="Revenir au début des résultats"
-          >
-            Retour au début
-          </Link>
-        ) : (
-          <span />
-        )}
-
-        {hasMore && nextCursor ? (
-          <Link
-            href={`/search?q=${encodeURIComponent(
-              query
-            )}&cursor=${encodeURIComponent(nextCursor)}`}
-            className="text-sm px-3 py-1.5 border rounded hover:bg-accent"
-            aria-label="Voir plus de résultats"
-          >
-            Suivant
-          </Link>
-        ) : (
-          <span className="text-sm text-muted-foreground">
-            Fin des résultats
-          </span>
-        )}
-      </div>
+      {totalPages > 1 && (
+        <SearchPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          query={validatedParams.query}
+          limit={validatedParams.limit}
+          onPageChange={handlePageChange}
+        />
+      )}
     </div>
   );
 }

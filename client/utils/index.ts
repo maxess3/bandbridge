@@ -10,6 +10,9 @@ export * from "./routing";
 // Async utilities
 export * from "./async";
 
+// Pagination utilities
+export * from "./pagination";
+
 // Translations
 export * from "./translations/genreTranslations";
 export * from "./translations/instrumentTranslations";

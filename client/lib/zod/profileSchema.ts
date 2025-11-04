@@ -201,5 +201,13 @@ export const searchQuerySchema = z.object({
       const num = parseInt(val, 10);
       return isNaN(num) || num < 1 || num > 50 ? 10 : num;
     }),
-  cursor: z.string().uuid("Le cursor doit être un UUID valide").optional(),
+  page: z
+    .string()
+    .optional()
+    .transform((val) => {
+      if (!val) return 1;
+      const num = parseInt(val, 10);
+      if (isNaN(num) || num < 1) return 1;
+      return num > 100 ? 100 : num;
+    }),
 });

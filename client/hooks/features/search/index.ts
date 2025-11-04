@@ -4,3 +4,6 @@ export { useSearchFocus } from "./searchbar/useSearchFocus";
 export { useSearchScroll } from "./searchbar/useSearchScroll";
 export { useSearchLogic } from "./searchbar/useSearchLogic";
 export { useSearchAutocomplete } from "./searchbar/useSearchAutocomplete";
+export { useSearchProfiles } from "./useSearchProfiles";
+export { useSearchParamsValidation } from "./useSearchParamsValidation";
+export { useSearchPageNavigation } from "./useSearchPageNavigation";

@@ -5,7 +5,7 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSidebarGlobal } from "@/contexts/SidebarGlobalContext";
 import { DropdownProfile } from "@/components/layout/header/navbar/DropdownProfile";
-import SearchBar from "@/components/features/search/SearchBar";
+import { SearchBar } from "@/components/features/search";
 import { LuMessageCircle } from "react-icons/lu";
 import { IoNotificationsOutline } from "react-icons/io5";
 import Image from "next/image";

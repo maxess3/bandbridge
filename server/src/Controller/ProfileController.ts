@@ -1203,7 +1203,7 @@ export const searchProfiles = async (req: Request, res: Response) => {
       return;
     }
 
-    const { q: query, limit = 10, cursor } = req.query;
+    const { q: query, limit = 10, page = 1 } = req.query;
 
     if (!query || typeof query !== "string") {
       res.status(400).json({
@@ -1219,6 +1219,10 @@ export const searchProfiles = async (req: Request, res: Response) => {
       });
       return;
     }
+
+    // Valider et limiter la page à 100 maximum
+    const pageNumber = Math.min(Math.max(1, Number(page)), 100);
+    const limitNumber = Number(limit);
 
     // Construire la clause where pour la recherche
     const whereClause: any = {
@@ -1240,15 +1244,19 @@ export const searchProfiles = async (req: Request, res: Response) => {
       ],
     };
 
-    // Ajouter le cursor pour la pagination
-    if (cursor) {
-      whereClause.id = { gt: cursor as string };
-    }
+    // Calculer le skip pour la pagination
+    const skip = (pageNumber - 1) * limitNumber;
 
-    // Récupérer les profils avec +1 pour savoir s'il y en a plus
+    // Calculer le total réel avec count
+    const totalFound = await prisma.profile.count({
+      where: whereClause,
+    });
+
+    // Récupérer les profils avec pagination classique
     const profiles = await prisma.profile.findMany({
       where: whereClause,
-      take: Number(limit) + 1,
+      skip,
+      take: limitNumber,
       orderBy: { id: "asc" },
       select: {
         id: true,
@@ -1270,16 +1278,14 @@ export const searchProfiles = async (req: Request, res: Response) => {
       },
     });
 
-    // Déterminer s'il y a plus de profils
-    const hasMore = profiles.length > Number(limit);
-    const result = hasMore ? profiles.slice(0, Number(limit)) : profiles;
-    const nextCursor = hasMore ? result[result.length - 1]?.id : null;
+    // Calculer le nombre total de pages (limité à 100 maximum)
+    const totalPages = Math.min(Math.ceil(totalFound / limitNumber), 100);
 
     res.status(200).json({
-      profiles: result,
-      nextCursor,
-      hasMore,
-      totalFound: result.length,
+      profiles,
+      page: pageNumber,
+      totalPages,
+      totalFound,
     });
   } catch (error) {
     console.error("Erreur recherche profils:", error);
