@@ -12,6 +12,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FiMail, FiCopy, FiFacebook } from "react-icons/fi";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useFocusManager } from "@/contexts/FocusManagerContext";
 
 interface ShareProfileModalProps {
   open: boolean;
@@ -69,6 +70,7 @@ export const ShareProfileModal = ({
   pseudonyme,
 }: ShareProfileModalProps) => {
   const [isCopying, setIsCopying] = useState(false);
+  const { restoreFocus } = useFocusManager();
   const profileUrl = `${window.location.origin}/${username}`;
   const shareText = `Découvrez le profil musical de ${pseudonyme} sur Chordeus : ${profileUrl}`;
 
@@ -80,7 +82,13 @@ export const ShareProfileModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent
+        className="sm:max-w-lg max-w-full sm:max-h-[85%] max-h-full p-0"
+        onCloseAutoFocus={(e) => {
+          e.preventDefault();
+          restoreFocus();
+        }}
+      >
         <DialogHeader>
           <DialogTitle>
             <DialogDescription className="text-xl text-foreground font-medium">
