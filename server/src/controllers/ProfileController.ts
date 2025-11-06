@@ -9,6 +9,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 import { calculateAge } from "../utils/utils";
+import { env } from "../config/env.config";
 
 export const getProfilePublic = async (req: Request, res: Response) => {
   try {
@@ -586,10 +587,10 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
     const uuid = uuidv4();
     const r2 = new S3Client({
       region: "auto",
-      endpoint: process.env.R2_ENDPOINT,
+      endpoint: env.R2_ENDPOINT,
       credentials: {
-        accessKeyId: process.env.R2_ACCESS_KEY_ID,
-        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+        accessKeyId: env.R2_ACCESS_KEY_ID,
+        secretAccessKey: env.R2_SECRET_ACCESS_KEY,
       },
     });
 
@@ -614,7 +615,7 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
       const deletePromises = Object.keys(sizes).map(async (size) => {
         const keyToDelete = `${oldKeyBase}-${size}.webp`;
         const deleteCommand = new DeleteObjectCommand({
-          Bucket: process.env.R2_BUCKET_NAME,
+          Bucket: env.R2_BUCKET_NAME,
           Key: keyToDelete,
         });
         try {
@@ -641,7 +642,7 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
       const key = `profile-pictures/${userId}/${uuid}-${size}.webp`;
 
       const command = new PutObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME,
+        Bucket: env.R2_BUCKET_NAME,
         Key: key,
         Body: resizedImage,
         ContentType: "image/webp",
@@ -696,10 +697,10 @@ export const deleteProfilePicture = async (req: Request, res: Response) => {
 
     const r2 = new S3Client({
       region: "auto",
-      endpoint: process.env.R2_ENDPOINT,
+      endpoint: env.R2_ENDPOINT,
       credentials: {
-        accessKeyId: process.env.R2_ACCESS_KEY_ID,
-        secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+        accessKeyId: env.R2_ACCESS_KEY_ID,
+        secretAccessKey: env.R2_SECRET_ACCESS_KEY,
       },
     });
 
@@ -712,7 +713,7 @@ export const deleteProfilePicture = async (req: Request, res: Response) => {
     const deletePromises = sizes.map(async (size) => {
       const keyToDelete = `${oldKeyBase}-${size}.webp`;
       const deleteCommand = new DeleteObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME,
+        Bucket: env.R2_BUCKET_NAME,
         Key: keyToDelete,
       });
       try {

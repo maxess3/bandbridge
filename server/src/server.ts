@@ -1,25 +1,26 @@
 import "dotenv/config";
+import { env } from "./config/env.config";
 import express from "express";
 import { Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-const port = process.env.PORT || 5000;
+const port = env.PORT;
 const app = express();
 
 app.use(
-	cors({
-		origin: process.env.CLIENT_URL,
-		credentials: true,
-		methods: ["GET", "POST", "PUT", "DELETE"],
-	})
+  cors({
+    origin: env.CLIENT_URL,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
 );
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/", (req: Request, res: Response) => {
-	res.send("Hello World");
+  res.send("Hello World");
 });
 
 // Routes files
@@ -27,5 +28,5 @@ import routes from "./routes/index";
 app.use(routes);
 
 app.listen(port, () => {
-	console.log(`Server is running on port http://localhost:${port}/`);
+  console.log(`Server is running on port http://localhost:${port}/`);
 });

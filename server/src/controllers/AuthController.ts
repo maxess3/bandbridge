@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { formatName, generateUniqueUsername } from "../utils/utils";
 import { createAuthTokens } from "../utils/token";
 import nodemailer from "nodemailer";
+import { env } from "../config/env.config";
 
 export const signup = async (req: Request, res: Response) => {
   const { email, password, firstName, lastName } = req.body;
@@ -183,14 +184,12 @@ export const refreshToken = (req: Request, res: Response) => {
 
   jwt.verify(
     refreshToken,
-    process.env.REFRESH_TOKEN_SECRET as string,
+    env.REFRESH_TOKEN_SECRET,
     (err: Error | null, user: any) => {
       if (err) return res.sendStatus(403);
 
       const userId = user.userId;
       const { backendTokens } = createAuthTokens(userId);
-
-      console.log(backendTokens.accessToken);
 
       res.status(200).json({ backendTokens });
     }
@@ -213,15 +212,11 @@ export const forgotPassword = async (req: Request, res: Response) => {
     return;
   }
 
-  const forgotToken = jwt.sign(
-    { id: user.id },
-    process.env.FORGOT_TOKEN_SECRET,
-    {
-      expiresIn: "15m",
-    }
-  );
+  const forgotToken = jwt.sign({ id: user.id }, env.FORGOT_TOKEN_SECRET, {
+    expiresIn: "15m",
+  });
 
-  const link = `${process.env.CLIENT_URL}/auth/reset/${user.id}/${forgotToken}`;
+  const link = `${env.CLIENT_URL}/auth/reset/${user.id}/${forgotToken}`;
 
   // Nodemailer config
   const transporter = nodemailer.createTransport({
@@ -229,13 +224,13 @@ export const forgotPassword = async (req: Request, res: Response) => {
     port: 465,
     secure: true,
     auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PWD,
+      user: env.EMAIL_USER,
+      pass: env.EMAIL_PWD,
     },
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: env.EMAIL_USER,
     to: email,
     subject: "Réinitialisation du mot de passe",
     text: `Bonjour, \n\nCliquez sur le lien ci-dessous pour réinitialiser votre mot de passe: \n${link}. \n\nLe lien est valable pendant 15 minutes. \n\nSi vous n'êtes pas à l'origine de cette demande, merci de l'ignorer.`,
@@ -253,35 +248,29 @@ export const forgotPassword = async (req: Request, res: Response) => {
 export const resetPassword = async (req: Request, res: Response) => {
   const { id, token, password } = req.body;
 
-  jwt.verify(
-    token,
-    process.env.FORGOT_TOKEN_SECRET,
-    async (err: Error | null) => {
-      // Invalid token
-      if (err) return res.sendStatus(403);
+  jwt.verify(token, env.FORGOT_TOKEN_SECRET, async (err: Error | null) => {
+    // Invalid token
+    if (err) return res.sendStatus(403);
 
-      const user = await prisma.user.findFirst({
-        where: {
-          id,
-        },
-      });
+    const user = await prisma.user.findFirst({
+      where: {
+        id,
+      },
+    });
 
-      if (!user) return res.sendStatus(403);
+    if (!user) return res.sendStatus(403);
 
-      // Update the password
-      await prisma.user.update({
-        where: { id },
-        data: {
-          password: hashSync(password, 10),
-          password_changed_at: new Date(),
-        },
-      });
+    // Update the password
+    await prisma.user.update({
+      where: { id },
+      data: {
+        password: hashSync(password, 10),
+        password_changed_at: new Date(),
+      },
+    });
 
-      res
-        .status(200)
-        .json({ message: "Mot de passe réinitialisé avec succès" });
-    }
-  );
+    res.status(200).json({ message: "Mot de passe réinitialisé avec succès" });
+  });
 };
 
 export const validateResetToken = async (req: Request, res: Response) => {
@@ -293,7 +282,7 @@ export const validateResetToken = async (req: Request, res: Response) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.FORGOT_TOKEN_SECRET);
+    const decoded = jwt.verify(token, env.FORGOT_TOKEN_SECRET);
     if (typeof decoded === "object" && decoded !== null && "id" in decoded) {
       const userId = decoded.id;
       const user = await prisma.user.findUnique({
