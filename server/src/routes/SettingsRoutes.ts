@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validateBodySchema } from "../middleware/validateSchema";
 import { formUserSettings } from "../lib/zod";
-import * as SettingsController from "../Controller/SettingsController";
+import * as SettingsController from "../controllers/SettingsController";
 
 const router = Router();
 

@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { deleteUser, fetchUsers } from "../Controller/UserController";
+import { deleteUser, fetchUsers } from "../controllers/UserController";
 
 const router = Router();
 

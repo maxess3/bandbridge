@@ -6,7 +6,7 @@ import {
   formForgotPwdSchema,
   formResetPwdSchema,
 } from "../lib/zod";
-import * as AuthController from "../Controller/AuthController";
+import * as AuthController from "../controllers/AuthController";
 
 const LoginLimiter = rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes

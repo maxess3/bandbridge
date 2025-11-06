@@ -11,7 +11,7 @@ import {
   searchAutocompleteSchema,
   searchQuerySchema,
 } from "../lib/zod";
-import * as ProfileController from "../Controller/ProfileController";
+import * as ProfileController from "../controllers/ProfileController";
 
 const router = Router();
 
