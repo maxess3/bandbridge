@@ -1,5 +1,6 @@
 import prisma from "../db/db.config";
 import { Request, Response } from "express";
+import { NotFoundError, ForbiddenError } from "../errors";
 
 declare global {
   namespace Express {
@@ -22,7 +23,7 @@ export const deleteUser = async (req: Request, res: Response) => {
   });
 
   if (!currentUser || currentUser.role !== "ADMIN") {
-    return res.sendStatus(403);
+    throw new ForbiddenError("Access denied");
   }
 
   const userId = req.params.id;
@@ -32,10 +33,10 @@ export const deleteUser = async (req: Request, res: Response) => {
     },
   });
 
-  return res.status(200).json({ message: "User deleted successfully" });
+  res.status(200).json({ message: "User deleted successfully" });
 };
 
 export const fetchUsers = async (req: Request, res: Response) => {
   const users = await prisma.user.findMany();
-  return res.status(200).json({ data: users });
+  res.status(200).json({ data: users });
 };

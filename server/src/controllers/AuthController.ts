@@ -6,6 +6,7 @@ import { formatName, generateUniqueUsername } from "../utils/utils";
 import { createAuthTokens } from "../utils/token";
 import nodemailer from "nodemailer";
 import { env } from "../config/env.config";
+import { ValidationError, UnauthorizedError, AppError } from "../errors";
 
 export const signup = async (req: Request, res: Response) => {
   const { email, password, firstName, lastName } = req.body;
@@ -17,39 +18,33 @@ export const signup = async (req: Request, res: Response) => {
   });
 
   if (findUser) {
-    res.status(400).json({ message: "L'adresse email est déjà utilisée" });
-    return;
+    throw new ValidationError("Email address already in use");
   }
 
   const formatFirstName = formatName(firstName);
   const formatLastName = formatName(lastName);
 
-  try {
-    await prisma.$transaction(async (prisma) => {
-      const username = await generateUniqueUsername(formatFirstName, prisma);
+  await prisma.$transaction(async (prisma) => {
+    const username = await generateUniqueUsername(formatFirstName, prisma);
 
-      const user = await prisma.user.create({
-        data: {
-          email,
-          password: hashSync(password, 10),
-          provider: "MANUAL",
-          firstName: formatFirstName,
-          lastName: formatLastName,
-          username,
-        },
-      });
-
-      await prisma.profile.create({
-        data: {
-          userId: user.id,
-          pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
-        },
-      });
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password: hashSync(password, 10),
+        provider: "MANUAL",
+        firstName: formatFirstName,
+        lastName: formatLastName,
+        username,
+      },
     });
-  } catch (error) {
-    res.status(500).json({ error: "Signup failed." });
-    return;
-  }
+
+    await prisma.profile.create({
+      data: {
+        userId: user.id,
+        pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
+      },
+    });
+  });
 
   res.status(200).json({ message: "User created." });
 };
@@ -67,14 +62,9 @@ export const login = async (req: Request, res: Response) => {
     },
   });
 
-  if (!user) {
-    res.status(400).json({ message: "Email ou mot de passe incorrect" });
-    return;
-  }
-
-  if (!compareSync(password, user.password)) {
-    res.status(400).json({ message: "Email ou mot de passe incorrect" });
-    return;
+  if (!user || !compareSync(password, user.password)) {
+    // Message identique pour éviter l'énumération d'emails (sécurité)
+    throw new ValidationError("Email or password incorrect");
   }
 
   const userId = user.id;
@@ -104,89 +94,86 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const google = async (req: Request, res: Response) => {
-  try {
-    const { email, name } = req.body;
+  const { email, name } = req.body;
 
-    const firstName = formatName(name.split(" ")[0]);
-    const lastName = formatName(name.split(" ").slice(1).join(" "));
+  const firstName = formatName(name.split(" ")[0]);
+  const lastName = formatName(name.split(" ").slice(1).join(" "));
 
-    const result = await prisma.$transaction(async (prisma) => {
-      let findUser = await prisma.user.findFirst({
+  const result = await prisma.$transaction(async (prisma) => {
+    let findUser = await prisma.user.findFirst({
+      where: { email },
+      include: { Profile: true },
+    });
+
+    if (!findUser) {
+      const username = await generateUniqueUsername(firstName, prisma);
+
+      const newUser = await prisma.user.create({
+        data: {
+          email,
+          provider: "GOOGLE",
+          firstName: firstName,
+          lastName: lastName,
+          username,
+        },
+      });
+
+      await prisma.profile.create({
+        data: {
+          userId: newUser.id,
+          pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
+        },
+      });
+
+      findUser = await prisma.user.findFirst({
         where: { email },
         include: { Profile: true },
       });
+    }
 
-      if (!findUser) {
-        const username = await generateUniqueUsername(firstName, prisma);
+    return findUser;
+  });
 
-        const newUser = await prisma.user.create({
-          data: {
-            email,
-            provider: "GOOGLE",
-            firstName: firstName,
-            lastName: lastName,
-            username,
-          },
-        });
+  const userId = result.id;
+  const userEmail = result.email;
+  const userFirstName = result.firstName;
+  const userLastName = result.lastName;
+  const username = result.username;
+  const pseudonyme = result.Profile?.pseudonyme;
+  const profilePictureKey = result.Profile?.profilePictureKey;
 
-        await prisma.profile.create({
-          data: {
-            userId: newUser.id,
-            pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
-          },
-        });
+  const { backendTokens } = createAuthTokens(userId);
 
-        findUser = await prisma.user.findFirst({
-          where: { email },
-          include: { Profile: true },
-        });
-      }
+  const currentUser = {
+    id: userId,
+    email: userEmail,
+    firstName: userFirstName,
+    lastName: userLastName,
+    username,
+    pseudonyme,
+    profilePictureKey,
+  };
 
-      return findUser;
-    });
-
-    const userId = result.id;
-    const userEmail = result.email;
-    const userFirstName = result.firstName;
-    const userLastName = result.lastName;
-    const username = result.username;
-    const pseudonyme = result.Profile?.pseudonyme;
-    const profilePictureKey = result.Profile?.profilePictureKey;
-
-    const { backendTokens } = createAuthTokens(userId);
-
-    const currentUser = {
-      id: userId,
-      email: userEmail,
-      firstName: userFirstName,
-      lastName: userLastName,
-      username,
-      pseudonyme,
-      profilePictureKey,
-    };
-
-    res.status(200).json({
-      user: currentUser,
-      backendTokens,
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+  res.status(200).json({
+    user: currentUser,
+    backendTokens,
+  });
 };
 
-export const refreshToken = (req: Request, res: Response) => {
+export const refreshToken = (req: Request, res: Response, next: any) => {
   const { refreshToken } = req.body;
 
   if (!refreshToken) {
-    res.sendStatus(401);
-    return;
+    return next(new UnauthorizedError("Refresh token missing"));
   }
 
   jwt.verify(
     refreshToken,
     env.REFRESH_TOKEN_SECRET,
     (err: Error | null, user: any) => {
-      if (err) return res.sendStatus(403);
+      if (err) {
+        return next(new UnauthorizedError("Invalid refresh token"));
+      }
 
       const userId = user.userId;
       const { backendTokens } = createAuthTokens(userId);
@@ -196,7 +183,11 @@ export const refreshToken = (req: Request, res: Response) => {
   );
 };
 
-export const forgotPassword = async (req: Request, res: Response) => {
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: any
+) => {
   const { email } = req.body;
 
   const user = await prisma.user.findFirst({
@@ -208,7 +199,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   // Send no errors (for security), but don't send email.
   if (!user) {
-    res.status(200).json({ message: "Email de réinitialisation envoyé" });
+    res.status(200).json({ message: "Password reset email sent" });
     return;
   }
 
@@ -238,19 +229,17 @@ export const forgotPassword = async (req: Request, res: Response) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      res.status(500).json({ message: "Erreur lors de l'envoi de l'email" });
-      return;
+      return next(new AppError("Error sending email", 500));
     }
-    res.status(200).json({ message: "Email de réinitialisation envoyé" });
+    res.status(200).json({ message: "Password reset email sent" });
   });
 };
 
 export const resetPassword = async (req: Request, res: Response) => {
   const { id, token, password } = req.body;
 
-  jwt.verify(token, env.FORGOT_TOKEN_SECRET, async (err: Error | null) => {
-    // Invalid token
-    if (err) return res.sendStatus(403);
+  try {
+    jwt.verify(token, env.FORGOT_TOKEN_SECRET);
 
     const user = await prisma.user.findFirst({
       where: {
@@ -258,7 +247,9 @@ export const resetPassword = async (req: Request, res: Response) => {
       },
     });
 
-    if (!user) return res.sendStatus(403);
+    if (!user) {
+      throw new UnauthorizedError("Invalid token or user");
+    }
 
     // Update the password
     await prisma.user.update({
@@ -269,16 +260,20 @@ export const resetPassword = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(200).json({ message: "Mot de passe réinitialisé avec succès" });
-  });
+    res.status(200).json({ message: "Password reset successfully" });
+  } catch (error) {
+    if (error instanceof UnauthorizedError) {
+      throw error;
+    }
+    throw new UnauthorizedError("Invalid or expired token");
+  }
 };
 
 export const validateResetToken = async (req: Request, res: Response) => {
   const { token } = req.query;
 
   if (typeof token !== "string") {
-    res.status(400).json({ valid: false, error: "Invalid token" });
-    return;
+    throw new ValidationError("Invalid token");
   }
 
   try {
@@ -290,7 +285,7 @@ export const validateResetToken = async (req: Request, res: Response) => {
       });
 
       if (!user) {
-        throw new Error("User not found");
+        throw new UnauthorizedError("Invalid token");
       }
 
       // Check if password has changed after token creation
@@ -299,13 +294,18 @@ export const validateResetToken = async (req: Request, res: Response) => {
           user.password_changed_at.getTime() / 1000
         );
         if (decoded.iat < passwordChangedTimestamp) {
-          console.log("Token invalid due to password change");
-          throw new Error("Token invalid due to password change");
+          throw new UnauthorizedError("Invalid token (password changed)");
         }
       }
     }
     res.status(200).json({ valid: true });
   } catch (error) {
-    res.status(400).json({ valid: false });
+    if (
+      error instanceof UnauthorizedError ||
+      error instanceof ValidationError
+    ) {
+      throw error;
+    }
+    throw new ValidationError("Invalid token");
   }
 };

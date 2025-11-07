@@ -1,14 +1,9 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import { deleteUser, fetchUsers } from "../controllers/UserController";
 
 const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-  fetchUsers(req, res);
-});
-
-router.delete("/:id", (req: Request, res: Response) => {
-  deleteUser(req, res);
-});
+router.get("/", fetchUsers);
+router.delete("/:id", deleteUser);
 
 export default router;

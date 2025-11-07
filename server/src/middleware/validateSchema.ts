@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { RequestHandler } from "express";
 import { AnyZodObject, ZodError, ZodEffects } from "zod";
+import { ValidationError, AppError } from "../errors";
 
 export const validateBodySchema =
   (schema: AnyZodObject | ZodEffects<any>): RequestHandler =>
@@ -10,13 +11,12 @@ export const validateBodySchema =
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errorMessages = error.errors
-          .map((err) => `${err.path.join(".")}: ${err.message}`)
-          .join(", ");
-
-        res.status(400).json({ message: errorMessages });
+        const errorMessages = error.errors.map(
+          (err) => `${err.path.join(".")}: ${err.message}`
+        );
+        return next(new ValidationError(errorMessages));
       } else {
-        res.status(500).json({ message: "Erreur interne du serveur" });
+        return next(new AppError("Internal server error", 500, false));
       }
     }
   };
@@ -29,13 +29,12 @@ export const validateQuerySchema =
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errorMessages = error.errors
-          .map((err) => `${err.path.join(".")}: ${err.message}`)
-          .join(", ");
-
-        res.status(400).json({ message: errorMessages });
+        const errorMessages = error.errors.map(
+          (err) => `${err.path.join(".")}: ${err.message}`
+        );
+        return next(new ValidationError(errorMessages));
       } else {
-        res.status(500).json({ message: "Erreur interne du serveur" });
+        return next(new AppError("Internal server error", 500, false));
       }
     }
   };

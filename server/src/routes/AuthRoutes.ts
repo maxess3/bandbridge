@@ -13,7 +13,7 @@ const LoginLimiter = rateLimit({
   limit: 10, // each IP can make up to 10 requests per `windowsMs` (5 minutes)
   standardHeaders: true, // add the `RateLimit-*` headers to the response
   legacyHeaders: false, // remove the `X-RateLimit-*` headers from the response
-  message: "Trop de requêtes, veuillez réessayer dans 5 minutes.",
+  message: "Too many requests, please try again in 5 minutes.",
 });
 
 const ForgotPasswordLimiter = rateLimit({
@@ -21,7 +21,7 @@ const ForgotPasswordLimiter = rateLimit({
   limit: 5, // each IP can make up to 5 requests per `windowsMs` (15 minutes)
   standardHeaders: true, // add the `RateLimit-*` headers to the response
   legacyHeaders: false, // remove the `X-RateLimit-*` headers from the response
-  message: "Trop de requêtes, veuillez réessayer dans 5 minutes.",
+  message: "Too many requests, please try again in 5 minutes.",
 });
 
 const router = Router();
