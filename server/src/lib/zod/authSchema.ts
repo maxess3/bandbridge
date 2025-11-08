@@ -3,7 +3,7 @@ import z from "zod";
 /* AUTH SCHEMA */
 
 export const formSignUpSchema = z.object({
-	email: z.string().email("Adresse email invalide"),
+	email: z.email("Adresse email invalide"),
 	password: z
 		.string()
 		.min(8, "Le mot de passe doit contenir au moins 8 caractères")
@@ -29,7 +29,7 @@ export const formSignUpSchema = z.object({
 });
 
 export const formLoginSchema = z.object({
-	email: z.string().email("Adresse email invalide"),
+	email: z.email("Adresse email invalide"),
 	password: z
 		.string()
 		.min(1, "le mot de passe est requis")
@@ -37,7 +37,7 @@ export const formLoginSchema = z.object({
 });
 
 export const formForgotPwdSchema = z.object({
-	email: z.string().email("Adresse email invalide"),
+	email: z.email("Adresse email invalide"),
 });
 
 export const formResetPwdSchema = z
@@ -53,6 +53,6 @@ export const formResetPwdSchema = z
 		confirm: z.string(),
 	})
 	.refine((data) => data.password === data.confirm, {
-		message: "Les mots de passe doivent correspondre",
 		path: ["confirm"],
-	});
+        error: "Les mots de passe doivent correspondre"
+    });

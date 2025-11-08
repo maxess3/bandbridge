@@ -146,8 +146,6 @@ export const formUserSettings = z.object({
       return actualAge <= 120;
     }, "L'âge maximum autorisé est de 120 ans"),
   gender: z.enum(["OTHER", "MALE", "FEMALE"], {
-    errorMap: () => ({
-      message: "Merci de sélectionner un genre",
-    }),
+    error: () => "Merci de sélectionner un genre",
   }),
 });

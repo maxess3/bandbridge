@@ -6,9 +6,7 @@ export const instrumentSchema = z.object({
   instrumentTypeId: z.string().min(1, "L'instrument est requis"),
   level: z
     .enum(["BEGINNER", "INTERMEDIATE", "ADVANCED", "EXPERT"], {
-      errorMap: () => ({
-        message: "Merci de sélectionner un niveau",
-      }),
+      error: () => "Merci de sélectionner un niveau",
     })
     .nullable(),
   order: z.number().min(0, "L'ordre doit être d'au moins 0").optional(),
@@ -26,9 +24,7 @@ export const formGeneralProfile = z.object({
       "Le pseudonyme ne doit contenir que des lettres, chiffres, tirets et espaces"
     ),
   country: z.enum(["France"], {
-    errorMap: () => ({
-      message: "L'application est disponible en france uniquement",
-    }),
+    error: () => "L'application est disponible en france uniquement",
   }),
   zipcode: z
     .string()
@@ -56,8 +52,8 @@ export const formGeneralProfile = z.object({
         return uniqueIds.size === instrumentIds.length;
       },
       {
-        message: "Vous ne pouvez pas ajouter le même instrument plusieurs fois",
-      }
+          error: "Vous ne pouvez pas ajouter le même instrument plusieurs fois"
+    }
     ),
   genres: z
     .array(z.string())
@@ -70,8 +66,8 @@ export const formGeneralProfile = z.object({
         return uniqueGenres.size === genres.length;
       },
       {
-        message: "Vous ne pouvez pas ajouter le même genre plusieurs fois",
-      }
+          error: "Vous ne pouvez pas ajouter le même genre plusieurs fois"
+    }
     ),
 });
 
@@ -93,9 +89,7 @@ export const formInfoProfile = z.object({
       "MORE_THAN_HUNDRED",
     ],
     {
-      errorMap: () => ({
-        message: "Merci de sélectionner une option",
-      }),
+      error: () => "Merci de sélectionner une option",
     }
   ),
   rehearsalsPerWeek: z.enum(
@@ -106,15 +100,11 @@ export const formInfoProfile = z.object({
       "MORE_THAN_THREE_PER_WEEK",
     ],
     {
-      errorMap: () => ({
-        message: "Merci de sélectionner une option",
-      }),
+      error: () => "Merci de sélectionner une option",
     }
   ),
   practiceType: z.enum(["NOT_SPECIFIED", "HOBBY", "ACTIVE"], {
-    errorMap: () => ({
-      message: "Merci de sélectionner une option",
-    }),
+    error: () => "Merci de sélectionner une option",
   }),
   isLookingForBand: z.boolean(),
   youtube: z
@@ -161,12 +151,14 @@ export const formInfoProfile = z.object({
 
 export const formProfilePicture = z.object({
   profilePicture: z
-    .instanceof(File, { message: "Le fichier est requis" })
+    .instanceof(File, {
+        error: "Le fichier est requis"
+    })
     .refine((file) => file.type.startsWith("image/"), {
-      message: "Le fichier doit être une image",
+        error: "Le fichier doit être une image"
     })
     .refine((file) => file.size <= 5 * 1024 * 1024, {
-      message: "L'image ne doit pas dépasser 5 Mo",
+        error: "L'image ne doit pas dépasser 5 Mo"
     })
     .refine(
       (file) => {
@@ -174,8 +166,8 @@ export const formProfilePicture = z.object({
         return allowedTypes.includes(file.type);
       },
       {
-        message: "Format d'image non supporté (JPEG, PNG, WebP uniquement)",
-      }
+          error: "Format d'image non supporté (JPEG, PNG, WebP uniquement)"
+    }
     ),
 });
 

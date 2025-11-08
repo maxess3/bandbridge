@@ -73,7 +73,7 @@ export const errorHandler = (
 
   // Gérer les erreurs Zod (seulement si ce n'est pas déjà une AppError)
   if (!(error instanceof AppError) && err instanceof ZodError) {
-    const errorMessages = err.errors.map(
+    const errorMessages = err.issues.map(
       (e) => `${e.path.join(".")}: ${e.message}`
     );
     error = new ValidationError(errorMessages);

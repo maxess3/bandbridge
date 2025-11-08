@@ -8,11 +8,11 @@ const envSchema = z.object({
   // Configuration serveur
   NODE_ENV: z
     .enum(["development", "production", "test"])
-    .default("development"),
-  PORT: z.string().default("5000"),
+    .prefault("development"),
+  PORT: z.string().prefault("5000"),
 
   // URLs
-  CLIENT_URL: z.string().url("CLIENT_URL doit être une URL valide"),
+  CLIENT_URL: z.url("CLIENT_URL doit être une URL valide"),
 
   // Base de données
   DATABASE_URL: z.string().min(1, "DATABASE_URL est requis"),
@@ -29,11 +29,11 @@ const envSchema = z.object({
     .min(32, "FORGOT_TOKEN_SECRET doit contenir au moins 32 caractères"),
 
   // Configuration email
-  EMAIL_USER: z.string().email("EMAIL_USER doit être une adresse email valide"),
+  EMAIL_USER: z.email("EMAIL_USER doit être une adresse email valide"),
   EMAIL_PWD: z.string().min(1, "EMAIL_PWD est requis"),
 
   // Configuration R2/S3 (Cloudflare R2)
-  R2_ENDPOINT: z.string().url("R2_ENDPOINT doit être une URL valide"),
+  R2_ENDPOINT: z.url("R2_ENDPOINT doit être une URL valide"),
   R2_ACCESS_KEY_ID: z.string().min(1, "R2_ACCESS_KEY_ID est requis"),
   R2_SECRET_ACCESS_KEY: z.string().min(1, "R2_SECRET_ACCESS_KEY est requis"),
   R2_BUCKET_NAME: z.string().min(1, "R2_BUCKET_NAME est requis"),
@@ -49,7 +49,7 @@ export function validateEnv() {
     const parsed = envSchema.safeParse(process.env);
 
     if (!parsed.success) {
-      const missingVars = parsed.error.errors
+      const missingVars = parsed.error.issues
         .map((err) => `${err.path.join(".")}: ${err.message}`)
         .join("\n");
       console.error(

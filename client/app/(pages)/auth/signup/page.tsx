@@ -190,6 +190,11 @@ export default function Signup() {
                     placeholder="Doe"
                     {...register("lastName")}
                   />
+                  {errors.lastName && (
+                    <p className="text-[#ff4444] text-sm">
+                      {errors.lastName.message}
+                    </p>
+                  )}
                 </div>
               </div>
             )}

@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from "express";
 import { RequestHandler } from "express";
-import { AnyZodObject, ZodError, ZodEffects } from "zod";
+import { ZodType, ZodError } from "zod";
 import { ValidationError, AppError } from "../errors";
 
 export const validateBodySchema =
-  (schema: AnyZodObject | ZodEffects<any>): RequestHandler =>
+  (schema: ZodType<any>): RequestHandler =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync(req.body);
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errorMessages = error.errors.map(
+        const errorMessages = error.issues.map(
           (err) => `${err.path.join(".")}: ${err.message}`
         );
         return next(new ValidationError(errorMessages));
@@ -22,14 +22,14 @@ export const validateBodySchema =
   };
 
 export const validateQuerySchema =
-  (schema: AnyZodObject | ZodEffects<any>): RequestHandler =>
+  (schema: ZodType<any>): RequestHandler =>
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await schema.parseAsync(req.query);
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const errorMessages = error.errors.map(
+        const errorMessages = error.issues.map(
           (err) => `${err.path.join(".")}: ${err.message}`
         );
         return next(new ValidationError(errorMessages));
