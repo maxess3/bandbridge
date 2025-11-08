@@ -25,7 +25,7 @@ export const ProfileHeader = ({
         <div className="flex flex-col">
           <div className="text-3xl font-semibold inline-flex items-center gap-2">
             {profile?.pseudonyme}
-            <AiFillSafetyCertificate className="!size-7 text-blue-500" />
+            <AiFillSafetyCertificate className="size-7! text-blue-500" />
           </div>
           <div className="text-lg font-medium opacity-80">
             @{profile?.username}

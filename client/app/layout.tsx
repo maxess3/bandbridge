@@ -58,7 +58,7 @@ export default async function RootLayout({
                         "[&>div>svg]:text-orange-700 dark:[&>div>svg]:text-orange-600",
                       info: "[&>div>svg]:text-blue-700 dark:[&>div>svg]:text-blue-600",
                       actionButton:
-                        "!bg-transparent absolute right-1 !text-foreground",
+                        "bg-transparent! absolute right-1 text-foreground!",
                       icon: "[&>svg]:w-6 [&>svg]:h-6 mr-2",
                     },
                   }}

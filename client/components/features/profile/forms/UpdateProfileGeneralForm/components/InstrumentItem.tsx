@@ -36,7 +36,7 @@ export const InstrumentItem = ({
         className="text-muted-foreground hover:text-destructive rounded-full w-8 h-8"
         aria-label={`Supprimer ${instrumentName}`}
       >
-        <X className="!size-5" />
+        <X className="size-5!" />
       </Button>
       <div
         className={`flex justify-between items-center w-full ${

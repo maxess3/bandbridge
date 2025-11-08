@@ -20,9 +20,9 @@ export const FollowButton = ({
       disabled={isPending}
       icon={
         isFollowing ? (
-          <FaUserCheck className="!size-5" />
+          <FaUserCheck className="size-5!" />
         ) : (
-          <LucideUserRoundPlus className="!size-5" />
+          <LucideUserRoundPlus className="size-5!" />
         )
       }
       variant={isFollowing ? "outline" : "default"}

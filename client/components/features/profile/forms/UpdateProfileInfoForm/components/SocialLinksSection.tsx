@@ -87,7 +87,7 @@ export const SocialLinksSection = () => {
                     aria-pressed={isActive}
                     ref={(el) => setButtonRef(platform.value, el)}
                   >
-                    <IconComponent className="!size-5" />
+                    <IconComponent className="size-5!" />
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>

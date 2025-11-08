@@ -84,7 +84,7 @@ export const InstrumentsSection = ({
 
             {formInstruments.length >= 10 && (
               <p className="text-sm text-amber-600 rounded-md flex items-center gap-1.5">
-                <Info className="!size-4" />
+                <Info className="size-4!" />
                 Vous avez atteint le maximum de 10 instruments.
               </p>
             )}
@@ -97,7 +97,7 @@ export const InstrumentsSection = ({
               disabled={isLoadingInstruments || formInstruments.length >= 10}
               className="rounded-md"
             >
-              <Plus className="!size-5" />
+              <Plus className="size-5!" />
               Ajouter un instrument
             </Button>
           </div>

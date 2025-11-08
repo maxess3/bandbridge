@@ -41,7 +41,7 @@ export const SocialLinkItem = ({
       <div className="flex items-center gap-x-3 space-y-1">
         <div className="flex items-center relative w-full">
           <div className="justify-center rounded-l-md flex items-center absolute inset-y-0 left-0 opacity-80 w-12 px-3 border-r">
-            <IconComponent className="!size-5" />
+            <IconComponent className="size-5!" />
           </div>
           <FormInput
             id={platform.value}
@@ -66,7 +66,7 @@ export const SocialLinkItem = ({
               aria-label={`Supprimer le lien ${platform.label}`}
               ref={(el) => closeButtonRef(platform.value, el)}
             >
-              <Trash className="!size-4" />
+              <Trash className="size-4!" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>

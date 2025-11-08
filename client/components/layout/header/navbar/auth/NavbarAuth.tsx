@@ -46,10 +46,10 @@ export const NavbarAuth = () => {
         <div className="flex items-center h-full gap-x-2">
           <div className="flex items-center">
             <button className="w-10 h-10 flex items-center justify-center  hover:bg-hover cursor-pointer rounded-full">
-              <IoNotificationsOutline className="!size-5 opacity-80" />
+              <IoNotificationsOutline className="size-5! opacity-80" />
             </button>
             <button className="w-10 h-10 flex items-center justify-center  hover:bg-hover cursor-pointer rounded-full">
-              <LuMessageCircle className="!size-5 opacity-80" />
+              <LuMessageCircle className="size-5! opacity-80" />
             </button>
           </div>
 

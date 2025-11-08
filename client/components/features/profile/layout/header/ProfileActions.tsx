@@ -101,7 +101,7 @@ export const ProfileActions = ({
             onClick={captureFocus}
             className="border font-semibold px-4 flex gap-2 justify-center items-center rounded-full hover:bg-hover"
           >
-            <Pencil className="!size-4" />
+            <Pencil className="size-4!" />
             Modifier le résumé
           </Link>
           <Button
@@ -112,7 +112,7 @@ export const ProfileActions = ({
               setIsShareModalOpen(true);
             }}
           >
-            <FiShare className="!size-4" />
+            <FiShare className="size-4!" />
             Partager
           </Button>
         </div>
@@ -146,7 +146,7 @@ export const ProfileActions = ({
           isPending={isFollowPending}
         />
         <Button variant="outline" className="rounded-full">
-          <FiMessageSquare className="!size-4" />
+          <FiMessageSquare className="size-4!" />
           Message
         </Button>
         <Button
@@ -157,7 +157,7 @@ export const ProfileActions = ({
             setIsShareModalOpen(true);
           }}
         >
-          <FiShare className="!size-4" />
+          <FiShare className="size-4!" />
           Partager
         </Button>
       </div>

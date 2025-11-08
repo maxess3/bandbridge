@@ -21,7 +21,7 @@ const MESSAGES = {
 } as const;
 
 const SkeletonProfileCard = () => (
-  <div className="animate-pulse bg-white rounded-lg p-4 shadow">
+  <div className="animate-pulse bg-white rounded-lg p-4 shadow-sm">
     <div className="flex items-center space-x-4">
       <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
       <div className="flex-1 space-y-2">

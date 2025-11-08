@@ -163,7 +163,7 @@ const BaseAutocompleteComponent = <T extends BaseAutocompleteItem>(
                     }
                   }}
                   className={cn(
-                    "font-medium border border-transparent w-full text-left px-4 py-2.5 text-sm cursor-pointer hover:bg-foreground/10 hover:text-foreground focus:bg-foreground/10 focus:text-foreground outline-none",
+                    "font-medium border border-transparent w-full text-left px-4 py-2.5 text-sm cursor-pointer hover:bg-foreground/10 hover:text-foreground focus:bg-foreground/10 focus:text-foreground outline-hidden",
                     index === selectedIndex && "bg-foreground/10 border-[red]"
                   )}
                 >

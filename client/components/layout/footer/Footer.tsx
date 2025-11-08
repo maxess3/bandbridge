@@ -95,7 +95,7 @@ function Footer() {
           <Link
             href={""}
             className={
-              buttonVariants({ variant: "ghost" }) + " w-10 h-10 !rounded-full"
+              buttonVariants({ variant: "ghost" }) + " w-10 h-10 rounded-full!"
             }
           >
             <FaXTwitter style={{ width: "1.4em", height: "1.4em" }} />
@@ -103,7 +103,7 @@ function Footer() {
           <Link
             href={""}
             className={
-              buttonVariants({ variant: "ghost" }) + " w-10 h-10 !rounded-full"
+              buttonVariants({ variant: "ghost" }) + " w-10 h-10 rounded-full!"
             }
           >
             <FaInstagram style={{ width: "1.45em", height: "1.45em" }} />
@@ -111,7 +111,7 @@ function Footer() {
           <Link
             href={""}
             className={
-              buttonVariants({ variant: "ghost" }) + " w-10 h-10 !rounded-full"
+              buttonVariants({ variant: "ghost" }) + " w-10 h-10 rounded-full!"
             }
           >
             <FiFacebook

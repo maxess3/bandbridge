@@ -74,7 +74,7 @@ export const GenresSection = ({
 
             {formGenres.length >= 10 && (
               <p className="text-sm text-amber-600 rounded-md flex items-center gap-1.5">
-                <Info className="!size-4" />
+                <Info className="size-4!" />
                 Vous avez atteint le maximum de 10 genres.
               </p>
             )}
@@ -87,7 +87,7 @@ export const GenresSection = ({
               disabled={isLoadingGenres || formGenres.length >= 10}
               className="rounded-md"
             >
-              <Plus className="!size-5" />
+              <Plus className="size-5!" />
               Ajouter un genre
             </Button>
           </div>

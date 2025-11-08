@@ -70,7 +70,7 @@ const DialogContent = React.forwardRef<
       <DialogPrimitive.Content
         ref={ref}
         className={cn(
-          "fixed left-[50%] top-[50%] z-50 flex w-full max-w-lg translate-x-[-50%] translate-y-[-50%] flex-col border bg-dialog p-6 shadow-lg sm:rounded-lg focus:outline-none",
+          "fixed left-[50%] top-[50%] z-50 flex w-full max-w-lg translate-x-[-50%] translate-y-[-50%] flex-col border bg-dialog p-6 shadow-lg sm:rounded-lg focus:outline-hidden",
           className
         )}
         onOpenAutoFocus={handleOpenAutoFocus}
@@ -81,7 +81,7 @@ const DialogContent = React.forwardRef<
           tabIndex={dummyTabIndex}
           onBlur={handleDummyBlur}
         />
-        <DialogPrimitive.Close className="absolute flex justify-center items-center w-11 h-11 top-2 right-4 hover:bg-accent-foreground rounded-full focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <DialogPrimitive.Close className="absolute flex justify-center items-center w-11 h-11 top-2 right-4 hover:bg-accent-foreground rounded-full focus:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
           <X className="h-7 w-7 opacity-70" />
           <span className="sr-only">Close</span>
         </DialogPrimitive.Close>

@@ -89,7 +89,7 @@ export const DropdownProfile = () => {
                     sizes="36px"
                   />
                   <AvatarFallback className="bg-secondary pointer-events-none">
-                    <DefaultProfilePicture className="mt-7 mr-1 !w-[50px] !h-[50px] text-background" />
+                    <DefaultProfilePicture className="mt-7 mr-1 w-[50px]! h-[50px]! text-background" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col ml-0.5 min-w-0 flex-1">
@@ -107,13 +107,13 @@ export const DropdownProfile = () => {
           <DropdownMenuItem
             onClick={() => router.push(`/${session?.user.username}`)}
           >
-            <LuUser className="!size-6" />
+            <LuUser className="size-6!" />
             Voir le profil
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => router.push(`/${session?.user.username}`)}
           >
-            <LuPencil className="!size-5" />
+            <LuPencil className="size-5!" />
             Éditer le profil
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-border" />
@@ -122,22 +122,22 @@ export const DropdownProfile = () => {
             onClick={(e) => handleClick(e)}
           >
             <div className="flex gap-x-2.5 items-center">
-              <FiMoon className="!size-5" />
+              <FiMoon className="size-5!" />
               Mode sombre
             </div>
             <Switch checked={isChecked} />
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push("/")}>
-            <RiBugLine className="!size-5" />
+            <RiBugLine className="size-5!" />
             Signaler un bug
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push("/settings")}>
-            <LuSettings className="!size-5" />
+            <LuSettings className="size-5!" />
             Paramètres
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-border" />
           <DropdownMenuItem onClick={() => signOut()}>
-            <LuLogOut className="!size-5" />
+            <LuLogOut className="size-5!" />
             Se déconnecter
           </DropdownMenuItem>
         </DropdownMenuGroup>

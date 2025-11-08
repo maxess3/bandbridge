@@ -107,7 +107,7 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
 								{headerGroup.headers.map((header) => (
 									<th
 										key={header.id}
-										className="font-semibold opacity-70 [&:not(:first-child):not(:last-child)]:px-3 [&:first-child]:rounded-tl-md [&:last-child]:rounded-tr-md py-2 px-4"
+										className="font-semibold opacity-70 [&:not(:first-child):not(:last-child)]:px-3 first:rounded-tl-md last:rounded-tr-md py-2 px-4"
 									>
 										{flexRender(
 											header.column.columnDef.header,
@@ -120,7 +120,7 @@ export default function BandTable({ tableLayoutMode }: BandTableProps) {
 					</thead>
 					<tbody>
 						{table.getRowModel().rows.map((row) => (
-							<tr key={row.id} className="[&:not(:last-child)]:border-y">
+							<tr key={row.id} className="not-last:border-y">
 								{row.getVisibleCells().map((cell) => (
 									<td
 										key={cell.id}

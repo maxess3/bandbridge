@@ -100,7 +100,7 @@ export const UpdateProfilePictureForm = () => {
 					<div
 						{...getRootProps()}
 						className={`min-h-72 w-full flex items-center justify-center border-2 border-dashed rounded-md p-6 text-center cursor-pointer ${
-							isDragActive ? "!border-solid border-link bg-muted" : "border"
+							isDragActive ? "border-solid! border-link bg-muted" : "border"
 						}`}
 					>
 						<input {...getInputProps()} />

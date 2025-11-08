@@ -51,7 +51,7 @@ export const CollapsibleText = ({
       <div
         ref={textRef}
         className={cn(
-          "break-words whitespace-pre-wrap font-normal text-base",
+          "wrap-break-word whitespace-pre-wrap font-normal text-base",
           className
         )}
         style={{

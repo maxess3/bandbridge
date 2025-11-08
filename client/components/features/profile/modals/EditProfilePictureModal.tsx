@@ -136,7 +136,7 @@ export function EditProfilePictureModal({
             withDelay(() => deleteProfilePictureMutation.mutateAsync())
           }
           disabled={deleteProfilePictureMutation.isPending || isDelaying}
-          icon={<Trash2 className="!size-4" />}
+          icon={<Trash2 className="size-4!" />}
         >
           Supprimer
           {deleteProfilePictureMutation.isPending || isDelaying ? (
@@ -146,7 +146,7 @@ export function EditProfilePictureModal({
       )}
       <Button
         onClick={() => setCurrentView("upload")}
-        icon={<Upload className="!size-4" />}
+        icon={<Upload className="size-4!" />}
       >
         <span className="inline-flex gap-x-1">
           Ajouter

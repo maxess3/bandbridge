@@ -137,7 +137,7 @@ export const ProfileMusicianInfos = ({
                         "flex items-center gap-2 rounded-full text-sm h-12 w-12"
                       )}
                     >
-                      <PlatformIcon className="!size-5" />
+                      <PlatformIcon className="size-5!" />
                     </Link>
                   </TooltipTrigger>
                   <TooltipContent>

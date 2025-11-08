@@ -48,7 +48,7 @@ export function SidebarNavMain({
                         className="h-10 py-3 pl-[0.825rem] pr-3 text-base bg-[red]"
                         tooltip={item.title}
                       >
-                        {item.icon && <item.icon className="mr-1.5 !size-5" />}
+                        {item.icon && <item.icon className="mr-1.5 size-5!" />}
                         <span
                           className={`transition-all duration-200 ease-in-out whitespace-nowrap ${
                             isCollapsed
@@ -95,7 +95,7 @@ export function SidebarNavMain({
                     className="h-10 px-4 text-sm"
                     tooltip={item.title}
                   >
-                    {item.icon && <item.icon className="mx-1 !size-5" />}
+                    {item.icon && <item.icon className="mx-1 size-5!" />}
                     <span
                       className={`transition-all duration-200 ease-in-out whitespace-nowrap ${
                         isCollapsed

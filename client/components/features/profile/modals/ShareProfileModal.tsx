@@ -107,7 +107,7 @@ export const ShareProfileModal = ({
               }
               aria-label="Partager sur Twitter/X"
             >
-              <FaXTwitter className="!size-6" />
+              <FaXTwitter className="size-6!" />
               <span className="text-sm font-medium">Twitter/X</span>
             </Button>
             <Button
@@ -118,7 +118,7 @@ export const ShareProfileModal = ({
               }
               aria-label="Partager sur Facebook"
             >
-              <FiFacebook className="!size-6" />
+              <FiFacebook className="size-6!" />
               <span className="text-sm font-medium">Facebook</span>
             </Button>
 
@@ -130,7 +130,7 @@ export const ShareProfileModal = ({
               }
               aria-label="Partager par email"
             >
-              <FiMail className="!size-6" />
+              <FiMail className="size-6!" />
               <span className="text-sm font-medium">Email</span>
             </Button>
 
@@ -141,7 +141,7 @@ export const ShareProfileModal = ({
               disabled={isCopying}
               aria-label="Copier le lien"
             >
-              <FiCopy className="!size-6" />
+              <FiCopy className="size-6!" />
               <span className="text-sm font-medium">
                 {isCopying ? "Copié!" : "Copier le lien"}
               </span>
