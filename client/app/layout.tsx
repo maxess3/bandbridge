@@ -37,7 +37,7 @@ export default async function RootLayout({
   const isPublic = !session?.user || isPublicRoute(pathname);
 
   return (
-    <html lang="fr" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning data-scroll-behavior="smooth">
       <body
         className={`${poppins.className} antialiased min-h-screen flex flex-col`}
       >
