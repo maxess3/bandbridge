@@ -4,9 +4,9 @@ export interface UseAutocompleteScrollProps {
   isOpen: boolean;
   selectedIndex: number;
   searchValue: string;
-  containerRef: React.RefObject<HTMLDivElement>;
-  listRef: React.RefObject<HTMLDivElement>;
-  inputRef: React.RefObject<HTMLInputElement>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  listRef: React.RefObject<HTMLDivElement | null>;
+  inputRef: React.RefObject<HTMLInputElement | null>;
 }
 
 export const useAutocompleteScroll = ({

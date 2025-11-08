@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 export interface UseSearchScrollProps {
   selectedIndex: number;
-  dropdownRef: React.RefObject<HTMLDivElement>;
+  dropdownRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export const useSearchScroll = ({
