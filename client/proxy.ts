@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
 	// Ajouter le pathname aux headers pour l'utiliser dans les composants serveur
 	const headers = new Headers(request.headers);
 	headers.set("x-current-path", request.nextUrl.pathname);
