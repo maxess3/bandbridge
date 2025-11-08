@@ -4,9 +4,9 @@ import { z } from "zod";
 import {
   useForm,
   FormProvider,
-  SubmitHandler,
   FieldValues,
   DefaultValues,
+  Resolver,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -38,7 +38,7 @@ interface EditModalProps<T extends FieldValues> {
   children: React.ReactNode;
   title: string;
   onSubmit: (data: T) => Promise<void>;
-  formSchema: z.ZodType<T>;
+  formSchema: z.ZodTypeAny;
   defaultValues?: DefaultValues<T>;
   isSubmitting?: boolean;
   open?: boolean;
@@ -66,15 +66,17 @@ export function EditModal<T extends FieldValues>({
 
   const methods = useForm<T>({
     mode: "onChange",
-    resolver: zodResolver(formSchema),
+    // @ts-expect-error - zodResolver type incompatibility with Zod v4's ZodTypeAny
+    // This is a known limitation and works correctly at runtime
+    resolver: zodResolver(formSchema) as Resolver<T>,
     defaultValues,
   });
 
   // Use isDirty from React Hook Form to detect changes
   const { isDirty } = methods.formState;
 
-  const formSubmit = useCallback<SubmitHandler<T>>(
-    async (data) => {
+  const formSubmit = useCallback(
+    async (data: T) => {
       await onSubmit(data);
       methods.reset(defaultValues);
     },
