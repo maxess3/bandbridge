@@ -35,7 +35,7 @@ router.post(
   "/me/picture",
   authenticateToken,
   upload.single("file"),
-  handleMulterError, // Ajouter ce middleware pour gérer les erreurs Multer
+  handleMulterError, // Add this middleware to handle Multer errors
   ProfileController.uploadProfilePicture
 );
 

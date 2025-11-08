@@ -1,9 +1,17 @@
 import { AppError } from "./AppError";
 
 /**
- * Erreur pour les accès non autorisés (401)
+ * Error for unauthorized access (401).
+ *
+ * @remarks
+ * Used when authentication is required but missing or invalid.
  */
 export class UnauthorizedError extends AppError {
+  /**
+   * Creates an instance of UnauthorizedError.
+   *
+   * @param message - Error message (default: "Unauthorized")
+   */
   constructor(message: string = "Unauthorized") {
     super(message, 401);
   }

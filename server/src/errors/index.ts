@@ -1,5 +1,5 @@
 /**
- * Export centralisé de toutes les classes d'erreurs
+ * Centralized export of all error classes.
  */
 export { AppError } from "./AppError";
 export { NotFoundError } from "./NotFoundError";

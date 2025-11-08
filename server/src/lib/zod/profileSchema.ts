@@ -1,7 +1,12 @@
 import z from "zod";
 
-/* INSTRUMENT SCHEMA */
+/**
+ * Profile-related schemas for instruments, profile editing, and search.
+ */
 
+/**
+ * Schema for instrument selection in profile.
+ */
 export const instrumentSchema = z.object({
   instrumentTypeId: z.string().min(1, "L'instrument est requis"),
   level: z
@@ -12,8 +17,10 @@ export const instrumentSchema = z.object({
   order: z.number().min(0, "L'ordre doit être d'au moins 0").optional(),
 });
 
-/* EDIT PROFILE SCHEMA */
-
+/**
+ * Schema for general profile information (pseudonyme, location, instruments, genres).
+ * Validates that instruments and genres don't have duplicates.
+ */
 export const formGeneralProfile = z.object({
   pseudonyme: z
     .string()
@@ -44,16 +51,16 @@ export const formGeneralProfile = z.object({
     .max(10, "Vous ne pouvez pas ajouter plus de 10 instruments")
     .refine(
       (instruments) => {
-        // Vérifier qu'il n'y a pas de doublons d'instruments
+        // Check for duplicate instruments
         const instrumentIds = instruments
-          .filter((instrument) => instrument.instrumentTypeId) // Filtrer les instruments vides
+          .filter((instrument) => instrument.instrumentTypeId) // Filter empty instruments
           .map((instrument) => instrument.instrumentTypeId);
         const uniqueIds = new Set(instrumentIds);
         return uniqueIds.size === instrumentIds.length;
       },
       {
-          error: "Vous ne pouvez pas ajouter le même instrument plusieurs fois"
-    }
+        error: "Vous ne pouvez pas ajouter le même instrument plusieurs fois",
+      }
     ),
   genres: z
     .array(z.string())
@@ -61,22 +68,25 @@ export const formGeneralProfile = z.object({
     .max(10, "Vous ne pouvez pas ajouter plus de 10 genres")
     .refine(
       (genres) => {
-        // Vérifier qu'il n'y a pas de doublons de genres
+        // Check for duplicate genres
         const uniqueGenres = new Set(genres);
         return uniqueGenres.size === genres.length;
       },
       {
-          error: "Vous ne pouvez pas ajouter le même genre plusieurs fois"
-    }
+        error: "Vous ne pouvez pas ajouter le même genre plusieurs fois",
+      }
     ),
 });
 
+/**
+ * Schema for profile information (description, concerts, rehearsals, practice type, social links).
+ */
 export const formInfoProfile = z.object({
   description: z
     .string()
     .max(2600, "La description ne doit pas dépasser 2600 caractères")
     .transform((val) => {
-      // Nettoyer les sauts de lignes multiples (2 ou plus) en un seul saut de ligne
+      // Clean multiple line breaks (2 or more) into a single line break
       return val ? val.replace(/\n{3,}/g, "\n") : val;
     })
     .optional(),
@@ -149,16 +159,20 @@ export const formInfoProfile = z.object({
     ),
 });
 
+/**
+ * Schema for profile picture upload.
+ * Validates that the file is an image and is less than 5MB.
+ */
 export const formProfilePicture = z.object({
   profilePicture: z
     .instanceof(File, {
-        error: "Le fichier est requis"
+      error: "Le fichier est requis",
     })
     .refine((file) => file.type.startsWith("image/"), {
-        error: "Le fichier doit être une image"
+      error: "Le fichier doit être une image",
     })
     .refine((file) => file.size <= 5 * 1024 * 1024, {
-        error: "L'image ne doit pas dépasser 5 Mo"
+      error: "L'image ne doit pas dépasser 5 Mo",
     })
     .refine(
       (file) => {
@@ -166,11 +180,14 @@ export const formProfilePicture = z.object({
         return allowedTypes.includes(file.type);
       },
       {
-          error: "Format d'image non supporté (JPEG, PNG, WebP uniquement)"
-    }
+        error: "Format d'image non supporté (JPEG, PNG, WebP uniquement)",
+      }
     ),
 });
 
+/**
+ * Schema for autocomplete search query parameters.
+ */
 export const searchAutocompleteSchema = z.object({
   q: z
     .string()
@@ -179,6 +196,9 @@ export const searchAutocompleteSchema = z.object({
     .trim(),
 });
 
+/**
+ * Schema for search query parameters with pagination support.
+ */
 export const searchQuerySchema = z.object({
   q: z
     .string()

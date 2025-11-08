@@ -17,6 +17,15 @@ import {
   AppError,
 } from "../errors";
 
+/**
+ * Retrieves a public profile by username.
+ *
+ * @param req - Express request object with username in params
+ * @param res - Express response object
+ * @returns Public profile data including instruments, genres, followers, and social links
+ *
+ * @throws {NotFoundError} If profile is not found
+ */
 export const getProfilePublic = async (req: Request, res: Response) => {
   const { username } = req.params;
 
@@ -162,6 +171,16 @@ export const getProfilePublic = async (req: Request, res: Response) => {
   res.status(200).json(responseProfile);
 };
 
+/**
+ * Retrieves the authenticated user's own profile.
+ *
+ * @param req - Express request object with authenticated user
+ * @param res - Express response object
+ * @returns Complete profile data for the authenticated user
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {NotFoundError} If profile is not found
+ */
 export const getProfileOwner = async (req: Request, res: Response) => {
   const userId = req.user.userId;
   if (!userId) {
@@ -310,6 +329,17 @@ export const getProfileOwner = async (req: Request, res: Response) => {
   res.status(200).json(responseProfile);
 };
 
+/**
+ * Updates the general profile information (pseudonyme, location, genres, instruments).
+ *
+ * @param req - Express request object with authenticated user and profile data in body
+ * @param res - Express response object
+ * @returns Updated profile data
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {NotFoundError} If profile is not found
+ * @throws {ValidationError} If city does not match postal code
+ */
 export const updateGeneralProfileOwner = async (
   req: Request,
   res: Response
@@ -383,22 +413,22 @@ export const updateGeneralProfileOwner = async (
         if (response.ok) {
           const data = await response.json();
 
-          // Vérifier que la ville existe pour ce code postal
+          // Verify that the city exists for this postal code
           const validCities = data.map((c: any) => c.nom);
           if (!validCities.includes(req.body.city)) {
             throw new ValidationError("City does not match the postal code");
           }
 
-          // Récupérer le nom du département
+          // Get the department name
           departmentName = data[0]?.departement?.nom;
         }
       } catch (error) {
-        // Si c'est déjà une ValidationError, la relancer
+        // If it's already a ValidationError, rethrow it
         if (error instanceof ValidationError) {
           throw error;
         }
-        // Sinon, logger l'erreur mais continuer (l'API externe peut être indisponible)
-        console.error("Erreur lors de la validation de l'adresse:", error);
+        // Otherwise, log the error but continue (external API may be unavailable)
+        console.error("Error validating address:", error);
       }
     }
   }
@@ -415,7 +445,7 @@ export const updateGeneralProfileOwner = async (
     },
   });
 
-  // Fetch the final updated data
+  // Fetch final updated data
   const updatedProfile = await prisma.profile.findUnique({
     where: { userId: userId },
     select: {
@@ -457,6 +487,16 @@ export const updateGeneralProfileOwner = async (
   });
 };
 
+/**
+ * Updates profile information (description, concerts, rehearsals, practice type, social links).
+ *
+ * @param req - Express request object with authenticated user and profile info in body
+ * @param res - Express response object
+ * @returns Updated profile information
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {NotFoundError} If profile is not found
+ */
 export const updateInfoProfileOwner = async (req: Request, res: Response) => {
   const userId = req.user.userId;
   if (!userId) {
@@ -472,7 +512,7 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
     throw new NotFoundError("Profile not found");
   }
 
-  // Update description, concerts played, rehearsals per week and practice type
+  // Update description, concerts played, rehearsals per week, and practice type
   await prisma.profile.update({
     where: { userId },
     data: {
@@ -541,6 +581,16 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * Uploads and processes a profile picture in multiple sizes.
+ *
+ * @param req - Express request object with authenticated user and file in body
+ * @param res - Express response object
+ * @returns Updated profile picture key
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {ValidationError} If no file is uploaded
+ */
 export const uploadProfilePicture = async (req: Request, res: Response) => {
   const userId = req.user.userId;
   if (!userId) {
@@ -562,7 +612,7 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
     },
   });
 
-  // Define the desired image sizes
+  // Define desired image sizes
   const sizes = {
     thumbnail: 44,
     small: 80,
@@ -575,7 +625,7 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
     select: { profilePictureKey: true },
   });
 
-  // Delete the old images if they exist
+  // Delete old images if they exist
   if (currentProfile?.profilePictureKey) {
     const oldKey = currentProfile.profilePictureKey;
     const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
@@ -589,11 +639,8 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
       try {
         await r2.send(deleteCommand);
       } catch (error) {
-        // Logger l'erreur mais continuer (l'image peut déjà être supprimée)
-        console.error(
-          `Erreur lors de la suppression de ${keyToDelete}:`,
-          error
-        );
+        // Log error but continue (image may already be deleted)
+        console.error(`Error deleting ${keyToDelete}:`, error);
       }
     });
     await Promise.all(deletePromises);
@@ -623,7 +670,7 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
 
   const uploadedImages = await Promise.all(uploadPromises);
 
-  // Update profile with the main image key
+  // Update profile with main image key
   const mainImageKey = uploadedImages.find((img) => img.size === "medium")?.key;
   if (mainImageKey) {
     await prisma.profile.update({
@@ -640,6 +687,16 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * Deletes the user's profile picture and all size variants.
+ *
+ * @param req - Express request object with authenticated user
+ * @param res - Express response object
+ * @returns Success message
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {NotFoundError} If no profile picture is found
+ */
 export const deleteProfilePicture = async (req: Request, res: Response) => {
   const userId = req.user.userId;
   if (!userId) {
@@ -664,7 +721,7 @@ export const deleteProfilePicture = async (req: Request, res: Response) => {
     },
   });
 
-  // Define the image sizes to delete
+  // Define image sizes to delete
   const sizes = ["thumbnail", "small", "medium", "large"];
   const oldKey = currentProfile.profilePictureKey;
   const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
@@ -679,14 +736,14 @@ export const deleteProfilePicture = async (req: Request, res: Response) => {
     try {
       await r2.send(deleteCommand);
     } catch (error) {
-      // Logger l'erreur mais continuer
-      console.error(`Erreur lors de la suppression de ${keyToDelete}:`, error);
+      // Log error but continue
+      console.error(`Error deleting ${keyToDelete}:`, error);
     }
   });
 
   await Promise.all(deletePromises);
 
-  // Update profile to remove the profile picture reference
+  // Update profile to remove profile picture reference
   await prisma.profile.update({
     where: { userId },
     data: { profilePictureKey: null },
@@ -700,6 +757,17 @@ export const deleteProfilePicture = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * Follows a user profile.
+ *
+ * @param req - Express request object with authenticated user and targetUsername in params
+ * @param res - Express response object
+ * @returns Success message
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {NotFoundError} If profile or target profile is not found
+ * @throws {ValidationError} If user tries to follow themselves
+ */
 export const follow = async (req: Request, res: Response) => {
   const userId = req.user.userId;
   const { targetUsername } = req.params;
@@ -734,7 +802,7 @@ export const follow = async (req: Request, res: Response) => {
     throw new ValidationError("You cannot follow yourself");
   }
 
-  // Ajouter la relation de follow
+  // Add follow relation
   await prisma.profile.update({
     where: { id: currentUserProfile.id },
     data: {
@@ -747,6 +815,16 @@ export const follow = async (req: Request, res: Response) => {
   res.status(200).json({ message: "Profile followed successfully" });
 };
 
+/**
+ * Unfollows a user profile.
+ *
+ * @param req - Express request object with authenticated user and targetUsername in params
+ * @param res - Express response object
+ * @returns Success message
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {NotFoundError} If profile or target profile is not found
+ */
 export const unfollow = async (req: Request, res: Response) => {
   const userId = req.user.userId;
   const { targetUsername } = req.params;
@@ -789,6 +867,16 @@ export const unfollow = async (req: Request, res: Response) => {
   res.status(200).json({ message: "Profile unfollowed successfully" });
 };
 
+/**
+ * Checks if the authenticated user is following a target user.
+ *
+ * @param req - Express request object with authenticated user and targetUsername in params
+ * @param res - Express response object
+ * @returns Following status and timestamp
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {NotFoundError} If profile is not found
+ */
 export const isFollowing = async (req: Request, res: Response) => {
   const userId = req.user.userId;
   const { targetUsername } = req.params;
@@ -797,7 +885,7 @@ export const isFollowing = async (req: Request, res: Response) => {
     throw new UnauthorizedError("Not authenticated");
   }
 
-  // Get the user profile with the following relation
+  // Get user profile with following relation
   const currentUserProfile = await prisma.profile.findUnique({
     where: { userId },
     select: {
@@ -825,6 +913,13 @@ export const isFollowing = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * Retrieves all active instrument types grouped by category.
+ *
+ * @param req - Express request object
+ * @param res - Express response object
+ * @returns Instrument types grouped by category
+ */
 export const getInstrumentTypes = async (req: Request, res: Response) => {
   const instrumentTypes = await prisma.instrumentType.findMany({
     where: { isActive: true },
@@ -836,7 +931,7 @@ export const getInstrumentTypes = async (req: Request, res: Response) => {
     orderBy: [{ category: "asc" }, { name: "asc" }],
   });
 
-  // Grouper par catégorie
+  // Group by category
   const groupedInstruments = instrumentTypes.reduce((acc, instrument) => {
     const category = instrument.category;
     if (!acc[category]) {
@@ -881,7 +976,7 @@ export const getFollowersList = async (req: Request, res: Response) => {
     ...(cursor && { id: { gt: cursor as string } }),
   };
 
-  // Récupérer les followers avec +1 pour savoir s'il y en a plus
+  // Fetch followers with +1 to know if there are more
   const followers = await prisma.profile.findMany({
     where: whereClause,
     take: LIMIT + 1,
@@ -906,7 +1001,7 @@ export const getFollowersList = async (req: Request, res: Response) => {
     },
   });
 
-  // Déterminer s'il y a plus de profils et préparer la réponse
+  // Determine if there are more profiles and prepare response
   const hasMore = followers.length > LIMIT;
   const result = hasMore ? followers.slice(0, LIMIT) : followers;
   const nextCursor = hasMore ? result[result.length - 1]?.id : null;
@@ -918,6 +1013,15 @@ export const getFollowersList = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * Retrieves the list of profiles that a user is following with cursor-based pagination.
+ *
+ * @param req - Express request object with username in params and optional cursor in query
+ * @param res - Express response object
+ * @returns Paginated list of following profiles
+ *
+ * @throws {NotFoundError} If profile is not found
+ */
 export const getFollowingList = async (req: Request, res: Response) => {
   const { username } = req.params;
   const { cursor } = req.query;
@@ -943,7 +1047,7 @@ export const getFollowingList = async (req: Request, res: Response) => {
     ...(cursor && { id: { gt: cursor as string } }),
   };
 
-  // Récupérer les profils suivis avec +1 pour savoir s'il y en a plus
+  // Fetch following profiles with +1 to know if there are more
   const following = await prisma.profile.findMany({
     where: whereClause,
     take: LIMIT + 1,
@@ -968,7 +1072,7 @@ export const getFollowingList = async (req: Request, res: Response) => {
     },
   });
 
-  // Déterminer s'il y a plus de profils et préparer la réponse
+  // Determine if there are more profiles and prepare response
   const hasMore = following.length > LIMIT;
   const result = hasMore ? following.slice(0, LIMIT) : following;
   const nextCursor = hasMore ? result[result.length - 1]?.id : null;
@@ -980,6 +1084,16 @@ export const getFollowingList = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * Searches profiles for autocomplete suggestions (limited to 10 results).
+ *
+ * @param req - Express request object with authenticated user and query parameter 'q'
+ * @param res - Express response object
+ * @returns Limited list of matching profiles (max 10)
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {ValidationError} If query parameter is missing or invalid
+ */
 export const searchProfilesAutocomplete = async (
   req: Request,
   res: Response
@@ -1001,7 +1115,7 @@ export const searchProfilesAutocomplete = async (
     throw new ValidationError("Search must contain at least 1 character");
   }
 
-  // Construire la clause where pour la recherche
+  // Build where clause for search
   const whereClause: any = {
     OR: [
       {
@@ -1021,10 +1135,10 @@ export const searchProfilesAutocomplete = async (
     ],
   };
 
-  // Récupérer exactement 11 profils pour savoir s'il y en a plus
+  // Fetch exactly 11 profiles to know if there are more
   const profiles = await prisma.profile.findMany({
     where: whereClause,
-    take: 11, // 10 + 1 pour savoir s'il y en a plus
+    take: 11, // 10 + 1 to know if there are more
     orderBy: { id: "asc" },
     select: {
       id: true,
@@ -1063,7 +1177,7 @@ export const searchProfilesAutocomplete = async (
     },
   });
 
-  // Déterminer s'il y a plus de profils
+  // Determine if there are more profiles
   const hasMore = profiles.length > 10;
   const result = hasMore ? profiles.slice(0, 10) : profiles;
 
@@ -1074,6 +1188,16 @@ export const searchProfilesAutocomplete = async (
   });
 };
 
+/**
+ * Searches profiles with pagination support.
+ *
+ * @param req - Express request object with authenticated user, query parameter 'q', and optional limit/page
+ * @param res - Express response object
+ * @returns Paginated list of matching profiles
+ *
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {ValidationError} If query parameter is missing or invalid
+ */
 export const searchProfiles = async (req: Request, res: Response) => {
   const userId = req.user.userId;
 
@@ -1092,11 +1216,11 @@ export const searchProfiles = async (req: Request, res: Response) => {
     throw new ValidationError("Search must contain at least 1 character");
   }
 
-  // Valider et limiter la page à 100 maximum
+  // Validate and limit page to 100 maximum
   const pageNumber = Math.min(Math.max(1, Number(page)), 100);
   const limitNumber = Number(limit);
 
-  // Construire la clause where pour la recherche
+  // Build where clause for search
   const whereClause: any = {
     OR: [
       {
@@ -1116,15 +1240,15 @@ export const searchProfiles = async (req: Request, res: Response) => {
     ],
   };
 
-  // Calculer le skip pour la pagination
+  // Calculate skip for pagination
   const skip = (pageNumber - 1) * limitNumber;
 
-  // Calculer le total réel avec count
+  // Calculate real total with count
   const totalFound = await prisma.profile.count({
     where: whereClause,
   });
 
-  // Récupérer les profils avec pagination classique
+  // Fetch profiles with classic pagination
   const profiles = await prisma.profile.findMany({
     where: whereClause,
     skip,
@@ -1150,7 +1274,7 @@ export const searchProfiles = async (req: Request, res: Response) => {
     },
   });
 
-  // Calculer le nombre total de pages (limité à 100 maximum)
+  // Calculate total number of pages (limited to 100 maximum)
   const totalPages = Math.min(Math.ceil(totalFound / limitNumber), 100);
 
   res.status(200).json({

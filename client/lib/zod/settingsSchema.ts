@@ -1,7 +1,12 @@
 import z from "zod";
 
-/* USER SETTINGS SCHEMA */
+/**
+ * User settings schema for account information updates.
+ */
 
+/**
+ * List of reserved usernames that cannot be used.
+ */
 const RESERVED_USERNAMES = [
   "search",
   "settings",
@@ -41,6 +46,10 @@ const RESERVED_USERNAMES = [
   "sample",
 ];
 
+/**
+ * Schema for user settings update.
+ * Validates username, birthdate (age 18-120), and personal information.
+ */
 export const formUserSettings = z.object({
   firstname: z
     .string()
@@ -85,7 +94,7 @@ export const formUserSettings = z.object({
       const monthNum = parseInt(month);
       const yearNum = parseInt(year);
 
-      // Vérifier que c'est une date valide
+      // Verify that it's a valid date
       const date = new Date(yearNum, monthNum - 1, dayNum);
       return (
         date.getFullYear() === yearNum &&
@@ -119,7 +128,7 @@ export const formUserSettings = z.object({
       const monthDiff = today.getMonth() - birthDate.getMonth();
       const dayDiff = today.getDate() - birthDate.getDate();
 
-      // Ajuster l'âge si l'anniversaire n'est pas encore passé cette année
+      // Adjust age if birthday hasn't passed this year
       const actualAge =
         monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
 
@@ -139,7 +148,7 @@ export const formUserSettings = z.object({
       const monthDiff = today.getMonth() - birthDate.getMonth();
       const dayDiff = today.getDate() - birthDate.getDate();
 
-      // Ajuster l'âge si l'anniversaire n'est pas encore passé cette année
+      // Adjust age if birthday hasn't passed this year
       const actualAge =
         monthDiff < 0 || (monthDiff === 0 && dayDiff < 0) ? age - 1 : age;
 

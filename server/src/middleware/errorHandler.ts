@@ -12,8 +12,18 @@ import {
 import { env } from "../config/env.config";
 
 /**
- * Middleware global de gestion d'erreurs
- * Doit être placé en dernier dans la chaîne de middlewares
+ * Global error handling middleware.
+ * Must be placed last in the middleware chain.
+ *
+ * @param err - The error to handle (Error or AppError)
+ * @param req - Express request object
+ * @param res - Express response object
+ * @param next - Express next function
+ *
+ * @remarks
+ * This middleware transforms all errors into standardized AppError instances
+ * and prepares an appropriate JSON response based on the environment.
+ * It handles Prisma, JWT, and Zod errors by converting them to AppError types.
  */
 export const errorHandler = (
   err: Error | AppError,
@@ -21,36 +31,25 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  // Si la réponse a déjà été envoyée, déléguer au handler Express par défaut
+  // If response has already been sent, delegate to Express default handler
   if (res.headersSent) {
     return next(err);
   }
 
   let error = err;
 
-  // Vérifier explicitement les sous-classes d'AppError EN PREMIER (instanceof peut échouer dans certains cas)
-  // Cela évite que ces erreurs soient transformées par les autres handlers
+  // Check AppError subclasses explicitly FIRST (instanceof can fail in some cases)
+  // This prevents these errors from being transformed by other handlers
   if (
     err instanceof NotFoundError ||
     err instanceof ValidationError ||
     err instanceof UnauthorizedError ||
     err instanceof ForbiddenError
   ) {
-    error = err; // Garder l'erreur telle quelle
+    error = err; // Keep error as is
   }
 
-  // DEBUG: Log temporaire pour voir ce qui se passe
-  if (env.NODE_ENV === "development") {
-    console.log("🔍 [DEBUG] Error type:", err.constructor.name);
-    console.log("🔍 [DEBUG] Is NotFoundError?", err instanceof NotFoundError);
-    console.log("🔍 [DEBUG] Is AppError?", err instanceof AppError);
-    console.log("🔍 [DEBUG] Has statusCode?", "statusCode" in err);
-    if ("statusCode" in err) {
-      console.log("🔍 [DEBUG] statusCode value:", (err as any).statusCode);
-    }
-  }
-
-  // Gérer les erreurs Prisma spécifiques (seulement si ce n'est pas déjà une AppError)
+  // Handle Prisma-specific errors (only if not already an AppError)
   if (
     !(error instanceof AppError) &&
     err instanceof Prisma.PrismaClientKnownRequestError
@@ -63,7 +62,7 @@ export const errorHandler = (
     error = new ValidationError("Invalid data");
   }
 
-  // Gérer les erreurs JWT (seulement si ce n'est pas déjà une AppError)
+  // Handle JWT errors (only if not already an AppError)
   if (
     !(error instanceof AppError) &&
     (err instanceof JsonWebTokenError || err instanceof TokenExpiredError)
@@ -71,7 +70,7 @@ export const errorHandler = (
     error = new UnauthorizedError("Invalid or expired token");
   }
 
-  // Gérer les erreurs Zod (seulement si ce n'est pas déjà une AppError)
+  // Handle Zod errors (only if not already an AppError)
   if (!(error instanceof AppError) && err instanceof ZodError) {
     const errorMessages = err.issues.map(
       (e) => `${e.path.join(".")}: ${e.message}`
@@ -79,8 +78,8 @@ export const errorHandler = (
     error = new ValidationError(errorMessages);
   }
 
-  // Si ce n'est pas une AppError, créer une erreur générique
-  // Vérifier aussi si l'erreur a déjà un statusCode (cas où elle serait déjà une AppError mais instanceof échoue)
+  // If not an AppError, create a generic error
+  // Also check if error already has a statusCode (case where it would be an AppError but instanceof fails)
   if (
     !(error instanceof AppError) &&
     !("statusCode" in error && typeof (error as any).statusCode === "number")
@@ -88,37 +87,37 @@ export const errorHandler = (
     error = new AppError(
       env.NODE_ENV === "production" ? "An error occurred" : error.message,
       500,
-      false // Erreur technique, pas opérationnelle
+      false // Technical error, not operational
     );
   }
 
   const appError = error as AppError;
 
-  // S'assurer que le statusCode est bien utilisé (fallback au cas où)
+  // Ensure statusCode is used (fallback just in case)
   const statusCode = appError.statusCode || 500;
 
-  // Logger l'erreur avec contexte
+  // Log error with context
   logError(appError, req);
 
-  // Préparer la réponse selon l'environnement
+  // Prepare response based on environment
   const response: any = {
     message: appError.message,
     statusCode: statusCode,
   };
 
-  // En développement, ajouter plus de détails
+  // In development, add more details
   if (env.NODE_ENV === "development") {
     response.stack = appError.stack;
     response.path = req.path;
     response.method = req.method;
 
-    // Ajouter les erreurs de validation si disponibles
+    // Add validation errors if available
     if (appError instanceof ValidationError && appError.errors) {
       response.errors = appError.errors;
     }
   }
 
-  // En production, masquer les détails des erreurs techniques
+  // In production, hide details of technical errors
   if (env.NODE_ENV === "production" && !appError.isOperational) {
     response.message = "An error occurred";
   }
@@ -127,24 +126,27 @@ export const errorHandler = (
 };
 
 /**
- * Gère les erreurs Prisma spécifiques et les transforme en AppError
+ * Handles Prisma-specific errors and transforms them into AppError.
+ *
+ * @param err - Prisma known request error
+ * @returns AppError instance
  */
 function handlePrismaError(
   err: Prisma.PrismaClientKnownRequestError
 ): AppError {
   switch (err.code) {
     case "P2002":
-      // Violation de contrainte unique
+      // Unique constraint violation
       const target = err.meta?.target as string[] | undefined;
       const field = target ? target.join(", ") : "field";
       return new ValidationError(`${field} already exists`);
 
     case "P2025":
-      // Enregistrement non trouvé
+      // Record not found
       return new NotFoundError("Record not found");
 
     case "P2003":
-      // Violation de contrainte de clé étrangère
+      // Foreign key constraint violation
       return new ValidationError("Invalid reference");
 
     default:
@@ -153,7 +155,10 @@ function handlePrismaError(
 }
 
 /**
- * Log l'erreur avec le contexte de la requête
+ * Logs the error with request context.
+ *
+ * @param error - The error to log
+ * @param req - Express request object
  */
 function logError(error: AppError, req: Request) {
   const context = {
@@ -166,10 +171,10 @@ function logError(error: AppError, req: Request) {
   };
 
   if (error.statusCode >= 500) {
-    // Erreurs serveur : toujours logger
+    // Server errors: always log
     console.error("❌ [ERROR]", context);
   } else {
-    // Erreurs client : logger seulement en développement
+    // Client errors: log only in development
     if (env.NODE_ENV === "development") {
       console.warn("⚠️ [WARN]", context);
     }
@@ -177,7 +182,15 @@ function logError(error: AppError, req: Request) {
 }
 
 /**
- * Middleware pour gérer les routes non trouvées (404)
+ * Middleware to handle routes not found (404).
+ *
+ * @param req - Express request object
+ * @param res - Express response object
+ * @param next - Express next function
+ *
+ * @remarks
+ * This middleware should be placed after all route definitions
+ * but before the error handler middleware.
  */
 export const notFoundHandler = (
   req: Request,

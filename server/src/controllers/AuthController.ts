@@ -8,6 +8,15 @@ import nodemailer from "nodemailer";
 import { env } from "../config/env.config";
 import { ValidationError, UnauthorizedError, AppError } from "../errors";
 
+/**
+ * Registers a new user.
+ *
+ * @param req - Express request object with email, password, firstName, lastName in body
+ * @param res - Express response object
+ * @returns Success message
+ *
+ * @throws {ValidationError} If email is already in use
+ */
 export const signup = async (req: Request, res: Response) => {
   const { email, password, firstName, lastName } = req.body;
 
@@ -41,7 +50,7 @@ export const signup = async (req: Request, res: Response) => {
     await prisma.profile.create({
       data: {
         userId: user.id,
-        pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
+        pseudonyme: username, // Use username as default pseudonyme
       },
     });
   });
@@ -49,6 +58,15 @@ export const signup = async (req: Request, res: Response) => {
   res.status(200).json({ message: "User created." });
 };
 
+/**
+ * Authenticates a user and returns tokens.
+ *
+ * @param req - Express request object with email and password in body
+ * @param res - Express response object
+ * @returns User data and authentication tokens
+ *
+ * @throws {ValidationError} If email or password is incorrect
+ */
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -63,7 +81,7 @@ export const login = async (req: Request, res: Response) => {
   });
 
   if (!user || !compareSync(password, user.password)) {
-    // Message identique pour éviter l'énumération d'emails (sécurité)
+    // Identical message to prevent email enumeration (security)
     throw new ValidationError("Email or password incorrect");
   }
 
@@ -93,6 +111,13 @@ export const login = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * Authenticates or creates a user via Google OAuth.
+ *
+ * @param req - Express request object with email and name in body
+ * @param res - Express response object
+ * @returns User data and authentication tokens
+ */
 export const google = async (req: Request, res: Response) => {
   const { email, name } = req.body;
 
@@ -121,7 +146,7 @@ export const google = async (req: Request, res: Response) => {
       await prisma.profile.create({
         data: {
           userId: newUser.id,
-          pseudonyme: username, // Utiliser le username comme pseudonyme par défaut
+          pseudonyme: username, // Use username as default pseudonyme
         },
       });
 
@@ -160,6 +185,16 @@ export const google = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * Refreshes the access token using a refresh token.
+ *
+ * @param req - Express request object with refreshToken in body
+ * @param res - Express response object
+ * @param next - Express next function
+ * @returns New authentication tokens
+ *
+ * @throws {UnauthorizedError} If refresh token is missing or invalid
+ */
 export const refreshToken = (req: Request, res: Response, next: any) => {
   const { refreshToken } = req.body;
 
@@ -183,6 +218,19 @@ export const refreshToken = (req: Request, res: Response, next: any) => {
   );
 };
 
+/**
+ * Sends a password reset email to the user.
+ *
+ * @param req - Express request object with email in body
+ * @param res - Express response object
+ * @param next - Express next function
+ * @returns Success message (always returns success for security)
+ *
+ * @remarks
+ * Always returns success message even if user doesn't exist to prevent email enumeration.
+ *
+ * @throws {AppError} If email sending fails
+ */
 export const forgotPassword = async (
   req: Request,
   res: Response,
@@ -197,7 +245,7 @@ export const forgotPassword = async (
     },
   });
 
-  // Send no errors (for security), but don't send email.
+  // Send no errors (for security), but don't send email
   if (!user) {
     res.status(200).json({ message: "Password reset email sent" });
     return;
@@ -209,7 +257,7 @@ export const forgotPassword = async (
 
   const link = `${env.CLIENT_URL}/auth/reset/${user.id}/${forgotToken}`;
 
-  // Nodemailer config
+  // Nodemailer configuration
   const transporter = nodemailer.createTransport({
     host: "smtp.hostinger.com",
     port: 465,
@@ -235,6 +283,15 @@ export const forgotPassword = async (
   });
 };
 
+/**
+ * Resets the user's password using a reset token.
+ *
+ * @param req - Express request object with id, token, and password in body
+ * @param res - Express response object
+ * @returns Success message
+ *
+ * @throws {UnauthorizedError} If token is invalid, expired, or user not found
+ */
 export const resetPassword = async (req: Request, res: Response) => {
   const { id, token, password } = req.body;
 
@@ -251,7 +308,7 @@ export const resetPassword = async (req: Request, res: Response) => {
       throw new UnauthorizedError("Invalid token or user");
     }
 
-    // Update the password
+    // Update password
     await prisma.user.update({
       where: { id },
       data: {
@@ -269,6 +326,16 @@ export const resetPassword = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Validates a password reset token.
+ *
+ * @param req - Express request object with token in query
+ * @param res - Express response object
+ * @returns Validation result (valid: true)
+ *
+ * @throws {ValidationError} If token is invalid or missing
+ * @throws {UnauthorizedError} If token is invalid, expired, or password was changed after token creation
+ */
 export const validateResetToken = async (req: Request, res: Response) => {
   const { token } = req.query;
 

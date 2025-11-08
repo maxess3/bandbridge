@@ -1,8 +1,17 @@
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.config";
 
-const EXPIRE_TIME = 15 * 60 * 1000; // 15 minutes en millisecondes
+const EXPIRE_TIME = 15 * 60 * 1000; // 15 minutes in milliseconds
 
+/**
+ * Creates authentication tokens (access and refresh) for a user.
+ *
+ * @param userId - The user ID to create tokens for
+ * @returns Object containing backendTokens with accessToken, refreshToken, and expiresIn
+ *
+ * @remarks
+ * Access token expires in 15 minutes, refresh token expires in 7 days.
+ */
 export const createAuthTokens = (userId: string) => {
   const accessToken = jwt.sign({ userId: userId }, env.ACCESS_TOKEN_SECRET, {
     expiresIn: "15m",

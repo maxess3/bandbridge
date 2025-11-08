@@ -1,5 +1,5 @@
 import "dotenv/config";
-import "express-async-errors"; // Doit être importé avant express pour wrapper automatiquement les routes
+import "express-async-errors"; // Must be imported before express to automatically wrap routes
 import { env } from "./config/env.config";
 import express from "express";
 import { Request, Response } from "express";
@@ -8,6 +8,10 @@ import cookieParser from "cookie-parser";
 import routes from "./routes/index";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
 
+/**
+ * Express application entry point.
+ * Configures middleware, routes, and error handling.
+ */
 const port = env.PORT;
 const app = express();
 
@@ -26,13 +30,13 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello World");
 });
 
-// Routes files
+// Route files
 app.use(routes);
 
-// Gérer les routes non trouvées (404)
+// Handle routes not found (404)
 app.use(notFoundHandler);
 
-// Middleware d'erreurs global (doit être en dernier)
+// Global error middleware (must be last)
 app.use(errorHandler);
 
 app.listen(port, () => {

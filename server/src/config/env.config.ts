@@ -1,51 +1,57 @@
 import { z } from "zod";
 
 /**
- * Schéma de validation pour les variables d'environnement
- * Le serveur ne démarrera pas si une variable requise est manquante
+ * Validation schema for environment variables.
+ * The server will not start if a required variable is missing.
  */
 const envSchema = z.object({
-  // Configuration serveur
+  // Server configuration
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .prefault("development"),
   PORT: z.string().prefault("5000"),
 
   // URLs
-  CLIENT_URL: z.url("CLIENT_URL doit être une URL valide"),
+  CLIENT_URL: z.url("CLIENT_URL must be a valid URL"),
 
-  // Base de données
-  DATABASE_URL: z.string().min(1, "DATABASE_URL est requis"),
+  // Database
+  DATABASE_URL: z.string().min(1, "DATABASE_URL is required"),
 
-  // Tokens JWT
+  // JWT tokens
   ACCESS_TOKEN_SECRET: z
     .string()
-    .min(32, "ACCESS_TOKEN_SECRET doit contenir au moins 32 caractères"),
+    .min(32, "ACCESS_TOKEN_SECRET must contain at least 32 characters"),
   REFRESH_TOKEN_SECRET: z
     .string()
-    .min(32, "REFRESH_TOKEN_SECRET doit contenir au moins 32 caractères"),
+    .min(32, "REFRESH_TOKEN_SECRET must contain at least 32 characters"),
   FORGOT_TOKEN_SECRET: z
     .string()
-    .min(32, "FORGOT_TOKEN_SECRET doit contenir au moins 32 caractères"),
+    .min(32, "FORGOT_TOKEN_SECRET must contain at least 32 characters"),
 
-  // Configuration email
-  EMAIL_USER: z.email("EMAIL_USER doit être une adresse email valide"),
-  EMAIL_PWD: z.string().min(1, "EMAIL_PWD est requis"),
+  // Email configuration
+  EMAIL_USER: z.email("EMAIL_USER must be a valid email address"),
+  EMAIL_PWD: z.string().min(1, "EMAIL_PWD is required"),
 
-  // Configuration R2/S3 (Cloudflare R2)
-  R2_ENDPOINT: z.url("R2_ENDPOINT doit être une URL valide"),
-  R2_ACCESS_KEY_ID: z.string().min(1, "R2_ACCESS_KEY_ID est requis"),
-  R2_SECRET_ACCESS_KEY: z.string().min(1, "R2_SECRET_ACCESS_KEY est requis"),
-  R2_BUCKET_NAME: z.string().min(1, "R2_BUCKET_NAME est requis"),
+  // R2/S3 configuration (Cloudflare R2)
+  R2_ENDPOINT: z.url("R2_ENDPOINT must be a valid URL"),
+  R2_ACCESS_KEY_ID: z.string().min(1, "R2_ACCESS_KEY_ID is required"),
+  R2_SECRET_ACCESS_KEY: z.string().min(1, "R2_SECRET_ACCESS_KEY is required"),
+  R2_BUCKET_NAME: z.string().min(1, "R2_BUCKET_NAME is required"),
 });
 
 /**
- * Valide et retourne les variables d'environnement typées
- * Lance une erreur si une variable requise est manquante ou invalide
+ * Validates and returns typed environment variables.
+ * Throws an error if a required variable is missing or invalid.
+ *
+ * @returns Validated and typed environment variables
+ *
+ * @remarks
+ * This function will exit the process if validation fails.
+ * Should be called at application startup.
  */
 export function validateEnv() {
   try {
-    // Utiliser parseAsync avec les valeurs par défaut
+    // Use safeParse with default values
     const parsed = envSchema.safeParse(process.env);
 
     if (!parsed.success) {
@@ -53,27 +59,28 @@ export function validateEnv() {
         .map((err) => `${err.path.join(".")}: ${err.message}`)
         .join("\n");
       console.error(
-        "❌ Erreur de configuration des variables d'environnement:\n",
+        "❌ Environment variable configuration error:\n",
         missingVars
       );
       console.error(
-        "\n💡 Assurez-vous que toutes les variables requises sont définies dans votre fichier .env"
+        "\n💡 Make sure all required variables are defined in your .env file"
       );
       process.exit(1);
     }
 
     return parsed.data;
   } catch (error) {
-    console.error(
-      "❌ Erreur lors de la validation des variables d'environnement:",
-      error
-    );
+    console.error("❌ Error validating environment variables:", error);
     process.exit(1);
   }
 }
 
 /**
- * Variables d'environnement validées et typées
- * Utiliser cette constante au lieu de process.env directement
+ * Validated and typed environment variables.
+ * Use this constant instead of process.env directly.
+ *
+ * @remarks
+ * This constant is initialized at module load time.
+ * All environment variables are validated and typed.
  */
 export const env = validateEnv();

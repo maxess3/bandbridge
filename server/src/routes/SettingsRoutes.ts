@@ -5,10 +5,10 @@ import * as SettingsController from "../controllers/SettingsController";
 
 const router = Router();
 
-// Route pour récupérer les paramètres utilisateur
+// Route to get user settings
 router.get("/user-settings", SettingsController.getUserSettings);
 
-// Route pour mettre à jour les paramètres utilisateur
+// Route to update user settings
 router.put(
   "/user-settings",
   validateBodySchema(formUserSettings),

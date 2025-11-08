@@ -12,6 +12,17 @@ declare global {
   }
 }
 
+/**
+ * Deletes a user by ID.
+ * Requires ADMIN role.
+ *
+ * @param req - Express request object with user ID in params
+ * @param res - Express response object
+ * @returns Success message
+ *
+ * @throws {ForbiddenError} If user is not an admin
+ * @throws {NotFoundError} If user to delete is not found
+ */
 export const deleteUser = async (req: Request, res: Response) => {
   const currentUser = await prisma.user.findUnique({
     where: {
@@ -36,6 +47,13 @@ export const deleteUser = async (req: Request, res: Response) => {
   res.status(200).json({ message: "User deleted successfully" });
 };
 
+/**
+ * Fetches all users.
+ *
+ * @param req - Express request object
+ * @param res - Express response object
+ * @returns Array of all users
+ */
 export const fetchUsers = async (req: Request, res: Response) => {
   const users = await prisma.user.findMany();
   res.status(200).json({ data: users });

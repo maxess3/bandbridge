@@ -1,4 +1,8 @@
-// Export des schémas d'authentification
+/**
+ * Centralized export of all Zod validation schemas.
+ */
+
+// Export authentication schemas
 export {
   formSignUpSchema,
   formLoginSchema,
@@ -6,7 +10,7 @@ export {
   formResetPwdSchema,
 } from "./authSchema";
 
-// Export des schémas de profil
+// Export profile schemas
 export {
   instrumentSchema,
   formGeneralProfile,
@@ -16,5 +20,5 @@ export {
   searchQuerySchema,
 } from "./profileSchema";
 
-// Export des schémas de paramètres
+// Export settings schemas
 export { formUserSettings } from "./settingsSchema";
