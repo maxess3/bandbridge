@@ -5,20 +5,25 @@ import GoogleProvider from "next-auth/providers/google";
 import axios from "@/lib/axios";
 
 async function refreshToken(token: JWT): Promise<JWT> {
-  const res = await axios.post("/auth/refresh", {
-    refreshToken: token.backendTokens.refreshToken,
-  });
+  try {
+    const res = await axios.post("/auth/refresh", {
+      refreshToken: token.backendTokens.refreshToken,
+    });
 
-  const response = await res.data;
+    const response = await res.data;
 
-  return {
-    ...token,
-    backendTokens: {
-      accessToken: response.backendTokens.accessToken,
-      refreshToken: response.backendTokens.refreshToken,
-      expiresIn: response.backendTokens.expiresIn,
-    },
-  };
+    return {
+      ...token,
+      backendTokens: {
+        accessToken: response.backendTokens.accessToken,
+        refreshToken: response.backendTokens.refreshToken,
+        expiresIn: response.backendTokens.expiresIn,
+      },
+    };
+  } catch (error) {
+    console.error("Failed to refresh token", error);
+    return token;
+  }
 }
 
 export const authOptions: NextAuthOptions = {
@@ -115,9 +120,10 @@ export const authOptions: NextAuthOptions = {
       }
 
       // Refresh the token if it is expired
-      if (new Date().getTime() < token.backendTokens.expiresIn) return token;
-
-      return await refreshToken(token);
+      if (new Date().getTime() >= token.backendTokens.expiresIn) {
+        return await refreshToken(token);
+      }
+      return token;
     },
 
     async session({ token, session }) {
