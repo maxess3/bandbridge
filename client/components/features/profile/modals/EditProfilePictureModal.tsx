@@ -78,11 +78,7 @@ export function EditProfilePictureModal({
       const formData = new FormData();
       formData.append("file", values.profilePicture);
 
-      const { data } = await axiosAuth.post("/profile/me/picture", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const { data } = await axiosAuth.post("/profile/me/picture", formData);
 
       return data;
     },

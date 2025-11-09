@@ -12,6 +12,12 @@ const useAxiosAuth = () => {
   useEffect(() => {
     const requestIntercept = axiosAuth.interceptors.request.use(
       (config) => {
+        // Remove Content-Type header for FormData to let axios set it automatically
+        // with the correct boundary for multipart/form-data
+        if (config.data instanceof FormData) {
+          delete config.headers["Content-Type"];
+        }
+
         if (!config.headers["Authorization"]) {
           config.headers[
             "Authorization"
