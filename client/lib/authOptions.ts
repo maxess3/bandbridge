@@ -116,9 +116,15 @@ export const authOptions: NextAuthOptions = {
       if (account?.backendTokens && account?.user) {
         token.backendTokens = account.backendTokens;
         token.user = account.user;
+        // Réinitialiser l'erreur lors d'une nouvelle connexion
+        delete (token as any).error;
       }
 
-      if (user) return { ...token, ...user };
+      if (user) {
+        // Réinitialiser l'erreur lors d'une nouvelle connexion
+        delete (token as any).error;
+        return { ...token, ...user };
+      }
 
       // Update the token with the session user
       if (trigger === "update" && session) {
@@ -128,16 +134,50 @@ export const authOptions: NextAuthOptions = {
         if (session.backendTokens) {
           token.backendTokens = session.backendTokens;
         }
+        // Réinitialiser l'erreur si la session est mise à jour avec succès
+        delete (token as any).error;
       }
 
-      // Refresh the token if it is expired
-      if (new Date().getTime() >= token.backendTokens.expiresIn) {
-        return await refreshToken(token);
+      // Vérifier si le token existe et a des backendTokens avant de vérifier l'expiration
+      if (token.backendTokens?.expiresIn) {
+        // Refresh the token if it is expired
+        if (new Date().getTime() >= token.backendTokens.expiresIn) {
+          const refreshedToken = await refreshToken(token);
+          // Si le refresh échoue, marquer l'erreur dans le token
+          if (!refreshedToken) {
+            return {
+              ...token,
+              error: "RefreshAccessTokenError",
+            } as any;
+          }
+          // Réinitialiser l'erreur si le refresh réussit
+          delete (refreshedToken as any).error;
+          return refreshedToken;
+        }
+      } else if (!token.user) {
+        // Si pas de backendTokens et pas de user, le token est invalide
+        return {
+          ...token,
+          error: "RefreshAccessTokenError",
+        } as any;
       }
+
       return token;
     },
 
     async session({ token, session }) {
+      // Si le token contient une erreur de refresh, la propager dans la session
+      if ((token as any).error === "RefreshAccessTokenError") {
+        (session as any).error = "RefreshAccessTokenError";
+        return session;
+      }
+
+      // Si le token est null ou n'a pas de user, la session est invalide
+      if (!token || !token.user) {
+        (session as any).error = "RefreshAccessTokenError";
+        return session;
+      }
+
       session.user = token.user;
       session.backendTokens = token.backendTokens;
       return session;
