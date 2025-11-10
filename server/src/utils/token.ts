@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.config";
 
-let EXPIRE_TIME = 15 * 60 * 1000; // 15 minutes in milliseconds
+let EXPIRE_TIME = 10 * 1000; // 10 seconds in milliseconds
 
 if (env.NODE_ENV === "development") {
-  EXPIRE_TIME = 1 * 30 * 1000; // 30 seconds in milliseconds
+  EXPIRE_TIME = 1 * 10 * 1000; // 10 seconds in milliseconds
 }
 
 /**
@@ -18,11 +18,11 @@ if (env.NODE_ENV === "development") {
  */
 export const createAuthTokens = (userId: string) => {
   const accessToken = jwt.sign({ userId: userId }, env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "30s",
+    expiresIn: "10s",
   });
 
   const refreshToken = jwt.sign({ userId: userId }, env.REFRESH_TOKEN_SECRET, {
-    expiresIn: "7d",
+    expiresIn: "20s",
   });
 
   const backendTokens = {

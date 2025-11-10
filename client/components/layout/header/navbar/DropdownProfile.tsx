@@ -59,7 +59,7 @@ export const DropdownProfile = () => {
         <button
           className="flex items-center justify-center bg-transparent rounded-full hover:bg-secondary cursor-pointer p-1"
           aria-label={`Menu profil de ${
-            session?.user.pseudonyme || "utilisateur"
+            session?.user?.pseudonyme || "utilisateur"
           }`}
         >
           <Avatar className="w-8 h-8">
@@ -94,10 +94,10 @@ export const DropdownProfile = () => {
                 </Avatar>
                 <div className="flex flex-col ml-0.5 min-w-0 flex-1">
                   <span className="text-base font-semibold truncate">
-                    {session?.user.pseudonyme}
+                    {session?.user?.pseudonyme}
                   </span>
                   <span className="text-xs opacity-80 truncate font-medium">
-                    {session?.user.email}
+                    {session?.user?.email}
                   </span>
                 </div>
               </div>
@@ -105,13 +105,13 @@ export const DropdownProfile = () => {
           </div>
           <DropdownMenuSeparator className="bg-border" />
           <DropdownMenuItem
-            onClick={() => router.push(`/${session?.user.username}`)}
+            onClick={() => router.push(`/${session?.user?.username}`)}
           >
             <LuUser className="size-6!" />
             Voir le profil
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/${session?.user.username}`)}
+            onClick={() => router.push(`/${session?.user?.username}`)}
           >
             <LuPencil className="size-5!" />
             Éditer le profil

@@ -4,8 +4,13 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import axios from "@/lib/axios";
 
-async function refreshToken(token: JWT): Promise<JWT> {
+async function refreshToken(token: JWT): Promise<JWT | null> {
   try {
+    // Vérifier si le refresh token existe
+    if (!token.backendTokens?.refreshToken) {
+      return null;
+    }
+
     const res = await axios.post("/auth/refresh", {
       refreshToken: token.backendTokens.refreshToken,
     });
@@ -22,7 +27,8 @@ async function refreshToken(token: JWT): Promise<JWT> {
     };
   } catch (error) {
     console.error("Failed to refresh token", error);
-    return token;
+    // Retourner null pour déconnecter l'utilisateur
+    return null;
   }
 }
 
@@ -116,7 +122,12 @@ export const authOptions: NextAuthOptions = {
 
       // Update the token with the session user
       if (trigger === "update" && session) {
-        token.user = { ...token.user, ...session.user };
+        if (session.user) {
+          token.user = { ...token.user, ...session.user };
+        }
+        if (session.backendTokens) {
+          token.backendTokens = session.backendTokens;
+        }
       }
 
       // Refresh the token if it is expired
