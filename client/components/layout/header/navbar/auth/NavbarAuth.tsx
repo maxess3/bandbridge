@@ -1,37 +1,18 @@
 "use client";
 
-import Link from "next/link";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useSidebarGlobal } from "@/contexts/SidebarGlobalContext";
+// import Link from "next/link";
 import { DropdownProfile } from "@/components/layout/header/navbar/DropdownProfile";
 import { SearchBar } from "@/components/features/search";
 import { LuMessageCircle } from "react-icons/lu";
 import { IoNotificationsOutline } from "react-icons/io5";
-import Image from "next/image";
-import Logo from "@/public/logo/chordeus_logo.png";
+// import Image from "next/image";
+// import Logo from "@/public/logo/chordeus_logo.png";
 
 export const NavbarAuth = () => {
-  const { setOpenMobile } = useSidebarGlobal();
-
-  const handleBurgerClick = () => {
-    setOpenMobile(true);
-  };
-
   return (
     <nav className="h-14 bg-background items-center flex sticky top-0 z-50 w-full border-b px-3">
       <div className="flex justify-between items-center gap-x-6 w-full h-full">
-        <div className="flex items-center">
-          {/* Burger Menu - Mobile */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="mr-2 md:hidden"
-            onClick={handleBurgerClick}
-            aria-label="Ouvrir le menu"
-          >
-            <Menu />
-          </Button>
+        {/* <div className="flex items-center">
           <Link
             href={"/home"}
             className="font-medium flex items-center gap-x-2 w-full"
@@ -41,7 +22,7 @@ export const NavbarAuth = () => {
               chordeus
             </span>
           </Link>
-        </div>
+        </div> */}
         <SearchBar />
         <div className="flex items-center h-full gap-x-2">
           <div className="flex items-center">
@@ -52,7 +33,6 @@ export const NavbarAuth = () => {
               <LuMessageCircle className="size-5! opacity-80" />
             </button>
           </div>
-
           <DropdownProfile />
         </div>
       </div>

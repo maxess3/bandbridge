@@ -45,7 +45,7 @@ export default function Page() {
   }
 
   return (
-    <div className="p-4 space-y-4">
+    <div className="space-y-4">
       <div className="text-sm text-muted-foreground">
         Résultats pour "{validatedParams.query}" · {totalFound} trouvé
         {totalFound > 1 ? "s" : ""}
