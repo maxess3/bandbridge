@@ -8,9 +8,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { PROFILE_QUERY_KEY } from "@/hooks/features/profile/useProfile";
 import { Button } from "@/components/ui/button";
+import {
+  ChatIcon,
+  PlayIcon,
+  DotsThreeOutlineVerticalIcon,
+} from "@phosphor-icons/react";
 import { FollowButton } from "@/components/features/profile/buttons/FollowButton";
 import { ShareProfileModal } from "@/components/features/profile/modals/ShareProfileModal";
-import { FiMessageSquare, FiShare } from "react-icons/fi";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 
@@ -99,21 +103,22 @@ export const ProfileActions = ({
           <Link
             href={`/${username}/edit/profile/general`}
             onClick={captureFocus}
-            className="border font-semibold px-4 flex gap-2 justify-center items-center rounded-full hover:bg-hover"
+            className="border font-semibold px-4 flex h-10 gap-2 justify-center items-center hover:bg-hover rounded-md"
           >
             <Pencil className="size-4!" />
             Modifier le résumé
           </Link>
+          <Button variant="outline">
+            <ChatIcon weight="bold" size={24} />
+          </Button>
           <Button
             variant="outline"
-            className="rounded-full"
             onClick={() => {
               captureFocus();
               setIsShareModalOpen(true);
             }}
           >
-            <FiShare className="size-4!" />
-            Partager
+            <DotsThreeOutlineVerticalIcon weight="bold" size={32} />
           </Button>
         </div>
         <ShareProfileModal
@@ -130,9 +135,9 @@ export const ProfileActions = ({
   if (isFollowLoading || followData === undefined) {
     return (
       <div className="flex gap-2 h-[42px] bg-transparent">
-        <div className="rounded-full w-24 bg-foreground/20 animate-pulse" />
-        <div className="rounded-full w-32 bg-foreground/20 animate-pulse" />
-        <div className="rounded-full w-32 bg-foreground/20 animate-pulse" />
+        <div className="w-24 bg-foreground/20 animate-pulse" />
+        <div className="w-32 bg-foreground/20 animate-pulse" />
+        <div className="w-32 bg-foreground/20 animate-pulse" />
       </div>
     );
   }
@@ -145,20 +150,20 @@ export const ProfileActions = ({
           onToggleFollow={toggleFollow}
           isPending={isFollowPending}
         />
-        <Button variant="outline" className="rounded-full">
-          <FiMessageSquare className="size-4!" />
-          Message
+        <Button variant="outline">
+          <PlayIcon weight="bold" size={32} />
+        </Button>
+        <Button variant="outline">
+          <ChatIcon weight="bold" size={32} />
         </Button>
         <Button
           variant="outline"
-          className="rounded-full"
           onClick={() => {
             captureFocus();
             setIsShareModalOpen(true);
           }}
         >
-          <FiShare className="size-4!" />
-          Partager
+          <DotsThreeOutlineVerticalIcon weight="bold" size={32} />
         </Button>
       </div>
       <ShareProfileModal

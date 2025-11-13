@@ -12,7 +12,7 @@ export function ProfileLayout({
   profile,
 }: ProfileLayoutProps) {
   return (
-    <div className="w-full flex flex-col gap-8">
+    <div className="w-full flex flex-col gap-6">
       <ProfileHeader profile={profile} isOwner={isOwner} />
       <main className="flex gap-6">
         <div className="w-3/4 flex flex-col">

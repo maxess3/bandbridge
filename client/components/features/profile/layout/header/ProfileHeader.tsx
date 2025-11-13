@@ -15,43 +15,47 @@ export const ProfileHeader = ({
   isOwner: boolean;
 }) => {
   return (
-    <div className="flex items-start gap-6">
-      <ProfilePicture
-        isOwner={isOwner}
-        src={profile?.profilePictureKey || ""}
-        alt="Photo de profil"
-      />
-      <div className="flex flex-col justify-between gap-6 w-3/4">
-        <div className="flex flex-col">
-          <div className="text-3xl font-semibold inline-flex items-center gap-2">
-            {profile?.pseudonyme}
-            <AiFillSafetyCertificate className="size-7! text-blue-500" />
-          </div>
-          <div className="text-lg font-medium opacity-80">
-            @{profile?.username}
-          </div>
-        </div>
-        {(profile?.instruments.length > 0 || profile?.genres.length > 0) && (
-          <div className="flex flex-col space-y-1">
-            <ProfileInstruments instruments={profile?.instruments} />
-            <ProfileMusicGenres genres={profile?.genres} />
-          </div>
-        )}
-        <ProfileBasicInfo
-          city={profile?.city}
-          zipCode={profile?.zipCode}
-          age={profile?.age}
-          departmentName={profile?.departmentName}
+    <div className="flex justify-between">
+      <div className="flex gap-6">
+        <ProfilePicture
+          isOwner={isOwner}
+          src={profile?.profilePictureKey || ""}
+          alt="Photo de profil"
         />
+        <div className="flex flex-col gap-6 w-3/4">
+          <div className="flex flex-col">
+            <div className="text-3xl font-medium inline-flex items-center gap-2">
+              {profile?.pseudonyme}
+              <AiFillSafetyCertificate className="size-7! text-blue-500" />
+            </div>
+            <div className="text-md font-normal opacity-80">
+              @{profile?.username}
+            </div>
+          </div>
+          {(profile?.instruments.length > 0 || profile?.genres.length > 0) && (
+            <div className="flex flex-col space-y-1">
+              <ProfileInstruments instruments={profile?.instruments} />
+              <ProfileMusicGenres genres={profile?.genres} />
+            </div>
+          )}
+          <ProfileBasicInfo
+            city={profile?.city}
+            zipCode={profile?.zipCode}
+            age={profile?.age}
+            departmentName={profile?.departmentName}
+          />
+          <ProfileActions
+            username={profile?.username}
+            pseudonyme={profile?.pseudonyme}
+            isOwner={isOwner}
+          />
+        </div>
+      </div>
+      <div className="flex items-start">
         <ProfileStatLinks
           followers={profile?.followers}
           following={profile?.following}
           username={profile?.username}
-        />
-        <ProfileActions
-          username={profile?.username}
-          pseudonyme={profile?.pseudonyme}
-          isOwner={isOwner}
         />
       </div>
     </div>

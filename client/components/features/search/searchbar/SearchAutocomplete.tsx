@@ -27,7 +27,7 @@ const AutocompleteDropdown = forwardRef<
     return (
       <div
         ref={ref}
-        className="absolute w-full max-h-[calc(100vh-200px)] bg-popover border rounded-xl mt-1"
+        className="absolute w-full max-h-[calc(100vh-200px)] bg-popover border rounded-md mt-1"
       >
         <div
           role="listbox"

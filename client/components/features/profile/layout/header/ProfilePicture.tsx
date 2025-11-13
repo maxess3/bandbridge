@@ -28,14 +28,14 @@ export const ProfilePicture = ({
   };
 
   const IMG_PROFILE = (
-    <Avatar className="rounded-full w-64 h-64 border-2">
+    <Avatar className="rounded-lg w-73 h-73">
       <AvatarImage
         src={imageURL ? imageURL : undefined}
         alt={alt}
-        className="rounded-full border"
+        className="rounded-lg object-cover border"
       />
-      <AvatarFallback className="bg-secondary">
-        <DefaultProfilePicture className="mr-4 mt-24 text-background w-64 h-64" />
+      <AvatarFallback className="bg-secondary rounded-lg border">
+        <DefaultProfilePicture className="mr-4 mt-24 text-background w-80 h-80" />
       </AvatarFallback>
     </Avatar>
   );
@@ -44,6 +44,7 @@ export const ProfilePicture = ({
     <div className="flex">
       {isOwner && session?.user?.username ? (
         <button
+          className="flex rounded-lg"
           onClick={handleImageClick}
           aria-label="Modifier la photo de profil"
         >

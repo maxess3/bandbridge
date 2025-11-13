@@ -15,7 +15,7 @@ export const FollowButton = ({
 }: FollowButtonProps) => {
   return (
     <Button
-      className="rounded-full w-28"
+      className="w-28"
       onClick={onToggleFollow}
       disabled={isPending}
       icon={

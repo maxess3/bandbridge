@@ -9,7 +9,7 @@ export const ProfileVideos = ({
   profile: Profile;
 }) => {
   return (
-    <div className="flex flex-col border py-6 px-6 rounded-2xl h-fit relative">
+    <div className="flex flex-col border py-6 px-6 rounded-lg h-fit relative">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-medium">Vidéos</h2>
         <EditSectionButton

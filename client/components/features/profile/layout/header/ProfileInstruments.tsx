@@ -76,7 +76,7 @@ export const ProfileInstruments = ({
       {professionGroups.map(({ profession, instruments }, index) => (
         <Tooltip delayDuration={500} key={index}>
           <TooltipTrigger asChild>
-            <span className="px-0 font-medium text-xl border-none">
+            <span className="px-0 font-medium text-lg border-none">
               {translateProfession(profession)}
               {index < professionGroups.length - 1 && ","}
             </span>

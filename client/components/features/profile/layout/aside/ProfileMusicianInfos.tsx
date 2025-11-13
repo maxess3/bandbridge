@@ -60,7 +60,7 @@ export const ProfileMusicianInfos = ({
   const description = profile?.description || "";
 
   return (
-    <div className="flex flex-col rounded-xl border relative p-6 space-y-6">
+    <div className="flex flex-col rounded-lg border relative p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-medium">Infos</h2>
         <EditSectionButton
