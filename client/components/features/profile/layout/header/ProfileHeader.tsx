@@ -24,7 +24,7 @@ export const ProfileHeader = ({
         />
         <div className="flex flex-col gap-6 w-3/4">
           <div className="flex flex-col">
-            <div className="text-3xl font-medium inline-flex items-center gap-2">
+            <div className="text-4xl font-medium inline-flex items-center gap-2">
               {profile?.pseudonyme}
               <AiFillSafetyCertificate className="size-7! text-blue-500" />
             </div>

@@ -154,9 +154,7 @@ export default function SettingsForm({ userData }: SettingsFormProps) {
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       <div className="space-y-6">
         <div>
-          <h2 className="text-xl font-semibold mb-4">
-            Informations personnelles
-          </h2>
+          <h2 className="text-xl mb-4">Informations personnelles</h2>
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="firstname" className="text-sm font-medium">
