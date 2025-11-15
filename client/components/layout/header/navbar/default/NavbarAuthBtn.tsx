@@ -17,13 +17,13 @@ export const NavbarAuthBtn = async () => {
   return (
     <>
       <Link
-        className={buttonVariants({ variant: "default" })}
+        className={buttonVariants({ variant: "outline" })}
         href={"/api/auth/signin"}
       >
         Se connecter
       </Link>
       <Link
-        className={buttonVariants({ variant: "default" })}
+        className={buttonVariants({ variant: "outline" })}
         href={"/auth/signup"}
       >
         S'inscrire
