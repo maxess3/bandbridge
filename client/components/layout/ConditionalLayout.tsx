@@ -2,7 +2,7 @@ import DefaultNavbar from "@/components/layout/header/navbar/default/DefaultNavb
 import Footer from "@/components/layout/footer/Footer";
 import { AppSidebar } from "@/components/layout/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { NavbarAuth } from "@/components/layout/header/navbar/auth/NavbarAuth";
+import { SiteHeader } from "@/components/layout/sidebar/site-header";
 
 interface ConditionalLayoutProps {
   children: React.ReactNode;
@@ -26,12 +26,14 @@ export async function ConditionalLayout({
 
   // If user is authenticated and not a public route, display authenticated navbar + content
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <NavbarAuth />
-        <div className="p-6">{children}</div>
-      </SidebarInset>
-    </SidebarProvider>
+    <div className="[--header-height:calc(--spacing(14))]">
+      <SidebarProvider className="flex flex-col">
+        <SiteHeader />
+        <div className="flex flex-1 p-4">
+          <AppSidebar />
+          <SidebarInset>{children}</SidebarInset>
+        </div>
+      </SidebarProvider>
+    </div>
   );
 }

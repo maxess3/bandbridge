@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { FaUserCheck } from "react-icons/fa";
-import { LucideUserRoundPlus } from "lucide-react";
 
 interface FollowButtonProps {
   isFollowing: boolean;
@@ -15,17 +13,10 @@ export const FollowButton = ({
 }: FollowButtonProps) => {
   return (
     <Button
-      className="w-28"
+      variant="outline"
+      className="w-28 h-11 text-base"
       onClick={onToggleFollow}
       disabled={isPending}
-      icon={
-        isFollowing ? (
-          <FaUserCheck className="size-5!" />
-        ) : (
-          <LucideUserRoundPlus className="size-5!" />
-        )
-      }
-      variant={isFollowing ? "outline" : "default"}
     >
       {isFollowing ? "Suivi" : "Follow"}
     </Button>

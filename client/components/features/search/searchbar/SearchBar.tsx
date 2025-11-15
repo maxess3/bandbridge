@@ -108,11 +108,11 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="max-w-sm w-full relative">
+    <div className="max-w-xl w-full relative">
       <Input
         ref={inputRef}
         type="text"
-        placeholder="Rechercher un musicien..."
+        placeholder="Rechercher sur chordeus..."
         className="h-10 pl-10 pr-6 rounded-md relative"
         value={search}
         onChange={handleSearchChange}

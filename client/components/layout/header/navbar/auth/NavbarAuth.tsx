@@ -4,24 +4,11 @@ import { DropdownProfile } from "@/components/layout/header/navbar/DropdownProfi
 import { SearchBar } from "@/components/features/search";
 import { LuMessageCircle } from "react-icons/lu";
 import { IoNotificationsOutline } from "react-icons/io5";
-// import Image from "next/image";
-// import Logo from "@/public/logo/chordeus_logo.png";
 
 export const NavbarAuth = () => {
   return (
     <nav className="h-14 bg-background items-center flex sticky top-0 z-50 w-full border-b px-2">
       <div className="flex justify-between items-center gap-x-6 w-full h-full">
-        {/* <div className="flex items-center">
-          <Link
-            href={"/home"}
-            className="font-medium flex items-center gap-x-2 w-full"
-          >
-            <Image src={Logo} alt="Logo" width={34} height={34} />
-            <span className="text-2xl font-medium md:block sm:hidden">
-              chordeus
-            </span>
-          </Link>
-        </div> */}
         <SearchBar />
         <div className="flex items-center h-full gap-x-2">
           <div className="flex items-center">

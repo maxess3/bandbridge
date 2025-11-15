@@ -1,23 +1,16 @@
 "use client";
 
-import * as React from "react";
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
-
+  MagnifyingGlassIcon,
+  UsersIcon,
+  UserIcon,
+  HouseIcon,
+  WrenchIcon,
+  ShoppingCartIcon,
+  GlobeIcon,
+} from "@phosphor-icons/react";
 import { NavMain } from "@/components/layout/sidebar/nav-main";
-import { NavProjects } from "@/components/layout/sidebar/nav-projects";
-import { NavUser } from "@/components/layout/sidebar/nav-user";
-import { TeamSwitcher } from "@/components/layout/sidebar/team-switcher";
+import { NavUpgradePro } from "@/components/layout/sidebar/nav-upgrade-pro";
 import {
   Sidebar,
   SidebarContent,
@@ -25,149 +18,68 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { NavProfile } from "@/components/layout/sidebar/nav-profile";
 
-// This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
   navMain: [
     {
-      title: "Playground",
+      title: "Accueil",
       url: "/home",
-      icon: SquareTerminal,
-      isActive: true,
+      icon: HouseIcon,
+    },
+    {
+      title: "Groupes",
+      url: "#",
+      icon: UsersIcon,
+    },
+    {
+      title: "Artistes",
+      url: "/artists",
+      icon: UserIcon,
+    },
+    {
+      title: "Communauté",
+      url: "/community",
+      icon: GlobeIcon,
+    },
+    {
+      title: "Marketplace",
+      url: "/marketplace",
+      icon: ShoppingCartIcon,
+    },
+    {
+      title: "Outils",
+      url: "#",
+      icon: WrenchIcon,
       items: [
         {
-          title: "History",
-          url: "/home",
-        },
-        {
-          title: "Starred",
+          title: "Prix instrument",
           url: "#",
         },
         {
-          title: "Settings",
+          title: "Partenaires",
           url: "#",
         },
       ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar
+      className="top-(--header-height) h-[calc(100svh-var(--header-height))]! pt-4"
+      collapsible="icon"
+      {...props}
+    >
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <NavProfile />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="px-1.5">
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUpgradePro />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

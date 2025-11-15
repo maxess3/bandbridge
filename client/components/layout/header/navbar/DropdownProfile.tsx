@@ -6,6 +6,14 @@ import { getProfileImageUrl } from "@/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import {
+  UserIcon,
+  PencilSimpleLineIcon,
+  MoonIcon,
+  BugBeetleIcon,
+  GearIcon,
+  SignOutIcon,
+} from "@phosphor-icons/react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -16,15 +24,13 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { FiMoon } from "react-icons/fi";
-import { LuLogOut } from "react-icons/lu";
-import { LuSettings } from "react-icons/lu";
-import { RiBugLine } from "react-icons/ri";
-import { LuPencil } from "react-icons/lu";
-import { LuUser } from "react-icons/lu";
 import { DefaultProfilePicture } from "@/components/features/profile/avatar/DefaultProfilePicture";
 
-export const DropdownProfile = () => {
+export const DropdownProfile = ({
+  showText = true,
+}: {
+  showText?: boolean;
+}) => {
   const router = useRouter();
   const { data: session } = useSession();
   const { resolvedTheme, setTheme } = useTheme();
@@ -57,47 +63,60 @@ export const DropdownProfile = () => {
     <DropdownMenu modal={false} open={isOpen} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <button
-          className="flex items-center justify-center bg-transparent rounded-full hover:bg-secondary cursor-pointer p-1"
+          className="flex items-center rounded-full cursor-pointer gap-x-2 w-full"
           aria-label={`Menu profil de ${
             session?.user?.pseudonyme || "utilisateur"
           }`}
         >
-          <Avatar className="w-8 h-8">
+          <Avatar>
             <AvatarImage
               src={imageURL || undefined}
               alt="Profile picture"
-              className="rounded-full object-cover pointer-events-none"
-              sizes="36px"
+              className="object-cover pointer-events-none"
             />
             <AvatarFallback className="bg-secondary pointer-events-none">
               <DefaultProfilePicture className="mt-6 mr-1 w-[45px] h-[45px] text-background" />
             </AvatarFallback>
           </Avatar>
-          <span className="absolute flex w-3 h-3 bg-green-600 rounded-full bottom-1.5 right-3.5 border-2 border-background"></span>
+          {showText && (
+            <span className="flex flex-col justify-center items-start flex-1 min-w-0">
+              <span className="text-sm font-medium truncate w-full text-left">
+                {session?.user?.pseudonyme ? session?.user?.pseudonyme : "..."}
+              </span>
+              <span className="text-xs opacity-80 font-medium truncate w-full text-left">
+                {session?.user?.username
+                  ? `@${session?.user?.username}`
+                  : "..."}
+              </span>
+            </span>
+          )}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-60 mt-1 mr-2">
-        <DropdownMenuGroup className="space-y-1">
-          <div className="p-2">
-            <div className="w-full space-y-3">
+      <DropdownMenuContent align="start" className="w-60 mt-2">
+        <DropdownMenuGroup className="space-y-0.5">
+          <div className="px-1 py-1">
+            <div className="w-full">
               <div className="flex items-center space-x-2.5">
                 <Avatar>
                   <AvatarImage
                     src={imageURL || undefined}
                     alt="Profile picture"
                     className="rounded-full object-cover pointer-events-none"
-                    sizes="36px"
                   />
                   <AvatarFallback className="bg-secondary pointer-events-none">
                     <DefaultProfilePicture className="mt-7 mr-1 w-[50px]! h-[50px]! text-background" />
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col ml-0.5 min-w-0 flex-1">
-                  <span className="text-base font-semibold truncate">
-                    {session?.user?.pseudonyme}
+                  <span className="text-sm font-medium truncate">
+                    {session?.user?.pseudonyme
+                      ? session?.user?.pseudonyme
+                      : "..."}
                   </span>
                   <span className="text-xs opacity-80 truncate font-medium">
-                    {session?.user?.email}
+                    {session?.user?.username
+                      ? `@${session?.user?.username}`
+                      : "..."}
                   </span>
                 </div>
               </div>
@@ -105,39 +124,47 @@ export const DropdownProfile = () => {
           </div>
           <DropdownMenuSeparator className="bg-border" />
           <DropdownMenuItem
+            className="gap-x-6"
             onClick={() => router.push(`/${session?.user?.username}`)}
           >
-            <LuUser className="size-6!" />
+            <UserIcon />
             Voir le profil
           </DropdownMenuItem>
           <DropdownMenuItem
+            className="gap-x-6"
             onClick={() => router.push(`/${session?.user?.username}`)}
           >
-            <LuPencil className="size-5!" />
+            <PencilSimpleLineIcon />
             Éditer le profil
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-border" />
           <DropdownMenuItem
-            className="flex justify-between"
+            className="flex justify-between gap-x-6"
             onClick={(e) => handleClick(e)}
           >
-            <div className="flex gap-x-2.5 items-center">
-              <FiMoon className="size-5!" />
+            <div className="flex gap-x-6 items-center">
+              <MoonIcon />
               Mode sombre
             </div>
             <Switch checked={isChecked} />
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/")}>
-            <RiBugLine className="size-5!" />
+          <DropdownMenuItem
+            className="gap-x-6"
+            onClick={() => router.push("/")}
+          >
+            <BugBeetleIcon />
             Signaler un bug
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => router.push("/settings")}>
-            <LuSettings className="size-5!" />
+          <DropdownMenuItem
+            className="gap-x-6"
+            onClick={() => router.push("/settings")}
+          >
+            <GearIcon />
             Paramètres
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-border" />
-          <DropdownMenuItem onClick={() => signOut()}>
-            <LuLogOut className="size-5!" />
+          <DropdownMenuItem className="gap-x-6" onClick={() => signOut()}>
+            <SignOutIcon />
             Se déconnecter
           </DropdownMenuItem>
         </DropdownMenuGroup>

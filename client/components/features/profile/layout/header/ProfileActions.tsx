@@ -15,7 +15,7 @@ import {
 } from "@phosphor-icons/react";
 import { FollowButton } from "@/components/features/profile/buttons/FollowButton";
 import { ShareProfileModal } from "@/components/features/profile/modals/ShareProfileModal";
-import { Pencil } from "lucide-react";
+import { PencilIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 
 interface FollowData {
@@ -103,22 +103,23 @@ export const ProfileActions = ({
           <Link
             href={`/${username}/edit/profile/general`}
             onClick={captureFocus}
-            className="border font-semibold px-4 flex h-10 gap-2 justify-center items-center hover:bg-hover rounded-md"
+            className="border font-medium px-4 flex h-11 gap-2 justify-center items-center hover:bg-hover rounded-md"
           >
-            <Pencil className="size-4!" />
+            <PencilIcon weight="bold" />
             Modifier le résumé
           </Link>
-          <Button variant="outline">
-            <ChatIcon weight="bold" size={24} />
+          <Button className="h-11 w-11 rounded-md" variant="outline">
+            <ChatIcon weight="bold" />
           </Button>
           <Button
+            className="h-11 w-11 rounded-md"
             variant="outline"
             onClick={() => {
               captureFocus();
               setIsShareModalOpen(true);
             }}
           >
-            <DotsThreeOutlineVerticalIcon weight="bold" size={32} />
+            <DotsThreeOutlineVerticalIcon weight="bold" />
           </Button>
         </div>
         <ShareProfileModal
@@ -134,10 +135,11 @@ export const ProfileActions = ({
   // Afficher un skeleton pendant le chargement
   if (isFollowLoading || followData === undefined) {
     return (
-      <div className="flex gap-2 h-[42px] bg-transparent">
-        <div className="w-24 bg-foreground/20 animate-pulse" />
-        <div className="w-32 bg-foreground/20 animate-pulse" />
-        <div className="w-32 bg-foreground/20 animate-pulse" />
+      <div className="flex gap-2 h-[44px] bg-transparent">
+        <div className="w-24 bg-foreground/20 animate-pulse rounded-md" />
+        <div className="w-11 bg-foreground/20 animate-pulse rounded-md" />
+        <div className="w-11 bg-foreground/20 animate-pulse rounded-md" />
+        <div className="w-11 bg-foreground/20 animate-pulse rounded-md" />
       </div>
     );
   }
@@ -150,20 +152,21 @@ export const ProfileActions = ({
           onToggleFollow={toggleFollow}
           isPending={isFollowPending}
         />
-        <Button variant="outline">
-          <PlayIcon weight="bold" size={32} />
+        <Button className="h-11 w-11 rounded-md" variant="outline">
+          <PlayIcon weight="fill" />
         </Button>
-        <Button variant="outline">
-          <ChatIcon weight="bold" size={32} />
+        <Button className="h-11 w-11 rounded-md" variant="outline">
+          <ChatIcon weight="bold" />
         </Button>
         <Button
+          className="h-11 w-11 rounded-md"
           variant="outline"
           onClick={() => {
             captureFocus();
             setIsShareModalOpen(true);
           }}
         >
-          <DotsThreeOutlineVerticalIcon weight="bold" size={32} />
+          <DotsThreeOutlineVerticalIcon weight="fill" />
         </Button>
       </div>
       <ShareProfileModal

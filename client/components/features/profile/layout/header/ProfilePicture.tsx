@@ -28,14 +28,14 @@ export const ProfilePicture = ({
   };
 
   const IMG_PROFILE = (
-    <Avatar className="rounded-lg w-73 h-73">
+    <Avatar className="rounded-full w-64 h-64 border-2">
       <AvatarImage
         src={imageURL ? imageURL : undefined}
         alt={alt}
-        className="rounded-lg object-cover border"
+        className="rounded-full object-cover"
       />
-      <AvatarFallback className="bg-secondary rounded-lg border">
-        <DefaultProfilePicture className="mr-4 mt-24 text-background w-80 h-80" />
+      <AvatarFallback className="bg-secondary rounded-lg">
+        <DefaultProfilePicture className="mr-4 mt-24 text-background w-72 h-72" />
       </AvatarFallback>
     </Avatar>
   );

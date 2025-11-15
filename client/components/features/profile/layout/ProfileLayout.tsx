@@ -12,13 +12,13 @@ export function ProfileLayout({
   profile,
 }: ProfileLayoutProps) {
   return (
-    <div className="w-full flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-4">
       <ProfileHeader profile={profile} isOwner={isOwner} />
-      <main className="flex gap-6">
+      <main className="flex gap-4">
         <div className="w-3/4 flex flex-col">
           <ProfileMain profile={profile} isOwner={isOwner} />
         </div>
-        <div className="w-1/4 rounded-2xl h-fit flex flex-col justify-between min-w-[350px] gap-6">
+        <div className="w-1/4 rounded-2xl h-fit flex flex-col justify-between min-w-[350px] gap-4">
           <ProfileAside profile={profile} isOwner={isOwner} />
         </div>
       </main>
