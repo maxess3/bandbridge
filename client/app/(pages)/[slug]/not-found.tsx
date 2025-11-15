@@ -12,7 +12,7 @@ export default function NotFound() {
           Veuillez vérifier votre URL ou revenir à la page d’accueil.
         </p>
       </div>
-      <Link href="/home" className={buttonVariants({ variant: "primary" })}>
+      <Link href="/home" className={buttonVariants({ variant: "default" })}>
         Retour à l'accueil
       </Link>
     </div>

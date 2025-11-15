@@ -88,7 +88,7 @@ function Footer() {
         </div>
         <div className="flex space-x-3 justify-center items-center">
           <div className="flex space-x-6 items-center">
-            <Button onClick={fetchPost} variant="outline" size="md">
+            <Button onClick={fetchPost} variant="outline">
               Signaler un bug
             </Button>
           </div>

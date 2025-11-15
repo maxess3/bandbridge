@@ -201,7 +201,6 @@ export default function Signup() {
             <div className="grid gap-4">
               {currentStep < MAX_STEPS && (
                 <Button
-                  variant="primary"
                   size="lg"
                   type="submit"
                   className="w-full font-semibold mt-4"
@@ -220,7 +219,6 @@ export default function Signup() {
               )}
               {currentStep === 2 && (
                 <Button
-                  variant="primary"
                   size="lg"
                   type="button"
                   onClick={() => {

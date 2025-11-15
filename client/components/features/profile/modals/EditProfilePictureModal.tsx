@@ -132,7 +132,6 @@ export function EditProfilePictureModal({
             withDelay(() => deleteProfilePictureMutation.mutateAsync())
           }
           disabled={deleteProfilePictureMutation.isPending || isDelaying}
-          icon={<Trash2 className="size-4!" />}
         >
           Supprimer
           {deleteProfilePictureMutation.isPending || isDelaying ? (
@@ -140,10 +139,7 @@ export function EditProfilePictureModal({
           ) : null}
         </Button>
       )}
-      <Button
-        onClick={() => setCurrentView("upload")}
-        icon={<Upload className="size-4!" />}
-      >
+      <Button onClick={() => setCurrentView("upload")}>
         <span className="inline-flex gap-x-1">
           Ajouter
           <span className="sm:block hidden">une photo</span>
@@ -160,7 +156,6 @@ export function EditProfilePictureModal({
           setCurrentView("view");
           methods.reset();
         }}
-        icon={<ArrowLeft className="w-4 h-4" />}
       >
         Retour
       </Button>
