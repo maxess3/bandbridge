@@ -8,11 +8,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { PROFILE_QUERY_KEY } from "@/hooks/features/profile/useProfile";
 import { Button } from "@/components/ui/button";
-import {
-  ChatIcon,
-  PlayIcon,
-  DotsThreeOutlineVerticalIcon,
-} from "@phosphor-icons/react";
+import { ChatIcon, PlayIcon, ShareFatIcon } from "@phosphor-icons/react";
 import { FollowButton } from "@/components/features/profile/buttons/FollowButton";
 import { ShareProfileModal } from "@/components/features/profile/modals/ShareProfileModal";
 import { PencilIcon } from "@phosphor-icons/react";
@@ -119,7 +115,7 @@ export const ProfileActions = ({
               setIsShareModalOpen(true);
             }}
           >
-            <DotsThreeOutlineVerticalIcon weight="bold" />
+            <ShareFatIcon weight="bold" />
           </Button>
         </div>
         <ShareProfileModal
@@ -166,7 +162,7 @@ export const ProfileActions = ({
             setIsShareModalOpen(true);
           }}
         >
-          <DotsThreeOutlineVerticalIcon weight="fill" />
+          <ShareFatIcon weight="fill" />
         </Button>
       </div>
       <ShareProfileModal

@@ -80,7 +80,7 @@ export function NavMain({
               <SidebarMenuItem className="py-1">
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton
-                    className={`h-8 ${
+                    className={`h-8 cursor-pointer ${
                       isItemActive
                         ? "opacity-100"
                         : "opacity-60 hover:opacity-100"

@@ -127,14 +127,14 @@ export const DropdownProfile = ({
             className="gap-x-6"
             onClick={() => router.push(`/${session?.user?.username}`)}
           >
-            <UserIcon />
+            <UserIcon weight="bold" />
             Voir le profil
           </DropdownMenuItem>
           <DropdownMenuItem
             className="gap-x-6"
             onClick={() => router.push(`/${session?.user?.username}`)}
           >
-            <PencilSimpleLineIcon />
+            <PencilSimpleLineIcon weight="bold" />
             Éditer le profil
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-border" />
@@ -143,7 +143,7 @@ export const DropdownProfile = ({
             onClick={(e) => handleClick(e)}
           >
             <div className="flex gap-x-6 items-center">
-              <MoonIcon />
+              <MoonIcon weight="bold" />
               Mode sombre
             </div>
             <Switch checked={isChecked} />
@@ -152,19 +152,19 @@ export const DropdownProfile = ({
             className="gap-x-6"
             onClick={() => router.push("/")}
           >
-            <BugBeetleIcon />
+            <BugBeetleIcon weight="bold" />
             Signaler un bug
           </DropdownMenuItem>
           <DropdownMenuItem
             className="gap-x-6"
             onClick={() => router.push("/settings")}
           >
-            <GearIcon />
+            <GearIcon weight="bold" />
             Paramètres
           </DropdownMenuItem>
           <DropdownMenuSeparator className="bg-border" />
           <DropdownMenuItem className="gap-x-6" onClick={() => signOut()}>
-            <SignOutIcon />
+            <SignOutIcon weight="bold" />
             Se déconnecter
           </DropdownMenuItem>
         </DropdownMenuGroup>
