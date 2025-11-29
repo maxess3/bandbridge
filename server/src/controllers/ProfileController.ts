@@ -1,17 +1,8 @@
 import prisma from "../db/db.config";
 import { Request, Response } from "express";
 import { Platform } from "@prisma/client";
-import { PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { v4 as uuidv4 } from "uuid";
-import sharp from "sharp";
 import { calculateAge } from "../utils/utils";
-import { env } from "../config/env.config";
-import { getS3Client } from "../config/s3.config";
-import {
-  IMAGE_SIZES,
-  IMAGE_SIZE_NAMES,
-  WEBP_QUALITY,
-} from "../config/image.config";
+import { ImageService } from "../services/ImageService";
 import {
   NotFoundError,
   UnauthorizedError,
@@ -592,6 +583,7 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
  *
  * @throws {UnauthorizedError} If user is not authenticated
  * @throws {ValidationError} If no file is uploaded
+ * @throws {NotFoundError} If profile is not found
  */
 export const uploadProfilePicture = async (req: Request, res: Response) => {
   const userId = req.user.userId;
@@ -603,75 +595,15 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
     throw new ValidationError("No file uploaded");
   }
 
-  const file = req.file;
-  const uuid = uuidv4();
-  const r2 = getS3Client();
-
-  const currentProfile = await prisma.profile.findUnique({
-    where: { userId },
-    select: { profilePictureKey: true },
-  });
-
-  // Delete old images if they exist
-  if (currentProfile?.profilePictureKey) {
-    const oldKey = currentProfile.profilePictureKey;
-    const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
-
-    const deletePromises = IMAGE_SIZE_NAMES.map(async (size) => {
-      const keyToDelete = `${oldKeyBase}-${size}.webp`;
-      const deleteCommand = new DeleteObjectCommand({
-        Bucket: env.R2_BUCKET_NAME,
-        Key: keyToDelete,
-      });
-      try {
-        await r2.send(deleteCommand);
-      } catch (error) {
-        // Log error but continue (image may already be deleted)
-        console.error(`Error deleting ${keyToDelete}:`, error);
-      }
-    });
-    await Promise.all(deletePromises);
-  }
-
-  const uploadPromises = Object.entries(IMAGE_SIZES).map(
-    async ([size, width]) => {
-      const resizedImage = await sharp(file.buffer)
-        .resize(width, width, {
-          fit: "cover",
-          withoutEnlargement: true,
-        })
-        .webp({ quality: WEBP_QUALITY })
-        .toBuffer();
-
-      const key = `profile-pictures/${userId}/${uuid}-${size}.webp`;
-
-      const command = new PutObjectCommand({
-        Bucket: env.R2_BUCKET_NAME,
-        Key: key,
-        Body: resizedImage,
-        ContentType: "image/webp",
-      });
-
-      await r2.send(command);
-      return { size, key };
-    }
+  const profilePictureKey = await ImageService.uploadProfilePicture(
+    userId,
+    req.file
   );
-
-  const uploadedImages = await Promise.all(uploadPromises);
-
-  // Update profile with main image key
-  const mainImageKey = uploadedImages.find((img) => img.size === "medium")?.key;
-  if (mainImageKey) {
-    await prisma.profile.update({
-      where: { userId },
-      data: { profilePictureKey: mainImageKey },
-    });
-  }
 
   res.status(200).json({
     message: "Profile picture updated",
     user: {
-      profilePictureKey: mainImageKey,
+      profilePictureKey,
     },
   });
 };
@@ -701,32 +633,10 @@ export const deleteProfilePicture = async (req: Request, res: Response) => {
     throw new NotFoundError("No profile picture found");
   }
 
-  const r2 = getS3Client();
-  const oldKey = currentProfile.profilePictureKey;
-  const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
-
-  // Delete all size variants of the image
-  const deletePromises = IMAGE_SIZE_NAMES.map(async (size) => {
-    const keyToDelete = `${oldKeyBase}-${size}.webp`;
-    const deleteCommand = new DeleteObjectCommand({
-      Bucket: env.R2_BUCKET_NAME,
-      Key: keyToDelete,
-    });
-    try {
-      await r2.send(deleteCommand);
-    } catch (error) {
-      // Log error but continue
-      console.error(`Error deleting ${keyToDelete}:`, error);
-    }
-  });
-
-  await Promise.all(deletePromises);
-
-  // Update profile to remove profile picture reference
-  await prisma.profile.update({
-    where: { userId },
-    data: { profilePictureKey: null },
-  });
+  await ImageService.deleteProfilePicture(
+    userId,
+    currentProfile.profilePictureKey
+  );
 
   res.status(200).json({
     message: "Profile picture deleted",
