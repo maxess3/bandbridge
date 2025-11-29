@@ -1,15 +1,17 @@
 import prisma from "../db/db.config";
 import { Request, Response } from "express";
 import { Platform } from "@prisma/client";
-import {
-  S3Client,
-  PutObjectCommand,
-  DeleteObjectCommand,
-} from "@aws-sdk/client-s3";
+import { PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { v4 as uuidv4 } from "uuid";
 import sharp from "sharp";
 import { calculateAge } from "../utils/utils";
 import { env } from "../config/env.config";
+import { getS3Client } from "../config/s3.config";
+import {
+  IMAGE_SIZES,
+  IMAGE_SIZE_NAMES,
+  WEBP_QUALITY,
+} from "../config/image.config";
 import {
   NotFoundError,
   UnauthorizedError,
@@ -603,22 +605,7 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
 
   const file = req.file;
   const uuid = uuidv4();
-  const r2 = new S3Client({
-    region: "auto",
-    endpoint: env.R2_ENDPOINT,
-    credentials: {
-      accessKeyId: env.R2_ACCESS_KEY_ID,
-      secretAccessKey: env.R2_SECRET_ACCESS_KEY,
-    },
-  });
-
-  // Define desired image sizes
-  const sizes = {
-    thumbnail: 44,
-    small: 80,
-    medium: 224,
-    large: 400,
-  };
+  const r2 = getS3Client();
 
   const currentProfile = await prisma.profile.findUnique({
     where: { userId },
@@ -630,7 +617,7 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
     const oldKey = currentProfile.profilePictureKey;
     const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
 
-    const deletePromises = Object.keys(sizes).map(async (size) => {
+    const deletePromises = IMAGE_SIZE_NAMES.map(async (size) => {
       const keyToDelete = `${oldKeyBase}-${size}.webp`;
       const deleteCommand = new DeleteObjectCommand({
         Bucket: env.R2_BUCKET_NAME,
@@ -646,27 +633,29 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
     await Promise.all(deletePromises);
   }
 
-  const uploadPromises = Object.entries(sizes).map(async ([size, width]) => {
-    const resizedImage = await sharp(file.buffer)
-      .resize(width, width, {
-        fit: "cover",
-        withoutEnlargement: true,
-      })
-      .webp({ quality: 80 })
-      .toBuffer();
+  const uploadPromises = Object.entries(IMAGE_SIZES).map(
+    async ([size, width]) => {
+      const resizedImage = await sharp(file.buffer)
+        .resize(width, width, {
+          fit: "cover",
+          withoutEnlargement: true,
+        })
+        .webp({ quality: WEBP_QUALITY })
+        .toBuffer();
 
-    const key = `profile-pictures/${userId}/${uuid}-${size}.webp`;
+      const key = `profile-pictures/${userId}/${uuid}-${size}.webp`;
 
-    const command = new PutObjectCommand({
-      Bucket: env.R2_BUCKET_NAME,
-      Key: key,
-      Body: resizedImage,
-      ContentType: "image/webp",
-    });
+      const command = new PutObjectCommand({
+        Bucket: env.R2_BUCKET_NAME,
+        Key: key,
+        Body: resizedImage,
+        ContentType: "image/webp",
+      });
 
-    await r2.send(command);
-    return { size, key };
-  });
+      await r2.send(command);
+      return { size, key };
+    }
+  );
 
   const uploadedImages = await Promise.all(uploadPromises);
 
@@ -712,22 +701,12 @@ export const deleteProfilePicture = async (req: Request, res: Response) => {
     throw new NotFoundError("No profile picture found");
   }
 
-  const r2 = new S3Client({
-    region: "auto",
-    endpoint: env.R2_ENDPOINT,
-    credentials: {
-      accessKeyId: env.R2_ACCESS_KEY_ID,
-      secretAccessKey: env.R2_SECRET_ACCESS_KEY,
-    },
-  });
-
-  // Define image sizes to delete
-  const sizes = ["thumbnail", "small", "medium", "large"];
+  const r2 = getS3Client();
   const oldKey = currentProfile.profilePictureKey;
   const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
 
   // Delete all size variants of the image
-  const deletePromises = sizes.map(async (size) => {
+  const deletePromises = IMAGE_SIZE_NAMES.map(async (size) => {
     const keyToDelete = `${oldKeyBase}-${size}.webp`;
     const deleteCommand = new DeleteObjectCommand({
       Bucket: env.R2_BUCKET_NAME,
