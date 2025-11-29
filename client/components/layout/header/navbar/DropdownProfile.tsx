@@ -13,6 +13,7 @@ import {
   BugBeetleIcon,
   GearIcon,
   SignOutIcon,
+  CaretDownIcon,
 } from "@phosphor-icons/react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
@@ -68,16 +69,22 @@ export const DropdownProfile = ({
             session?.user?.pseudonyme || "utilisateur"
           }`}
         >
-          <Avatar>
-            <AvatarImage
-              src={imageURL || undefined}
-              alt="Profile picture"
-              className="object-cover pointer-events-none"
-            />
-            <AvatarFallback className="bg-secondary pointer-events-none">
-              <DefaultProfilePicture className="mt-6 mr-1 w-[45px] h-[45px] text-background" />
-            </AvatarFallback>
-          </Avatar>
+          <span className="relative">
+            <Avatar>
+              <AvatarImage
+                src={imageURL || undefined}
+                alt="Profile picture"
+                className="object-cover pointer-events-none"
+              />
+              <AvatarFallback className="bg-secondary pointer-events-none">
+                <DefaultProfilePicture className="mt-6 mr-1 w-[45px] h-[45px] text-background" />
+              </AvatarFallback>
+            </Avatar>
+            <span className="absolute -bottom-1.5 -right-1 bg-background rounded-full flex justify-center items-center w-5 h-5">
+              <CaretDownIcon weight="bold" className="size-3" />
+            </span>
+          </span>
+
           {showText && (
             <span className="flex flex-col justify-center items-start flex-1 min-w-0">
               <span className="text-sm font-medium truncate w-full text-left">

@@ -162,7 +162,7 @@ export const ProfileActions = ({
             setIsShareModalOpen(true);
           }}
         >
-          <ShareFatIcon weight="fill" />
+          <ShareFatIcon weight="bold" />
         </Button>
       </div>
       <ShareProfileModal
