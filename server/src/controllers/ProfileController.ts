@@ -1,6 +1,5 @@
 import prisma from "../db/db.config";
 import { Request, Response } from "express";
-import { Platform } from "@prisma/client";
 import { ImageService } from "../services/ImageService";
 import { ProfileService } from "../services/ProfileService";
 import {
@@ -71,141 +70,14 @@ export const updateGeneralProfileOwner = async (
     throw new UnauthorizedError("User not authenticated");
   }
 
-  const currentProfile = await prisma.profile.findUnique({
-    where: { userId: userId },
-    select: {
-      id: true,
-      country: true,
-      zipCode: true,
-      city: true,
-      departmentName: true,
-    },
-  });
-
-  if (!currentProfile) {
-    throw new NotFoundError("Profile not found");
-  }
-
-  // Update profile genres
-  await prisma.profile.update({
-    where: { userId: userId },
-    data: {
-      genres: req.body.genres,
-    },
-  });
-
-  // Handle instruments if provided
-  if (req.body.instruments && Array.isArray(req.body.instruments)) {
-    // Delete existing instruments
-    await prisma.instrument.deleteMany({
-      where: { profileId: currentProfile.id },
-    });
-
-    // Add new instruments if any
-    if (req.body.instruments.length > 0) {
-      const instrumentsData = req.body.instruments.map(
-        (instrument: any, index: number) => ({
-          instrumentTypeId: instrument.instrumentTypeId,
-          level: instrument.level,
-          order: instrument.order ?? index, // Use provided order or default to index
-          profileId: currentProfile.id,
-        })
-      );
-
-      await prisma.instrument.createMany({
-        data: instrumentsData,
-      });
-    }
-  }
-
-  const hasLocationChanged =
-    currentProfile.country !== req.body.country ||
-    currentProfile.zipCode !== req.body.zipcode ||
-    currentProfile.city !== req.body.city;
-
-  let departmentName = currentProfile.departmentName;
-
-  if (req.body.country === "France" && req.body.zipcode && req.body.city) {
-    if (hasLocationChanged) {
-      try {
-        const response = await fetch(
-          `https://geo.api.gouv.fr/communes?codePostal=${req.body.zipcode}&fields=departement`
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-
-          // Verify that the city exists for this postal code
-          const validCities = data.map((c: any) => c.nom);
-          if (!validCities.includes(req.body.city)) {
-            throw new ValidationError("City does not match the postal code");
-          }
-
-          // Get the department name
-          departmentName = data[0]?.departement?.nom;
-        }
-      } catch (error) {
-        // If it's already a ValidationError, rethrow it
-        if (error instanceof ValidationError) {
-          throw error;
-        }
-        // Otherwise, log the error but continue (external API may be unavailable)
-        console.error("Error validating address:", error);
-      }
-    }
-  }
-
-  // Update profile location information
-  await prisma.profile.update({
-    where: { userId: userId },
-    data: {
-      pseudonyme: req.body.pseudonyme,
-      country: req.body.country,
-      zipCode: req.body.zipcode,
-      city: req.body.city,
-      departmentName: departmentName,
-    },
-  });
-
-  // Fetch final updated data
-  const updatedProfile = await prisma.profile.findUnique({
-    where: { userId: userId },
-    select: {
-      pseudonyme: true,
-      country: true,
-      zipCode: true,
-      city: true,
-      departmentName: true,
-      genres: true,
-      instruments: {
-        select: {
-          id: true,
-          level: true,
-          order: true,
-          instrumentType: {
-            select: {
-              id: true,
-              name: true,
-              category: true,
-            },
-          },
-        },
-        orderBy: { order: "asc" },
-      },
-    },
-  });
+  const updatedProfile = await ProfileService.updateProfileGeneral(
+    userId,
+    req.body
+  );
 
   res.status(200).json({
     message: "Profile updated successfully",
-    user: {
-      pseudonyme: updatedProfile?.pseudonyme,
-      country: updatedProfile?.country,
-      zipCode: updatedProfile?.zipCode,
-      city: updatedProfile?.city,
-      departmentName: updatedProfile?.departmentName,
-      genres: updatedProfile?.genres,
-      instruments: updatedProfile?.instruments,
-    },
+    user: updatedProfile,
   });
 };
 
@@ -225,81 +97,19 @@ export const updateInfoProfileOwner = async (req: Request, res: Response) => {
     throw new UnauthorizedError("User not authenticated");
   }
 
-  const profile = await prisma.profile.findUnique({
-    where: { userId },
-    select: { id: true },
-  });
-
-  if (!profile) {
-    throw new NotFoundError("Profile not found");
-  }
-
-  // Update description, concerts played, rehearsals per week, and practice type
-  await prisma.profile.update({
-    where: { userId },
-    data: {
-      description: req.body.description || null,
-      concertsPlayed: req.body.concertsPlayed || "NOT_SPECIFIED",
-      rehearsalsPerWeek: req.body.rehearsalsPerWeek || "NOT_SPECIFIED",
-      practiceType: req.body.practiceType || "NOT_SPECIFIED",
-      isLookingForBand: req.body.isLookingForBand ?? false,
-    },
-  });
-
-  // Update social links
-  await prisma.socialLink.deleteMany({
-    where: { profileId: profile.id },
-  });
-
-  const socialLinks = [];
-  const platforms: Record<string, Platform> = {
-    youtube: Platform.YOUTUBE,
-    instagram: Platform.INSTAGRAM,
-    tiktok: Platform.TIKTOK,
-    twitter: Platform.TWITTER,
-    soundcloud: Platform.SOUNDCLOUD,
-  };
-
-  for (const [key, platform] of Object.entries(platforms)) {
-    if (req.body[key]) {
-      socialLinks.push({
-        platform,
-        url: req.body[key],
-        profileId: profile.id,
-      });
-    }
-  }
-
-  await prisma.socialLink.createMany({
-    data: socialLinks,
-  });
-
-  // Get updated profile data
-  const updatedUser = await prisma.user.findUnique({
-    where: { id: userId },
-    select: {
-      username: true,
-    },
-  });
-
-  const updatedProfile = await prisma.profile.findUnique({
-    where: { userId },
-    select: {
-      description: true,
-      concertsPlayed: true,
-      rehearsalsPerWeek: true,
-      practiceType: true,
-      isLookingForBand: true,
-    },
-  });
+  const updatedInfo = await ProfileService.updateProfileInfo(userId, req.body);
 
   res.status(200).json({
     message: "Information updated successfully",
     user: {
-      ...updatedUser,
-      ...updatedProfile,
+      username: updatedInfo.username,
+      description: updatedInfo.description,
+      concertsPlayed: updatedInfo.concertsPlayed,
+      rehearsalsPerWeek: updatedInfo.rehearsalsPerWeek,
+      practiceType: updatedInfo.practiceType,
+      isLookingForBand: updatedInfo.isLookingForBand,
     },
-    links: { count: socialLinks.length },
+    links: { count: updatedInfo.linksCount },
   });
 };
 
