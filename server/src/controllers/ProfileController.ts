@@ -1,8 +1,8 @@
 import prisma from "../db/db.config";
 import { Request, Response } from "express";
 import { Platform } from "@prisma/client";
-import { calculateAge } from "../utils/utils";
 import { ImageService } from "../services/ImageService";
+import { ProfileService } from "../services/ProfileService";
 import {
   NotFoundError,
   UnauthorizedError,
@@ -22,146 +22,12 @@ import {
 export const getProfilePublic = async (req: Request, res: Response) => {
   const { username } = req.params;
 
-  const user = await prisma.user.findUnique({
-    where: {
-      username: username,
-    },
-    include: {
-      Profile: {
-        select: {
-          id: true,
-          userId: true,
-          pseudonyme: true,
-          role: true,
-          description: true,
-          concertsPlayed: true,
-          rehearsalsPerWeek: true,
-          practiceType: true,
-          isLookingForBand: true,
-          genres: true,
-          profilePictureKey: true,
-          lastActiveAt: true,
-          country: true,
-          city: true,
-          departmentName: true,
-          zipCode: true,
-          socialLinks: {
-            select: {
-              platform: true,
-              url: true,
-            },
-          },
-          instruments: {
-            select: {
-              instrumentTypeId: true,
-              level: true,
-              order: true,
-              instrumentType: {
-                select: {
-                  name: true,
-                  profession: true,
-                },
-              },
-            },
-            orderBy: {
-              order: "asc",
-            },
-          },
-          _count: {
-            select: {
-              followers: true,
-              following: true,
-            },
-          },
-          followers: {
-            take: 7,
-            orderBy: {
-              lastActiveAt: "desc",
-            },
-            select: {
-              pseudonyme: true,
-              profilePictureKey: true,
-              lastActiveAt: true,
-              city: true,
-              user: {
-                select: {
-                  username: true,
-                },
-              },
-              _count: {
-                select: {
-                  followers: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
-
-  if (!user || !user.Profile) {
-    throw new NotFoundError("Profile not found");
-  }
-
-  const profile = user.Profile;
-
-  const age = calculateAge(user.birthDate);
-
-  const formattedSocialLinks = Object.fromEntries(
-    (profile.socialLinks || []).map(
-      (link: { platform: string; url: string }) => [
-        link.platform.toLowerCase(),
-        link.url,
-      ]
-    )
+  const profile = await ProfileService.getProfileByIdentifier(
+    username,
+    "username"
   );
 
-  const responseProfile = {
-    userId: profile.userId,
-    username: user.username,
-    pseudonyme: profile.pseudonyme,
-    age: age,
-    country: profile.country,
-    zipCode: profile.zipCode,
-    city: profile.city,
-    departmentName: profile.departmentName,
-    role: profile.role,
-    description: profile.description,
-    concertsPlayed: profile.concertsPlayed,
-    rehearsalsPerWeek: profile.rehearsalsPerWeek,
-    practiceType: profile.practiceType,
-    isLookingForBand: profile.isLookingForBand,
-    genres: profile.genres,
-    instruments: profile.instruments,
-    profilePictureKey: profile.profilePictureKey,
-    lastActiveAt: profile.lastActiveAt,
-    createdAt: user.created_at,
-    socialLinks: formattedSocialLinks,
-    followers: profile._count?.followers || 0,
-    following: profile._count?.following || 0,
-    lastFollowers: (profile.followers || []).map(
-      (follower: {
-        pseudonyme: string;
-        profilePictureKey: string | null;
-        lastActiveAt: Date | null;
-        city: string | null;
-        user: {
-          username: string;
-        };
-        _count: { followers: number };
-      }) => ({
-        pseudonyme: follower.pseudonyme,
-        username: follower.user.username,
-        profilePictureKey: follower.profilePictureKey,
-        lastActiveAt: follower.lastActiveAt,
-        city: follower.city,
-        followersCount: follower._count.followers,
-      })
-    ),
-  };
-
-  res.status(200).json(responseProfile);
+  res.status(200).json(profile);
 };
 
 /**
@@ -180,146 +46,9 @@ export const getProfileOwner = async (req: Request, res: Response) => {
     throw new UnauthorizedError("User not authenticated");
   }
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    include: {
-      Profile: {
-        select: {
-          id: true,
-          userId: true,
-          pseudonyme: true,
-          role: true,
-          description: true,
-          concertsPlayed: true,
-          rehearsalsPerWeek: true,
-          practiceType: true,
-          isLookingForBand: true,
-          genres: true,
-          profilePictureKey: true,
-          lastActiveAt: true,
-          country: true,
-          city: true,
-          zipCode: true,
-          departmentName: true,
-          socialLinks: {
-            select: {
-              platform: true,
-              url: true,
-            },
-          },
-          instruments: {
-            select: {
-              instrumentTypeId: true,
-              level: true,
-              order: true,
-              instrumentType: {
-                select: {
-                  name: true,
-                  profession: true,
-                },
-              },
-            },
-            orderBy: {
-              order: "asc",
-            },
-          },
-          _count: {
-            select: {
-              followers: true,
-              following: true,
-            },
-          },
-          followers: {
-            take: 7,
-            orderBy: {
-              lastActiveAt: "desc",
-            },
-            select: {
-              pseudonyme: true,
-              profilePictureKey: true,
-              lastActiveAt: true,
-              city: true,
-              user: {
-                select: {
-                  username: true,
-                },
-              },
-              _count: {
-                select: {
-                  followers: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
+  const profile = await ProfileService.getProfileByIdentifier(userId, "userId");
 
-  if (!user || !user.Profile) {
-    throw new NotFoundError("Profile not found");
-  }
-
-  const profile = user.Profile;
-
-  const age = calculateAge(user.birthDate);
-
-  const formattedSocialLinks = Object.fromEntries(
-    (profile.socialLinks || []).map(
-      (link: { platform: string; url: string }) => [
-        link.platform.toLowerCase(),
-        link.url,
-      ]
-    )
-  );
-
-  const responseProfile = {
-    userId: profile.userId,
-    username: user.username,
-    pseudonyme: profile.pseudonyme,
-    age: age,
-    country: profile.country,
-    zipCode: profile.zipCode,
-    city: profile.city,
-    departmentName: profile.departmentName,
-    role: profile.role,
-    description: profile.description,
-    concertsPlayed: profile.concertsPlayed,
-    rehearsalsPerWeek: profile.rehearsalsPerWeek,
-    practiceType: profile.practiceType,
-    isLookingForBand: profile.isLookingForBand,
-    genres: profile.genres,
-    instruments: profile.instruments,
-    profilePictureKey: profile.profilePictureKey,
-    lastActiveAt: profile.lastActiveAt,
-    createdAt: user.created_at,
-    socialLinks: formattedSocialLinks,
-    followers: profile._count?.followers || 0,
-    following: profile._count?.following || 0,
-    lastFollowers: (profile.followers || []).map(
-      (follower: {
-        pseudonyme: string;
-        profilePictureKey: string | null;
-        lastActiveAt: Date | null;
-        city: string | null;
-        user: {
-          username: string;
-        };
-        _count: { followers: number };
-      }) => ({
-        pseudonyme: follower.pseudonyme,
-        username: follower.user.username,
-        profilePictureKey: follower.profilePictureKey,
-        lastActiveAt: follower.lastActiveAt,
-        city: follower.city,
-        followersCount: follower._count.followers,
-      })
-    ),
-  };
-
-  res.status(200).json(responseProfile);
+  res.status(200).json(profile);
 };
 
 /**
