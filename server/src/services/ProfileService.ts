@@ -468,4 +468,308 @@ export class ProfileService {
       });
     }
   }
+
+  /**
+   * Searches profiles with unified logic for autocomplete and paginated search.
+   *
+   * @param query - Search query string
+   * @param options - Search options (mode, limit, page)
+   * @returns Search results with pagination info
+   *
+   * @throws {ValidationError} If query is invalid
+   */
+  static async searchProfiles(
+    query: string,
+    options: {
+      mode?: "autocomplete" | "pagination";
+      limit?: number;
+      page?: number;
+    } = {}
+  ): Promise<{
+    profiles: any[];
+    hasMore?: boolean;
+    totalFound?: number;
+    page?: number;
+    totalPages?: number;
+  }> {
+    const searchQuery = query.trim();
+    if (searchQuery.length < 1) {
+      throw new ValidationError("Search must contain at least 1 character");
+    }
+
+    const mode = options.mode || "pagination";
+    const isAutocomplete = mode === "autocomplete";
+
+    // Build where clause for search
+    const whereClause: any = {
+      OR: [
+        {
+          user: {
+            username: {
+              contains: searchQuery,
+              mode: "insensitive",
+            },
+          },
+        },
+        {
+          pseudonyme: {
+            contains: searchQuery,
+            mode: "insensitive",
+          },
+        },
+      ],
+    };
+
+    if (isAutocomplete) {
+      // Autocomplete mode: limit to 10 results
+      const profiles = await prisma.profile.findMany({
+        where: whereClause,
+        take: 11, // 10 + 1 to know if there are more
+        orderBy: { id: "asc" },
+        select: {
+          id: true,
+          pseudonyme: true,
+          profilePictureKey: true,
+          lastActiveAt: true,
+          city: true,
+          departmentName: true,
+          user: {
+            select: {
+              username: true,
+            },
+          },
+          instruments: {
+            select: {
+              instrumentTypeId: true,
+              level: true,
+              order: true,
+              instrumentType: {
+                select: {
+                  name: true,
+                  profession: true,
+                  category: true,
+                },
+              },
+            },
+            orderBy: {
+              order: "asc",
+            },
+          },
+          _count: {
+            select: {
+              followers: true,
+            },
+          },
+        },
+      });
+
+      const hasMore = profiles.length > 10;
+      const result = hasMore ? profiles.slice(0, 10) : profiles;
+
+      return {
+        profiles: result,
+        hasMore,
+        totalFound: result.length,
+      };
+    } else {
+      // Pagination mode
+      const pageNumber = Math.min(Math.max(1, options.page || 1), 100);
+      const limitNumber = options.limit || 10;
+
+      const skip = (pageNumber - 1) * limitNumber;
+
+      // Calculate real total with count
+      const totalFound = await prisma.profile.count({
+        where: whereClause,
+      });
+
+      // Fetch profiles with classic pagination
+      const profiles = await prisma.profile.findMany({
+        where: whereClause,
+        skip,
+        take: limitNumber,
+        orderBy: { id: "asc" },
+        select: {
+          id: true,
+          pseudonyme: true,
+          profilePictureKey: true,
+          lastActiveAt: true,
+          city: true,
+          departmentName: true,
+          user: {
+            select: {
+              username: true,
+            },
+          },
+          _count: {
+            select: {
+              followers: true,
+            },
+          },
+        },
+      });
+
+      // Calculate total number of pages (limited to 100 maximum)
+      const totalPages = Math.min(Math.ceil(totalFound / limitNumber), 100);
+
+      return {
+        profiles,
+        page: pageNumber,
+        totalPages,
+        totalFound,
+      };
+    }
+  }
+
+  /**
+   * Retrieves the list of followers for a user with cursor-based pagination.
+   *
+   * @param username - Username of the user
+   * @param cursor - Optional cursor for pagination
+   * @returns Paginated list of followers
+   *
+   * @throws {NotFoundError} If profile is not found
+   */
+  static async getFollowersList(
+    username: string,
+    cursor?: string
+  ): Promise<{
+    followers: any[];
+    nextCursor: string | null;
+    hasMore: boolean;
+  }> {
+    const LIMIT = 20;
+
+    // Verify user exists
+    const user = await prisma.user.findUnique({
+      where: { username },
+      select: { id: true, Profile: { select: { id: true } } },
+    });
+
+    if (!user || !user.Profile) {
+      throw new NotFoundError("Profile not found");
+    }
+
+    // Build where clause with cursor if provided
+    const whereClause = {
+      following: {
+        some: {
+          id: user.Profile.id,
+        },
+      },
+      ...(cursor && { id: { gt: cursor } }),
+    };
+
+    // Fetch followers with +1 to know if there are more
+    const followers = await prisma.profile.findMany({
+      where: whereClause,
+      take: LIMIT + 1,
+      orderBy: { id: "asc" },
+      select: {
+        id: true,
+        pseudonyme: true,
+        profilePictureKey: true,
+        lastActiveAt: true,
+        city: true,
+        departmentName: true,
+        user: {
+          select: {
+            username: true,
+          },
+        },
+        _count: {
+          select: {
+            followers: true,
+          },
+        },
+      },
+    });
+
+    // Determine if there are more profiles and prepare response
+    const hasMore = followers.length > LIMIT;
+    const result = hasMore ? followers.slice(0, LIMIT) : followers;
+    const nextCursor = hasMore ? result[result.length - 1]?.id : null;
+
+    return {
+      followers: result,
+      nextCursor,
+      hasMore,
+    };
+  }
+
+  /**
+   * Retrieves the list of profiles that a user is following with cursor-based pagination.
+   *
+   * @param username - Username of the user
+   * @param cursor - Optional cursor for pagination
+   * @returns Paginated list of following profiles
+   *
+   * @throws {NotFoundError} If profile is not found
+   */
+  static async getFollowingList(
+    username: string,
+    cursor?: string
+  ): Promise<{
+    following: any[];
+    nextCursor: string | null;
+    hasMore: boolean;
+  }> {
+    const LIMIT = 20;
+
+    // Verify user exists
+    const user = await prisma.user.findUnique({
+      where: { username },
+      select: { id: true, Profile: { select: { id: true } } },
+    });
+
+    if (!user || !user.Profile) {
+      throw new NotFoundError("Profile not found");
+    }
+
+    // Build where clause with cursor if provided
+    const whereClause = {
+      followers: {
+        some: {
+          id: user.Profile.id,
+        },
+      },
+      ...(cursor && { id: { gt: cursor } }),
+    };
+
+    // Fetch following profiles with +1 to know if there are more
+    const following = await prisma.profile.findMany({
+      where: whereClause,
+      take: LIMIT + 1,
+      orderBy: { id: "asc" },
+      select: {
+        id: true,
+        pseudonyme: true,
+        profilePictureKey: true,
+        lastActiveAt: true,
+        city: true,
+        departmentName: true,
+        user: {
+          select: {
+            username: true,
+          },
+        },
+        _count: {
+          select: {
+            followers: true,
+          },
+        },
+      },
+    });
+
+    // Determine if there are more profiles and prepare response
+    const hasMore = following.length > LIMIT;
+    const result = hasMore ? following.slice(0, LIMIT) : following;
+    const nextCursor = hasMore ? result[result.length - 1]?.id : null;
+
+    return {
+      following: result,
+      nextCursor,
+      hasMore,
+    };
+  }
 }

@@ -379,66 +379,25 @@ export const getMusicGenres = async (req: Request, res: Response) => {
   res.status(200).json(genres);
 };
 
+/**
+ * Retrieves the list of followers for a user with cursor-based pagination.
+ *
+ * @param req - Express request object with username in params and optional cursor in query
+ * @param res - Express response object
+ * @returns Paginated list of followers
+ *
+ * @throws {NotFoundError} If profile is not found
+ */
 export const getFollowersList = async (req: Request, res: Response) => {
   const { username } = req.params;
   const { cursor } = req.query;
-  const LIMIT = 20;
 
-  // Vérifier que l'utilisateur existe
-  const user = await prisma.user.findUnique({
-    where: { username: username as string },
-    select: { id: true, Profile: { select: { id: true } } },
-  });
+  const result = await ProfileService.getFollowersList(
+    username,
+    cursor as string | undefined
+  );
 
-  if (!user || !user.Profile) {
-    throw new NotFoundError("Profile not found");
-  }
-
-  // Construire la clause where avec cursor si fourni
-  const whereClause = {
-    following: {
-      some: {
-        id: user.Profile.id,
-      },
-    },
-    ...(cursor && { id: { gt: cursor as string } }),
-  };
-
-  // Fetch followers with +1 to know if there are more
-  const followers = await prisma.profile.findMany({
-    where: whereClause,
-    take: LIMIT + 1,
-    orderBy: { id: "asc" },
-    select: {
-      id: true,
-      pseudonyme: true,
-      profilePictureKey: true,
-      lastActiveAt: true,
-      city: true,
-      departmentName: true,
-      user: {
-        select: {
-          username: true,
-        },
-      },
-      _count: {
-        select: {
-          followers: true,
-        },
-      },
-    },
-  });
-
-  // Determine if there are more profiles and prepare response
-  const hasMore = followers.length > LIMIT;
-  const result = hasMore ? followers.slice(0, LIMIT) : followers;
-  const nextCursor = hasMore ? result[result.length - 1]?.id : null;
-
-  res.status(200).json({
-    followers: result,
-    nextCursor,
-    hasMore,
-  });
+  res.status(200).json(result);
 };
 
 /**
@@ -453,63 +412,13 @@ export const getFollowersList = async (req: Request, res: Response) => {
 export const getFollowingList = async (req: Request, res: Response) => {
   const { username } = req.params;
   const { cursor } = req.query;
-  const LIMIT = 20;
 
-  // Vérifier que l'utilisateur existe
-  const user = await prisma.user.findUnique({
-    where: { username: username as string },
-    select: { id: true, Profile: { select: { id: true } } },
-  });
+  const result = await ProfileService.getFollowingList(
+    username,
+    cursor as string | undefined
+  );
 
-  if (!user || !user.Profile) {
-    throw new NotFoundError("Profile not found");
-  }
-
-  // Construire la clause where avec cursor si fourni
-  const whereClause = {
-    followers: {
-      some: {
-        id: user.Profile.id,
-      },
-    },
-    ...(cursor && { id: { gt: cursor as string } }),
-  };
-
-  // Fetch following profiles with +1 to know if there are more
-  const following = await prisma.profile.findMany({
-    where: whereClause,
-    take: LIMIT + 1,
-    orderBy: { id: "asc" },
-    select: {
-      id: true,
-      pseudonyme: true,
-      profilePictureKey: true,
-      lastActiveAt: true,
-      city: true,
-      departmentName: true,
-      user: {
-        select: {
-          username: true,
-        },
-      },
-      _count: {
-        select: {
-          followers: true,
-        },
-      },
-    },
-  });
-
-  // Determine if there are more profiles and prepare response
-  const hasMore = following.length > LIMIT;
-  const result = hasMore ? following.slice(0, LIMIT) : following;
-  const nextCursor = hasMore ? result[result.length - 1]?.id : null;
-
-  res.status(200).json({
-    following: result,
-    nextCursor,
-    hasMore,
-  });
+  res.status(200).json(result);
 };
 
 /**
@@ -538,82 +447,11 @@ export const searchProfilesAutocomplete = async (
     throw new ValidationError("Search parameter 'q' is required");
   }
 
-  const searchQuery = query.trim();
-  if (searchQuery.length < 1) {
-    throw new ValidationError("Search must contain at least 1 character");
-  }
-
-  // Build where clause for search
-  const whereClause: any = {
-    OR: [
-      {
-        user: {
-          username: {
-            contains: searchQuery,
-            mode: "insensitive",
-          },
-        },
-      },
-      {
-        pseudonyme: {
-          contains: searchQuery,
-          mode: "insensitive",
-        },
-      },
-    ],
-  };
-
-  // Fetch exactly 11 profiles to know if there are more
-  const profiles = await prisma.profile.findMany({
-    where: whereClause,
-    take: 11, // 10 + 1 to know if there are more
-    orderBy: { id: "asc" },
-    select: {
-      id: true,
-      pseudonyme: true,
-      profilePictureKey: true,
-      lastActiveAt: true,
-      city: true,
-      departmentName: true,
-      user: {
-        select: {
-          username: true,
-        },
-      },
-      instruments: {
-        select: {
-          instrumentTypeId: true,
-          level: true,
-          order: true,
-          instrumentType: {
-            select: {
-              name: true,
-              profession: true,
-              category: true,
-            },
-          },
-        },
-        orderBy: {
-          order: "asc",
-        },
-      },
-      _count: {
-        select: {
-          followers: true,
-        },
-      },
-    },
+  const result = await ProfileService.searchProfiles(query, {
+    mode: "autocomplete",
   });
 
-  // Determine if there are more profiles
-  const hasMore = profiles.length > 10;
-  const result = hasMore ? profiles.slice(0, 10) : profiles;
-
-  res.status(200).json({
-    profiles: result,
-    hasMore,
-    totalFound: result.length,
-  });
+  res.status(200).json(result);
 };
 
 /**
@@ -639,76 +477,11 @@ export const searchProfiles = async (req: Request, res: Response) => {
     throw new ValidationError("Search parameter 'q' is required");
   }
 
-  const searchQuery = query.trim();
-  if (searchQuery.length < 1) {
-    throw new ValidationError("Search must contain at least 1 character");
-  }
-
-  // Validate and limit page to 100 maximum
-  const pageNumber = Math.min(Math.max(1, Number(page)), 100);
-  const limitNumber = Number(limit);
-
-  // Build where clause for search
-  const whereClause: any = {
-    OR: [
-      {
-        user: {
-          username: {
-            contains: searchQuery,
-            mode: "insensitive",
-          },
-        },
-      },
-      {
-        pseudonyme: {
-          contains: searchQuery,
-          mode: "insensitive",
-        },
-      },
-    ],
-  };
-
-  // Calculate skip for pagination
-  const skip = (pageNumber - 1) * limitNumber;
-
-  // Calculate real total with count
-  const totalFound = await prisma.profile.count({
-    where: whereClause,
+  const result = await ProfileService.searchProfiles(query, {
+    mode: "pagination",
+    limit: Number(limit),
+    page: Number(page),
   });
 
-  // Fetch profiles with classic pagination
-  const profiles = await prisma.profile.findMany({
-    where: whereClause,
-    skip,
-    take: limitNumber,
-    orderBy: { id: "asc" },
-    select: {
-      id: true,
-      pseudonyme: true,
-      profilePictureKey: true,
-      lastActiveAt: true,
-      city: true,
-      departmentName: true,
-      user: {
-        select: {
-          username: true,
-        },
-      },
-      _count: {
-        select: {
-          followers: true,
-        },
-      },
-    },
-  });
-
-  // Calculate total number of pages (limited to 100 maximum)
-  const totalPages = Math.min(Math.ceil(totalFound / limitNumber), 100);
-
-  res.status(200).json({
-    profiles,
-    page: pageNumber,
-    totalPages,
-    totalFound,
-  });
+  res.status(200).json(result);
 };
