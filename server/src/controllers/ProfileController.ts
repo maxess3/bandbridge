@@ -2,6 +2,7 @@ import prisma from "../db/db.config";
 import { Request, Response } from "express";
 import { ImageService } from "../services/ImageService";
 import { ProfileService } from "../services/ProfileService";
+import { FollowService } from "../services/FollowService";
 import {
   NotFoundError,
   UnauthorizedError,
@@ -204,41 +205,7 @@ export const follow = async (req: Request, res: Response) => {
     throw new UnauthorizedError("Not authenticated");
   }
 
-  // Get the user profile
-  const currentUserProfile = await prisma.profile.findUnique({
-    where: { userId },
-  });
-
-  if (!currentUserProfile) {
-    throw new NotFoundError("Profile not found");
-  }
-
-  // Get the target user profile via User model
-  const targetUser = await prisma.user.findUnique({
-    where: { username: targetUsername },
-    include: { Profile: true },
-  });
-
-  if (!targetUser?.Profile) {
-    throw new NotFoundError("Target profile not found");
-  }
-
-  const targetProfile = targetUser.Profile;
-
-  // Check if user profile is not the target profile
-  if (currentUserProfile.id === targetProfile.id) {
-    throw new ValidationError("You cannot follow yourself");
-  }
-
-  // Add follow relation
-  await prisma.profile.update({
-    where: { id: currentUserProfile.id },
-    data: {
-      following: {
-        connect: { id: targetProfile.id },
-      },
-    },
-  });
+  await FollowService.followProfile(userId, targetUsername);
 
   res.status(200).json({ message: "Profile followed successfully" });
 };
@@ -261,36 +228,7 @@ export const unfollow = async (req: Request, res: Response) => {
     throw new UnauthorizedError("Not authenticated");
   }
 
-  // Get the user profile
-  const currentUserProfile = await prisma.profile.findUnique({
-    where: { userId },
-  });
-
-  if (!currentUserProfile) {
-    throw new NotFoundError("Profile not found");
-  }
-
-  // Get the target user profile via User model
-  const targetUser = await prisma.user.findUnique({
-    where: { username: targetUsername },
-    include: { Profile: true },
-  });
-
-  if (!targetUser?.Profile) {
-    throw new NotFoundError("Target profile not found");
-  }
-
-  const targetProfile = targetUser.Profile;
-
-  // Delete profile relation
-  await prisma.profile.update({
-    where: { id: currentUserProfile.id },
-    data: {
-      following: {
-        disconnect: { id: targetProfile.id },
-      },
-    },
-  });
+  await FollowService.unfollowProfile(userId, targetUsername);
 
   res.status(200).json({ message: "Profile unfollowed successfully" });
 };
@@ -313,29 +251,10 @@ export const isFollowing = async (req: Request, res: Response) => {
     throw new UnauthorizedError("Not authenticated");
   }
 
-  // Get user profile with following relation
-  const currentUserProfile = await prisma.profile.findUnique({
-    where: { userId },
-    select: {
-      id: true,
-      following: {
-        where: {
-          user: { username: targetUsername },
-        },
-        select: { id: true },
-      },
-    },
-  });
-
-  if (!currentUserProfile) {
-    throw new NotFoundError("Profile not found");
-  }
-
-  // Check if following relation exists
-  const isFollowing = currentUserProfile.following.length > 0;
+  const following = await FollowService.isFollowing(userId, targetUsername);
 
   res.status(200).json({
-    isFollowing,
+    isFollowing: following,
     targetUsername,
     timestamp: new Date().toISOString(),
   });
