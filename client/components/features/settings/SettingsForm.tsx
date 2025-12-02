@@ -243,24 +243,9 @@ export default function SettingsForm({ userData }: SettingsFormProps) {
                   maxLength={4}
                 />
               </div>
-              {errors.birthdate?.day && (
+              {errors.birthdate?.message && (
                 <p className="text-red-500 text-sm">
-                  {errors.birthdate.day.message}
-                </p>
-              )}
-              {errors.birthdate?.month && (
-                <p className="text-red-500 text-sm">
-                  {errors.birthdate.month.message}
-                </p>
-              )}
-              {errors.birthdate?.year && (
-                <p className="text-red-500 text-sm">
-                  {errors.birthdate.year.message}
-                </p>
-              )}
-              {errors.birthdate?.root?.message && (
-                <p className="text-red-500 text-sm">
-                  {errors.birthdate.root.message}
+                  {errors.birthdate.message}
                 </p>
               )}
             </div>
