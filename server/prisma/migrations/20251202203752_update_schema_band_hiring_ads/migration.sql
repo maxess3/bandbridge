@@ -41,6 +41,11 @@ CREATE TABLE "User" (
     "role" "UserRole" NOT NULL DEFAULT 'USER',
     "verified" BOOLEAN NOT NULL DEFAULT false,
     "password_changed_at" TIMESTAMP(3),
+    "firstName" VARCHAR(60) NOT NULL,
+    "lastName" VARCHAR(60) NOT NULL,
+    "username" TEXT,
+    "gender" "Gender" NOT NULL DEFAULT 'OTHER',
+    "birthDate" DATE,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -48,14 +53,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Profile" (
     "id" TEXT NOT NULL,
-    "gender" "Gender" NOT NULL DEFAULT 'OTHER',
-    "username" TEXT,
-    "firstName" VARCHAR(60) NOT NULL,
-    "lastName" VARCHAR(60) NOT NULL,
-    "birthDate" DATE,
-    "country" TEXT,
-    "city" TEXT,
-    "zipCode" TEXT,
+    "pseudonyme" VARCHAR(60) NOT NULL,
     "role" "ProfileRole" NOT NULL DEFAULT 'MUSICIAN',
     "genres" "MusicGenre"[],
     "lastActiveAt" TIMESTAMP(3),
@@ -64,6 +62,11 @@ CREATE TABLE "Profile" (
     "concertsPlayed" "ConcertCount" NOT NULL DEFAULT 'NOT_SPECIFIED',
     "rehearsalsPerWeek" "RehearsalFrequency" NOT NULL DEFAULT 'NOT_SPECIFIED',
     "practiceType" "PracticeType" NOT NULL DEFAULT 'NOT_SPECIFIED',
+    "isLookingForBand" BOOLEAN NOT NULL DEFAULT false,
+    "country" VARCHAR(60),
+    "city" VARCHAR(60),
+    "zipCode" VARCHAR(10),
+    "departmentName" VARCHAR(60),
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "Profile_pkey" PRIMARY KEY ("id")
@@ -107,8 +110,40 @@ CREATE TABLE "SocialLink" (
 CREATE TABLE "Band" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "genres" "MusicGenre"[],
+    "description" TEXT,
+    "country" VARCHAR(60),
+    "city" VARCHAR(60),
+    "zipCode" VARCHAR(10),
+    "departmentName" VARCHAR(60),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Band_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "BandHiringAd" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "bandId" TEXT NOT NULL,
+
+    CONSTRAINT "BandHiringAd_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "HiringAd" (
+    "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "profileId" TEXT NOT NULL,
+
+    CONSTRAINT "HiringAd_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -145,7 +180,7 @@ CREATE TABLE "_BandToProfile" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Profile_username_key" ON "Profile"("username");
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");
@@ -161,6 +196,12 @@ CREATE UNIQUE INDEX "SocialLink_platform_profileId_key" ON "SocialLink"("platfor
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Band_name_key" ON "Band"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "BandHiringAd_bandId_title_key" ON "BandHiringAd"("bandId", "title");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "HiringAd_profileId_title_key" ON "HiringAd"("profileId", "title");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Post_user_id_title_key" ON "Post"("user_id", "title");
@@ -182,6 +223,12 @@ ALTER TABLE "Instrument" ADD CONSTRAINT "Instrument_instrumentTypeId_fkey" FOREI
 
 -- AddForeignKey
 ALTER TABLE "SocialLink" ADD CONSTRAINT "SocialLink_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BandHiringAd" ADD CONSTRAINT "BandHiringAd_bandId_fkey" FOREIGN KEY ("bandId") REFERENCES "Band"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HiringAd" ADD CONSTRAINT "HiringAd_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -137,12 +137,13 @@ model Profile {
   rehearsalsPerWeek RehearsalFrequency @default(NOT_SPECIFIED)
   practiceType      PracticeType       @default(NOT_SPECIFIED)
   isLookingForBand  Boolean            @default(false)
-  country           String?
-  city              String?
-  zipCode           String?
-  departmentName    String?            @db.VarChar(100)
+  country           String?            @db.VarChar(60)
+  city              String?            @db.VarChar(60)
+  zipCode           String?            @db.VarChar(10)
+  departmentName    String?            @db.VarChar(60)
   userId            String             @unique
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hiringAds         HiringAd[]
 }
 
 model InstrumentType {
@@ -179,9 +180,42 @@ model SocialLink {
 }
 
 model Band {
-  id      String    @id @default(uuid())
-  name    String    @unique
-  members Profile[]
+  id             String         @id @default(uuid())
+  name           String         @unique
+  genres         MusicGenre[]
+  description    String?        @db.Text
+  country        String?        @db.VarChar(60)
+  city           String?        @db.VarChar(60)
+  zipCode        String?        @db.VarChar(10)
+  departmentName String?        @db.VarChar(60)
+  members        Profile[]
+  hiringAds      BandHiringAd[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model BandHiringAd {
+  id        String   @id @default(uuid())
+  title     String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  bandId    String
+  band      Band     @relation(fields: [bandId], references: [id], onDelete: Cascade)
+
+  @@unique([bandId, title])
+}
+
+model HiringAd {
+  id        String   @id @default(uuid())
+  title     String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profileId String
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, title])
 }
 
 model Post {
