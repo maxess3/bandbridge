@@ -1,0 +1,37 @@
+model Profile {
+    id                String             @id @default(uuid())
+    pseudonyme        String             @db.VarChar(60)
+    followers         Profile[]          @relation("UserFollows")
+    following         Profile[]          @relation("UserFollows")
+    role              ProfileRole        @default(MUSICIAN)
+    instruments       Instrument[]
+    genres            MusicGenre[]
+    socialLinks       SocialLink[]
+    band              Band[]
+    lastActiveAt      DateTime?
+    profilePictureKey String?
+    description       String?            @db.Text
+    concertsPlayed    ConcertCount       @default(NOT_SPECIFIED)
+    rehearsalsPerWeek RehearsalFrequency @default(NOT_SPECIFIED)
+    practiceType      PracticeType       @default(NOT_SPECIFIED)
+    isLookingForBand  Boolean            @default(false)
+    country           String?            @db.VarChar(60)
+    city              String?            @db.VarChar(60)
+    zipCode           String?            @db.VarChar(10)
+    departmentName    String?            @db.VarChar(60)
+    userId            String             @unique
+    user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+    hiringAds         HiringAd[]
+}
+
+model HiringAd {
+    id        String   @id @default(uuid())
+    title     String
+    content   String   @db.Text
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    profileId String
+    profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+    @@unique([profileId, title])
+}

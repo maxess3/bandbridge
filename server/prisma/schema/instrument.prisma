@@ -1,0 +1,22 @@
+model InstrumentType {
+    id          String             @id @default(uuid())
+    name        String             @unique
+    category    InstrumentCategory
+    profession  String? // Profession liée à l'instrument (ex: "Guitarist" pour "Guitar")
+    isActive    Boolean            @default(true)
+    createdAt   DateTime           @default(now())
+    updatedAt   DateTime           @updatedAt
+    instruments Instrument[]
+}
+
+model Instrument {
+    id               String           @id @default(uuid())
+    level            InstrumentLevel?
+    order            Int              @default(0) // Ordre d'utilisation (0 = principal, 1 = secondaire, etc.)
+    profileId        String
+    instrumentTypeId String
+    profile          Profile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
+    instrumentType   InstrumentType   @relation(fields: [instrumentTypeId], references: [id], onDelete: Cascade)
+
+    @@unique([profileId, instrumentTypeId])
+}
