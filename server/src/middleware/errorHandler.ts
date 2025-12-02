@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "../generated/client";
 import { ZodError } from "zod";
-import { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import {
   AppError,
   NotFoundError,
@@ -65,7 +65,8 @@ export const errorHandler = (
   // Handle JWT errors (only if not already an AppError)
   if (
     !(error instanceof AppError) &&
-    (err instanceof JsonWebTokenError || err instanceof TokenExpiredError)
+    (err instanceof jwt.JsonWebTokenError ||
+      err instanceof jwt.TokenExpiredError)
   ) {
     error = new UnauthorizedError("Invalid or expired token");
   }

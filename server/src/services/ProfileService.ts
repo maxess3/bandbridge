@@ -1,5 +1,5 @@
 import prisma from "../db/db.config";
-import { Prisma, Platform } from "@prisma/client";
+import { Prisma, Platform } from "../generated/client";
 import { calculateAge } from "../utils/utils";
 import {
   formatSocialLinks,

@@ -9,6 +9,7 @@ import {
   ValidationError,
   AppError,
 } from "../errors";
+import { MusicGenre } from "../generated/client";
 
 /**
  * Retrieves a public profile by username.
@@ -292,9 +293,7 @@ export const getInstrumentTypes = async (req: Request, res: Response) => {
 };
 
 export const getMusicGenres = async (req: Request, res: Response) => {
-  // Récupérer tous les genres musicaux depuis l'enum
-  const genres = Object.values(require("@prisma/client").MusicGenre);
-
+  const genres = Object.values(MusicGenre);
   res.status(200).json(genres);
 };
 

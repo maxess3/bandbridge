@@ -1,6 +1,5 @@
-import { PrismaClient, InstrumentCategory } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "../src/db/db.config";
+import { InstrumentCategory } from "../src/generated/client";
 
 const instruments = [
   // Strings

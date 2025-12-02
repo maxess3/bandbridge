@@ -1,5 +1,5 @@
+import prisma from "../src/db/db.config";
 import {
-  PrismaClient,
   Gender,
   ProfileRole,
   MusicGenre,
@@ -8,11 +8,7 @@ import {
   PracticeType,
   InstrumentLevel,
   Platform,
-} from "@prisma/client";
-
-declare const process: any;
-
-const prisma = new PrismaClient();
+} from "../src/generated/client";
 
 // Données pour générer des profils variés
 const firstNames = [
