@@ -1,26 +1,39 @@
 model Band {
-    id             String         @id @default(uuid())
-    name           String         @unique
-    genres         MusicGenre[]
-    description    String?        @db.Text
-    country        String?        @db.VarChar(60)
-    city           String?        @db.VarChar(60)
-    zipCode        String?        @db.VarChar(10)
-    departmentName String?        @db.VarChar(60)
-    members        Profile[]
-    hiringAds      BandHiringAd[]
-    createdAt      DateTime       @default(now())
-    updatedAt      DateTime       @updatedAt
+    id                String         @id @default(uuid())
+    profilePictureKey String?
+    name              String         @unique
+    genres            MusicGenre[]
+    description       String?        @db.Text
+    country           String?        @db.VarChar(60)
+    city              String?        @db.VarChar(60)
+    zipCode           String?        @db.VarChar(10)
+    departmentName    String?        @db.VarChar(60)
+    members           Profile[]
+    hiringAds         BandHiringAd[]
+    createdAt         DateTime       @default(now())
+    updatedAt         DateTime       @updatedAt
 }
 
 model BandHiringAd {
-    id        String   @id @default(uuid())
-    title     String
-    content   String   @db.Text
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    bandId    String
-    band      Band     @relation(fields: [bandId], references: [id], onDelete: Cascade)
+    id            String             @id @default(uuid())
+    title         String             @db.VarChar(255)
+    content       String             @db.Text
+    createdAt     DateTime           @default(now())
+    updatedAt     DateTime           @updatedAt
+    bandId        String
+    band          Band               @relation(fields: [bandId], references: [id], onDelete: Cascade)
+    requiredSlots BandRequiredSlot[]
 
     @@unique([bandId, title])
+}
+
+model BandRequiredSlot {
+    id               String         @id @default(uuid())
+    quantity         Int            @default(1)
+    hiringAdId       String
+    instrumentTypeId String
+    hiringAd         BandHiringAd   @relation(fields: [hiringAdId], references: [id], onDelete: Cascade)
+    instrumentType   InstrumentType @relation(fields: [instrumentTypeId], references: [id], onDelete: Cascade)
+
+    @@unique([hiringAdId, instrumentTypeId])
 }

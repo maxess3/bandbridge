@@ -1,12 +1,13 @@
 model InstrumentType {
-    id          String             @id @default(uuid())
-    name        String             @unique
-    category    InstrumentCategory
-    profession  String? // Profession liée à l'instrument (ex: "Guitarist" pour "Guitar")
-    isActive    Boolean            @default(true)
-    createdAt   DateTime           @default(now())
-    updatedAt   DateTime           @updatedAt
-    instruments Instrument[]
+    id                String             @id @default(uuid())
+    name              String             @unique
+    category          InstrumentCategory
+    profession        String? // Profession liée à l'instrument (ex: "Guitarist" pour "Guitar")
+    isActive          Boolean            @default(true)
+    createdAt         DateTime           @default(now())
+    updatedAt         DateTime           @updatedAt
+    instruments       Instrument[]
+    bandRequiredSlots BandRequiredSlot[]
 }
 
 model Instrument {
