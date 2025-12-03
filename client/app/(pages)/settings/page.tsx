@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import SettingsForm from "@/components/features/settings/SettingsForm";
 import { useSettings } from "@/hooks/features/settings/useSettings";
 

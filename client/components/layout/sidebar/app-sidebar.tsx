@@ -29,7 +29,7 @@ const data = {
     },
     {
       title: "Groupes",
-      url: "#",
+      url: "/band/create-band",
       icon: UsersIcon,
     },
     {
