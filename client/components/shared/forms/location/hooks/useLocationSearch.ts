@@ -2,12 +2,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
-import { FormValues } from "../types/index";
+
+type LocationFormValues = {
+  zipcode?: string;
+  city?: string;
+};
 
 export const useLocationSearch = () => {
-  const { watch, setValue } = useFormContext<FormValues>();
+  const { watch, setValue } = useFormContext<LocationFormValues>();
   const zipcode = watch("zipcode");
-  const debouncedZipcode = useDebounce(zipcode || "", 500);
+  const zipcodeString = typeof zipcode === "string" ? zipcode : "";
+  const debouncedZipcode: string = useDebounce(zipcodeString, 500);
 
   const {
     data: cities,

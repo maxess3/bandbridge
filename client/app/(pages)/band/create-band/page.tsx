@@ -9,7 +9,7 @@ export default function CreateBandPage() {
           Créez un groupe et commencez à recruter des musiciens
         </p>
       </div>
-      <CreateBandForm userData={null} />
+      <CreateBandForm />
     </div>
   );
 }

@@ -1,13 +1,26 @@
-import { Label } from "@/components/ui/label";
-import { FormTextArea } from "@/components/shared/forms/FormTextArea";
+import { useFormContext } from "react-hook-form";
+import { FormFieldTextArea, FormField } from "@/components/shared/forms";
+import { CreateBandFormValues } from "../types";
 
 export const DescriptionSection = () => {
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<CreateBandFormValues>();
+
   return (
-    <div className="space-y-1">
-      <Label htmlFor="band-description" className="flex items-center text-sm">
-        Description*
-      </Label>
-      <FormTextArea id="band-description" />
-    </div>
+    <FormField
+      label="Description"
+      htmlFor="band-description"
+      error={errors.description}
+      required
+      labelClassName="flex items-center"
+    >
+      <FormFieldTextArea
+        id="band-description"
+        {...register("description")}
+        error={errors.description}
+      />
+    </FormField>
   );
 };

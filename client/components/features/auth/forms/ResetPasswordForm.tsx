@@ -12,8 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { FormFieldInput, FormField } from "@/components/shared/forms";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -87,34 +86,30 @@ export default function ResetPasswordForm({
       <CardContent>
         {currentStep === 0 && (
           <form className="grid gap-4" onSubmit={handleSubmit(validateReset)}>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Entrez le mot de passe</Label>
-              <Input
+            <FormField
+              label="Entrez le mot de passe"
+              htmlFor="password"
+              error={errors.password}
+            >
+              <FormFieldInput
                 id="password"
                 type="password"
-                className={`${errors.password && "border-[#ff4444]"}`}
                 {...register("password")}
+                error={errors.password}
               />
-              {errors.password && (
-                <p className="text-[#ff4444] text-sm">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="confirm">Confirmer le mot de passe</Label>
-              <Input
+            </FormField>
+            <FormField
+              label="Confirmer le mot de passe"
+              htmlFor="confirm"
+              error={errors.confirm}
+            >
+              <FormFieldInput
                 id="confirm"
                 type="password"
-                className={`${errors.confirm && "border-[#ff4444]"}`}
                 {...register("confirm")}
+                error={errors.confirm}
               />
-              {errors.confirm && (
-                <p className="text-[#ff4444] text-sm">
-                  {errors.confirm.message}
-                </p>
-              )}
-            </div>
+            </FormField>
             <Button className="w-full font-semibold">
               Mettre à jour le mot de passe
             </Button>

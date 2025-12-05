@@ -1,18 +1,25 @@
 import { useFormContext, Controller } from "react-hook-form";
-import { Label } from "@/components/ui/label";
-import { FormInput } from "@/components/shared/forms/FormInput";
-import { FormSelect } from "@/components/shared/forms/FormSelect";
-import { RadioGroup } from "@/components/ui/radio-group";
+import {
+  FormFieldInput,
+  FormFieldSelect,
+  FormFieldRadioGroup,
+  FormField,
+} from "@/components/shared/forms";
 import { Radio } from "@/components/shared/buttons/Radio";
-import { useLocationSearch } from "../hooks/useLocationSearch";
-import { FormValues } from "../types/index";
+import { useLocationSearch } from "./hooks/useLocationSearch";
 
-export const LocationSection = () => {
+type LocationFormValues = {
+  zipcode?: string;
+  city?: string;
+  country?: string;
+};
+
+const LocationSectionComponent = () => {
   const {
     control,
     register,
     formState: { errors },
-  } = useFormContext<FormValues>();
+  } = useFormContext<LocationFormValues>();
 
   const { cities, isLoading, isSuccess } = useLocationSearch();
 
@@ -21,18 +28,16 @@ export const LocationSection = () => {
       <h4 className="font-semibold text-xl mb-2">Localisation</h4>
       <div className="space-y-4">
         {/* Pays */}
-        <div className="space-y-2">
-          <Label htmlFor="country" className="opacity-80 text-sm">
-            Pays
-          </Label>
+        <FormField label="Pays" htmlFor="country" error={errors.country}>
           <Controller
             name="country"
             control={control}
             render={({ field }) => (
-              <RadioGroup
+              <FormFieldRadioGroup
                 {...field}
                 onValueChange={field.onChange}
                 value={field.value}
+                error={errors.country}
                 className="flex space-x-0.5"
               >
                 <Radio
@@ -41,43 +46,32 @@ export const LocationSection = () => {
                   id="france"
                   value="France"
                 />
-              </RadioGroup>
+              </FormFieldRadioGroup>
             )}
           />
-          {errors.country && (
-            <p className="text-red-500 text-sm">
-              {errors.country?.message?.toString()}
-            </p>
-          )}
-        </div>
+        </FormField>
 
         {/* Code Postal */}
-        <div className="space-y-2">
-          <Label htmlFor="zipcode" className="opacity-80 text-sm">
-            Code Postal*
-          </Label>
-          <FormInput
+        <FormField
+          label="Code Postal"
+          htmlFor="zipcode"
+          error={errors.zipcode}
+          required
+        >
+          <FormFieldInput
             id="zipcode"
             {...register("zipcode")}
-            className={`${errors.zipcode && "border-red-500"}`}
+            error={errors.zipcode}
           />
-          {errors.zipcode && (
-            <p className="text-red-500 text-sm">
-              {errors.zipcode?.message?.toString()}
-            </p>
-          )}
-        </div>
+        </FormField>
 
         {/* Ville */}
-        <div className="space-y-2">
-          <Label htmlFor="city" className="opacity-80 text-sm">
-            Ville*
-          </Label>
+        <FormField label="Ville" htmlFor="city" error={errors.city} required>
           <Controller
             name="city"
             control={control}
             render={({ field }) => (
-              <FormSelect
+              <FormFieldSelect
                 {...field}
                 options={
                   cities?.map((city: string) => ({
@@ -92,18 +86,16 @@ export const LocationSection = () => {
                     ? "Sélectionner une ville"
                     : "Aucune ville trouvée"
                 }
-                className={`w-full ${errors.city && "border-red-500"}`}
+                error={errors.city}
+                className="w-full"
                 disabled={isLoading || !cities?.length}
               />
             )}
           />
-          {errors.city && (
-            <p className="text-red-500 text-sm">
-              {errors.city?.message?.toString()}
-            </p>
-          )}
-        </div>
+        </FormField>
       </div>
     </div>
   );
 };
+
+export const LocationSection = LocationSectionComponent;

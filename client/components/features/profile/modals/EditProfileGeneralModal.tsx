@@ -1,18 +1,18 @@
 "use client";
 
+import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useSessionUpdate } from "@/hooks/useSessionUpdate";
+import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { EditModal } from "@/components/shared/modals/EditModal";
 import { UpdateProfileGeneralForm } from "@/components/features/profile/forms";
 import { formGeneralProfile } from "@/lib/zod";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/features/profile";
 import { PROFILE_QUERY_KEY } from "@/hooks/features/profile/useProfile";
-import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/ui";
-import { useRouter } from "next/navigation";
-import { z } from "zod";
 import { AutocompleteProvider } from "@/contexts/AutocompleteContext";
-import { useSession } from "next-auth/react";
-import { useSessionUpdate } from "@/hooks/useSessionUpdate";
 import { GroupedInstruments } from "@/types/Instrument";
 
 export function EditProfileGeneralModal() {

@@ -1,10 +1,13 @@
 import { useFormContext, Controller } from "react-hook-form";
-import { Label } from "@/components/ui/label";
-import { FormSelect } from "@/components/shared/forms/FormSelect";
-import { RadioGroup } from "@/components/ui/radio-group";
+import {
+  FormFieldSelect,
+  FormField,
+  FormFieldRadioGroup,
+  FormFieldSwitch,
+} from "@/components/shared/forms";
 import { Radio } from "@/components/shared/buttons/Radio";
-import { Switch } from "@/components/ui/switch";
 import { FormValues } from "../types/index";
+import { Label } from "@/components/ui/label";
 
 export const ExperienceSection = () => {
   const {
@@ -16,16 +19,17 @@ export const ExperienceSection = () => {
     <div className="space-y-6">
       <h4 className="font-semibold text-xl">Expérience musicale</h4>
 
-      {/* Concerts joués */}
-      <div className="space-y-1">
-        <Label htmlFor="concertsPlayed" className="opacity-80 text-sm">
-          Concerts joués
-        </Label>
+      {/* Concerts played */}
+      <FormField
+        label="Concerts joués"
+        htmlFor="concertsPlayed"
+        error={errors.concertsPlayed}
+      >
         <Controller
           name="concertsPlayed"
           control={control}
           render={({ field }) => (
-            <FormSelect
+            <FormFieldSelect
               {...field}
               id="concertsPlayed"
               options={[
@@ -36,29 +40,23 @@ export const ExperienceSection = () => {
                 { value: "MORE_THAN_HUNDRED", label: "100+" },
               ]}
               placeholder="Sélectionner une option"
-              className={`w-full ${
-                errors.concertsPlayed ? "border-red-500" : ""
-              }`}
+              error={errors.concertsPlayed}
             />
           )}
         />
-        {errors.concertsPlayed && (
-          <p className="text-red-500 text-sm">
-            {errors.concertsPlayed?.message?.toString()}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      {/* Répétitions par semaine */}
-      <div className="space-y-1">
-        <Label htmlFor="rehearsalsPerWeek" className="opacity-80 text-sm">
-          Répétitions par semaine
-        </Label>
+      {/* Rehearsals per week */}
+      <FormField
+        label="Répétitions par semaine"
+        htmlFor="rehearsalsPerWeek"
+        error={errors.rehearsalsPerWeek}
+      >
         <Controller
           name="rehearsalsPerWeek"
           control={control}
           render={({ field }) => (
-            <FormSelect
+            <FormFieldSelect
               {...field}
               id="rehearsalsPerWeek"
               options={[
@@ -74,33 +72,28 @@ export const ExperienceSection = () => {
                 },
               ]}
               placeholder="Sélectionner une option"
-              className={`w-full ${
-                errors.rehearsalsPerWeek ? "border-red-500" : ""
-              }`}
+              error={errors.rehearsalsPerWeek}
             />
           )}
         />
-        {errors.rehearsalsPerWeek && (
-          <p className="text-red-500 text-sm">
-            {errors.rehearsalsPerWeek?.message?.toString()}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      {/* Type de pratique musicale */}
-      <div className="space-y-1">
-        <Label htmlFor="practiceType" className="opacity-80 text-sm">
-          Type de pratique musicale
-        </Label>
+      {/* Musical practice type */}
+      <FormField
+        label="Type de pratique musicale"
+        htmlFor="practiceType"
+        error={errors.practiceType}
+      >
         <Controller
           name="practiceType"
           control={control}
           render={({ field }) => (
-            <RadioGroup
+            <FormFieldRadioGroup
               {...field}
               onValueChange={field.onChange}
               value={field.value}
-              className="flex flex-wrap gap-2 w-full"
+              error={errors.practiceType}
+              className="flex flex-wrap gap-2"
             >
               <Radio
                 title="Non spécifié"
@@ -109,17 +102,12 @@ export const ExperienceSection = () => {
               />
               <Radio title="Loisir" id="hobby" value="HOBBY" />
               <Radio title="En activité" id="active" value="ACTIVE" />
-            </RadioGroup>
+            </FormFieldRadioGroup>
           )}
         />
-        {errors.practiceType && (
-          <p className="text-red-500 text-sm">
-            {errors.practiceType?.message?.toString()}
-          </p>
-        )}
-      </div>
+      </FormField>
 
-      {/* Recherche de groupe */}
+      {/* Group search */}
       <div className="space-y-6">
         <h4 className="font-semibold text-xl">Recherche de groupe</h4>
         <div className="space-x-3 flex items-center">
@@ -130,18 +118,14 @@ export const ExperienceSection = () => {
             name="isLookingForBand"
             control={control}
             render={({ field }) => (
-              <Switch
+              <FormFieldSwitch
                 id="isLookingForBand"
                 onCheckedChange={field.onChange}
                 checked={field.value}
+                error={errors.isLookingForBand}
               />
             )}
           />
-          {errors.isLookingForBand && (
-            <p className="text-red-500 text-sm">
-              {errors.isLookingForBand?.message?.toString()}
-            </p>
-          )}
         </div>
       </div>
     </div>

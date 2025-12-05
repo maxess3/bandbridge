@@ -31,20 +31,19 @@ export const formCreateBandSchema = z.object({
     .string()
     .min(1, "La description est requise")
     .max(255, "La description ne doit pas dépasser 255 caractères"),
-  country: z
+  country: z.enum(["France"], {
+    error: () => "L'application est disponible en france uniquement",
+  }),
+  zipcode: z
     .string()
-    .min(1, "Le pays est requis")
-    .max(60, "Le pays ne doit pas dépasser 60 caractères"),
+    .min(1, "Le code postal est requis")
+    .regex(/^\d{5}$/, "Le code postal doit contenir exactement 5 chiffres"),
   city: z
     .string()
     .min(1, "La ville est requise")
-    .max(60, "La ville ne doit pas dépasser 60 caractères"),
-  zipCode: z
-    .string()
-    .min(1, "Le code postal est requis")
-    .max(10, "Le code postal ne doit pas dépasser 10 caractères"),
-  departmentName: z
-    .string()
-    .min(1, "Le département est requise")
-    .max(60, "Le département ne doit pas dépasser 60 caractères"),
+    .max(50, "La ville ne doit pas dépasser 50 caractères")
+    .regex(
+      /^[a-zA-ZÀ-ÿ\-']+$/,
+      "La ville ne doit contenir que des lettres et tirets"
+    ),
 });

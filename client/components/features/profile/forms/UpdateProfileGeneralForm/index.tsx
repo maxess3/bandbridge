@@ -1,10 +1,10 @@
 "use client";
 
+import { UpdateProfileGeneralFormProps } from "./types";
 import { BasicInfoSection } from "./components/BasicInfoSection";
-import { LocationSection } from "./components/LocationSection";
 import { InstrumentsSection } from "./components/InstrumentsSection";
 import { GenresSection } from "./components/GenresSection";
-import { UpdateProfileGeneralFormProps } from "./types";
+import { LocationSection } from "@/components/shared/forms/location";
 
 export const UpdateProfileGeneralForm = ({
   instrumentTypes,

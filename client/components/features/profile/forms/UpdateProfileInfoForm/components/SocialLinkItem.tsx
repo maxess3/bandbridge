@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { FormInput } from "@/components/shared/forms/FormInput";
+import { FormFieldInput } from "@/components/shared/forms";
 import { Trash } from "lucide-react";
 import {
   Tooltip,
@@ -43,7 +43,7 @@ export const SocialLinkItem = ({
           <div className="justify-center rounded-l-md flex items-center absolute inset-y-0 left-0 opacity-80 w-12 px-3 border-r">
             <IconComponent className="size-5!" />
           </div>
-          <FormInput
+          <FormFieldInput
             id={platform.value}
             name={platform.value}
             placeholder={platform.placeholder}
@@ -51,7 +51,8 @@ export const SocialLinkItem = ({
             onChange={(e) => onUpdate(platform.value, e.target.value)}
             onBlur={() => onBlur(platform.value)}
             ref={(el) => inputRef(platform.value, el)}
-            className={`bg-transparent pl-14 ${error ? "border-red-500" : ""}`}
+            error={error}
+            className="pl-14"
           />
         </div>
 
@@ -61,7 +62,7 @@ export const SocialLinkItem = ({
               onClick={() => onRemove(platform.value)}
               variant="outline"
               size="sm"
-              className="text-foreground rounded-full w-10 h-10"
+              className="text-foreground rounded-full w-10.5 h-10.5"
               type="button"
               aria-label={`Supprimer le lien ${platform.label}`}
               ref={(el) => closeButtonRef(platform.value, el)}
@@ -74,7 +75,6 @@ export const SocialLinkItem = ({
           </TooltipContent>
         </Tooltip>
       </div>
-      {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
 };

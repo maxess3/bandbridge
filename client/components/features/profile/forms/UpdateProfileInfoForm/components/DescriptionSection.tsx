@@ -1,6 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { Label } from "@/components/ui/label";
-import { FormTextArea } from "@/components/shared/forms/FormTextArea";
+import { FormFieldTextArea, FormField } from "@/components/shared/forms";
 import { FormValues } from "../types/index";
 
 export const DescriptionSection = () => {
@@ -15,33 +14,27 @@ export const DescriptionSection = () => {
   const currentChars = descriptionValue.length;
 
   return (
-    <div className="space-y-1">
-      <Label
-        htmlFor="description"
-        className="opacity-80 flex items-center text-sm"
-      >
-        Vous pouvez évoquer votre expérience, votre domaine d'activité ou vos
-        compétences.
-      </Label>
-      <FormTextArea
-        id="description"
-        {...register("description")}
-        className={`${errors.description && "border-red-500"}`}
-      />
-      <div className="flex justify-between items-center">
-        {errors.description && (
-          <p className="text-red-500 text-sm">
-            {errors.description?.message?.toString()}
+    <FormField
+      label="Vous pouvez évoquer votre expérience, votre domaine d'activité ou vos compétences."
+      htmlFor="description"
+      error={errors.description}
+    >
+      <div className="space-y-1">
+        <FormFieldTextArea
+          id="description"
+          {...register("description")}
+          error={errors.description}
+        />
+        <div className="flex justify-end">
+          <p
+            className={`text-sm ${
+              currentChars > maxChars ? "text-red-500" : "text-foreground/80"
+            }`}
+          >
+            {currentChars} / {maxChars}
           </p>
-        )}
-        <p
-          className={`text-sm ml-auto ${
-            currentChars > maxChars ? "text-red-500" : "text-foreground/80"
-          }`}
-        >
-          {currentChars} / {maxChars}
-        </p>
+        </div>
       </div>
-    </div>
+    </FormField>
   );
 };
