@@ -29,7 +29,7 @@ export async function ConditionalLayout({
     <div className="[--header-height:calc(--spacing(14))]">
       <SidebarProvider className="flex flex-col">
         <SiteHeader />
-        <div className="flex flex-1 px-4 py-6">
+        <div className="flex flex-1 p-4">
           <AppSidebar />
           <SidebarInset>{children}</SidebarInset>
         </div>

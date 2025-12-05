@@ -24,7 +24,7 @@ const FormSelect = React.forwardRef<HTMLSelectElement, FormSelectProps>(
         <select
           ref={ref}
           className={cn(
-            "h-10 w-full rounded-md border border-input bg-transparent px-2 text-base ring-offset-background placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none leading-10 pr-8",
+            "h-10.5 w-full rounded-lg border border-input bg-transparent px-2 text-base ring-offset-background placeholder:text-muted-foreground focus:outline-hidden focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 appearance-none leading-10",
             className
           )}
           onKeyDown={handleKeyDown}

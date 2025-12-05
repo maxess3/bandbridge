@@ -20,5 +20,8 @@ export {
   searchQuerySchema,
 } from "./profileSchema";
 
+// Export band schemas
+export { formCreateBandSchema } from "./bandSchema";
+
 // Export settings schemas
 export { formUserSettings } from "./settingsSchema";

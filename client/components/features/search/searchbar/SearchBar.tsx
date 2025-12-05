@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { Input } from "@/components/ui/input";
+import { FormInput } from "@/components/shared/forms/FormInput";
 import SearchAutocomplete from "./SearchAutocomplete";
 import { IoIosSearch } from "react-icons/io";
 import { SEARCH_CONSTANTS, AutocompleteSearchResult } from "@/types/Search";
@@ -109,11 +109,11 @@ export const SearchBar = () => {
 
   return (
     <div className="max-w-xl w-full relative">
-      <Input
+      <FormInput
         ref={inputRef}
         type="text"
         placeholder="Rechercher sur chordeus..."
-        className="h-10 pl-10 pr-6 rounded-md relative"
+        className="pl-10 pr-4 relative"
         value={search}
         onChange={handleSearchChange}
         onKeyDown={handleKeyDown}

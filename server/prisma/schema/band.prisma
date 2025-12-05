@@ -2,6 +2,7 @@ model Band {
     id                String         @id @default(uuid())
     profilePictureKey String?
     name              String         @unique
+    slug              String         @unique
     genres            MusicGenre[]
     description       String?        @db.Text
     country           String?        @db.VarChar(60)

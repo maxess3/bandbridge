@@ -1,16 +1,13 @@
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { FormTextArea } from "@/components/shared/forms/FormTextArea";
 
 export const DescriptionSection = () => {
   return (
     <div className="space-y-1">
-      <Label htmlFor="bandDescription" className="flex items-center text-sm">
-        Description du groupe
+      <Label htmlFor="band-description" className="flex items-center text-sm">
+        Description*
       </Label>
-      <Textarea
-        id="bandDescription"
-        className="bg-transparent text-base md:text-base min-h-[100px]"
-      />
+      <FormTextArea id="band-description" />
     </div>
   );
 };

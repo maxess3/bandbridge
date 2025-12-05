@@ -1,6 +1,6 @@
 import { useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { FormTextArea } from "@/components/shared/forms/FormTextArea";
 import { FormValues } from "../types/index";
 
 export const DescriptionSection = () => {
@@ -23,12 +23,10 @@ export const DescriptionSection = () => {
         Vous pouvez évoquer votre expérience, votre domaine d'activité ou vos
         compétences.
       </Label>
-      <Textarea
+      <FormTextArea
         id="description"
         {...register("description")}
-        className={`bg-transparent text-base md:text-base min-h-[220px] ${
-          errors.description && "border-red-500"
-        }`}
+        className={`${errors.description && "border-red-500"}`}
       />
       <div className="flex justify-between items-center">
         {errors.description && (

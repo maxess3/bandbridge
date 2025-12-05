@@ -35,7 +35,12 @@ export const LocationSection = () => {
                 value={field.value}
                 className="flex space-x-0.5"
               >
-                <Radio title="France" id="france" value="France" />
+                <Radio
+                  className="h-10.5"
+                  title="France"
+                  id="france"
+                  value="France"
+                />
               </RadioGroup>
             )}
           />
