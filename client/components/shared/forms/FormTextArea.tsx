@@ -12,7 +12,7 @@ const FormTextArea = React.forwardRef<HTMLTextAreaElement, FormTextAreaProps>(
     return (
       <Textarea
         ref={ref}
-        className={cn("rounded-lg text-base!", className)}
+        className={cn("rounded-lg text-base! bg-transparent", className)}
         {...props}
       />
     );

@@ -28,7 +28,7 @@ export const ProfilePicture = ({
   };
 
   const IMG_PROFILE = (
-    <Avatar className="rounded-full w-64 h-64 border-2">
+    <Avatar className="rounded-full w-64 h-64 border">
       <AvatarImage
         src={imageURL ? imageURL : undefined}
         alt={alt}

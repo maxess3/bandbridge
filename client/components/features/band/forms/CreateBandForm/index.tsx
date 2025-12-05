@@ -11,6 +11,7 @@ import { formCreateBandSchema } from "@/lib/zod";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/ui";
 import { DescriptionSection } from "./components/DescriptionSection";
+import { CameraIcon, PlusIcon } from "@phosphor-icons/react";
 
 type CreateBandFormValues = z.infer<typeof formCreateBandSchema>;
 
@@ -55,8 +56,21 @@ export function CreateBandForm() {
       <div className="space-y-6">
         <div className="space-y-4">
           <div className="space-y-2">
+            <div className="relative w-28 h-28 rounded-full border-dashed border-2 border-gray-300 flex flex-col items-center justify-center">
+              <CameraIcon
+                className="text-foreground/50"
+                weight="fill"
+                size={28}
+              />
+              <p className="text-xs text-center uppercase font-bold">upload</p>
+              <div className="bg-primary absolute top-0 right-0 w-7 h-7 rounded-full flex items-center justify-center">
+                <PlusIcon size={18} className="text-white" />
+              </div>
+            </div>
+          </div>
+          <div className="space-y-2">
             <Label htmlFor="band-name" className="text-sm font-medium">
-              Nom de groupe*
+              Nom du groupe*
             </Label>
             <FormInput
               id="band-name"
