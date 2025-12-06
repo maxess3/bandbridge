@@ -1,23 +1,24 @@
-import { useFormContext } from "react-hook-form";
+import { useFormContext, FieldError } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Plus, Info } from "lucide-react";
-import { GenreAutocomplete } from "@/components/features/profile/autocomplete";
+import { GenreAutocomplete } from "@/components/shared/autocomplete";
 import { GenreItem } from "./GenreItem";
-import { useGenres } from "@/components/features/profile/forms/UpdateProfileGeneralForm/hooks/useGenres";
-import { FormValues } from "../types/index";
+import { useGenres } from "../hooks/useGenres";
 
 interface GenresSectionProps {
   musicGenres: string[];
   isLoadingGenres: boolean;
+  description?: string;
 }
 
 export const GenresSection = ({
   musicGenres,
   isLoadingGenres,
+  description = "Ajoutez vos genres musicaux préférés",
 }: GenresSectionProps) => {
   const {
     formState: { errors },
-  } = useFormContext<FormValues>();
+  } = useFormContext();
 
   const {
     formGenres,
@@ -34,12 +35,9 @@ export const GenresSection = ({
     <div className="space-y-3">
       <div>
         <h4 className="font-semibold text-xl mb-1.5">Genres musicaux</h4>
-        <p className="text-sm text-muted-foreground">
-          Ajoutez vos genres musicaux préférés
-        </p>
+        <p className="text-sm text-muted-foreground">{description}</p>
       </div>
       <div>
-        {/* Genres sélectionnés */}
         {formGenres.map((genre: string, index: number) => (
           <GenreItem
             key={`${genre}-${index}`}
@@ -50,7 +48,6 @@ export const GenresSection = ({
           />
         ))}
 
-        {/* Interface d'ajout de genre */}
         {isAddingGenre ? (
           <div>
             <GenreAutocomplete
@@ -93,12 +90,13 @@ export const GenresSection = ({
           </div>
         )}
 
-        {/* Erreurs genres */}
-        {(errors.genres?.root?.message || errors.genres?.message) && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.genres?.root?.message || errors.genres?.message}
-          </p>
-        )}
+        {(() => {
+          const errorMsg =
+            errors.genres?.root?.message || errors.genres?.message;
+          return errorMsg ? (
+            <p className="text-red-500 text-sm mt-1">{String(errorMsg)}</p>
+          ) : null;
+        })()}
       </div>
     </div>
   );

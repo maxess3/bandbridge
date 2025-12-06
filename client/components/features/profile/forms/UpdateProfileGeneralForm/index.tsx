@@ -3,7 +3,7 @@
 import { UpdateProfileGeneralFormProps } from "./types";
 import { BasicInfoSection } from "./components/BasicInfoSection";
 import { InstrumentsSection } from "./components/InstrumentsSection";
-import { GenresSection } from "./components/GenresSection";
+import { GenresSection } from "@/components/shared/forms/genres";
 import { LocationSection } from "@/components/shared/forms/location";
 
 export const UpdateProfileGeneralForm = ({
@@ -22,6 +22,7 @@ export const UpdateProfileGeneralForm = ({
       <GenresSection
         musicGenres={musicGenres}
         isLoadingGenres={isLoadingGenres}
+        description="Ajoutez vos genres musicaux préférés"
       />
       <LocationSection />
     </div>

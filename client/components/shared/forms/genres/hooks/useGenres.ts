@@ -1,10 +1,9 @@
 import { useState, useRef, useCallback } from "react";
 import { useFormContext } from "react-hook-form";
-import { FormValues } from "../types/index";
 
 export const useGenres = () => {
-  const { watch, setValue } = useFormContext<FormValues>();
-  const formGenres = watch("genres");
+  const { watch, setValue } = useFormContext();
+  const formGenres = watch("genres") as string[];
 
   const [isAddingGenre, setIsAddingGenre] = useState(false);
   const genreInputRef = useRef<HTMLInputElement>(null);

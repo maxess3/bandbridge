@@ -1,4 +1,5 @@
 export { BaseAutocomplete } from "./BaseAutocomplete";
+export { GenreAutocomplete } from "./GenreAutocomplete";
 export type {
   BaseAutocompleteItem,
   BaseAutocompleteProps,

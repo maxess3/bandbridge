@@ -1,4 +1,5 @@
 import { CreateBandForm } from "@/components/features/band/forms/CreateBandForm";
+import { AutocompleteProvider } from "@/contexts/AutocompleteContext";
 
 export default function CreateBandPage() {
   return (
@@ -9,7 +10,9 @@ export default function CreateBandPage() {
           Créez un groupe et commencez à recruter des musiciens
         </p>
       </div>
-      <CreateBandForm />
+      <AutocompleteProvider>
+        <CreateBandForm />
+      </AutocompleteProvider>
     </div>
   );
 }

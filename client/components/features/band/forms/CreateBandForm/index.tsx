@@ -2,7 +2,7 @@
 
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { FormFieldInput, FormField } from "@/components/shared/forms";
 import { Button } from "@/components/ui/button";
 import { formCreateBandSchema } from "@/lib/zod";
@@ -10,6 +10,7 @@ import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/ui";
 import { DescriptionSection } from "./components";
 import { LocationSection } from "@/components/shared/forms/location";
+import { GenresSection } from "@/components/shared/forms/genres";
 import { CameraIcon, PlusIcon } from "@phosphor-icons/react";
 import { CreateBandFormValues } from "./types";
 
@@ -17,6 +18,20 @@ export function CreateBandForm() {
   const queryClient = useQueryClient();
   const axiosAuth = useAxiosAuth();
   const { isDelaying, withDelay } = useTransitionDelay(600);
+
+  // Fetch music genres
+  const { data: musicGenres, isLoading: isLoadingGenres } = useQuery<string[]>({
+    queryKey: ["musicGenres"],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/profile/genres`
+      );
+      if (!response.ok) {
+        throw new Error("Impossible de récupérer les genres musicaux");
+      }
+      return response.json();
+    },
+  });
 
   const methods = useForm<CreateBandFormValues>({
     resolver: zodResolver(formCreateBandSchema),
@@ -106,6 +121,11 @@ export function CreateBandForm() {
               />
             </FormField>
             <DescriptionSection />
+            <GenresSection
+              musicGenres={musicGenres || []}
+              isLoadingGenres={isLoadingGenres}
+              description="Ajoutez les genres musicaux de votre groupe"
+            />
             <LocationSection />
           </div>
         </div>
