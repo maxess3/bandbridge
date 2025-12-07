@@ -9,7 +9,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { ProfilePictureMain } from "@/components/features/profile/avatar/ProfilePictureMain";
-import { UpdateProfilePictureForm } from "@/components/features/profile/forms/UpdateProfilePictureForm";
+import { ImageUploadField } from "@/components/shared/forms/upload";
 import { formProfilePicture } from "@/lib/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/features/profile/useProfile";
@@ -191,17 +191,20 @@ export function EditProfilePictureModal({
                 </DialogDescription>
               </DialogTitle>
             </DialogHeader>
-
             <div className="overflow-y-auto p-6 space-y-6">
               {currentView === "view" ? (
                 <ProfilePictureMain />
               ) : (
                 <FormProvider {...methods}>
-                  <UpdateProfilePictureForm />
+                  <div className="flex justify-center py-8">
+                    <ImageUploadField<z.infer<typeof formProfilePicture>>
+                      fieldName="profilePicture"
+                      previewSize={{ width: 112, height: 112 }}
+                    />
+                  </div>
                 </FormProvider>
               )}
             </div>
-
             <DialogFooter>
               {currentView === "view" ? customFooter : uploadFooter}
             </DialogFooter>

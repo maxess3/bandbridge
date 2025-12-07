@@ -1,18 +1,22 @@
 "use client";
 
 import { useForm, FormProvider } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
-import { FormFieldInput, FormField } from "@/components/shared/forms";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  FormFieldInput,
+  FormField,
+  FormFieldTextArea,
+} from "@/components/shared/forms";
 import { Button } from "@/components/ui/button";
 import { formCreateBandSchema } from "@/lib/zod";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/ui";
-import { DescriptionSection } from "./components";
+import { useMusicGenres } from "@/hooks/features/music";
 import { LocationSection } from "@/components/shared/forms/location";
 import { GenresSection } from "@/components/shared/forms/genres";
-import { CameraIcon, PlusIcon } from "@phosphor-icons/react";
-import { CreateBandFormValues } from "./types";
+import { ImageUploadField } from "@/components/shared/forms/upload";
 
 export function CreateBandForm() {
   const queryClient = useQueryClient();
@@ -20,20 +24,9 @@ export function CreateBandForm() {
   const { isDelaying, withDelay } = useTransitionDelay(600);
 
   // Fetch music genres
-  const { data: musicGenres, isLoading: isLoadingGenres } = useQuery<string[]>({
-    queryKey: ["musicGenres"],
-    queryFn: async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/profile/genres`
-      );
-      if (!response.ok) {
-        throw new Error("Impossible de récupérer les genres musicaux");
-      }
-      return response.json();
-    },
-  });
+  const { data: musicGenres, isLoading: isLoadingGenres } = useMusicGenres();
 
-  const methods = useForm<CreateBandFormValues>({
+  const methods = useForm<z.infer<typeof formCreateBandSchema>>({
     resolver: zodResolver(formCreateBandSchema),
     defaultValues: {
       name: "",
@@ -43,6 +36,7 @@ export function CreateBandForm() {
       country: "France",
       zipcode: "",
       city: "",
+      bandPicture: undefined,
     },
   });
 
@@ -55,7 +49,7 @@ export function CreateBandForm() {
   } = methods;
 
   const createBandMutation = useMutation({
-    mutationFn: async (values: CreateBandFormValues) => {
+    mutationFn: async (values: z.infer<typeof formCreateBandSchema>) => {
       const { data: responseData } = await axiosAuth.put("/band/create", {
         name: values.name,
         slug: values.slug,
@@ -69,7 +63,7 @@ export function CreateBandForm() {
     },
   });
 
-  const handleFormSubmit = (values: CreateBandFormValues) => {
+  const handleFormSubmit = (values: z.infer<typeof formCreateBandSchema>) => {
     console.log(values);
     // return withDelay(() => createBandMutation.mutateAsync(data));
   };
@@ -80,19 +74,10 @@ export function CreateBandForm() {
         <div className="space-y-6">
           <div className="space-y-4">
             <div className="space-y-2">
-              <div className="relative w-28 h-28 rounded-full border-dashed border-2 border-gray-300 flex flex-col items-center justify-center">
-                <CameraIcon
-                  className="text-foreground/50"
-                  weight="fill"
-                  size={28}
-                />
-                <p className="text-xs text-center uppercase font-bold">
-                  upload
-                </p>
-                <div className="bg-primary absolute top-0 right-0 w-7 h-7 rounded-full flex items-center justify-center">
-                  <PlusIcon size={18} className="text-white" />
-                </div>
-              </div>
+              <ImageUploadField<z.infer<typeof formCreateBandSchema>>
+                fieldName="bandPicture"
+                previewSize={{ width: 112, height: 112 }}
+              />
             </div>
             <FormField
               label="Nom du groupe"
@@ -120,7 +105,19 @@ export function CreateBandForm() {
                 placeholder="/nom-de-votre-groupe"
               />
             </FormField>
-            <DescriptionSection />
+            <FormField
+              label="Description"
+              htmlFor="band-description"
+              error={errors.description}
+              required
+              labelClassName="flex items-center"
+            >
+              <FormFieldTextArea
+                id="band-description"
+                {...register("description")}
+                error={errors.description}
+              />
+            </FormField>
             <GenresSection
               musicGenres={musicGenres || []}
               isLoadingGenres={isLoadingGenres}

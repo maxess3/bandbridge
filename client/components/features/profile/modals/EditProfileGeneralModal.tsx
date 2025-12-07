@@ -11,6 +11,7 @@ import { formGeneralProfile } from "@/lib/zod";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import { useProfile } from "@/hooks/features/profile";
 import { PROFILE_QUERY_KEY } from "@/hooks/features/profile/useProfile";
+import { useMusicGenres } from "@/hooks/features/music";
 import { useTransitionDelay } from "@/hooks/ui";
 import { AutocompleteProvider } from "@/contexts/AutocompleteContext";
 import { GroupedInstruments } from "@/types/Instrument";
@@ -39,18 +40,7 @@ export function EditProfileGeneralModal() {
       },
     });
 
-  const { data: musicGenres, isLoading: isLoadingGenres } = useQuery<string[]>({
-    queryKey: ["musicGenres"],
-    queryFn: async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/profile/genres`
-      );
-      if (!response.ok) {
-        throw new Error("Impossible de récupérer les genres musicaux");
-      }
-      return response.json();
-    },
-  });
+  const { data: musicGenres, isLoading: isLoadingGenres } = useMusicGenres();
 
   // Attendre que toutes les données soient chargées avant d'ouvrir la modale
   const isLoadingAllData =

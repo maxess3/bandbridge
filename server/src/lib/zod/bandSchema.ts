@@ -1,6 +1,24 @@
 import z from "zod";
 
 export const formCreateBandSchema = z.object({
+  bandPicture: z
+    .instanceof(File)
+    .refine((file) => file.type.startsWith("image/"), {
+      error: "Le fichier doit être une image",
+    })
+    .refine((file) => file.size <= 5 * 1024 * 1024, {
+      error: "L'image ne doit pas dépasser 5 Mo",
+    })
+    .refine(
+      (file) => {
+        const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+        return allowedTypes.includes(file.type);
+      },
+      {
+        error: "Format d'image non supporté (JPEG, PNG, WebP uniquement)",
+      }
+    )
+    .optional(),
   name: z
     .string()
     .min(1, "Le nom du groupe est requis")

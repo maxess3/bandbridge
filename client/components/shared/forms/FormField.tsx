@@ -25,7 +25,7 @@ export const FormField = ({
   children,
 }: FormFieldProps) => {
   return (
-    <div className={cn("space-y-2", className)}>
+    <div className={cn("flex flex-col space-y-1", className)}>
       <Label
         htmlFor={htmlFor}
         className={cn("text-sm font-medium opacity-80", labelClassName)}
