@@ -17,22 +17,24 @@ import { ValidationError, AppError } from "../errors";
  * @throws {AppError} If an unexpected error occurs during validation
  */
 export const validateBodySchema =
-  (schema: ZodType<any>): RequestHandler =>
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      await schema.parseAsync(req.body);
-      next();
-    } catch (error) {
-      if (error instanceof ZodError) {
-        const errorMessages = error.issues.map(
-          (err) => `${err.path.join(".")}: ${err.message}`
-        );
-        return next(new ValidationError(errorMessages));
-      } else {
-        return next(new AppError("Internal server error", 500, false));
-      }
-    }
-  };
+	(schema: ZodType<any>): RequestHandler =>
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			// Parse and assign the transformed data back to req.body
+			// This ensures that transforms (like z.preprocess) are applied
+			req.body = await schema.parseAsync(req.body);
+			next();
+		} catch (error) {
+			if (error instanceof ZodError) {
+				const errorMessages = error.issues.map(
+					(err) => `${err.path.join(".")}: ${err.message}`
+				);
+				return next(new ValidationError(errorMessages));
+			} else {
+				return next(new AppError("Internal server error", 500, false));
+			}
+		}
+	};
 
 /**
  * Middleware factory that validates request query parameters against a Zod schema.
@@ -48,19 +50,21 @@ export const validateBodySchema =
  * @throws {AppError} If an unexpected error occurs during validation
  */
 export const validateQuerySchema =
-  (schema: ZodType<any>): RequestHandler =>
-  async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      await schema.parseAsync(req.query);
-      next();
-    } catch (error) {
-      if (error instanceof ZodError) {
-        const errorMessages = error.issues.map(
-          (err) => `${err.path.join(".")}: ${err.message}`
-        );
-        return next(new ValidationError(errorMessages));
-      } else {
-        return next(new AppError("Internal server error", 500, false));
-      }
-    }
-  };
+	(schema: ZodType<any>): RequestHandler =>
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			// Parse and assign the transformed data back to req.query
+			// This ensures that transforms (like string to number) are applied
+			req.query = await schema.parseAsync(req.query);
+			next();
+		} catch (error) {
+			if (error instanceof ZodError) {
+				const errorMessages = error.issues.map(
+					(err) => `${err.path.join(".")}: ${err.message}`
+				);
+				return next(new ValidationError(errorMessages));
+			} else {
+				return next(new AppError("Internal server error", 500, false));
+			}
+		}
+	};

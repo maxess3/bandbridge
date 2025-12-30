@@ -4,24 +4,24 @@
 
 // Export authentication schemas
 export {
-  formSignUpSchema,
-  formLoginSchema,
-  formForgotPwdSchema,
-  formResetPwdSchema,
+	formSignUpSchema,
+	formLoginSchema,
+	formForgotPwdSchema,
+	formResetPwdSchema,
 } from "./authSchema";
 
 // Export profile schemas
 export {
-  instrumentSchema,
-  formGeneralProfile,
-  formInfoProfile,
-  formProfilePicture,
-  searchAutocompleteSchema,
-  searchQuerySchema,
+	instrumentSchema,
+	formGeneralProfile,
+	formInfoProfile,
+	formProfilePicture,
+	searchAutocompleteSchema,
+	searchQuerySchema,
 } from "./profileSchema";
 
 // Export band schemas
-export { formCreateBandSchema } from "./bandSchema";
+export { formCreateBandSchema, createBandApiSchema } from "./bandSchema";
 
 // Export settings schemas
 export { formUserSettings } from "./settingsSchema";

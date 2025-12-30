@@ -4,6 +4,7 @@ import ProfileRoutes from "./ProfileRoutes";
 import UserRoutes from "./UserRoutes";
 import PostRoutes from "./PostRoutes";
 import SettingsRoutes from "./SettingsRoutes";
+import BandRoutes from "./BandRoutes";
 import authenticateToken from "../middleware/authenticateToken";
 
 const router = Router();
@@ -17,5 +18,7 @@ router.use("/api/user", authenticateToken, UserRoutes);
 router.use("/api/post", authenticateToken, PostRoutes);
 
 router.use("/api/settings", authenticateToken, SettingsRoutes);
+
+router.use("/api/band", authenticateToken, BandRoutes);
 
 export default router;
