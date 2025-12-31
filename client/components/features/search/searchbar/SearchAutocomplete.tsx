@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { getProfileImageUrl } from "@/utils";
+import { getImageUrl } from "@/utils";
 import { translateProfession } from "@/utils";
 import { AiFillSafetyCertificate } from "react-icons/ai";
 import {
@@ -36,7 +36,7 @@ const AutocompleteDropdown = forwardRef<
           tabIndex={-1}
         >
           {profiles.map((profile: AutocompleteSearchResult, index) => {
-            const imageURL = getProfileImageUrl(
+            const imageURL = getImageUrl(
               profile.profilePictureKey || "",
               "small"
             );

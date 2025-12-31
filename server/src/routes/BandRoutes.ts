@@ -8,12 +8,14 @@ import * as BandController from "../controllers/BandController";
 const router = Router();
 
 router.post(
-	"/create",
-	authenticateToken,
-	upload.single("bandPicture"), // Optional: handle image upload if provided
-	handleMulterError,
-	validateBodySchema(createBandApiSchema),
-	BandController.createBand
+  "/create",
+  authenticateToken,
+  upload.single("bandPicture"), // Optional: handle image upload if provided
+  handleMulterError,
+  validateBodySchema(createBandApiSchema),
+  BandController.createBand
 );
+
+router.get("/user-bands", authenticateToken, BandController.getUserBands);
 
 export default router;

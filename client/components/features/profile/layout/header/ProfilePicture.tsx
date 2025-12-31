@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { EditProfilePictureModal } from "@/components/features/profile/modals/EditProfilePictureModal";
 import { useFocusManager } from "@/contexts/FocusManagerContext";
-import { getProfileImageUrl } from "@/utils";
+import { getImageUrl } from "@/utils";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { DefaultProfilePicture } from "@/components/features/profile/avatar/DefaultProfilePicture";
 
@@ -20,7 +20,7 @@ export const ProfilePicture = ({
   const { captureFocus } = useFocusManager();
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const imageURL = getProfileImageUrl(src, "medium");
+  const imageURL = getImageUrl(src, "medium");
 
   const handleImageClick = () => {
     captureFocus();

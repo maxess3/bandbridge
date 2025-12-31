@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  MagnifyingGlassIcon,
   UsersIcon,
   UserIcon,
   HouseIcon,
@@ -10,6 +9,8 @@ import {
   GlobeIcon,
 } from "@phosphor-icons/react";
 import { NavMain } from "@/components/layout/sidebar/nav-main";
+import { NavBands } from "@/components/layout/sidebar/nav-bands";
+import { NavBandMain } from "@/components/layout/sidebar/nav-band-main";
 import { NavUpgradePro } from "@/components/layout/sidebar/nav-upgrade-pro";
 import {
   Sidebar,
@@ -19,8 +20,10 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavProfile } from "@/components/layout/sidebar/nav-profile";
+import { useSidebarViewStore } from "@/stores/sidebarViewStore";
+import { useSyncSidebarView } from "@/hooks/features/band/useSyncSidebarView";
 
-const data = {
+const userNavData = {
   navMain: [
     {
       title: "Accueil",
@@ -66,6 +69,9 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { view } = useSidebarViewStore();
+  const { isReady } = useSyncSidebarView();
+
   return (
     <Sidebar
       className="top-(--header-height) h-[calc(100svh-var(--header-height))]! pt-4"
@@ -76,7 +82,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProfile />
       </SidebarHeader>
       <SidebarContent className="px-1.5">
-        <NavMain items={data.navMain} />
+        {!isReady ? null : view === "user" ? ( // Afficher un état de chargement ou rien pendant la synchronisation
+          <>
+            <NavMain items={userNavData.navMain} />
+            <NavBands />
+          </>
+        ) : (
+          <NavBandMain />
+        )}
       </SidebarContent>
       <SidebarFooter>
         <NavUpgradePro />

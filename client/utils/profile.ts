@@ -1,9 +1,9 @@
-export function getProfileImageUrl(
-  profilePictureKey: string,
+export function getImageUrl(
+  pictureKey: string,
   size: "thumbnail" | "small" | "medium" | "large"
 ) {
   // Early return si pas de clé
-  if (!profilePictureKey) return null;
+  if (!pictureKey) return null;
 
   // Validation de l'URL de base
   const baseUrl = process.env.NEXT_PUBLIC_R2_URL;
@@ -13,14 +13,13 @@ export function getProfileImageUrl(
   }
 
   try {
-    // Get the base key of the profile picture
-    const oldKey = profilePictureKey;
-    const oldKeyBase = oldKey.substring(0, oldKey.lastIndexOf("-"));
+    // Get the base key of the picture
+    const keyBase = pictureKey.substring(0, pictureKey.lastIndexOf("-"));
 
-    // Return the profile picture url
-    return `${baseUrl}/${oldKeyBase}-${size}.webp`;
+    // Return the picture url
+    return `${baseUrl}/${keyBase}-${size}.webp`;
   } catch (error) {
-    console.error("Error parsing profilePictureKey:", error);
+    console.error("Error parsing pictureKey:", error);
     return null;
   }
 }

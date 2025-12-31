@@ -8,145 +8,185 @@ import { validateMusicGenres } from "../utils/validators";
  * Manages band creation, validation, and data transformation.
  */
 export class BandService {
-	/**
-	 * Calculates the department name from zipcode using the French geo API.
-	 *
-	 * @param zipcode - The postal code
-	 * @param city - The city name to validate
-	 * @returns The department name or null if API call fails
-	 * @throws {ValidationError} If city does not match postal code
-	 */
-	private static async calculateDepartmentName(
-		zipcode: string,
-		city: string
-	): Promise<string | null> {
-		try {
-			const response = await fetch(
-				`https://geo.api.gouv.fr/communes?codePostal=${zipcode}&fields=departement`
-			);
+  /**
+   * Calculates the department name from zipcode using the French geo API.
+   *
+   * @param zipcode - The postal code
+   * @param city - The city name to validate
+   * @returns The department name or null if API call fails
+   * @throws {ValidationError} If city does not match postal code
+   */
+  private static async calculateDepartmentName(
+    zipcode: string,
+    city: string
+  ): Promise<string | null> {
+    try {
+      const response = await fetch(
+        `https://geo.api.gouv.fr/communes?codePostal=${zipcode}&fields=departement`
+      );
 
-			if (response.ok) {
-				const apiData = await response.json();
+      if (response.ok) {
+        const apiData = await response.json();
 
-				// Verify that the city exists for this postal code
-				const validCities = apiData.map((c: any) => c.nom);
-				if (!validCities.includes(city)) {
-					throw new ValidationError("City does not match the postal code");
-				}
+        // Verify that the city exists for this postal code
+        const validCities = apiData.map((c: any) => c.nom);
+        if (!validCities.includes(city)) {
+          throw new ValidationError("City does not match the postal code");
+        }
 
-				// Get the department name
-				return apiData[0]?.departement?.nom || null;
-			}
-		} catch (error) {
-			// If it's already a ValidationError, rethrow it
-			if (error instanceof ValidationError) {
-				throw error;
-			}
-			// Otherwise, log the error but continue (external API may be unavailable)
-			console.error("Error validating address:", error);
-		}
+        // Get the department name
+        return apiData[0]?.departement?.nom || null;
+      }
+    } catch (error) {
+      // If it's already a ValidationError, rethrow it
+      if (error instanceof ValidationError) {
+        throw error;
+      }
+      // Otherwise, log the error but continue (external API may be unavailable)
+      console.error("Error validating address:", error);
+    }
 
-		return null;
-	}
+    return null;
+  }
 
-	/**
-	 * Creates a new band and adds the creator as a member.
-	 *
-	 * @param userId - The user ID of the creator
-	 * @param data - Band creation data
-	 * @returns The created band
-	 *
-	 * @throws {ValidationError} If name or slug already exists, if genres/city are invalid, or if user is already a member of a band
-	 * @throws {NotFoundError} If user profile is not found
-	 */
-	static async createBand(
-		userId: string,
-		data: {
-			name: string;
-			slug: string;
-			genres: string[];
-			description: string;
-			country: string;
-			zipcode: string;
-			city: string;
-		}
-	) {
-		// Validate genres
-		validateMusicGenres(data.genres);
+  /**
+   * Creates a new band and adds the creator as a member.
+   *
+   * @param userId - The user ID of the creator
+   * @param data - Band creation data
+   * @returns The created band
+   *
+   * @throws {ValidationError} If name or slug already exists, if genres/city are invalid, or if user is already a member of a band
+   * @throws {NotFoundError} If user profile is not found
+   */
+  static async createBand(
+    userId: string,
+    data: {
+      name: string;
+      slug: string;
+      genres: string[];
+      description: string;
+      country: string;
+      zipcode: string;
+      city: string;
+    }
+  ) {
+    // Validate genres
+    validateMusicGenres(data.genres);
 
-		// Check if name or slug already exists
-		const existingBand = await prisma.band.findFirst({
-			where: {
-				OR: [{ name: data.name }, { slug: data.slug }],
-			},
-		});
+    // Check if name or slug already exists
+    const existingBand = await prisma.band.findFirst({
+      where: {
+        OR: [{ name: data.name }, { slug: data.slug }],
+      },
+    });
 
-		if (existingBand) {
-			if (existingBand.name === data.name) {
-				throw new ValidationError("A band with this name already exists");
-			}
-			if (existingBand.slug === data.slug) {
-				throw new ValidationError("A band with this slug already exists");
-			}
-		}
+    if (existingBand) {
+      if (existingBand.name === data.name) {
+        throw new ValidationError("A band with this name already exists");
+      }
+      if (existingBand.slug === data.slug) {
+        throw new ValidationError("A band with this slug already exists");
+      }
+    }
 
-		// Get user profile to ensure it exists and get profile ID
-		const profile = await prisma.profile.findUnique({
-			where: { userId },
-			select: { id: true },
-		});
+    // Get user profile to ensure it exists and get profile ID
+    const profile = await prisma.profile.findUnique({
+      where: { userId },
+      select: { id: true },
+    });
 
-		if (!profile) {
-			throw new NotFoundError("Profile not found");
-		}
+    if (!profile) {
+      throw new NotFoundError("Profile not found");
+    }
 
-		// Check if user is already a member of a band (limit: 1 band per user)
-		const existingBandsCount = await prisma.band.count({
-			where: {
-				members: {
-					some: {
-						id: profile.id,
-					},
-				},
-			},
-		});
+    // Check if user is already a member of a band (limit: 1 band per user)
+    const existingBandsCount = await prisma.band.count({
+      where: {
+        members: {
+          some: {
+            id: profile.id,
+          },
+        },
+      },
+    });
 
-		if (existingBandsCount > 0) {
-			throw new ValidationError(
-				"You can only create or be a member of one band"
-			);
-		}
+    if (existingBandsCount > 0) {
+      throw new ValidationError(
+        "You can only create or be a member of one band"
+      );
+    }
 
-		// Calculate department name
-		let departmentName: string | null = null;
-		if (data.country === "France") {
-			departmentName = await this.calculateDepartmentName(
-				data.zipcode,
-				data.city
-			);
-		}
+    // Calculate department name
+    let departmentName: string | null = null;
+    if (data.country === "France") {
+      departmentName = await this.calculateDepartmentName(
+        data.zipcode,
+        data.city
+      );
+    }
 
-		// Create the band and add creator as member in a transaction
-		const band = await prisma.$transaction(async (tx) => {
-			const newBand = await tx.band.create({
-				data: {
-					name: data.name,
-					slug: data.slug,
-					genres: data.genres as MusicGenre[],
-					description: data.description,
-					country: data.country,
-					city: data.city,
-					zipCode: data.zipcode,
-					departmentName: departmentName,
-					members: {
-						connect: [{ id: profile.id }],
-					},
-				},
-			});
+    // Create the band and add creator as member in a transaction
+    const band = await prisma.$transaction(async (tx) => {
+      const newBand = await tx.band.create({
+        data: {
+          name: data.name,
+          slug: data.slug,
+          genres: data.genres as MusicGenre[],
+          description: data.description,
+          country: data.country,
+          city: data.city,
+          zipCode: data.zipcode,
+          departmentName: departmentName,
+          members: {
+            connect: [{ id: profile.id }],
+          },
+        },
+      });
 
-			return newBand;
-		});
+      return newBand;
+    });
 
-		return band;
-	}
+    return band;
+  }
+
+  /**
+   * Retrieves all bands where the user is a member.
+   *
+   * @param userId - The user ID
+   * @returns Array of bands where the user is a member
+   *
+   * @throws {NotFoundError} If user profile is not found
+   */
+  static async getUserBands(userId: string) {
+    // Get user profile to ensure it exists and get profile ID
+    const profile = await prisma.profile.findUnique({
+      where: { userId },
+      select: { id: true },
+    });
+
+    if (!profile) {
+      throw new NotFoundError("Profile not found");
+    }
+
+    // Find all bands where the user is a member
+    const bands = await prisma.band.findMany({
+      where: {
+        members: {
+          some: {
+            id: profile.id,
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        profilePictureKey: true,
+        description: true,
+      },
+    });
+
+    return bands;
+  }
 }

@@ -3,15 +3,12 @@
 import { useProfile } from "@/hooks/features/profile/useProfile";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DefaultProfilePicture } from "@/components/features/profile/avatar/DefaultProfilePicture";
-import { getProfileImageUrl } from "@/utils";
+import { getImageUrl } from "@/utils";
 
 export const ProfilePictureMain = () => {
   const { data: profile } = useProfile();
 
-  const imageURL = getProfileImageUrl(
-    profile?.profilePictureKey || "",
-    "medium"
-  );
+  const imageURL = getImageUrl(profile?.profilePictureKey || "", "medium");
 
   return (
     <div className="space-y-6 py-6">

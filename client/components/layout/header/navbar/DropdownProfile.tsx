@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
-import { getProfileImageUrl } from "@/utils";
+import { getImageUrl } from "@/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -39,7 +39,7 @@ export const DropdownProfile = ({
     resolvedTheme === "light" ? false : true
   );
   const [isOpen, setIsOpen] = useState(false);
-  const imageURL = getProfileImageUrl(
+  const imageURL = getImageUrl(
     session?.user?.profilePictureKey || "",
     "thumbnail"
   );

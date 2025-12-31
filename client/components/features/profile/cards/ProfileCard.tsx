@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { DefaultProfilePicture } from "../avatar/DefaultProfilePicture";
-import { getProfileImageUrl } from "@/utils";
+import { getImageUrl } from "@/utils";
 import { ProfileListItem } from "@/types/Profile";
 
 interface ProfileCardProps {
@@ -18,7 +18,7 @@ export const ProfileCard = ({
 }: ProfileCardProps) => {
   const { pseudonyme, profilePictureKey, user, _count } = profile;
   const { username } = user;
-  const imageURL = getProfileImageUrl(profilePictureKey || "", "medium");
+  const imageURL = getImageUrl(profilePictureKey || "", "medium");
 
   return (
     <Link
