@@ -5,27 +5,27 @@ import { NavbarAuthBtn } from "@/components/layout/header/navbar/default/NavbarA
 import { MenuLinks } from "@/components/layout/header/navbar/default/MenuLinks";
 
 export const DefaultNavbar = () => {
-  return (
-    <nav className="py-3 flex items-center justify-center w-full border-b">
-      <div className="max-w-7xl lg:px-6 md:px-4 px-2 mx-auto flex justify-between items-center w-full">
-        <div className="flex items-center gap-x-6">
-          <div className="flex items-center gap-x-2.5">
-            <Link
-              href={"/home"}
-              className="font-medium flex items-center gap-x-2.5"
-            >
-              <Image src={Logo} alt="Logo" width={36} height={36} />
-              <span className="text-2xl font-semibold">chordeus</span>
-            </Link>
-          </div>
-        </div>
-        <MenuLinks />
-        <div className="flex gap-x-2 justify-center items-center">
-          <NavbarAuthBtn />
-        </div>
-      </div>
-    </nav>
-  );
+	return (
+		<nav className="py-3 flex items-center justify-center w-full border-b">
+			<div className="max-w-7xl lg:px-6 md:px-4 px-2 mx-auto flex justify-between items-center w-full">
+				<div className="flex items-center gap-x-6">
+					<div className="flex items-center gap-x-2.5">
+						<Link
+							href={"/home"}
+							className="font-medium flex items-center gap-x-2.5"
+						>
+							<Image src={Logo} alt="Logo" className="size-8.5" />
+							<span className="text-2xl font-medium">chordeus</span>
+						</Link>
+					</div>
+				</div>
+				<MenuLinks />
+				<div className="flex gap-x-2 justify-center items-center">
+					<NavbarAuthBtn />
+				</div>
+			</div>
+		</nav>
+	);
 };
 
 export default DefaultNavbar;
