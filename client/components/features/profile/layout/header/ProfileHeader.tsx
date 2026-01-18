@@ -15,7 +15,7 @@ export const ProfileHeader = ({
   isOwner: boolean;
 }) => {
   return (
-    <div className="flex justify-between bg-foreground/3 rounded-xl p-6 border">
+    <div className="flex justify-between bg-foreground/3 p-6 border-b">
       <div className="flex gap-6">
         <ProfilePicture
           isOwner={isOwner}

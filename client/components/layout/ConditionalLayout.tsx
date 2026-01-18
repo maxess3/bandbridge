@@ -1,7 +1,7 @@
 import DefaultNavbar from "@/components/layout/header/navbar/default/DefaultNavbar";
 import Footer from "@/components/layout/footer/Footer";
 import { AppSidebar } from "@/components/layout/sidebar/app-sidebar";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarManagerProvider, SidebarInset, SidebarManager, Sidebar, SidebarContent } from "@/components/ui/sidebar";
 import { SiteHeader } from "@/components/layout/sidebar/site-header";
 
 interface ConditionalLayoutProps {
@@ -26,16 +26,39 @@ export async function ConditionalLayout({
 
   // If user is authenticated and not a public route, display authenticated navbar + content
   return (
-    <div className="[--header-height:calc(--spacing(14))]">
-      <SidebarProvider className="flex flex-col">
+    <div
+      className="h-screen flex flex-col"
+      style={{ "--header-height": "3.2rem" } as React.CSSProperties}
+    >
+      <SidebarManagerProvider>
         <SiteHeader />
-        <div className="flex flex-1">
-          <AppSidebar />
-          <SidebarInset className="bg-foreground/6 p-4">
-            {children}
+        <SidebarProvider className="h-[calc(100vh-var(--header-height))] flex-1 min-h-0">
+          <SidebarManager name="left">
+            <Sidebar
+              side="left"
+              className="border-r pt-(--header-height)"
+            >
+              <SidebarContent className="wrap-break-word">Firstabcde</SidebarContent>
+            </Sidebar>
+          </SidebarManager>
+          <SidebarInset className="flex-1 min-h-0">
+            <SidebarProvider
+              className="flex-1 min-h-0"
+              style={{
+                "--sidebar-width": "12rem",
+                "--sidebar-width-icon": "12rem",
+              } as React.CSSProperties}
+            >
+              <SidebarManager name="second">
+                <AppSidebar />
+              </SidebarManager>
+              <SidebarInset className="flex-1 min-h-0 overflow-auto">
+                <main>{children}</main>
+              </SidebarInset>
+            </SidebarProvider>
           </SidebarInset>
-        </div>
-      </SidebarProvider>
+        </SidebarProvider>
+      </SidebarManagerProvider>
     </div>
-  );
+  )
 }

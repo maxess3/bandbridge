@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { ChatIcon, BellIcon } from "@phosphor-icons/react";
 import { DropdownProfile } from "@/components/layout/header/navbar/DropdownProfile";
 import { SearchBar } from "@/components/features/search";
-
 import { NavLogo } from "@/components/layout/sidebar/nav-logo";
+
 export function SiteHeader() {
   return (
     <header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">

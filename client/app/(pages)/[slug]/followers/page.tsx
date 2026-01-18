@@ -37,7 +37,7 @@ export default async function FollowersPage({
 	}
 
 	return (
-		<div className="container mx-auto">
+		<div>
 			<h1 className="text-4xl font-medium mb-4">Followers</h1>
 			<ProfileList
 				username={slug}

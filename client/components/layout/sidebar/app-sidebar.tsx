@@ -70,7 +70,7 @@ const userNavData = {
 			],
 		},
 		{
-			title: "Mon profil",
+			title: "Profil",
 			url: "/profile",
 			icon: UserIcon,
 		},
@@ -83,26 +83,28 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
 	return (
 		<Sidebar
-			className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
-			collapsible="icon"
+			collapsible="none"
+			className="border-r"
 			{...props}
 		>
-			<SidebarContent className="pt-1.5">
-				{!isReady ? null : view === "user" ? ( // Afficher un état de chargement ou rien pendant la synchronisation
-					<div className="px-1.5">
-						<NavMain items={userNavData.navMain} />
-						<NavBands />
-					</div>
-				) : (
-					<div className="px-1.5">
-						<NavBandMain />
-					</div>
-				)}
-			</SidebarContent>
+			<SidebarContent>
+				{
+					!isReady ? null : view === "user" ? ( // Afficher un état de chargement ou rien pendant la synchronisation
+						<div className="px-1.5">
+							<NavMain items={userNavData.navMain} />
+							<NavBands />
+						</div>
+					) : (
+						<div className="px-1.5">
+							<NavBandMain />
+						</div>
+					)
+				}
+			</SidebarContent >
 			<SidebarFooter>
 				<NavSocials />
 			</SidebarFooter>
 			<SidebarRail />
-		</Sidebar>
+		</Sidebar >
 	);
 }
