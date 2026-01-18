@@ -8,13 +8,6 @@ import {
 } from "@phosphor-icons/react";
 import { NavMain } from "@/components/layout/sidebar/nav-main";
 import { useSidebarViewStore } from "@/stores/sidebarViewStore";
-import {
-	SidebarGroup,
-	SidebarMenu,
-	SidebarMenuItem,
-} from "@/components/ui/sidebar";
-import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { getImageUrl } from "@/utils";
 
 export function NavBandMain() {
@@ -52,31 +45,6 @@ export function NavBandMain() {
 	};
 
 	return (
-		<>
-			<SidebarGroup>
-				<SidebarMenu>
-					<SidebarMenuItem>
-						<div className="flex flex-col gap-y-3">
-							<span className="text-xl font-medium">Gérer la page</span>
-							<div className="flex items-center gap-2.5 pb-4">
-								<Avatar className="size-10">
-									<AvatarImage src={imageUrl || undefined} />
-									<AvatarFallback>
-										<UsersIcon className="size-4" />
-									</AvatarFallback>
-								</Avatar>
-								<div className="flex flex-col min-w-0 flex-1">
-									<span className="text-base font-medium truncate first-letter:uppercase">
-										{activeBand.name}
-									</span>
-								</div>
-							</div>
-							<Separator />
-						</div>
-					</SidebarMenuItem>
-				</SidebarMenu>
-			</SidebarGroup>
-			<NavMain items={bandNavData.navMain} />
-		</>
+		<NavMain items={bandNavData.navMain} />
 	);
 }
