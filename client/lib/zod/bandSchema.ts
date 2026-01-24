@@ -31,6 +31,7 @@ export const formCreateBandSchema = z.object({
     .string()
     .min(1, "Le slug est requis")
     .max(20, "Le slug ne doit pas dépasser 20 caractères")
+    .regex(/^[a-zA-Z0-9]+$/, "Le slug ne doit contenir que des lettres et des chiffres")
     .transform((val) => val.toLowerCase()),
   genres: z
     .array(z.string())
@@ -85,6 +86,7 @@ export const createBandApiSchema = z.object({
     .string()
     .min(1, "Le slug est requis")
     .max(20, "Le slug ne doit pas dépasser 20 caractères")
+    .regex(/^[a-zA-Z0-9]+$/, "Le slug ne doit contenir que des lettres et des chiffres")
     .transform((val) => val.toLowerCase()),
   genres: z.preprocess(
     (val) => {
