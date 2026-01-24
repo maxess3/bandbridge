@@ -17,7 +17,7 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="w-full mx-auto">
       <DefaultNavbar />
-      <div className="max-w-7xl mx-auto p-6">{children}</div>
+      <div className="max-w-7xl mx-auto">{children}</div>
       <Footer />
     </div>
   );
@@ -65,6 +65,8 @@ export async function ConditionalLayout({
   return isPublic ? (
     <PublicLayout>{children}</PublicLayout>
   ) : (
-    <AuthenticatedLayout>{children}</AuthenticatedLayout>
+    <AuthenticatedLayout>
+      {children}
+    </AuthenticatedLayout>
   );
 }

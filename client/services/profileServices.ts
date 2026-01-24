@@ -8,7 +8,7 @@ export const profileServices = {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     if (!res.ok) {

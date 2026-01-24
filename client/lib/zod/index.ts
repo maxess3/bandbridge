@@ -18,10 +18,15 @@ export {
 	formProfilePicture,
 	searchAutocompleteSchema,
 	searchQuerySchema,
+	allProfilesQuerySchema,
 } from "./profileSchema";
 
 // Export band schemas
-export { formCreateBandSchema, createBandApiSchema } from "./bandSchema";
+export {
+	formCreateBandSchema,
+	createBandApiSchema,
+	allBandsQuerySchema,
+} from "./bandSchema";
 
 // Export settings schemas
 export { formUserSettings } from "./settingsSchema";

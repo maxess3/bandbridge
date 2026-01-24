@@ -2,26 +2,23 @@
 
 import { PaginationWithUrl } from "@/components/shared/pagination";
 
-interface SearchPaginationProps {
+interface MusiciansPaginationProps {
   currentPage: number;
   totalPages: number;
-  query: string;
   onPageChange: (page: number) => void;
 }
 
-export const SearchPagination = ({
+export const MusiciansPagination = ({
   currentPage,
   totalPages,
-  query,
   onPageChange,
-}: SearchPaginationProps) => {
+}: MusiciansPaginationProps) => {
   return (
     <PaginationWithUrl
-      basePath="/search"
+      basePath="/musicians"
       currentPage={currentPage}
       totalPages={totalPages}
       onPageChange={onPageChange}
-      queryParams={{ q: query }}
     />
   );
 };

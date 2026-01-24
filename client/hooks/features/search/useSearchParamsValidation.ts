@@ -9,7 +9,6 @@ export const useSearchParamsValidation = () => {
     const params = {
       q: searchParams.get("q") || "",
       page: searchParams.get("page") || undefined,
-      limit: searchParams.get("limit") || undefined,
     };
 
     const result = searchQuerySchema.safeParse(params);
@@ -18,14 +17,12 @@ export const useSearchParamsValidation = () => {
       return {
         query: result.data.q,
         page: result.data.page,
-        limit: result.data.limit,
       };
     }
 
     return {
       query: params.q.trim() || "",
       page: 1,
-      limit: 10,
     };
   }, [searchParams]);
 };

@@ -16,14 +16,12 @@ import {
 export default function Page() {
   const validatedParams = useSearchParamsValidation();
   const { handlePageChange } = useSearchPageNavigation(
-    validatedParams.query,
-    validatedParams.limit
+    validatedParams.query
   );
 
   const { data, isLoading, isError } = useSearchProfiles(
     validatedParams.query,
-    validatedParams.page,
-    validatedParams.limit
+    validatedParams.page
   );
 
   if (!validatedParams.query) {
@@ -51,7 +49,7 @@ export default function Page() {
         {totalFound > 1 ? "s" : ""}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {profiles.map((profile) => (
           <ProfileCard key={profile.id} profile={profile} />
         ))}
@@ -62,7 +60,6 @@ export default function Page() {
           currentPage={currentPage}
           totalPages={totalPages}
           query={validatedParams.query}
-          limit={validatedParams.limit}
           onPageChange={handlePageChange}
         />
       )}

@@ -10,6 +10,7 @@ import {
   formInfoProfile,
   searchAutocompleteSchema,
   searchQuerySchema,
+  allProfilesQuerySchema,
 } from "../lib/zod";
 import * as ProfileController from "../controllers/ProfileController";
 
@@ -79,6 +80,12 @@ router.get(
   authenticateToken,
   validateQuerySchema(searchQuerySchema),
   ProfileController.searchProfiles
+);
+
+router.get(
+  "/all",
+  validateQuerySchema(allProfilesQuerySchema),
+  ProfileController.getAllProfiles
 );
 
 router.get("/:username", ProfileController.getProfilePublic);

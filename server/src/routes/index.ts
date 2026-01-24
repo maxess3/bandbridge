@@ -19,6 +19,6 @@ router.use("/api/post", authenticateToken, PostRoutes);
 
 router.use("/api/settings", authenticateToken, SettingsRoutes);
 
-router.use("/api/band", authenticateToken, BandRoutes);
+router.use("/api/band", BandRoutes);
 
 export default router;

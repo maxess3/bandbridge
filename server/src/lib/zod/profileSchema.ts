@@ -28,11 +28,11 @@ export const formGeneralProfile = z.object({
     .max(60, "Le pseudonyme ne doit pas dépasser 60 caractères")
     .regex(
       /^[a-zA-ZÀ-ÿ0-9\-' ]+$/,
-      "Le pseudonyme ne doit contenir que des lettres, chiffres, tirets et espaces"
+      "Le pseudonyme ne doit contenir que des lettres, chiffres, tirets et espaces",
     ),
   country: z.enum(["France"], {
-    error: () => "L'application est disponible en france uniquement",
-  }),
+      error: () => "L'application est disponible en france uniquement",
+    }),
   zipcode: z
     .string()
     .min(1, "Le code postal est requis")
@@ -43,7 +43,7 @@ export const formGeneralProfile = z.object({
     .max(50, "La ville ne doit pas dépasser 50 caractères")
     .regex(
       /^[a-zA-ZÀ-ÿ\-']+$/,
-      "La ville ne doit contenir que des lettres et tirets"
+      "La ville ne doit contenir que des lettres et tirets",
     ),
   instruments: z
     .array(instrumentSchema)
@@ -60,7 +60,7 @@ export const formGeneralProfile = z.object({
       },
       {
         error: "Vous ne pouvez pas ajouter le même instrument plusieurs fois",
-      }
+      },
     ),
   genres: z
     .array(z.string())
@@ -74,7 +74,7 @@ export const formGeneralProfile = z.object({
       },
       {
         error: "Vous ne pouvez pas ajouter le même genre plusieurs fois",
-      }
+      },
     ),
 });
 
@@ -100,7 +100,7 @@ export const formInfoProfile = z.object({
     ],
     {
       error: () => "Merci de sélectionner une option",
-    }
+    },
   ),
   rehearsalsPerWeek: z.enum(
     [
@@ -111,7 +111,7 @@ export const formInfoProfile = z.object({
     ],
     {
       error: () => "Merci de sélectionner une option",
-    }
+    },
   ),
   practiceType: z.enum(["NOT_SPECIFIED", "HOBBY", "ACTIVE"], {
     error: () => "Merci de sélectionner une option",
@@ -123,7 +123,7 @@ export const formInfoProfile = z.object({
     .optional()
     .refine(
       (val) => !val || val.startsWith("https://www.youtube.com/"),
-      'L\'URL doit commencer par "https://www.youtube.com/"'
+      'L\'URL doit commencer par "https://www.youtube.com/"',
     ),
   instagram: z
     .string()
@@ -131,7 +131,7 @@ export const formInfoProfile = z.object({
     .optional()
     .refine(
       (val) => !val || val.startsWith("https://www.instagram.com/"),
-      'L\'URL doit commencer par "https://www.instagram.com/"'
+      'L\'URL doit commencer par "https://www.instagram.com/"',
     ),
   tiktok: z
     .string()
@@ -139,7 +139,7 @@ export const formInfoProfile = z.object({
     .optional()
     .refine(
       (val) => !val || val.startsWith("https://www.tiktok.com/"),
-      'L\'URL doit commencer par "https://www.tiktok.com/"'
+      'L\'URL doit commencer par "https://www.tiktok.com/"',
     ),
   twitter: z
     .string()
@@ -147,7 +147,7 @@ export const formInfoProfile = z.object({
     .optional()
     .refine(
       (val) => !val || val.startsWith("https://x.com/"),
-      'L\'URL doit commencer par "https://x.com/"'
+      'L\'URL doit commencer par "https://x.com/"',
     ),
   soundcloud: z
     .string()
@@ -155,7 +155,7 @@ export const formInfoProfile = z.object({
     .optional()
     .refine(
       (val) => !val || val.startsWith("https://soundcloud.com/"),
-      'L\'URL doit commencer par "https://soundcloud.com/"'
+      'L\'URL doit commencer par "https://soundcloud.com/"',
     ),
 });
 
@@ -181,7 +181,7 @@ export const formProfilePicture = z.object({
       },
       {
         error: "Format d'image non supporté (JPEG, PNG, WebP uniquement)",
-      }
+      },
     ),
 });
 
@@ -198,6 +198,7 @@ export const searchAutocompleteSchema = z.object({
 
 /**
  * Schema for search query parameters with pagination support.
+ * Note: limit is fixed at 24 on the server side and cannot be modified by users.
  */
 export const searchQuerySchema = z.object({
   q: z
@@ -205,14 +206,23 @@ export const searchQuerySchema = z.object({
     .min(1, "La recherche doit contenir au moins 1 caractère")
     .max(100, "La recherche ne doit pas dépasser 100 caractères")
     .trim(),
-  limit: z
+  page: z
     .string()
     .optional()
     .transform((val) => {
-      if (!val) return 10;
+      if (!val) return 1;
       const num = parseInt(val, 10);
-      return isNaN(num) || num < 1 || num > 50 ? 10 : num;
+      if (isNaN(num) || num < 1) return 1;
+      return num > 100 ? 100 : num;
     }),
+});
+
+/**
+ * Schema for all profiles query parameters with pagination support.
+ * Used for the public route GET /api/profile/all (no search query required).
+ * Note: limit is fixed at 24 on the server side and cannot be modified by users.
+ */
+export const allProfilesQuerySchema = z.object({
   page: z
     .string()
     .optional()

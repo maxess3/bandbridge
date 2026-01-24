@@ -1,8 +1,11 @@
 import { Router } from "express";
 import authenticateToken from "../middleware/authenticateToken";
-import { validateBodySchema } from "../middleware/validateSchema";
+import {
+	validateBodySchema,
+	validateQuerySchema,
+} from "../middleware/validateSchema";
 import upload, { handleMulterError } from "../middleware/multerUpload";
-import { createBandApiSchema } from "../lib/zod";
+import { createBandApiSchema, allBandsQuerySchema } from "../lib/zod";
 import * as BandController from "../controllers/BandController";
 
 const router = Router();
@@ -17,5 +20,11 @@ router.post(
 );
 
 router.get("/user-bands", authenticateToken, BandController.getUserBands);
+
+router.get(
+	"/all",
+	validateQuerySchema(allBandsQuerySchema),
+	BandController.getAllBands
+);
 
 export default router;

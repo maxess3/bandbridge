@@ -10,32 +10,29 @@ export const MenuLinks = () => {
 		<div>
 			<ul className="flex justify-center items-center font-medium space-x-9">
 				<Link
-					href={"/"}
-					className={`inline-flex flex-col items-center ${
-						currentPath === "/musician"
-							? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.6em] before:bg-primary font-bold"
-							: "opacity-90"
-					}`}
+					href={"/musicians"}
+					className={`inline-flex flex-col items-center ${currentPath === "/musicians"
+						? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.6em] before:bg-primary font-bold"
+						: "opacity-90"
+						}`}
 				>
 					<span>Musiciens</span>
 				</Link>
 				<Link
-					href={"/"}
-					className={`inline-flex flex-col items-center ${
-						currentPath === "/groups"
-							? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.6em] before:bg-primary font-bold"
-							: "opacity-90"
-					}`}
+					href={"/bands"}
+					className={`inline-flex flex-col items-center ${currentPath === "/bands"
+						? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.6em] before:bg-primary font-bold"
+						: "opacity-90"
+						}`}
 				>
 					<span>Groupes</span>
 				</Link>
 				<Link
 					href={"/ads"}
-					className={`inline-flex flex-col items-center ${
-						currentPath === "/ads"
-							? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.6em] before:bg-primary font-bold"
-							: "opacity-90"
-					}`}
+					className={`inline-flex flex-col items-center ${currentPath === "/ads"
+						? "opacity-100 relative before:absolute before:w-full before:h-0.5 before:top-[2.6em] before:bg-primary font-bold"
+						: "opacity-90"
+						}`}
 				>
 					<span>Annonces</span>
 				</Link>

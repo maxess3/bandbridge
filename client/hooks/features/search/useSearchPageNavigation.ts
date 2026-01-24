@@ -1,9 +1,6 @@
 import { useRouter, useSearchParams } from "next/navigation";
 
-export const useSearchPageNavigation = (
-  query: string,
-  currentLimit: number
-) => {
+export const useSearchPageNavigation = (query: string) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -11,9 +8,6 @@ export const useSearchPageNavigation = (
     const params = new URLSearchParams(searchParams.toString());
     params.set("q", query);
     params.set("page", newPage.toString());
-    if (currentLimit !== 10) {
-      params.set("limit", currentLimit.toString());
-    }
     router.push(`/search?${params.toString()}`);
   };
 

@@ -25,7 +25,7 @@ export const getProfilePublic = async (req: Request, res: Response) => {
 
   const profile = await ProfileService.getProfileByIdentifier(
     username,
-    "username"
+    "username",
   );
 
   res.status(200).json(profile);
@@ -65,7 +65,7 @@ export const getProfileOwner = async (req: Request, res: Response) => {
  */
 export const updateGeneralProfileOwner = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   const userId = req.user.userId;
   if (!userId) {
@@ -74,7 +74,7 @@ export const updateGeneralProfileOwner = async (
 
   const updatedProfile = await ProfileService.updateProfileGeneral(
     userId,
-    req.body
+    req.body,
   );
 
   res.status(200).json({
@@ -138,7 +138,7 @@ export const uploadProfilePicture = async (req: Request, res: Response) => {
 
   const profilePictureKey = await ImageService.uploadProfilePicture(
     userId,
-    req.file
+    req.file,
   );
 
   res.status(200).json({
@@ -176,7 +176,7 @@ export const deleteProfilePicture = async (req: Request, res: Response) => {
 
   await ImageService.deleteProfilePicture(
     userId,
-    currentProfile.profilePictureKey
+    currentProfile.profilePictureKey,
   );
 
   res.status(200).json({
@@ -280,14 +280,17 @@ export const getInstrumentTypes = async (req: Request, res: Response) => {
   });
 
   // Group by category
-  const groupedInstruments = instrumentTypes.reduce((acc, instrument) => {
-    const category = instrument.category;
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(instrument);
-    return acc;
-  }, {} as Record<string, typeof instrumentTypes>);
+  const groupedInstruments = instrumentTypes.reduce(
+    (acc, instrument) => {
+      const category = instrument.category;
+      if (!acc[category]) {
+        acc[category] = [];
+      }
+      acc[category].push(instrument);
+      return acc;
+    },
+    {} as Record<string, typeof instrumentTypes>,
+  );
 
   res.status(200).json(groupedInstruments);
 };
@@ -312,7 +315,7 @@ export const getFollowersList = async (req: Request, res: Response) => {
 
   const result = await ProfileService.getFollowersList(
     username,
-    cursor as string | undefined
+    cursor as string | undefined,
   );
 
   res.status(200).json(result);
@@ -333,7 +336,7 @@ export const getFollowingList = async (req: Request, res: Response) => {
 
   const result = await ProfileService.getFollowingList(
     username,
-    cursor as string | undefined
+    cursor as string | undefined,
   );
 
   res.status(200).json(result);
@@ -351,7 +354,7 @@ export const getFollowingList = async (req: Request, res: Response) => {
  */
 export const searchProfilesAutocomplete = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   const userId = req.user.userId;
 
@@ -374,8 +377,9 @@ export const searchProfilesAutocomplete = async (
 
 /**
  * Searches profiles with pagination support.
+ * Limit is fixed at 24 items per page and cannot be modified by users.
  *
- * @param req - Express request object with authenticated user, query parameter 'q', and optional limit/page
+ * @param req - Express request object with authenticated user, query parameter 'q', and optional page
  * @param res - Express response object
  * @returns Paginated list of matching profiles
  *
@@ -389,7 +393,8 @@ export const searchProfiles = async (req: Request, res: Response) => {
     throw new UnauthorizedError("User not authenticated");
   }
 
-  const { q: query, limit = 10, page = 1 } = req.query;
+  const { q: query, page = 1 } = req.query;
+  const LIMIT = 24; // Fixed limit, not configurable by users
 
   if (!query || typeof query !== "string") {
     throw new ValidationError("Search parameter 'q' is required");
@@ -397,7 +402,27 @@ export const searchProfiles = async (req: Request, res: Response) => {
 
   const result = await ProfileService.searchProfiles(query, {
     mode: "pagination",
-    limit: Number(limit),
+    limit: LIMIT,
+    page: Number(page),
+  });
+
+  res.status(200).json(result);
+};
+
+/**
+ * Retrieves all profiles with pagination support (public route).
+ * Limit is fixed at 24 items per page and cannot be modified by users.
+ *
+ * @param req - Express request object with query parameter 'page' (validated by schema)
+ * @param res - Express response object
+ * @returns Paginated list of all profiles
+ */
+export const getAllProfiles = async (req: Request, res: Response) => {
+  const { page = 1 } = req.query;
+  const LIMIT = 24; // Fixed limit, not configurable by users
+
+  const result = await ProfileService.getAllProfiles({
+    limit: LIMIT,
     page: Number(page),
   });
 

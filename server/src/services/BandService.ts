@@ -18,11 +18,11 @@ export class BandService {
    */
   private static async calculateDepartmentName(
     zipcode: string,
-    city: string
+    city: string,
   ): Promise<string | null> {
     try {
       const response = await fetch(
-        `https://geo.api.gouv.fr/communes?codePostal=${zipcode}&fields=departement`
+        `https://geo.api.gouv.fr/communes?codePostal=${zipcode}&fields=departement`,
       );
 
       if (response.ok) {
@@ -69,7 +69,7 @@ export class BandService {
       country: string;
       zipcode: string;
       city: string;
-    }
+    },
   ) {
     // Validate genres
     validateMusicGenres(data.genres);
@@ -113,7 +113,7 @@ export class BandService {
 
     if (existingBandsCount > 0) {
       throw new ValidationError(
-        "You can only create or be a member of one band"
+        "You can only create or be a member of one band",
       );
     }
 
@@ -122,7 +122,7 @@ export class BandService {
     if (data.country === "France") {
       departmentName = await this.calculateDepartmentName(
         data.zipcode,
-        data.city
+        data.city,
       );
     }
 
@@ -188,5 +188,64 @@ export class BandService {
     });
 
     return bands;
+  }
+
+  /**
+   * Retrieves all bands with pagination support.
+   * Similar to ProfileService.getAllProfiles but for bands.
+   * Limit is fixed at 24 items per page.
+   *
+   * @param options - Pagination options (page only, limit is fixed at 24)
+   * @returns Paginated list of all bands
+   */
+  static async getAllBands(
+    options: {
+      limit?: number;
+      page?: number;
+    } = {},
+  ): Promise<{
+    bands: any[];
+    page: number;
+    totalPages: number;
+    totalFound: number;
+  }> {
+    const pageNumber = Math.min(Math.max(1, options.page || 1), 100);
+    const limitNumber = options.limit ?? 24; // Default to 24, but allow override if needed
+
+    const skip = (pageNumber - 1) * limitNumber;
+
+    // Calculate real total with count
+    const totalFound = await prisma.band.count();
+
+    // Fetch bands with classic pagination (no where clause - all bands)
+    const bands = await prisma.band.findMany({
+      skip,
+      take: limitNumber,
+      orderBy: { id: "asc" },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        profilePictureKey: true,
+        description: true,
+        city: true,
+        departmentName: true,
+        _count: {
+          select: {
+            members: true,
+          },
+        },
+      },
+    });
+
+    // Calculate total number of pages (limited to 100 maximum)
+    const totalPages = Math.min(Math.ceil(totalFound / limitNumber), 100);
+
+    return {
+      bands,
+      page: pageNumber,
+      totalPages,
+      totalFound,
+    };
   }
 }

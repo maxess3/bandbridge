@@ -76,3 +76,23 @@ export const getUserBands = async (req: Request, res: Response) => {
 
   res.status(200).json(bands);
 };
+
+/**
+ * Retrieves all bands with pagination support (public route).
+ * Limit is fixed at 24 items per page and cannot be modified by users.
+ *
+ * @param req - Express request object with query parameter 'page' (validated by schema)
+ * @param res - Express response object
+ * @returns Paginated list of all bands
+ */
+export const getAllBands = async (req: Request, res: Response) => {
+  const { page = 1 } = req.query;
+  const LIMIT = 24; // Fixed limit, not configurable by users
+
+  const result = await BandService.getAllBands({
+    limit: LIMIT,
+    page: Number(page),
+  });
+
+  res.status(200).json(result);
+};

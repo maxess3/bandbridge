@@ -41,7 +41,7 @@ export function NavFirstSidebar() {
 					}}
 					className={cn(
 						"relative transition-opacity hover:opacity-100",
-						isProfileActive ? "opacity-100" : "opacity-60"
+						isProfileActive ? "opacity-100 before:content-[''] before:absolute before:top-1 before:-left-3.5 before:w-1.5 before:h-8 before:bg-foreground before:rounded-full relative" : "opacity-60"
 					)}
 					title={profile.pseudonyme || profile.username}
 				>
@@ -74,7 +74,7 @@ export function NavFirstSidebar() {
 						}}
 						className={cn(
 							"relative transition-opacity hover:opacity-100",
-							isActive ? "opacity-100" : "opacity-60"
+							isActive ? "opacity-100 before:content-[''] before:absolute before:top-1 before:-left-3.5 before:w-1.5 before:h-8 before:bg-foreground before:rounded-full relative" : "opacity-60"
 						)}
 						title={band.name}
 					>

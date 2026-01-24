@@ -34,13 +34,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 				icon: HouseIcon,
 			},
 			{
-				title: "Artistes",
-				url: "/artists",
+				title: "Musiciens",
+				url: "/musicians",
 				icon: UserIcon,
 			},
 			{
-				title: "Pages",
-				url: "/band/create-band",
+				title: "Groupes",
+				url: "/bands",
 				icon: UsersIcon,
 			},
 			{

@@ -63,7 +63,7 @@ export const ProfileList = ({
 
   if (isLoading) {
     return (
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {[...Array(6)].map((_, i) => (
           <SkeletonProfileCard key={i} />
         ))}
@@ -98,7 +98,7 @@ export const ProfileList = ({
 
   return (
     <div className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {allProfiles.map((profile, index) => (
           <ProfileCard
             key={profile.id || `profile-${index}`}
