@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authenticateToken from "../middleware/authenticateToken";
+import authenticateToken, { optionalAuthenticateToken } from "../middleware/authenticateToken";
 import {
 	validateBodySchema,
 	validateQuerySchema,
@@ -26,5 +26,7 @@ router.get(
 	validateQuerySchema(allBandsQuerySchema),
 	BandController.getAllBands
 );
+
+router.get("/:slug", optionalAuthenticateToken, BandController.getBandBySlug);
 
 export default router;

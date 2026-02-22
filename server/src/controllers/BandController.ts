@@ -96,3 +96,25 @@ export const getAllBands = async (req: Request, res: Response) => {
 
   res.status(200).json(result);
 };
+
+/**
+ * Retrieves a single band by slug (public route, optional auth for role).
+ *
+ * @param req - Express request object with slug in params, optional req.user from optionalAuthenticateToken
+ * @param res - Express response object
+ * @returns Band data for the group page, including role if authenticated member
+ * @throws {NotFoundError} If band is not found
+ */
+export const getBandBySlug = async (req: Request, res: Response) => {
+  const slugParam = req.params.slug;
+  const slug =
+    typeof slugParam === "string"
+      ? slugParam
+      : Array.isArray(slugParam)
+        ? (slugParam[0] ?? "")
+        : "";
+  const userId = (req as any).user?.userId;
+
+  const band = await BandService.getBandBySlug(slug, userId);
+  res.status(200).json(band);
+};

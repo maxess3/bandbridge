@@ -2,6 +2,7 @@ import prisma from "../db/db.config";
 import { MusicGenre } from "../generated/client";
 import { ValidationError, NotFoundError } from "../errors";
 import { validateMusicGenres } from "../utils/validators";
+import type { BandBySlugResult } from "../types/band.types";
 
 /**
  * Service for handling band-related operations.
@@ -249,5 +250,73 @@ export class BandService {
       totalPages,
       totalFound,
     };
+  }
+
+  /**
+   * Retrieves a band by slug for the group page.
+   * If userId is provided and the user is a member, includes their role.
+   *
+   * @param slug - The band slug
+   * @param userId - Optional user ID to attach current user's role
+   * @returns Band data for the page
+   * @throws {NotFoundError} If band is not found
+   */
+  static async getBandBySlug(
+    slug: string,
+    userId?: string,
+  ): Promise<BandBySlugResult> {
+    const band = await prisma.band.findUnique({
+      where: { slug },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+        profilePictureKey: true,
+        description: true,
+        country: true,
+        city: true,
+        zipCode: true,
+        departmentName: true,
+        genres: true,
+        _count: {
+          select: {
+            bandMembers: true,
+            hiringAds: true,
+          },
+        },
+      },
+    });
+
+    if (!band) {
+      throw new NotFoundError("Band not found");
+    }
+
+    const result: BandBySlugResult = {
+      ...band,
+      _count: band._count,
+    };
+
+    if (userId) {
+      const profile = await prisma.profile.findUnique({
+        where: { userId },
+        select: { id: true },
+      });
+      if (profile) {
+        const membership = await prisma.bandMember.findUnique({
+          where: {
+            bandId_profileId: {
+              bandId: band.id,
+              profileId: profile.id,
+            },
+          },
+          select: { role: true },
+        });
+        if (membership) {
+          result.role = membership.role;
+        }
+      }
+    }
+
+    return result;
   }
 }
