@@ -30,7 +30,6 @@ export function CreateBandForm() {
 		resolver: zodResolver(formCreateBandSchema),
 		defaultValues: {
 			name: "",
-			slug: "",
 			genres: [],
 			description: "",
 			country: "France",
@@ -55,7 +54,6 @@ export function CreateBandForm() {
 				const formData = new FormData();
 				formData.append("bandPicture", values.bandPicture);
 				formData.append("name", values.name);
-				formData.append("slug", values.slug);
 				formData.append("genres", JSON.stringify(values.genres));
 				formData.append("description", values.description);
 				formData.append("country", values.country);
@@ -71,7 +69,6 @@ export function CreateBandForm() {
 				// Sinon, envoyer du JSON normal
 				const { data: responseData } = await axiosAuth.post("/band/create", {
 					name: values.name,
-					slug: values.slug,
 					genres: values.genres,
 					description: values.description,
 					country: values.country,
@@ -110,19 +107,6 @@ export function CreateBandForm() {
 								{...register("name")}
 								error={errors.name}
 								placeholder="Votre nom de groupe"
-							/>
-						</FormField>
-						<FormField
-							label="Lien de la page"
-							htmlFor="band-slug"
-							error={errors.slug}
-							required
-						>
-							<FormFieldInput
-								id="band-slug"
-								{...register("slug")}
-								error={errors.slug}
-								placeholder="/nom-de-votre-groupe"
 							/>
 						</FormField>
 						<FormField

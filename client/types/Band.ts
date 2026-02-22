@@ -5,7 +5,6 @@ export type BandMemberRole = "MEMBER" | "ADMIN";
 export interface Band {
   id: string;
   name: string;
-  slug: string;
   profilePictureKey: string | null;
   description: string | null;
   city?: string | null;
@@ -20,7 +19,6 @@ export interface Band {
 export interface BandListItem {
   id: string;
   name: string;
-  slug: string;
   profilePictureKey: string | null;
   description: string | null;
   city: string | null;
@@ -30,11 +28,10 @@ export interface BandListItem {
   };
 }
 
-// Group page (band by slug) – includes genres, hiringAds count, optional role when authenticated
+// Group page (band by id) – includes genres, hiringAds count, optional role when authenticated
 export interface BandPageData {
   id: string;
   name: string;
-  slug: string;
   profilePictureKey: string | null;
   description: string | null;
   country: string | null;
@@ -49,13 +46,13 @@ export interface BandPageData {
   role?: BandMemberRole;
 }
 
-/** One band member as returned by GET /band/:slug/members */
+/** One band member as returned by GET /band/:id/members */
 export interface BandMemberListItem {
   profile: ProfileListItem;
   role: BandMemberRole;
 }
 
-/** API response shape for GET /band/:slug/members */
+/** API response shape for GET /band/:id/members */
 export interface BandMembersResponse {
   members: BandMemberListItem[];
 }

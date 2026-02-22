@@ -60,14 +60,13 @@ export class BandService {
    * @param data - Band creation data
    * @returns The created band
    *
-   * @throws {ValidationError} If name or slug already exists, if genres/city are invalid, or if user is already a member of a band
+   * @throws {ValidationError} If name already exists, if genres/city are invalid, or if user is already a member of a band
    * @throws {NotFoundError} If user profile is not found
    */
   static async createBand(
     userId: string,
     data: {
       name: string;
-      slug: string;
       genres: string[];
       description: string;
       country: string;
@@ -78,20 +77,13 @@ export class BandService {
     // Validate genres
     validateMusicGenres(data.genres);
 
-    // Check if name or slug already exists
+    // Check if name already exists
     const existingBand = await prisma.band.findFirst({
-      where: {
-        OR: [{ name: data.name }, { slug: data.slug }],
-      },
+      where: { name: data.name },
     });
 
     if (existingBand) {
-      if (existingBand.name === data.name) {
-        throw new ValidationError("A band with this name already exists");
-      }
-      if (existingBand.slug === data.slug) {
-        throw new ValidationError("A band with this slug already exists");
-      }
+      throw new ValidationError("A band with this name already exists");
     }
 
     // Get user profile to ensure it exists and get profile ID
@@ -129,7 +121,6 @@ export class BandService {
       const newBand = await tx.band.create({
         data: {
           name: data.name,
-          slug: data.slug,
           genres: data.genres as MusicGenre[],
           description: data.description,
           country: data.country,
@@ -180,7 +171,6 @@ export class BandService {
           select: {
             id: true,
             name: true,
-            slug: true,
             profilePictureKey: true,
             description: true,
           },
@@ -231,7 +221,6 @@ export class BandService {
       select: {
         id: true,
         name: true,
-        slug: true,
         profilePictureKey: true,
         description: true,
         city: true,
@@ -256,24 +245,23 @@ export class BandService {
   }
 
   /**
-   * Retrieves a band by slug for the group page.
+   * Retrieves a band by id for the group page.
    * If userId is provided and the user is a member, includes their role.
    *
-   * @param slug - The band slug
+   * @param id - The band UUID
    * @param userId - Optional user ID to attach current user's role
    * @returns Band data for the page
    * @throws {NotFoundError} If band is not found
    */
-  static async getBandBySlug(
-    slug: string,
+  static async getBandById(
+    id: string,
     userId?: string,
   ): Promise<BandBySlugResult> {
     const band = await prisma.band.findUnique({
-      where: { slug },
+      where: { id },
       select: {
         id: true,
         name: true,
-        slug: true,
         profilePictureKey: true,
         description: true,
         country: true,
@@ -326,18 +314,18 @@ export class BandService {
   /**
    * Returns the list of members of a band. Only callable by an authenticated user who is a member of the band.
    *
-   * @param slug - Band slug
+   * @param bandId - Band UUID
    * @param userId - Authenticated user ID
    * @returns Array of members with profile (ProfileListItem shape) and role
    * @throws {NotFoundError} If band is not found
    * @throws {ForbiddenError} If user is not a member of the band
    */
   static async getBandMembers(
-    slug: string,
+    bandId: string,
     userId: string,
   ): Promise<BandMemberListItem[]> {
     const band = await prisma.band.findUnique({
-      where: { slug },
+      where: { id: bandId },
       select: { id: true },
     });
 

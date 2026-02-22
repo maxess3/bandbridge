@@ -18,14 +18,14 @@ export function useSyncSidebarView() {
       return;
     }
 
-    // Check if URL matches /band/[slug] pattern
+    // Check if URL matches /band/[id] pattern
     const match = pathname.match(/^\/band\/([^\/]+)/);
 
     if (match) {
-      const bandSlug = match[1];
+      const bandId = match[1];
 
       // Find the band in user's bands list
-      const band = bands.find((b) => b.slug === bandSlug);
+      const band = bands.find((b) => b.id === bandId);
 
       if (band) {
         // User is a member of this band
@@ -41,7 +41,7 @@ export function useSyncSidebarView() {
         }
       }
     } else {
-      // URL doesn't match /band/[slug] pattern
+      // URL doesn't match /band/[id] pattern
       // Return to user view if currently in band view
       if (view === "band") {
         reset();

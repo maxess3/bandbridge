@@ -23,22 +23,22 @@ export function NavBandMain() {
 		navMain: [
 			{
 				title: "Page du groupe",
-				url: `/band/${activeBand.slug}`,
+				url: `/band/${activeBand.id}`,
 				icon: HouseIcon,
 			},
 			{
 				title: "Membres",
-				url: `/band/${activeBand.slug}/members`,
+				url: `/band/${activeBand.id}/members`,
 				icon: UsersIcon,
 			},
 			{
 				title: "Recrutement",
-				url: `/band/${activeBand.slug}/ads`,
+				url: `/band/${activeBand.id}/ads`,
 				icon: SpeakerHighIcon,
 			},
 			{
 				title: "Paramètres",
-				url: `/band/${activeBand.slug}/settings`,
+				url: `/band/${activeBand.id}/settings`,
 				icon: GearIcon,
 			},
 		],

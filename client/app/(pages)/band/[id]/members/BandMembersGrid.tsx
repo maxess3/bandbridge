@@ -26,11 +26,11 @@ const MembersEmptyState = () => (
 );
 
 interface BandMembersGridProps {
-  slug: string;
+  bandId: string;
 }
 
-export function BandMembersGrid({ slug }: BandMembersGridProps) {
-  const { data: members, isLoading, isError } = useBandMembers(slug);
+export function BandMembersGrid({ bandId }: BandMembersGridProps) {
+  const { data: members, isLoading, isError } = useBandMembers(bandId);
 
   if (isLoading) {
     return <MembersLoadingSkeleton />;

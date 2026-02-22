@@ -67,7 +67,7 @@ export function NavFirstSidebar() {
 				return (
 					<Link
 						key={band.id}
-						href={`/band/${band.slug}`}
+						href={`/band/${band.id}`}
 						onClick={() => {
 							setActiveBand(band);
 							setView("band");

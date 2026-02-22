@@ -12,7 +12,7 @@ import prisma from "../db/db.config";
  * @returns The created band data
  *
  * @throws {UnauthorizedError} If user is not authenticated
- * @throws {ValidationError} If band name or slug already exists, or if data is invalid
+ * @throws {ValidationError} If band name already exists, or if data is invalid
  */
 export const createBand = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
@@ -20,13 +20,12 @@ export const createBand = async (req: Request, res: Response) => {
     throw new UnauthorizedError("User not authenticated");
   }
 
-  const { name, slug, genres, description, country, zipcode, city } = req.body;
+  const { name, genres, description, country, zipcode, city } = req.body;
 
   // Create the band
   // genres is already parsed by Zod transform if it was a string
   const band = await BandService.createBand(userId, {
     name,
-    slug,
     genres,
     description,
     country,
@@ -98,49 +97,49 @@ export const getAllBands = async (req: Request, res: Response) => {
 };
 
 /**
- * Retrieves a single band by slug (public route, optional auth for role).
+ * Retrieves a single band by id (public route, optional auth for role).
  *
- * @param req - Express request object with slug in params, optional req.user from optionalAuthenticateToken
+ * @param req - Express request object with id in params, optional req.user from optionalAuthenticateToken
  * @param res - Express response object
  * @returns Band data for the group page, including role if authenticated member
  * @throws {NotFoundError} If band is not found
  */
-export const getBandBySlug = async (req: Request, res: Response) => {
-  const slugParam = req.params.slug;
-  const slug =
-    typeof slugParam === "string"
-      ? slugParam
-      : Array.isArray(slugParam)
-        ? (slugParam[0] ?? "")
+export const getBandById = async (req: Request, res: Response) => {
+  const idParam = req.params.id;
+  const id =
+    typeof idParam === "string"
+      ? idParam
+      : Array.isArray(idParam)
+        ? (idParam[0] ?? "")
         : "";
   const userId = (req as any).user?.userId;
 
-  const band = await BandService.getBandBySlug(slug, userId);
+  const band = await BandService.getBandById(id, userId);
   res.status(200).json(band);
 };
 
 /**
  * Retrieves the list of members of a band. Only for authenticated users who are members of the band.
  *
- * @param req - Express request with slug in params, user from authenticateToken
+ * @param req - Express request with id in params, user from authenticateToken
  * @param res - Express response
  * @returns { members: BandMemberListItem[] }
  * @throws {NotFoundError} If band is not found
  * @throws {ForbiddenError} If user is not a member of the band
  */
 export const getBandMembers = async (req: Request, res: Response) => {
-  const slugParam = req.params.slug;
-  const slug =
-    typeof slugParam === "string"
-      ? slugParam
-      : Array.isArray(slugParam)
-        ? (slugParam[0] ?? "")
+  const idParam = req.params.id;
+  const id =
+    typeof idParam === "string"
+      ? idParam
+      : Array.isArray(idParam)
+        ? (idParam[0] ?? "")
         : "";
   const userId = (req as any).user?.userId;
   if (!userId) {
     throw new UnauthorizedError("User not authenticated");
   }
 
-  const members = await BandService.getBandMembers(slug, userId);
+  const members = await BandService.getBandMembers(id, userId);
   res.status(200).json({ members });
 };

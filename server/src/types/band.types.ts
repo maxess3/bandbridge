@@ -5,12 +5,11 @@
 import type { BandMemberRole, MusicGenre } from "../generated/client";
 
 /**
- * Band data returned by GET /band/:slug (group page).
+ * Band data returned by GET /band/:id (group page).
  */
 export interface BandBySlugResult {
   id: string;
   name: string;
-  slug: string;
   profilePictureKey: string | null;
   description: string | null;
   country: string | null;
@@ -37,7 +36,7 @@ export interface BandMemberProfileItem {
 }
 
 /**
- * Item returned by GET /band/:slug/members.
+ * Item returned by GET /band/:id/members.
  */
 export interface BandMemberListItem {
   profile: BandMemberProfileItem;

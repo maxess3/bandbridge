@@ -6,17 +6,17 @@ import { useDelayedQuery } from "@/hooks/data/useDelayedQuery";
 
 export const BAND_QUERY_KEY = ["band"];
 
-export function useBand(slug: string) {
+export function useBand(id: string) {
   const axiosAuth = useAxiosAuth();
 
   return useDelayedQuery(
     BAND_QUERY_KEY,
     async (): Promise<BandPageData> => {
-      const { data } = await axiosAuth.get<BandPageData>(`/band/${slug}`);
+      const { data } = await axiosAuth.get<BandPageData>(`/band/${id}`);
       return data;
     },
     {
-      queryKey: [...BAND_QUERY_KEY, slug],
+      queryKey: [...BAND_QUERY_KEY, id],
       staleTime: Infinity,
       delay: 0,
     },

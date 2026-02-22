@@ -27,8 +27,8 @@ router.get(
 	BandController.getAllBands
 );
 
-router.get("/:slug/members", authenticateToken, BandController.getBandMembers);
+router.get("/:id/members", authenticateToken, BandController.getBandMembers);
 
-router.get("/:slug", optionalAuthenticateToken, BandController.getBandBySlug);
+router.get("/:id", optionalAuthenticateToken, BandController.getBandById);
 
 export default router;

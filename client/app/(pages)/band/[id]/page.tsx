@@ -8,8 +8,8 @@ import { Metadata } from "next";
 
 const BAND_PAGE_QUERY_KEY = ["band"];
 
-async function getBand(slug: string, accessToken?: string | null) {
-  const band = await bandServices.getBandBySlug(slug, accessToken);
+async function getBand(id: string, accessToken?: string | null) {
+  const band = await bandServices.getBand(id, accessToken);
   if (!band) {
     notFound();
   }
@@ -19,10 +19,10 @@ async function getBand(slug: string, accessToken?: string | null) {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const band = await getBand(slug);
+  const { id } = await params;
+  const band = await getBand(id);
 
   return {
     title: `${band.name} | Chordeus`,
@@ -33,19 +33,19 @@ export async function generateMetadata({
 export default async function Root({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { slug } = await params;
+  const { id } = await params;
 
   const session = await getServerSession(authOptions);
   const accessToken = session?.backendTokens?.accessToken;
 
-  const band = await getBand(slug, accessToken);
+  const band = await getBand(id, accessToken);
   const isAdmin = band.role === "ADMIN";
 
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: [...BAND_PAGE_QUERY_KEY, slug],
+    queryKey: [...BAND_PAGE_QUERY_KEY, id],
     queryFn: () => Promise.resolve(band),
   });
 
@@ -56,7 +56,7 @@ export default async function Root({
         {band.description && <p>{band.description}</p>}
         {isAdmin && (
           <p className="text-sm text-muted-foreground">
-            Vous êtes administrateur de ce groupe (boutons d’édition à venir).
+            Vous êtes administrateur de ce groupe (boutons d'édition à venir).
           </p>
         )}
       </div>

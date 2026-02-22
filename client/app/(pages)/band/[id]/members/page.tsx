@@ -4,8 +4,8 @@ import { bandServices } from "@/services/bandServices";
 import { notFound, redirect } from "next/navigation";
 import { BandMembersGrid } from "./BandMembersGrid";
 
-async function getBandForGuard(slug: string, accessToken?: string | null) {
-  const band = await bandServices.getBandBySlug(slug, accessToken);
+async function getBandForGuard(id: string, accessToken?: string | null) {
+  const band = await bandServices.getBand(id, accessToken);
   if (!band) {
     notFound();
   }
@@ -15,17 +15,17 @@ async function getBandForGuard(slug: string, accessToken?: string | null) {
 export default async function BandMembersPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ id: string }>;
 }) {
-  const { slug } = await params;
+  const { id } = await params;
 
   const session = await getServerSession(authOptions);
   if (!session) {
-    redirect(`/auth/login?callbackUrl=${encodeURIComponent(`/band/${slug}/members`)}`);
+    redirect(`/auth/login?callbackUrl=${encodeURIComponent(`/band/${id}/members`)}`);
   }
 
   const accessToken = session.backendTokens?.accessToken;
-  const band = await getBandForGuard(slug, accessToken);
+  const band = await getBandForGuard(id, accessToken);
 
   if (band.role === undefined) {
     notFound();
@@ -39,7 +39,7 @@ export default async function BandMembersPage({
           Les membres du groupe {band.name}
         </p>
       </div>
-      <BandMembersGrid slug={slug} />
+      <BandMembersGrid bandId={id} />
     </div>
   );
 }

@@ -11,12 +11,12 @@ interface BandCardProps {
 }
 
 export const BandCard = ({ band }: BandCardProps) => {
-  const { name, slug, profilePictureKey, _count } = band;
+  const { name, id, profilePictureKey, _count } = band;
   const imageURL = getImageUrl(profilePictureKey || "", "medium");
 
   return (
     <Link
-      href={`/band/${slug}`}
+      href={`/band/${id}`}
       className="block group"
       aria-label={`Voir le groupe ${name}`}
     >

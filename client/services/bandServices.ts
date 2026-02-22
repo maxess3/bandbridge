@@ -1,8 +1,8 @@
 import { BandPageData } from "@/types/Band";
 
 export const bandServices = {
-  getBandBySlug: async (
-    slug: string,
+  getBand: async (
+    id: string,
     accessToken?: string | null,
   ): Promise<BandPageData | null> => {
     const headers: HeadersInit = {
@@ -14,7 +14,7 @@ export const bandServices = {
     }
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/band/${slug}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/band/${id}`,
       { headers },
     );
 
