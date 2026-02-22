@@ -101,14 +101,8 @@ export class BandService {
     }
 
     // Check if user is already a member of a band (limit: 1 band per user)
-    const existingBandsCount = await prisma.band.count({
-      where: {
-        members: {
-          some: {
-            id: profile.id,
-          },
-        },
-      },
+    const existingBandsCount = await prisma.bandMember.count({
+      where: { profileId: profile.id },
     });
 
     if (existingBandsCount > 0) {
@@ -126,7 +120,7 @@ export class BandService {
       );
     }
 
-    // Create the band and add creator as member in a transaction
+    // Create the band and add creator as admin in a transaction
     const band = await prisma.$transaction(async (tx) => {
       const newBand = await tx.band.create({
         data: {
@@ -138,9 +132,14 @@ export class BandService {
           city: data.city,
           zipCode: data.zipcode,
           departmentName: departmentName,
-          members: {
-            connect: [{ id: profile.id }],
-          },
+        },
+      });
+
+      await tx.bandMember.create({
+        data: {
+          bandId: newBand.id,
+          profileId: profile.id,
+          role: "ADMIN",
         },
       });
 
@@ -169,23 +168,26 @@ export class BandService {
       throw new NotFoundError("Profile not found");
     }
 
-    // Find all bands where the user is a member
-    const bands = await prisma.band.findMany({
-      where: {
-        members: {
-          some: {
-            id: profile.id,
+    // Find all bands where the user is a member (with role)
+    const bandMemberships = await prisma.bandMember.findMany({
+      where: { profileId: profile.id },
+      include: {
+        band: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            profilePictureKey: true,
+            description: true,
           },
         },
       },
-      select: {
-        id: true,
-        name: true,
-        slug: true,
-        profilePictureKey: true,
-        description: true,
-      },
     });
+
+    const bands = bandMemberships.map((bm) => ({
+      ...bm.band,
+      role: bm.role,
+    }));
 
     return bands;
   }
@@ -232,7 +234,7 @@ export class BandService {
         departmentName: true,
         _count: {
           select: {
-            members: true,
+            bandMembers: true,
           },
         },
       },

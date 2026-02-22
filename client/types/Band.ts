@@ -1,3 +1,5 @@
+export type BandMemberRole = "MEMBER" | "ADMIN";
+
 export interface Band {
   id: string;
   name: string;
@@ -6,8 +8,9 @@ export interface Band {
   description: string | null;
   city?: string | null;
   departmentName?: string | null;
+  role?: BandMemberRole;
   _count?: {
-    members: number;
+    bandMembers: number;
   };
 }
 
@@ -21,6 +24,6 @@ export interface BandListItem {
   city: string | null;
   departmentName: string | null;
   _count: {
-    members: number;
+    bandMembers: number;
   };
 }

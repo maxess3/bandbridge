@@ -92,3 +92,8 @@ enum InstrumentCategory {
     ELECTRONIC
     OTHER
 }
+
+enum BandMemberRole {
+    MEMBER
+    ADMIN
+}

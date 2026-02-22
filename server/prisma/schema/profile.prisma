@@ -7,7 +7,7 @@ model Profile {
     instruments       Instrument[]
     genres            MusicGenre[]
     socialLinks       SocialLink[]
-    band              Band[]
+    bandMemberships   BandMember[]
     lastActiveAt      DateTime?
     profilePictureKey String?
     description       String?            @db.Text

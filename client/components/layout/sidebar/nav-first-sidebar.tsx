@@ -87,9 +87,9 @@ export function NavFirstSidebar() {
 					</Link>
 				);
 			})}
-			<Button variant="outline" className="w-10 h-10 rounded-xl">
+			<Link href="/band/create-band" className="w-10 h-10 rounded-xl border flex items-center justify-center">
 				<PlusIcon className="size-4" />
-			</Button>
+			</Link>
 		</div>
 	);
 }

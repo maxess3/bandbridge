@@ -38,7 +38,7 @@ export const BandCard = ({ band }: BandCardProps) => {
             </div>
             {/* Afficher le nombre de membres */}
             <div className="text-sm text-muted-foreground">
-              {_count.members} membre{_count.members > 1 ? "s" : ""}
+              {_count.bandMembers} membre{_count.bandMembers > 1 ? "s" : ""}
             </div>
           </div>
         </div>
