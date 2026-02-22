@@ -1,3 +1,5 @@
+import type { ProfileListItem } from "@/types/Profile";
+
 export type BandMemberRole = "MEMBER" | "ADMIN";
 
 export interface Band {
@@ -45,4 +47,15 @@ export interface BandPageData {
     hiringAds: number;
   };
   role?: BandMemberRole;
+}
+
+/** One band member as returned by GET /band/:slug/members */
+export interface BandMemberListItem {
+  profile: ProfileListItem;
+  role: BandMemberRole;
+}
+
+/** API response shape for GET /band/:slug/members */
+export interface BandMembersResponse {
+  members: BandMemberListItem[];
 }

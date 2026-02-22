@@ -118,3 +118,29 @@ export const getBandBySlug = async (req: Request, res: Response) => {
   const band = await BandService.getBandBySlug(slug, userId);
   res.status(200).json(band);
 };
+
+/**
+ * Retrieves the list of members of a band. Only for authenticated users who are members of the band.
+ *
+ * @param req - Express request with slug in params, user from authenticateToken
+ * @param res - Express response
+ * @returns { members: BandMemberListItem[] }
+ * @throws {NotFoundError} If band is not found
+ * @throws {ForbiddenError} If user is not a member of the band
+ */
+export const getBandMembers = async (req: Request, res: Response) => {
+  const slugParam = req.params.slug;
+  const slug =
+    typeof slugParam === "string"
+      ? slugParam
+      : Array.isArray(slugParam)
+        ? (slugParam[0] ?? "")
+        : "";
+  const userId = (req as any).user?.userId;
+  if (!userId) {
+    throw new UnauthorizedError("User not authenticated");
+  }
+
+  const members = await BandService.getBandMembers(slug, userId);
+  res.status(200).json({ members });
+};

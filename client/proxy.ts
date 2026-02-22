@@ -15,11 +15,14 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        // Si c'est une route /settings, vérifier le token
-        if (req.nextUrl.pathname.startsWith("/settings")) {
+        const pathname = req.nextUrl.pathname;
+        // Routes protégées : exiger le token pour accès immédiat (redirect sans attendre la page)
+        if (pathname.startsWith("/settings")) {
           return !!token?.user;
         }
-        // Pour toutes les autres routes, autoriser l'accès
+        if (/^\/band\/[^/]+\/members\/?$/.test(pathname)) {
+          return !!token?.user;
+        }
         return true;
       },
     },

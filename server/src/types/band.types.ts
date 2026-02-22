@@ -21,3 +21,25 @@ export interface BandBySlugResult {
   _count: { bandMembers: number; hiringAds: number };
   role?: BandMemberRole;
 }
+
+/**
+ * Profile shape returned for each band member (matches client ProfileListItem).
+ */
+export interface BandMemberProfileItem {
+  id: string;
+  pseudonyme: string;
+  profilePictureKey: string | null;
+  lastActiveAt: Date | null;
+  city: string | null;
+  departmentName: string | null;
+  user: { username: string };
+  _count: { followers: number };
+}
+
+/**
+ * Item returned by GET /band/:slug/members.
+ */
+export interface BandMemberListItem {
+  profile: BandMemberProfileItem;
+  role: BandMemberRole;
+}

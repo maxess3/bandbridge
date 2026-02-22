@@ -1,8 +1,11 @@
 import prisma from "../db/db.config";
 import { MusicGenre } from "../generated/client";
-import { ValidationError, NotFoundError } from "../errors";
+import { ValidationError, NotFoundError, ForbiddenError } from "../errors";
 import { validateMusicGenres } from "../utils/validators";
-import type { BandBySlugResult } from "../types/band.types";
+import type {
+  BandBySlugResult,
+  BandMemberListItem,
+} from "../types/band.types";
 
 /**
  * Service for handling band-related operations.
@@ -318,5 +321,78 @@ export class BandService {
     }
 
     return result;
+  }
+
+  /**
+   * Returns the list of members of a band. Only callable by an authenticated user who is a member of the band.
+   *
+   * @param slug - Band slug
+   * @param userId - Authenticated user ID
+   * @returns Array of members with profile (ProfileListItem shape) and role
+   * @throws {NotFoundError} If band is not found
+   * @throws {ForbiddenError} If user is not a member of the band
+   */
+  static async getBandMembers(
+    slug: string,
+    userId: string,
+  ): Promise<BandMemberListItem[]> {
+    const band = await prisma.band.findUnique({
+      where: { slug },
+      select: { id: true },
+    });
+
+    if (!band) {
+      throw new NotFoundError("Band not found");
+    }
+
+    const profile = await prisma.profile.findUnique({
+      where: { userId },
+      select: { id: true },
+    });
+
+    if (!profile) {
+      throw new ForbiddenError("Access denied");
+    }
+
+    const requesterMembership = await prisma.bandMember.findUnique({
+      where: {
+        bandId_profileId: {
+          bandId: band.id,
+          profileId: profile.id,
+        },
+      },
+    });
+
+    if (!requesterMembership) {
+      throw new ForbiddenError("Access denied");
+    }
+
+    const bandMembers = await prisma.bandMember.findMany({
+      where: { bandId: band.id },
+      select: {
+        role: true,
+        profile: {
+          select: {
+            id: true,
+            pseudonyme: true,
+            profilePictureKey: true,
+            lastActiveAt: true,
+            city: true,
+            departmentName: true,
+            user: {
+              select: { username: true },
+            },
+            _count: {
+              select: { followers: true },
+            },
+          },
+        },
+      },
+    });
+
+    return bandMembers.map((bm) => ({
+      profile: bm.profile,
+      role: bm.role,
+    }));
   }
 }
