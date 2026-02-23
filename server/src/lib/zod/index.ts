@@ -26,6 +26,7 @@ export {
 	formCreateBandSchema,
 	createBandApiSchema,
 	allBandsQuerySchema,
+	createBandHiringAdSchema,
 } from "./bandSchema";
 
 // Export settings schemas

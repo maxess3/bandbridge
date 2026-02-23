@@ -144,3 +144,37 @@ export const allBandsQuerySchema = z.object({
       return num > 100 ? 100 : num;
     }),
 });
+
+const requiredSlotSchema = z.object({
+  instrumentTypeId: z.string().min(1, "L'instrument est requis"),
+  quantity: z
+    .number()
+    .int("La quantité doit être un entier")
+    .min(1, "La quantité doit être au moins 1")
+    .max(10, "La quantité ne peut pas dépasser 10"),
+});
+
+/**
+ * Schema for creating a band hiring ad (POST /api/band/:id/ads).
+ * bandId comes from URL params, not body.
+ */
+export const createBandHiringAdSchema = z.object({
+  title: z
+    .string()
+    .min(1, "Le titre est requis")
+    .max(255, "Le titre ne doit pas dépasser 255 caractères"),
+  content: z
+    .string()
+    .min(1, "La description est requise")
+    .max(2000, "La description ne doit pas dépasser 2000 caractères"),
+  requiredSlots: z
+    .array(requiredSlotSchema)
+    .min(1, "Au moins un poste recherché est requis")
+    .refine(
+      (slots) => {
+        const ids = slots.map((s) => s.instrumentTypeId);
+        return new Set(ids).size === ids.length;
+      },
+      { message: "Un même instrument ne peut pas apparaître plusieurs fois" }
+    ),
+});

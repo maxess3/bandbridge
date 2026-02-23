@@ -96,7 +96,7 @@ const BaseAutocompleteComponent = <T extends BaseAutocompleteItem>(
       if (selectedIndex >= 0 && selectedIndex < filteredItems.length) {
         const item = filteredItems[selectedIndex];
         onItemSelect(item);
-        onValueChange(getItemDisplayValue(item));
+        setSearchValue("");
         selectItem();
       }
     },
@@ -113,10 +113,10 @@ const BaseAutocompleteComponent = <T extends BaseAutocompleteItem>(
     handleFocusInputChange(newValue);
   };
 
-  // Gérer la sélection d'un élément
+  // Gérer la sélection d'un élément (un seul appel au parent via onItemSelect)
   const handleItemClick = (item: T) => {
     onItemSelect(item);
-    onValueChange(getItemDisplayValue(item));
+    setSearchValue("");
     selectItem();
   };
 

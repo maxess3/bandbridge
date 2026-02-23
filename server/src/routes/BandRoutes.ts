@@ -5,7 +5,7 @@ import {
 	validateQuerySchema,
 } from "../middleware/validateSchema";
 import upload, { handleMulterError } from "../middleware/multerUpload";
-import { createBandApiSchema, allBandsQuerySchema } from "../lib/zod";
+import { createBandApiSchema, allBandsQuerySchema, createBandHiringAdSchema } from "../lib/zod";
 import * as BandController from "../controllers/BandController";
 
 const router = Router();
@@ -28,6 +28,13 @@ router.get(
 );
 
 router.get("/:id/members", authenticateToken, BandController.getBandMembers);
+
+router.post(
+  "/:id/ads",
+  authenticateToken,
+  validateBodySchema(createBandHiringAdSchema),
+  BandController.createHiringAd
+);
 
 router.get("/:id", optionalAuthenticateToken, BandController.getBandById);
 

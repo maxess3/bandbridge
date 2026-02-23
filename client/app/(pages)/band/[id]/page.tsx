@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { getQueryClient } from "@/lib/react-query/getQueryClient";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { Metadata } from "next";
+import Link from "next/link";
 
 const BAND_PAGE_QUERY_KEY = ["band"];
 
@@ -56,7 +57,14 @@ export default async function Root({
         {band.description && <p>{band.description}</p>}
         {isAdmin && (
           <p className="text-sm text-muted-foreground">
-            Vous êtes administrateur de ce groupe (boutons d'édition à venir).
+            Vous êtes administrateur de ce groupe (boutons d&apos;édition à venir).
+            <br />
+            <Link
+              href={`/band/${id}/create-ads`}
+              className="text-primary underline hover:no-underline"
+            >
+              Créer une annonce
+            </Link>
           </p>
         )}
       </div>

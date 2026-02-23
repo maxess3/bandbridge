@@ -143,3 +143,32 @@ export const getBandMembers = async (req: Request, res: Response) => {
   const members = await BandService.getBandMembers(id, userId);
   res.status(200).json({ members });
 };
+
+/**
+ * Creates a hiring ad for a band. Only band admins can create ads.
+ *
+ * @param req - Express request with id in params (bandId), body: title, content, requiredSlots
+ * @param res - Express response
+ * @returns 201 with created BandHiringAd data
+ * @throws {UnauthorizedError} If user is not authenticated
+ * @throws {NotFoundError} If band is not found
+ * @throws {ForbiddenError} If user is not an admin of the band
+ * @throws {ValidationError} If (bandId, title) already exists
+ */
+export const createHiringAd = async (req: Request, res: Response) => {
+  const userId = (req as any).user?.userId;
+  if (!userId) {
+    throw new UnauthorizedError("User not authenticated");
+  }
+
+  const idParam = req.params.id;
+  const bandId =
+    typeof idParam === "string"
+      ? idParam
+      : Array.isArray(idParam)
+        ? (idParam[0] ?? "")
+        : "";
+
+  const ad = await BandService.createHiringAd(userId, bandId, req.body);
+  res.status(201).json({ message: "Hiring ad created successfully", data: ad });
+};

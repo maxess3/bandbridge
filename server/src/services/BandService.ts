@@ -383,4 +383,107 @@ export class BandService {
       role: bm.role,
     }));
   }
+
+  /**
+   * Creates a hiring ad for a band. Only band admins can create ads.
+   *
+   * @param userId - Authenticated user ID
+   * @param bandId - Band UUID (from URL params)
+   * @param data - Title, content, and required slots (instrumentTypeId + quantity)
+   * @returns The created BandHiringAd with requiredSlots
+   * @throws {NotFoundError} If band is not found
+   * @throws {ForbiddenError} If user is not an admin of the band
+   * @throws {ValidationError} If (bandId, title) already exists or validation fails
+   */
+  static async createHiringAd(
+    userId: string,
+    bandId: string,
+    data: {
+      title: string;
+      content: string;
+      requiredSlots: Array<{ instrumentTypeId: string; quantity: number }>;
+    }
+  ) {
+    const profile = await prisma.profile.findUnique({
+      where: { userId },
+      select: { id: true },
+    });
+
+    if (!profile) {
+      throw new NotFoundError("Profile not found");
+    }
+
+    const band = await prisma.band.findUnique({
+      where: { id: bandId },
+      select: { id: true },
+    });
+
+    if (!band) {
+      throw new NotFoundError("Band not found");
+    }
+
+    const membership = await prisma.bandMember.findUnique({
+      where: {
+        bandId_profileId: {
+          bandId: band.id,
+          profileId: profile.id,
+        },
+      },
+      select: { role: true },
+    });
+
+    if (!membership || membership.role !== "ADMIN") {
+      throw new ForbiddenError(
+        "Only band administrators can create hiring ads"
+      );
+    }
+
+    const existingAd = await prisma.bandHiringAd.findUnique({
+      where: {
+        bandId_title: {
+          bandId: band.id,
+          title: data.title,
+        },
+      },
+    });
+
+    if (existingAd) {
+      throw new ValidationError(
+        "An ad with this title already exists for this band"
+      );
+    }
+
+    const ad = await prisma.$transaction(async (tx) => {
+      const hiringAd = await tx.bandHiringAd.create({
+        data: {
+          bandId: band.id,
+          title: data.title,
+          content: data.content,
+        },
+      });
+
+      await tx.bandRequiredSlot.createMany({
+        data: data.requiredSlots.map((slot) => ({
+          hiringAdId: hiringAd.id,
+          instrumentTypeId: slot.instrumentTypeId,
+          quantity: slot.quantity,
+        })),
+      });
+
+      return tx.bandHiringAd.findUnique({
+        where: { id: hiringAd.id },
+        include: {
+          requiredSlots: {
+            select: {
+              id: true,
+              instrumentTypeId: true,
+              quantity: true,
+            },
+          },
+        },
+      });
+    });
+
+    return ad;
+  }
 }
