@@ -389,7 +389,7 @@ export class BandService {
    *
    * @param userId - Authenticated user ID
    * @param bandId - Band UUID (from URL params)
-   * @param data - Title, content, and required slots (instrumentTypeId + quantity)
+   * @param data - Title, content, optional location/rehearsals, required slots (roleId + quantity)
    * @returns The created BandHiringAd with requiredSlots
    * @throws {NotFoundError} If band is not found
    * @throws {ForbiddenError} If user is not an admin of the band
@@ -401,7 +401,12 @@ export class BandService {
     data: {
       title: string;
       content: string;
-      requiredSlots: Array<{ instrumentTypeId: string; quantity: number }>;
+      rehearsalsPerWeek?: string;
+      country?: string;
+      city?: string;
+      zipCode?: string;
+      departmentName?: string;
+      requiredSlots: Array<{ roleId: string; quantity: number }>;
     }
   ) {
     const profile = await prisma.profile.findUnique({
@@ -453,19 +458,38 @@ export class BandService {
       );
     }
 
+    const roleIds = [...new Set(data.requiredSlots.map((s) => s.roleId))];
+    const existingRoles = await prisma.role.findMany({
+      where: { id: { in: roleIds } },
+      select: { id: true },
+    });
+    if (existingRoles.length !== roleIds.length) {
+      throw new ValidationError("Un ou plusieurs rôles sont invalides");
+    }
+
     const ad = await prisma.$transaction(async (tx) => {
       const hiringAd = await tx.bandHiringAd.create({
         data: {
           bandId: band.id,
           title: data.title,
           content: data.content,
+          rehearsalsPerWeek: data.rehearsalsPerWeek as
+            | "NOT_SPECIFIED"
+            | "ONCE_PER_WEEK"
+            | "TWO_TO_THREE_PER_WEEK"
+            | "MORE_THAN_THREE_PER_WEEK"
+            | undefined,
+          country: data.country,
+          city: data.city,
+          zipCode: data.zipCode,
+          departmentName: data.departmentName,
         },
       });
 
       await tx.bandRequiredSlot.createMany({
         data: data.requiredSlots.map((slot) => ({
           hiringAdId: hiringAd.id,
-          instrumentTypeId: slot.instrumentTypeId,
+          roleId: slot.roleId,
           quantity: slot.quantity,
         })),
       });
@@ -476,8 +500,9 @@ export class BandService {
           requiredSlots: {
             select: {
               id: true,
-              instrumentTypeId: true,
+              roleId: true,
               quantity: true,
+              role: { select: { id: true, name: true } },
             },
           },
         },

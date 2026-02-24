@@ -66,6 +66,8 @@ router.get(
 
 router.get("/instruments", ProfileController.getInstrumentTypes);
 
+router.get("/roles", ProfileController.getRoles);
+
 router.get("/genres", ProfileController.getMusicGenres);
 
 router.get(

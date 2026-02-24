@@ -1,13 +1,22 @@
+model Role {
+    id                String             @id @default(uuid())
+    name              String             @unique
+    createdAt         DateTime           @default(now())
+    updatedAt         DateTime           @updatedAt
+    instrumentTypes   InstrumentType[]
+    bandRequiredSlots BandRequiredSlot[]
+}
+
 model InstrumentType {
     id                String             @id @default(uuid())
     name              String             @unique
     category          InstrumentCategory
-    profession        String? // Profession liée à l'instrument (ex: "Guitarist" pour "Guitar")
+    roleId            String?
     isActive          Boolean            @default(true)
     createdAt         DateTime           @default(now())
     updatedAt         DateTime           @updatedAt
+    role              Role?              @relation(fields: [roleId], references: [id], onDelete: SetNull)
     instruments       Instrument[]
-    bandRequiredSlots BandRequiredSlot[]
 }
 
 model Instrument {

@@ -46,8 +46,8 @@ export const instrumentTranslations: Record<string, string> = {
   Theremin: "Thérémine",
 };
 
-// Traductions des professions liées aux instruments
-export const professionTranslations: Record<string, string> = {
+// Traductions des rôles (noms affichés pour les postes / instruments)
+export const roleTranslations: Record<string, string> = {
   // Cordes (Strings)
   Guitarist: "Guitariste",
   "Acoustic Guitarist": "Guitariste",
@@ -109,9 +109,9 @@ export const translateInstrument = (name: string): string => {
   return instrumentTranslations[name] || name;
 };
 
-// Fonction utilitaire pour traduire une profession
-export const translateProfession = (profession: string): string => {
-  return professionTranslations[profession] || profession;
+// Fonction utilitaire pour traduire un nom de rôle
+export const translateRole = (roleName: string): string => {
+  return roleTranslations[roleName] || roleName;
 };
 
 // Fonction utilitaire pour traduire une catégorie

@@ -10,34 +10,32 @@ import {
   FormFieldInput,
   FormField,
   FormFieldTextArea,
+  FormFieldSelect,
 } from "@/components/shared/forms";
 import { Button } from "@/components/ui/button";
-import { InstrumentAutocomplete } from "@/components/features/profile/autocomplete";
+import { RoleAutocomplete, Role } from "@/components/features/profile/autocomplete";
 import { createBandHiringAdSchema } from "@/lib/zod";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/ui";
-import { translateInstrument } from "@/utils";
-import { GroupedInstruments } from "@/types/Instrument";
+import { translateRole } from "@/utils";
 import { X } from "lucide-react";
 
 type FormValues = z.infer<typeof createBandHiringAdSchema>;
+
+const REHEARSAL_OPTIONS = [
+  { value: "NOT_SPECIFIED", label: "Non spécifié" },
+  { value: "ONCE_PER_WEEK", label: "Une fois par semaine" },
+  { value: "TWO_TO_THREE_PER_WEEK", label: "2 à 3 fois par semaine" },
+  { value: "MORE_THAN_THREE_PER_WEEK", label: "Plus de 3 fois par semaine" },
+] as const;
 
 interface CreateBandAdFormProps {
   bandId: string;
 }
 
-const getInstrumentDisplayName = (
-  instrumentId: string,
-  instrumentTypes: GroupedInstruments
-): string => {
-  if (!instrumentTypes) return "";
-  for (const category in instrumentTypes) {
-    const instrument = instrumentTypes[category].find(
-      (inst) => inst.id === instrumentId
-    );
-    if (instrument) return translateInstrument(instrument.name);
-  }
-  return "";
+const getRoleDisplayName = (roleId: string, roles: Role[]): string => {
+  const role = roles.find((r) => r.id === roleId);
+  return role ? translateRole(role.name) : "";
 };
 
 export function CreateBandAdForm({ bandId }: CreateBandAdFormProps) {
@@ -46,25 +44,29 @@ export function CreateBandAdForm({ bandId }: CreateBandAdFormProps) {
   const axiosAuth = useAxiosAuth();
   const { isDelaying, withDelay } = useTransitionDelay(600);
 
-  const { data: instrumentTypes, isLoading: isLoadingInstruments } =
-    useQuery<GroupedInstruments>({
-      queryKey: ["instrumentTypes"],
-      queryFn: async () => {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/profile/instruments`
-        );
-        if (!response.ok) {
-          throw new Error("Impossible de récupérer les instruments");
-        }
-        return response.json();
-      },
-    });
+  const { data: roles = [], isLoading: isLoadingRoles } = useQuery<Role[]>({
+    queryKey: ["roles"],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/profile/roles`
+      );
+      if (!response.ok) {
+        throw new Error("Impossible de récupérer les rôles");
+      }
+      return response.json();
+    },
+  });
 
   const methods = useForm<FormValues>({
     resolver: zodResolver(createBandHiringAdSchema),
     defaultValues: {
       title: "",
       content: "",
+      rehearsalsPerWeek: undefined,
+      country: "",
+      city: "",
+      zipCode: "",
+      departmentName: "",
       requiredSlots: [],
     },
   });
@@ -83,24 +85,19 @@ export function CreateBandAdForm({ bandId }: CreateBandAdFormProps) {
   });
 
   const requiredSlots = watch("requiredSlots");
-  const excludedInstrumentIds = (requiredSlots ?? []).map(
-    (slot) => slot.instrumentTypeId
-  );
+  const excludedRoleIds = (requiredSlots ?? []).map((slot) => slot.roleId);
 
-  const handleInstrumentSelect = useCallback(
-    (instrumentTypeId: string) => {
-      if ((requiredSlots ?? []).some((s) => s.instrumentTypeId === instrumentTypeId)) return;
-      append({ instrumentTypeId, quantity: 1 });
+  const handleRoleSelect = useCallback(
+    (roleId: string) => {
+      if ((requiredSlots ?? []).some((s) => s.roleId === roleId)) return;
+      append({ roleId, quantity: 1 });
     },
     [append, requiredSlots]
   );
 
   const createAdMutation = useMutation({
     mutationFn: async (values: FormValues) => {
-      const { data } = await axiosAuth.post(
-        `/band/${bandId}/ads`,
-        values
-      );
+      const { data } = await axiosAuth.post(`/band/${bandId}/ads`, values);
       return data;
     },
   });
@@ -147,18 +144,90 @@ export function CreateBandAdForm({ bandId }: CreateBandAdFormProps) {
               />
             </FormField>
 
+            <FormField
+              label="Rythme de répétitions"
+              htmlFor="ad-rehearsals"
+              error={errors.rehearsalsPerWeek}
+            >
+              <FormFieldSelect
+                id="ad-rehearsals"
+                {...register("rehearsalsPerWeek")}
+                options={REHEARSAL_OPTIONS.map((o) => ({
+                  value: o.value,
+                  label: o.label,
+                }))}
+                placeholder="Non spécifié"
+                error={errors.rehearsalsPerWeek}
+                className="w-full"
+              />
+            </FormField>
+
+            <div className="space-y-2">
+              <h4 className="font-semibold text-xl">Lieu (facultatif)</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField
+                  label="Pays"
+                  htmlFor="ad-country"
+                  error={errors.country}
+                >
+                  <FormFieldInput
+                    id="ad-country"
+                    {...register("country")}
+                    error={errors.country}
+                    placeholder="Ex. France"
+                  />
+                </FormField>
+                <FormField
+                  label="Ville"
+                  htmlFor="ad-city"
+                  error={errors.city}
+                >
+                  <FormFieldInput
+                    id="ad-city"
+                    {...register("city")}
+                    error={errors.city}
+                    placeholder="Ex. Paris"
+                  />
+                </FormField>
+                <FormField
+                  label="Code postal"
+                  htmlFor="ad-zipCode"
+                  error={errors.zipCode}
+                >
+                  <FormFieldInput
+                    id="ad-zipCode"
+                    {...register("zipCode")}
+                    error={errors.zipCode}
+                    placeholder="75001"
+                  />
+                </FormField>
+                <FormField
+                  label="Département"
+                  htmlFor="ad-departmentName"
+                  error={errors.departmentName}
+                >
+                  <FormFieldInput
+                    id="ad-departmentName"
+                    {...register("departmentName")}
+                    error={errors.departmentName}
+                    placeholder="Ex. Paris"
+                  />
+                </FormField>
+              </div>
+            </div>
+
             <div className="space-y-3">
               <h4 className="font-semibold text-xl">Postes recherchés</h4>
               <p className="text-sm text-muted-foreground">
-                Recherchez et sélectionnez un instrument pour l&apos;ajouter
+                Recherchez et sélectionnez un rôle pour l&apos;ajouter
               </p>
-              <InstrumentAutocomplete
+              <RoleAutocomplete
                 value=""
-                onValueChange={handleInstrumentSelect}
-                instrumentTypes={instrumentTypes ?? {}}
-                isLoading={isLoadingInstruments}
-                placeholder="Tapez pour rechercher un instrument..."
-                excludedInstruments={excludedInstrumentIds}
+                onValueChange={handleRoleSelect}
+                roles={roles}
+                isLoading={isLoadingRoles}
+                placeholder="Tapez pour rechercher un rôle..."
+                excludedRoleIds={excludedRoleIds}
               />
 
               {fields.length > 0 && (
@@ -169,13 +238,16 @@ export function CreateBandAdForm({ bandId }: CreateBandAdFormProps) {
                       className="flex items-center gap-3 py-2 border-b border-border last:border-b-0"
                     >
                       <span className="font-medium min-w-[140px]">
-                        {getInstrumentDisplayName(
-                          requiredSlots?.[index]?.instrumentTypeId ?? "",
-                          instrumentTypes ?? {}
+                        {getRoleDisplayName(
+                          requiredSlots?.[index]?.roleId ?? "",
+                          roles
                         )}
                       </span>
                       <div className="flex items-center gap-2">
-                        <label htmlFor={`slot-quantity-${index}`} className="sr-only">
+                        <label
+                          htmlFor={`slot-quantity-${index}`}
+                          className="sr-only"
+                        >
                           Quantité
                         </label>
                         <input

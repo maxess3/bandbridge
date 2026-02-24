@@ -295,6 +295,21 @@ export const getInstrumentTypes = async (req: Request, res: Response) => {
   res.status(200).json(groupedInstruments);
 };
 
+/**
+ * Retrieves all roles (for band hiring ad form, etc.).
+ *
+ * @param req - Express request object
+ * @param res - Express response object
+ * @returns List of roles (id, name)
+ */
+export const getRoles = async (req: Request, res: Response) => {
+  const roles = await prisma.role.findMany({
+    select: { id: true, name: true },
+    orderBy: { name: "asc" },
+  });
+  res.status(200).json(roles);
+};
+
 export const getMusicGenres = async (req: Request, res: Response) => {
   const genres = Object.values(MusicGenre);
   res.status(200).json(genres);

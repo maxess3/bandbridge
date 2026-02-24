@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { getImageUrl } from "@/utils";
-import { translateProfession } from "@/utils";
+import { translateRole } from "@/utils";
 import { AiFillSafetyCertificate } from "react-icons/ai";
 import {
   AutocompleteDropdownProps,
@@ -41,10 +41,9 @@ const AutocompleteDropdown = forwardRef<
               "small"
             );
 
-            // Filtrer les instruments avec profession une seule fois
-            const instrumentsWithProfession =
-              profile.instruments?.filter(
-                (instrument: Instrument) => instrument.instrumentType.profession
+            const instrumentsWithRole =
+              profile.instruments?.filter((instrument: Instrument) =>
+                instrument.instrumentType.role?.name
               ) || [];
 
             const isSelected = index === selectedIndex;
@@ -83,28 +82,28 @@ const AutocompleteDropdown = forwardRef<
                   </div>
 
                   <div className="flex items-center gap-0.5 text-sm text-foreground opacity-80">
-                    {instrumentsWithProfession.length > 0 ? (
+                    {instrumentsWithRole.length > 0 ? (
                       <div className="flex flex-wrap gap-1">
-                        {instrumentsWithProfession
-                          .slice(0, 1) // Limiter à 1 professions maximum
+                        {instrumentsWithRole
+                          .slice(0, 1)
                           .map((instrument: Instrument) => (
                             <span
                               key={instrument.instrumentTypeId}
                               className="truncate"
                             >
-                              {translateProfession(
-                                instrument.instrumentType.profession!
+                              {translateRole(
+                                instrument.instrumentType.role?.name ?? ""
                               )}
                             </span>
                           ))}
-                        {instrumentsWithProfession.length > 3 && (
+                        {instrumentsWithRole.length > 3 && (
                           <Badge
                             variant="outline"
                             className="font-normal px-2 py-0.5 ml-0.5"
                           >
                             +{" "}
                             <span className="font-medium ml-0.5">
-                              {instrumentsWithProfession.length - 1}
+                              {instrumentsWithRole.length - 1}
                             </span>
                           </Badge>
                         )}

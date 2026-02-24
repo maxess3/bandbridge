@@ -2,7 +2,7 @@ export interface InstrumentType {
   id: string;
   name: string;
   category: string;
-  profession: string | null;
+  role?: { id: string; name: string } | null;
 }
 
 export interface Instrument {

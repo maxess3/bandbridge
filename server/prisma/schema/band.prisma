@@ -26,25 +26,30 @@ model BandMember {
 }
 
 model BandHiringAd {
-    id            String             @id @default(uuid())
-    title         String             @db.VarChar(255)
-    content       String             @db.Text
-    createdAt     DateTime           @default(now())
-    updatedAt     DateTime           @updatedAt
-    bandId        String
-    band          Band               @relation(fields: [bandId], references: [id], onDelete: Cascade)
-    requiredSlots BandRequiredSlot[]
+    id                String             @id @default(uuid())
+    title             String             @db.VarChar(255)
+    content           String             @db.Text
+    rehearsalsPerWeek RehearsalFrequency?
+    country           String?            @db.VarChar(60)
+    city              String?            @db.VarChar(60)
+    zipCode           String?            @db.VarChar(10)
+    departmentName    String?            @db.VarChar(60)
+    createdAt         DateTime           @default(now())
+    updatedAt         DateTime           @updatedAt
+    bandId            String
+    band              Band               @relation(fields: [bandId], references: [id], onDelete: Cascade)
+    requiredSlots     BandRequiredSlot[]
 
     @@unique([bandId, title])
 }
 
 model BandRequiredSlot {
-    id               String         @id @default(uuid())
-    quantity         Int            @default(1)
-    hiringAdId       String
-    instrumentTypeId String
-    hiringAd         BandHiringAd   @relation(fields: [hiringAdId], references: [id], onDelete: Cascade)
-    instrumentType   InstrumentType @relation(fields: [instrumentTypeId], references: [id], onDelete: Cascade)
+    id         String         @id @default(uuid())
+    quantity   Int            @default(1)
+    hiringAdId String
+    roleId     String
+    hiringAd   BandHiringAd   @relation(fields: [hiringAdId], references: [id], onDelete: Cascade)
+    role       Role           @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
-    @@unique([hiringAdId, instrumentTypeId])
+    @@unique([hiringAdId, roleId])
 }

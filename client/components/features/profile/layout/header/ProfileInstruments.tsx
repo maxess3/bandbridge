@@ -5,7 +5,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { translateInstrument, translateProfession } from "@/utils";
+import { translateInstrument, translateRole } from "@/utils";
 
 interface ProfileInstrumentsProps {
   instruments?: {
@@ -14,7 +14,7 @@ interface ProfileInstrumentsProps {
     order: number;
     instrumentType: {
       name: string;
-      profession: string | null;
+      role?: { id: string; name: string } | null;
     };
   }[];
 }
@@ -41,49 +41,51 @@ export const ProfileInstruments = ({
     return null;
   }
 
-  // Filtrer les instruments avec une profession et les trier par ordre
-  const instrumentsWithProfession = instruments
-    .filter((instrument) => instrument.instrumentType.profession)
+  // Filtrer les instruments avec un rôle et les trier par ordre
+  const roleName = (inst: (typeof instruments)[0]) =>
+    inst.instrumentType.role?.name ?? null;
+  const instrumentsWithRole = instruments
+    .filter((instrument) => roleName(instrument))
     .sort((a, b) => a.order - b.order);
 
-  if (instrumentsWithProfession.length === 0) {
+  if (instrumentsWithRole.length === 0) {
     return null;
   }
 
-  // Grouper les instruments par profession
-  const instrumentsByProfession = instrumentsWithProfession.reduce(
+  // Grouper les instruments par rôle (nom du rôle)
+  const instrumentsByRole = instrumentsWithRole.reduce(
     (acc, instrument) => {
-      const profession = instrument.instrumentType.profession!;
-      if (!acc[profession]) {
-        acc[profession] = [];
+      const name = roleName(instrument)!;
+      if (!acc[name]) {
+        acc[name] = [];
       }
-      acc[profession].push(instrument);
+      acc[name].push(instrument);
       return acc;
     },
-    {} as Record<string, typeof instrumentsWithProfession>
+    {} as Record<string, typeof instrumentsWithRole>
   );
 
-  // Convertir en tableau et limiter à 3 professions maximum
-  const professionGroups = Object.entries(instrumentsByProfession)
+  // Convertir en tableau et limiter à 3 rôles maximum
+  const roleGroups = Object.entries(instrumentsByRole)
     .slice(0, 3)
-    .map(([profession, instruments]) => ({
-      profession,
-      instruments,
+    .map(([roleNameKey, insts]) => ({
+      roleName: roleNameKey,
+      instruments: insts,
     }));
 
   return (
     <div className="flex flex-wrap gap-2 mt-1.5">
-      {professionGroups.map(({ profession, instruments }, index) => (
+      {roleGroups.map(({ roleName: name, instruments: insts }, index) => (
         <Tooltip delayDuration={500} key={index}>
           <TooltipTrigger asChild>
             <span className="px-0 font-medium text-lg border-none">
-              {translateProfession(profession)}
-              {index < professionGroups.length - 1 && ","}
+              {translateRole(name)}
+              {index < roleGroups.length - 1 && ","}
             </span>
           </TooltipTrigger>
           <TooltipContent>
             <div className="space-y-1">
-              {instruments.map((instrument, instrumentIndex) => (
+              {insts.map((instrument, instrumentIndex) => (
                 <p key={instrumentIndex}>
                   <span className="font-medium">
                     {translateInstrument(instrument.instrumentType.name)}

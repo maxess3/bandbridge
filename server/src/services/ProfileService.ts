@@ -55,7 +55,7 @@ export class ProfileService {
               instrumentType: {
                 select: {
                   name: true,
-                  profession: true,
+                  role: { select: { id: true, name: true } },
                 },
               },
             },
@@ -280,6 +280,7 @@ export class ProfileService {
             instrumentType: {
               select: {
                 id: true,
+                role: { select: { id: true, name: true } },
                 name: true,
                 category: true,
               },
@@ -549,7 +550,7 @@ export class ProfileService {
               instrumentType: {
                 select: {
                   name: true,
-                  profession: true,
+                  role: { select: { id: true, name: true } },
                   category: true,
                 },
               },
@@ -676,7 +677,7 @@ export class ProfileService {
             instrumentType: {
               select: {
                 name: true,
-                profession: true,
+                role: { select: { id: true, name: true } },
                 category: true,
               },
             },
