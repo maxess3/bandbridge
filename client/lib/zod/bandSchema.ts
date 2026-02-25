@@ -175,10 +175,21 @@ export const createBandHiringAdSchema = z.object({
 		.min(1, "La description est requise")
 		.max(2000, "La description ne doit pas dépasser 2000 caractères"),
 	rehearsalsPerWeek: rehearsalFrequencySchema.optional(),
-	country: z.string().max(60).optional(),
-	city: z.string().max(60).optional(),
-	zipCode: z.string().max(10).optional(),
-	departmentName: z.string().max(60).optional(),
+	country: z.enum(["France"], {
+		error: () => "L'application est disponible en france uniquement",
+	}),
+	zipcode: z
+		.string()
+		.min(1, "Le code postal est requis")
+		.regex(/^\d{5}$/, "Le code postal doit contenir exactement 5 chiffres"),
+	city: z
+		.string()
+		.min(1, "La ville est requise")
+		.max(50, "La ville ne doit pas dépasser 50 caractères")
+		.regex(
+			/^[a-zA-ZÀ-ÿ\-' ]+$/,
+			"La ville ne doit contenir que des lettres, tirets et espaces",
+		),
 	requiredSlots: z
 		.array(requiredSlotSchema)
 		.min(1, "Au moins un rôle recherché est requis")

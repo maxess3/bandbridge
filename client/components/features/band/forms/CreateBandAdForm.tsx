@@ -14,6 +14,7 @@ import {
 } from "@/components/shared/forms";
 import { Button } from "@/components/ui/button";
 import { RoleAutocomplete, Role } from "@/components/features/profile/autocomplete";
+import { LocationSection } from "@/components/shared/forms/location";
 import { createBandHiringAdSchema } from "@/lib/zod";
 import useAxiosAuth from "@/lib/hooks/useAxiosAuth";
 import { useTransitionDelay } from "@/hooks/ui";
@@ -63,10 +64,9 @@ export function CreateBandAdForm({ bandId }: CreateBandAdFormProps) {
       title: "",
       content: "",
       rehearsalsPerWeek: undefined,
-      country: "",
+      country: "France",
+      zipcode: "",
       city: "",
-      zipCode: "",
-      departmentName: "",
       requiredSlots: [],
     },
   });
@@ -162,59 +162,7 @@ export function CreateBandAdForm({ bandId }: CreateBandAdFormProps) {
               />
             </FormField>
 
-            <div className="space-y-2">
-              <h4 className="font-semibold text-xl">Lieu (facultatif)</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FormField
-                  label="Pays"
-                  htmlFor="ad-country"
-                  error={errors.country}
-                >
-                  <FormFieldInput
-                    id="ad-country"
-                    {...register("country")}
-                    error={errors.country}
-                    placeholder="Ex. France"
-                  />
-                </FormField>
-                <FormField
-                  label="Ville"
-                  htmlFor="ad-city"
-                  error={errors.city}
-                >
-                  <FormFieldInput
-                    id="ad-city"
-                    {...register("city")}
-                    error={errors.city}
-                    placeholder="Ex. Paris"
-                  />
-                </FormField>
-                <FormField
-                  label="Code postal"
-                  htmlFor="ad-zipCode"
-                  error={errors.zipCode}
-                >
-                  <FormFieldInput
-                    id="ad-zipCode"
-                    {...register("zipCode")}
-                    error={errors.zipCode}
-                    placeholder="75001"
-                  />
-                </FormField>
-                <FormField
-                  label="Département"
-                  htmlFor="ad-departmentName"
-                  error={errors.departmentName}
-                >
-                  <FormFieldInput
-                    id="ad-departmentName"
-                    {...register("departmentName")}
-                    error={errors.departmentName}
-                    placeholder="Ex. Paris"
-                  />
-                </FormField>
-              </div>
-            </div>
+            <LocationSection />
 
             <div className="space-y-3">
               <h4 className="font-semibold text-xl">Postes recherchés</h4>

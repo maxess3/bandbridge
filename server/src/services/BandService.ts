@@ -402,10 +402,9 @@ export class BandService {
       title: string;
       content: string;
       rehearsalsPerWeek?: string;
-      country?: string;
-      city?: string;
-      zipCode?: string;
-      departmentName?: string;
+      country: string;
+      zipcode: string;
+      city: string;
       requiredSlots: Array<{ roleId: string; quantity: number }>;
     }
   ) {
@@ -467,6 +466,14 @@ export class BandService {
       throw new ValidationError("Un ou plusieurs rôles sont invalides");
     }
 
+    let departmentName: string | null = null;
+    if (data.country === "France") {
+      departmentName = await this.calculateDepartmentName(
+        data.zipcode,
+        data.city,
+      );
+    }
+
     const ad = await prisma.$transaction(async (tx) => {
       const hiringAd = await tx.bandHiringAd.create({
         data: {
@@ -481,8 +488,8 @@ export class BandService {
             | undefined,
           country: data.country,
           city: data.city,
-          zipCode: data.zipCode,
-          departmentName: data.departmentName,
+          zipCode: data.zipcode,
+          departmentName,
         },
       });
 
