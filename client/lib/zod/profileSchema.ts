@@ -42,8 +42,8 @@ export const formGeneralProfile = z.object({
     .min(1, "La ville est requise")
     .max(50, "La ville ne doit pas dépasser 50 caractères")
     .regex(
-      /^[a-zA-ZÀ-ÿ\-']+$/,
-      "La ville ne doit contenir que des lettres et tirets",
+      /^[a-zA-ZÀ-ÿ\-' ]+$/,
+      "La ville ne doit contenir que des lettres, tirets et espaces",
     ),
   instruments: z
     .array(instrumentSchema)
