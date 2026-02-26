@@ -9,87 +9,99 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UsersIcon, UserIcon } from "@phosphor-icons/react";
-import { Button } from "@/components/ui/button";
 import { PlusIcon } from "@phosphor-icons/react";
 import { Separator } from "@/components/ui/separator";
 
 export function NavFirstSidebar() {
-	const { data: bands, isLoading: isLoadingBands } = useUserBands();
-	const { data: profile, isLoading: isLoadingProfile } = useProfile();
-	const { activeBand, setActiveBand, setView, reset } = useSidebarViewStore();
-	const pathname = usePathname();
+  const { data: bands, isLoading: isLoadingBands } = useUserBands();
+  const { data: profile, isLoading: isLoadingProfile } = useProfile();
+  const { activeBand, setActiveBand, setView, reset } = useSidebarViewStore();
+  const pathname = usePathname();
 
-	// Ne pas afficher si ni le profil ni les groupes ne sont disponibles
-	if (isLoadingProfile && isLoadingBands) {
-		return null;
-	}
+  // Ne pas afficher si ni le profil ni les groupes ne sont disponibles
+  if (isLoadingProfile && isLoadingBands) {
+    return null;
+  }
 
-	// Vérifier si on est sur la page du profil utilisateur
-	const isProfileActive = profile?.username && (
-		pathname === `/${profile.username}` ||
-		pathname.startsWith(`/${profile.username}/`)
-	);
+  // Vérifier si on est sur la page du profil utilisateur
+  const isProfileActive =
+    profile?.username &&
+    (pathname === `/${profile.username}` ||
+      pathname.startsWith(`/${profile.username}/`));
 
-	return (
-		<div className="flex flex-col items-center gap-2 py-3">
-			{/* Photo du profil utilisateur */}
-			{profile && !isLoadingProfile && (
-				<Link
-					href={`/${profile.username}`}
-					onClick={() => {
-						reset();
-					}}
-					className={cn(
-						"relative transition-opacity hover:opacity-100",
-						isProfileActive ? "opacity-100 before:content-[''] before:absolute before:top-1 before:-left-3.5 before:w-1.5 before:h-8 before:bg-foreground before:rounded-full relative" : "opacity-60"
-					)}
-					title={profile.pseudonyme || profile.username}
-				>
-					<Avatar className="w-10 h-10 rounded-xl">
-						<AvatarImage
-							src={getImageUrl(profile.profilePictureKey || "", "thumbnail") || undefined}
-						/>
-						<AvatarFallback>
-							<UserIcon className="size-5" />
-						</AvatarFallback>
-					</Avatar>
-				</Link>
-			)}
-			<Separator className="w-7/12" />
-			{/* Groupes */}
-			{!isLoadingBands && bands && bands.length > 0 && bands.map((band) => {
-				const isActive = activeBand?.id === band.id;
-				const imageUrl = getImageUrl(
-					band.profilePictureKey || "",
-					"thumbnail"
-				);
+  return (
+    <div className="flex flex-col items-center gap-2 py-3">
+      {/* Photo du profil utilisateur */}
+      {profile && !isLoadingProfile && (
+        <Link
+          href={`/dashboard`}
+          onClick={() => {
+            reset();
+          }}
+          className={cn(
+            "relative transition-opacity hover:opacity-100",
+            isProfileActive
+              ? "opacity-100 before:content-[''] before:absolute before:top-1 before:-left-3.5 before:w-1.5 before:h-8 before:bg-foreground before:rounded-full relative"
+              : "opacity-60",
+          )}
+          title={profile.pseudonyme || profile.username}
+        >
+          <Avatar>
+            <AvatarImage
+              src={
+                getImageUrl(profile.profilePictureKey || "", "thumbnail") ||
+                undefined
+              }
+            />
+            <AvatarFallback>
+              <UserIcon className="size-5" />
+            </AvatarFallback>
+          </Avatar>
+        </Link>
+      )}
+      <Separator className="w-7/12" />
+      {/* Groupes */}
+      {!isLoadingBands &&
+        bands &&
+        bands.length > 0 &&
+        bands.map((band) => {
+          const isActive = activeBand?.id === band.id;
+          const imageUrl = getImageUrl(
+            band.profilePictureKey || "",
+            "thumbnail",
+          );
 
-				return (
-					<Link
-						key={band.id}
-						href={`/band/${band.id}`}
-						onClick={() => {
-							setActiveBand(band);
-							setView("band");
-						}}
-						className={cn(
-							"relative transition-opacity hover:opacity-100",
-							isActive ? "opacity-100 before:content-[''] before:absolute before:top-1 before:-left-3.5 before:w-1.5 before:h-8 before:bg-foreground before:rounded-full relative" : "opacity-60"
-						)}
-						title={band.name}
-					>
-						<Avatar className="w-10 h-10 rounded-xl">
-							<AvatarImage src={imageUrl || undefined} />
-							<AvatarFallback>
-								<UsersIcon className="size-5" />
-							</AvatarFallback>
-						</Avatar>
-					</Link>
-				);
-			})}
-			<Link href="/band/create-band" className="w-10 h-10 rounded-xl border flex items-center justify-center">
-				<PlusIcon className="size-4" />
-			</Link>
-		</div>
-	);
+          return (
+            <Link
+              key={band.id}
+              href={`/band/${band.id}`}
+              onClick={() => {
+                setActiveBand(band);
+                setView("band");
+              }}
+              className={cn(
+                "relative transition-opacity hover:opacity-100",
+                isActive
+                  ? "opacity-100 before:content-[''] before:absolute before:top-1 before:-left-3.5 before:w-1.5 before:h-8 before:bg-foreground before:rounded-full relative"
+                  : "opacity-60",
+              )}
+              title={band.name}
+            >
+              <Avatar className="rounded-sm">
+                <AvatarImage src={imageUrl || undefined} />
+                <AvatarFallback className="rounded-md">
+                  <UsersIcon className="size-5" />
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+          );
+        })}
+      <Link
+        href="/band/create-band"
+        className="w-10 h-10 rounded-xl border flex items-center justify-center"
+      >
+        <PlusIcon className="size-4" />
+      </Link>
+    </div>
+  );
 }

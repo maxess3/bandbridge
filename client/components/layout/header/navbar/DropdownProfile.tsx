@@ -13,7 +13,6 @@ import {
   BugBeetleIcon,
   GearIcon,
   SignOutIcon,
-  CaretDownIcon,
 } from "@phosphor-icons/react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Switch } from "@/components/ui/switch";
@@ -36,12 +35,12 @@ export const DropdownProfile = ({
   const { data: session } = useSession();
   const { resolvedTheme, setTheme } = useTheme();
   const [isChecked, setChecked] = useState(
-    resolvedTheme === "light" ? false : true
+    resolvedTheme === "light" ? false : true,
   );
   const [isOpen, setIsOpen] = useState(false);
   const imageURL = getImageUrl(
     session?.user?.profilePictureKey || "",
-    "thumbnail"
+    "thumbnail",
   );
 
   function handleClick(e: React.MouseEvent) {
@@ -80,9 +79,6 @@ export const DropdownProfile = ({
                 <DefaultProfilePicture className="mt-6 mr-1 w-[45px] h-[45px] text-background" />
               </AvatarFallback>
             </Avatar>
-            <span className="absolute -bottom-1.5 -right-1 bg-background rounded-full flex justify-center items-center w-5 h-5">
-              <CaretDownIcon weight="bold" className="size-3" />
-            </span>
           </span>
 
           {showText && (
@@ -99,7 +95,7 @@ export const DropdownProfile = ({
           )}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-60 mt-2">
+      <DropdownMenuContent className="w-68" side="top" sideOffset={20}>
         <DropdownMenuGroup className="space-y-0.5">
           <div className="px-1 py-1">
             <div className="w-full">

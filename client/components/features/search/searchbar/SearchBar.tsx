@@ -108,12 +108,12 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="max-w-xl w-full relative">
+    <div className="max-w-[260px] w-full relative">
       <FormInput
         ref={inputRef}
         type="text"
-        placeholder="Rechercher sur chordeus..."
-        className="pl-10 pr-4 relative"
+        placeholder="Rechercher sur chordeus"
+        className="pl-9 pt-[9px] pr-4 h-10 relative text-sm"
         value={search}
         onChange={handleSearchChange}
         onKeyDown={handleKeyDown}

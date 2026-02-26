@@ -1,17 +1,23 @@
 import DefaultNavbar from "@/components/layout/header/navbar/default/DefaultNavbar";
 import Footer from "@/components/layout/footer/Footer";
 import { AppSidebar } from "@/components/layout/sidebar/app-sidebar";
-import { SidebarProvider, SidebarManagerProvider, SidebarInset, SidebarManager, Sidebar, SidebarContent } from "@/components/ui/sidebar";
+import {
+  SidebarProvider,
+  SidebarManagerProvider,
+  SidebarInset,
+  SidebarManager,
+  Sidebar,
+  SidebarContent,
+} from "@/components/ui/sidebar";
 import { SiteHeader } from "@/components/layout/sidebar/site-header";
 import { NavFirstSidebar } from "@/components/layout/sidebar/nav-first-sidebar";
-
 interface ConditionalLayoutProps {
   children: React.ReactNode;
   isPublic: boolean;
 }
 
 const HEADER_HEIGHT = "3.2rem";
-const SIDEBAR_WIDTH = "12rem";
+const SIDEBAR_WIDTH = "16rem";
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,7 +30,9 @@ function PublicLayout({ children }: { children: React.ReactNode }) {
 }
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
-  const headerHeightStyle = { "--header-height": HEADER_HEIGHT } as React.CSSProperties;
+  const headerHeightStyle = {
+    "--header-height": HEADER_HEIGHT,
+  } as React.CSSProperties;
   const sidebarWidthStyle = {
     "--sidebar-width": SIDEBAR_WIDTH,
     "--sidebar-width-icon": SIDEBAR_WIDTH,
@@ -43,7 +51,10 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
             </Sidebar>
           </SidebarManager>
           <SidebarInset className="flex-1 min-h-0">
-            <SidebarProvider className="flex-1 min-h-0" style={sidebarWidthStyle}>
+            <SidebarProvider
+              className="flex-1 min-h-0"
+              style={sidebarWidthStyle}
+            >
               <SidebarManager name="second">
                 <AppSidebar />
               </SidebarManager>
@@ -65,8 +76,6 @@ export async function ConditionalLayout({
   return isPublic ? (
     <PublicLayout>{children}</PublicLayout>
   ) : (
-    <AuthenticatedLayout>
-      {children}
-    </AuthenticatedLayout>
+    <AuthenticatedLayout>{children}</AuthenticatedLayout>
   );
 }

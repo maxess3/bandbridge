@@ -22,7 +22,7 @@ const AutocompleteDropdown = forwardRef<
       selectedIndex = -1,
       onKeyDown,
     },
-    ref
+    ref,
   ) => {
     return (
       <div
@@ -38,12 +38,13 @@ const AutocompleteDropdown = forwardRef<
           {profiles.map((profile: AutocompleteSearchResult, index) => {
             const imageURL = getImageUrl(
               profile.profilePictureKey || "",
-              "small"
+              "small",
             );
 
             const instrumentsWithRole =
-              profile.instruments?.filter((instrument: Instrument) =>
-                instrument.instrumentType.role?.name
+              profile.instruments?.filter(
+                (instrument: Instrument) =>
+                  instrument.instrumentType.role?.name,
               ) || [];
 
             const isSelected = index === selectedIndex;
@@ -73,7 +74,7 @@ const AutocompleteDropdown = forwardRef<
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center">
-                    <span className="font-semibold flex items-center text-foreground truncate">
+                    <span className="font-semibold flex text-sm items-center text-foreground truncate">
                       <span className="inline-flex items-center gap-1">
                         {profile.pseudonyme}
                         <AiFillSafetyCertificate className="size-4 text-blue-500" />
@@ -92,7 +93,7 @@ const AutocompleteDropdown = forwardRef<
                               className="truncate"
                             >
                               {translateRole(
-                                instrument.instrumentType.role?.name ?? ""
+                                instrument.instrumentType.role?.name ?? "",
                               )}
                             </span>
                           ))}
@@ -121,7 +122,7 @@ const AutocompleteDropdown = forwardRef<
 
           <div className={profiles.length > 0 ? "border-t" : ""}>
             <button
-              className={`w-full flex items-center justify-center py-2.5 px-3 font-medium transition-colors border-2 ${
+              className={`w-full flex items-center justify-center py-2.5 px-3 text-sm font-medium transition-colors border-2 ${
                 selectedIndex === profiles.length
                   ? "bg-foreground/10 border-red-500"
                   : "hover:bg-secondary border-transparent"
@@ -139,7 +140,7 @@ const AutocompleteDropdown = forwardRef<
         </div>
       </div>
     );
-  }
+  },
 );
 
 AutocompleteDropdown.displayName = "AutocompleteDropdown";
