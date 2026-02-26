@@ -271,6 +271,8 @@ function Sidebar({
   side = "left",
   variant = "sidebar",
   collapsible = "offcanvas",
+  alignBelowHeader = false,
+  fillContainer = false,
   className,
   children,
   ...props
@@ -278,6 +280,10 @@ function Sidebar({
   side?: "left" | "right";
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
+  /** When true, sidebar starts below header (use when sidebar is direct child of viewport-height area) */
+  alignBelowHeader?: boolean;
+  /** When true, sidebar fills its parent (use when parent is already below header, e.g. right sidebar in nested layout) */
+  fillContainer?: boolean;
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 
@@ -345,7 +351,12 @@ function Sidebar({
       <div
         data-slot="sidebar-container"
         className={cn(
-          "absolute inset-y-0 z-10 hidden h-svh w-(--sidebar-width) transition-[left,right,width] duration-150 ease-linear md:flex",
+          "absolute z-10 hidden w-(--sidebar-width) transition-[left,right,width] duration-150 ease-linear md:flex",
+          fillContainer
+            ? "top-0 h-full"
+            : alignBelowHeader
+              ? "top-(--header-height) h-[calc(100svh-var(--header-height))]"
+              : "inset-y-0 h-svh",
           side === "left"
             ? "left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]"
             : "right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]",

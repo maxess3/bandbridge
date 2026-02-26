@@ -64,9 +64,8 @@ export const DropdownProfile = ({
       <DropdownMenuTrigger asChild>
         <button
           className="flex items-center rounded-full cursor-pointer gap-x-2 w-full"
-          aria-label={`Menu profil de ${
-            session?.user?.pseudonyme || "utilisateur"
-          }`}
+          aria-label={`Menu profil de ${session?.user?.pseudonyme || "utilisateur"
+            }`}
         >
           <span className="relative">
             <Avatar>
@@ -95,7 +94,7 @@ export const DropdownProfile = ({
           )}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-68" side="top" sideOffset={20}>
+      <DropdownMenuContent className="w-68" side="top" sideOffset={5}>
         <DropdownMenuGroup className="space-y-0.5">
           <div className="px-1 py-1">
             <div className="w-full">

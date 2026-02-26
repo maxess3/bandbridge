@@ -44,7 +44,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
         <SiteHeader />
         <SidebarProvider className="h-[calc(100vh-var(--header-height))] flex-1 min-h-0">
           <SidebarManager name="left">
-            <Sidebar side="left" className="border-r pt-(--header-height)">
+            <Sidebar side="left" alignBelowHeader className="border-r">
               <SidebarContent className="wrap-break-word">
                 <NavFirstSidebar />
               </SidebarContent>
@@ -61,6 +61,11 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
               <SidebarInset className="flex-1 min-h-0 overflow-auto">
                 {children}
               </SidebarInset>
+              <SidebarManager name="right">
+                <Sidebar side="right" fillContainer>
+                  <SidebarContent>Right sidebar</SidebarContent>
+                </Sidebar>
+              </SidebarManager>
             </SidebarProvider>
           </SidebarInset>
         </SidebarProvider>

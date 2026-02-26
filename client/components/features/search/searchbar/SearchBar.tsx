@@ -112,7 +112,7 @@ export const SearchBar = () => {
       <FormInput
         ref={inputRef}
         type="text"
-        placeholder="Rechercher sur chordeus"
+        placeholder="Rechercher un profil / groupe"
         className="pl-9 pt-[9px] pr-4 h-10 relative text-sm"
         value={search}
         onChange={handleSearchChange}

@@ -71,9 +71,6 @@ export function SiteHeader() {
         </div>
         <div className="flex items-center justify-end gap-x-2">
           <Button className="h-10 w-10 rounded-md bg-foreground/10">
-            <GlobeIcon className="size-4.5!" weight="bold" />
-          </Button>
-          <Button className="h-10 w-10 rounded-md bg-foreground/10">
             <ChatIcon className="size-4.5!" weight="bold" />
           </Button>
           <Button className="h-10 w-10 rounded-md bg-foreground/10">
