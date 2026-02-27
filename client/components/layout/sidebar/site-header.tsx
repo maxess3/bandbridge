@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ChatIcon, BellIcon, GlobeIcon } from "@phosphor-icons/react";
+import { ChatIcon, BellIcon } from "@phosphor-icons/react";
 import { SearchBar } from "@/components/features/search";
 import { DropdownProfile } from "@/components/layout/header/navbar/DropdownProfile";
 import { NavLogo } from "@/components/layout/sidebar/nav-logo";
@@ -37,8 +37,17 @@ function getPageTitle(pathname: string): string | null {
   if (profileSegmentMatch) {
     const firstSegment = profileSegmentMatch[1];
     const reserved = [
-      "dashboard", "bands", "musicians", "ads", "marketplace",
-      "community", "settings", "search", "band", "auth", "articles",
+      "dashboard",
+      "bands",
+      "musicians",
+      "ads",
+      "marketplace",
+      "community",
+      "settings",
+      "search",
+      "band",
+      "auth",
+      "articles",
     ];
     if (!reserved.includes(firstSegment)) return "Profil";
   }

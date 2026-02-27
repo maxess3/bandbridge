@@ -61,11 +61,6 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
               <SidebarInset className="flex-1 min-h-0 overflow-auto">
                 {children}
               </SidebarInset>
-              <SidebarManager name="right">
-                <Sidebar side="right" fillContainer>
-                  <SidebarContent>Right sidebar</SidebarContent>
-                </Sidebar>
-              </SidebarManager>
             </SidebarProvider>
           </SidebarInset>
         </SidebarProvider>

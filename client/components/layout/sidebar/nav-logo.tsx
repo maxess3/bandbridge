@@ -8,7 +8,7 @@ export function NavLogo() {
   return (
     <div className="flex items-center">
       <Link
-        href={"/home"}
+        href={"/dashboard"}
         className="font-medium flex items-center gap-x-2 w-full"
       >
         <Image src={Logo} alt="Logo" width={34} height={34} />

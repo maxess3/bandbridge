@@ -18,16 +18,40 @@ export function NavFirstSidebar() {
   const { activeBand, setActiveBand, setView, reset } = useSidebarViewStore();
   const pathname = usePathname();
 
+  const isProfileRelatedRoute = (
+    currentPathname: string,
+    username?: string | null,
+  ) => {
+    if (!username) {
+      return false;
+    }
+
+    const PROFILE_RELATED_PATHS = [
+      "/settings",
+      "/ads",
+      "/musicians",
+      "/bands",
+      "/dashboard",
+      "/search",
+    ];
+
+    if (
+      currentPathname === `/${username}` ||
+      currentPathname.startsWith(`/${username}/`)
+    ) {
+      return true;
+    }
+
+    return PROFILE_RELATED_PATHS.includes(currentPathname);
+  };
+
   // Ne pas afficher si ni le profil ni les groupes ne sont disponibles
   if (isLoadingProfile && isLoadingBands) {
     return null;
   }
 
   // Vérifier si on est sur la page du profil utilisateur
-  const isProfileActive =
-    profile?.username &&
-    (pathname === `/${profile.username}` ||
-      pathname.startsWith(`/${profile.username}/`));
+  const isProfileActive = isProfileRelatedRoute(pathname, profile?.username);
 
   return (
     <div className="flex flex-col items-center gap-2 py-3">
