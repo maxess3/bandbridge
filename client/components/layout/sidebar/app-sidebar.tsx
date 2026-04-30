@@ -2,13 +2,13 @@
 
 import { useMemo } from "react";
 import {
-  UsersIcon,
-  UserIcon,
-  HouseIcon,
-  WrenchIcon,
-  ShoppingCartIcon,
-  GlobeIcon,
-  SpeakerHighIcon,
+	UsersIcon,
+	UserIcon,
+	HouseIcon,
+	WrenchIcon,
+	ShoppingCartIcon,
+	GlobeIcon,
+	SpeakerHighIcon,
 } from "@phosphor-icons/react";
 import { NavMain } from "@/components/layout/sidebar/nav-main";
 import { NavBandMain } from "@/components/layout/sidebar/nav-band-main";
@@ -18,77 +18,77 @@ import { useSyncSidebarView } from "@/hooks/features/band/useSyncSidebarView";
 import { useProfile } from "@/hooks/features/profile/useProfile";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { view } = useSidebarViewStore();
-  const { isReady } = useSyncSidebarView();
-  const { data: profile } = useProfile();
+	const { view } = useSidebarViewStore();
+	const { isReady } = useSyncSidebarView();
+	const { data: profile } = useProfile();
 
-  const userNavData = useMemo(
-    () => ({
-      navMain: [
-        {
-          title: "Tableau de bord",
-          url: "/dashboard",
-          icon: HouseIcon,
-        },
-        {
-          title: "Groupes",
-          url: "/bands",
-          icon: UsersIcon,
-        },
-        {
-          title: "Musiciens",
-          url: "/musicians",
-          icon: UserIcon,
-        },
-        {
-          title: "Annonces",
-          url: "/ads",
-          icon: SpeakerHighIcon,
-        },
-        {
-          title: "Achat/Vente",
-          url: "/marketplace",
-          icon: ShoppingCartIcon,
-        },
-        {
-          title: "Forum",
-          url: "/community",
-          icon: GlobeIcon,
-        },
-        {
-          title: "Outils",
-          url: "#",
-          icon: WrenchIcon,
-          items: [
-            {
-              title: "Prix instrument",
-              url: "#",
-            },
-            {
-              title: "Partenaires",
-              url: "#",
-            },
-          ],
-        },
-      ],
-    }),
-    [profile?.username],
-  );
+	const userNavData = useMemo(
+		() => ({
+			navMain: [
+				{
+					title: "Tableau de bord",
+					url: "/dashboard",
+					icon: HouseIcon,
+				},
+				{
+					title: "Groupes",
+					url: "/bands",
+					icon: UsersIcon,
+				},
+				{
+					title: "Musiciens",
+					url: "/musicians",
+					icon: UserIcon,
+				},
+				{
+					title: "Annonces",
+					url: "/ads",
+					icon: SpeakerHighIcon,
+				},
+				{
+					title: "Achat/Vente",
+					url: "/marketplace",
+					icon: ShoppingCartIcon,
+				},
+				{
+					title: "Forum",
+					url: "/community",
+					icon: GlobeIcon,
+				},
+				{
+					title: "Outils",
+					url: "#",
+					icon: WrenchIcon,
+					items: [
+						{
+							title: "Prix instrument",
+							url: "#",
+						},
+						{
+							title: "Partenaires",
+							url: "#",
+						},
+					],
+				},
+			],
+		}),
+		[profile?.username],
+	);
 
-  return (
-    <Sidebar collapsible="none" className="border-r" {...props}>
-      <SidebarContent>
-        {!isReady ? null : view === "user" ? ( // Afficher un état de chargement ou rien pendant la synchronisation
-          <div className="px-1.5">
-            <NavMain items={userNavData.navMain} />
-          </div>
-        ) : (
-          <div className="px-1.5">
-            <NavBandMain />
-          </div>
-        )}
-      </SidebarContent>
-      <SidebarRail />
-    </Sidebar>
-  );
+	return (
+		<Sidebar collapsible="none" className="border-r" {...props}>
+			<SidebarContent>
+				{!isReady ? null : view === "user" ? ( // Afficher un état de chargement ou rien pendant la synchronisation
+					<div className="px-1.5">
+						<NavMain items={userNavData.navMain} />
+					</div>
+				) : (
+					<div className="px-1.5">
+						<NavBandMain />
+					</div>
+				)}
+			</SidebarContent>
+			<SidebarRail />
+		</Sidebar>
+	);
 }
