@@ -17,7 +17,7 @@ interface ConditionalLayoutProps {
 }
 
 const HEADER_HEIGHT = "3.2rem";
-const SIDEBAR_WIDTH = "16rem";
+const SIDEBAR_WIDTH = "15rem";
 
 function PublicLayout({ children }: { children: React.ReactNode }) {
 	return (
@@ -41,9 +41,10 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<div className="h-screen flex flex-col" style={headerHeightStyle}>
 			<SidebarManagerProvider>
+				<SiteHeader />
 				<SidebarProvider className="h-[calc(100vh-var(--header-height))] flex-1 min-h-0">
 					<SidebarManager name="left">
-						<Sidebar side="left" className="border-r">
+						<Sidebar alignBelowHeader side="left" className="border-r">
 							<SidebarContent className="wrap-break-word">
 								<NavFirstSidebar />
 							</SidebarContent>
@@ -58,7 +59,6 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
 								<AppSidebar />
 							</SidebarManager>
 							<SidebarInset className="flex-1 min-h-0 overflow-auto">
-								<SiteHeader />
 								{children}
 							</SidebarInset>
 						</SidebarProvider>

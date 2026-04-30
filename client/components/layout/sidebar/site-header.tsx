@@ -9,12 +9,8 @@ import { DropdownProfile } from "@/components/layout/header/navbar/DropdownProfi
 export function SiteHeader() {
 	return (
 		<header className="bg-background sticky top-0 z-50 flex w-full items-center border-b">
-			<div className="flex h-(--header-height) w-full items-center px-1.5 gap-x-1">
-				{/* <div className="flex-2 items-center gap-x-3 bg-[purple]"> */}
-				{/* <NavLogo /> */}
-				{/* <span className="text-2xl font-medium">chordeus</span> */}
-				{/* </div> */}
-				<div className="flex items-center w-full justify-center">
+			<div className="flex h-(--header-height) w-full items-center px-1.5 gap-x-1 max-w-2xl mx-auto">
+				<div className="flex items-center w-full">
 					<SearchBar />
 				</div>
 				<div className="flex flex-1 items-center justify-center overflow-hidden"></div>
